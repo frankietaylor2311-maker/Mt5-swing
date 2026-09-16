@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 17:54 UTC+01:00 Europe/London (wave: **monthly-consistency-first** — vol/equity/month-aware flatten + dual-year diversify + H1).
+Session: 2026-09-16 18:00 BST Europe/London (wave: **smooth-return portfolio + IS min(year mean_mo) WF**).
 
 ## Scoring rubric this wave (primary)
 
@@ -12,7 +12,9 @@ Session: 2026-09-16 17:54 UTC+01:00 Europe/London (wave: **monthly-consistency-f
 3. Mean monthly **~1% stable** across 2024, 2025, 2026, holdout — **2024 cannot stay at 0.42%**
 4. Prefer **lower monthly variance / less lumpy** mean over higher bursty mean
 5. **Reject** candidates that boost mean via bursts even if gates PASS
-6. **No leverage increase** (RF fixed at 8%; new flatten overlays scale ≤1)
+6. **No leverage increase** (RF fixed at 8%; per-leg risk = RF/n_legs)
+
+**Selection objective (this wave):** maximize `min(IS year mean_mo)` for IS windows `{2024, 2025_IS}` subject to %pos≥70% and top3≤55% (soft≤70%). Holdout / full 2025–2026 confirmation only.
 
 ## Target vs result
 
@@ -24,64 +26,63 @@ Session: 2026-09-16 17:54 UTC+01:00 Europe/London (wave: **monthly-consistency-f
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. Consistency overlays can lift 2024 %pos 55%→73% and trim top3 a bit, but they **cut mean further below 1%**. Dual-year (≥0.8%/mo on **both** 2024 and 2025) add-ons: **zero passers**. Soft explores (+AUDJPY) help 2024 %pos but hurt 2025 %pos. **Target not met.**
+**Verdict:** Official locked tag **unchanged**. Smooth many-leg IS search (528 VT/weight combos, 104 soft constraint passers, **0 hard top3≤55% passers**) lifts 2024 toward ~0.8%/mo with better %pos on some lock+diversifier baskets, but **none** clear ≥1% mean on **each** of 2024/2025/2026/holdout with ≥70% pos. Metals not dual-confirm — skipped. **Target not met.**
 
 ## Locked candidate (unchanged — still official)
 
 **Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
 **Config:** `configs/quest_one_pct_candidate.yaml`
 
-Verified this wave (`QUEST_CFG=... RISK_FRACTION=0.08 WEIGHTS=oos_sharpe PORT_VOL_TARGET=0.0025`):
+Verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe):
 
 | Window | Return | Mean mo | %pos | Top3 | Gates | P2T |
 |--------|-------:|--------:|-----:|-----:|:-----:|----:|
-| 2024 | +5.38% | **0.42%** | 55% | 74% | PASS | 7.4% |
-| 2025 | +22.04% | **1.63%** | 73% | 69% | PASS | 3.9% |
-| 2026 YTD | +20.03% | **2.30%** | 88% | 87% | PASS | 6.4% |
-| holdout_365d | +21.55% | **1.52%** | 75% | 81% | PASS | 6.8% |
-| roll12_m6 | +16.45% | **1.13%** | 67% | 80% | PASS | 3.9% |
+| 2024 | +5.38% | **0.42%** | 55% | 74% | PASS | ~7% |
+| 2025 | +22.04% | **1.63%** | 73% | 69% | PASS | ~4% |
+| 2026 YTD | +20.03% | **2.30%** | 88% | 87% | PASS | ~6% |
+| holdout_365d | +21.55% | **1.52%** | 75% | 81% | PASS | ~7% |
+| roll12_m6 | +16.45% | **1.13%** | 67% | 80% | PASS | ~4% |
 
-## Wave: consistency-first flatten + dual-year + H1 (new)
+## Wave: smooth-return from scratch + IS min(year) WF (new)
 
-Script: `scripts/quest_vol_month_diversify.py`. Overlays in `src/mt5_swing/portfolio/overlays.py`:
-`apply_month_aware_scale`, `apply_equity_curve_target`, `apply_runup_throttle` (all causal, scale≤1).
+Script: `scripts/quest_smooth_return_wf.py`. Helpers: `src/mt5_swing/portfolio/smooth_select.py`.
 
-### Overlay / clip results (locked legs, RF=8%)
+Design:
+1. Pool of 18 MR/breakout OOS-gate legs (prefer dual-confirm); hard per-leg risk `RF/n`.
+2. Decorrelated / dual-top / MR-only / lock+extra / seeded baskets (22 unique symbol sets).
+3. Grid: equal|oos_sharpe × VT∈{0.002…0.005} × clip_hi∈{2,3} → 528 IS evals.
+4. Score = `min(mean_mo on 2024, 2025_IS)` with %pos/top3 constraints; holdout never in score.
+5. Metals only if dual-confirm **and** improve 2024 without hurting 2025 %pos.
 
-| Idea | 2024 mo / %pos / top3 | 2025 mo / %pos | HO mo / %pos / top3 | Notes |
-|------|----------------------:|---------------:|--------------------:|-------|
-| baseline_vt0025 | 0.42 / 55 / 74 | 1.63 / 73 | 1.52 / 75 / 81 | official |
-| vt0025 clip_hi=1.5 | 0.25 / **73** / **67** | 0.82 / 73 | 1.00 / 75 / 80 | best consistency lift; mean too low |
-| vt0025 clip_hi=2.0 | 0.28 / 64 / 71 | 1.09 / 73 | 1.27 / **83** / 79 | HO %pos up; 2024 still <<1% |
-| vt0025 clip_hi=1.0 | 0.18 / 73 / 67 | 0.54 / 73 | 0.72 / 75 / 82 | over-flattened |
-| eq_only target_mo_vol=0.6–1.0% | ≤0.17 / 73 / ~65 | ≤0.49 | ≤0.56 | IS consistency score winners; kill mean |
-| month-aware only | ~0.16–0.18 / 73 / 67 | ~0.5 | ~0.69 | same tradeoff |
-| month-aware **on top of** vt | often worsens %pos/top3 | — | — | rejected (bursty after throttle) |
-| consistency_stack | 0.10 / 73 / 68 | — | — | too weak mean |
+### Best IS soft passer (not promoted)
 
-**Promote overlays?** **No** — none reach ≥1% mean on 2024 while keeping multi-year stability; flatteners trade mean for %pos.
+`lock_plus4|oos_sharpe|vt0.0035|hi3.0` — locked 5 + EURUSD/GBPJPY/NZDCAD/EURCHF.
 
-### Dual-year diversifier screen
+| Window | Mean mo | %pos | Top3 | Gates |
+|--------|--------:|-----:|-----:|:-----:|
+| 2024 | **0.81%** | **73%** | **55%** | PASS |
+| 2025 | 0.80% | **64%** | 63% | PASS |
+| 2026 | 1.33% | 75% | 84% | PASS |
+| holdout_365d | 0.63% | **50%** | 84% | PASS |
 
-Require dual-confirm + corr≤0.55 + **2024 AND 2025 mean_mo ≥ 0.8%** + gates before add.
+Closer on 2024 mean/%pos/top3 vs locked, but **2025 %pos and HO %pos regress** — rejected under consistency rubric. IS raw min_mo ≈0.81% < 1%.
 
-**Passers: 0 / 12.** Classic pattern: GBPJPY H4 squeeze 2024 +1.42% / 2025 **−1.20%**; EURCHF 2024 −0.47% / 2025 +1.35%; EURGBP 2024 +0.71% / 2025 −0.17%.
+### Other confirmation notes
 
-Soft explore (not promote path; both years positive but <<0.8%):
+| Idea | 2024 mo/%pos/top3 | 2025 mo/%pos | HO mo/%pos | Note |
+|------|------------------:|-------------:|-----------:|------|
+| baseline_vt0025 | 0.42 / 55 / 74 | 1.63 / 73 | 1.52 / 75 | official |
+| lock_plus4 vt0035 | 0.81 / 73 / 55 | 0.80 / 64 | 0.63 / 50 | best IS soft; HO %pos fail |
+| lock_plus3 vt005 | **1.11** / 73 / 56 | **0.64** / 73 | 0.83 / 50 | 2024≥1% but 2025 mean & HO %pos fail |
+| pure smooth n8 | ~0.28 / 82 / 59 | ~0.64 / 64 | ~0.57 / 58 | consistency↑ mean↓ |
 
-| Basket | 2024 mo/%pos/top3 | 2025 mo/%pos | HO mo/%pos/top3 |
-|--------|------------------:|-------------:|----------------:|
-| +AUDJPY D1 MR | 0.46 / **73** / 71 | 1.60 / **64** | 1.54 / 83 / 80 |
-| +NZDCAD H4 MR | 0.42 / 55 / 76 | 1.64 / 64 | 1.14 / 67 / 83 |
-| +both | 0.46 / 73 / 77 | 1.56 / 64 | 1.12 / 67 / 80 |
+**Hard top3≤55% on both IS windows:** **0 / 528**. Soft (top3≤70%) passers: **104**.
 
-+AUDJPY helps 2024 %pos but **regresses 2025 %pos 73→64** — rejected under consistency rubric.
+**Metals:** XAUUSD H4 breakout_donchian OOS-ok but **not dual-confirm** → not eligible for promote path. No index CFDs in history.
 
-### H1 probe
+**Promote?** **No** — official tag unchanged.
 
-Downloaded H1 (Yahoo ~730d closed bars) for EURUSD/GBPUSD/USDJPY/EURJPY/AUDUSD/USDCHF. Fixed a-priori presets produced near-zero trades / flat equity on most combos at RF=8% (history starts ~2023-11; 2024 calendar incomplete). **No H1 leg promoted.**
-
-Details: `reports/quest_vol_month_diversify.md`, `reports/quest_dualyear_screen.csv`, `reports/quest_soft_dualyear_explore.csv`, `configs/quest_vol_month_selected.json`.
+Details: `reports/quest_smooth_return_wf.md`, `reports/quest_smooth_is_board.csv`, `reports/quest_smooth_promote.csv`, `configs/quest_smooth_selected.json`.
 
 ## Ideas tried (cumulative)
 
@@ -96,22 +97,24 @@ Details: `reports/quest_vol_month_diversify.md`, `reports/quest_dualyear_screen.
 | Corr / hotstreak / ADX tilt | Marginal vs locked; not promoted |
 | 2024-positive dual add-only | 2024↑ 2025↓ — rejected |
 | D1/H4 clock + max-k recycle | 2024→1.18%/mo but HO top3 worse — not promoted |
-| **Month-aware / equity-curve / runup flatten (this wave)** | Consistency↑ mean↓ — rejected |
-| **Dual-year ≥0.8% add-ons (this wave)** | **0 passers** |
-| **Soft +AUDJPY (this wave)** | 2024 %pos↑ 2025 %pos↓ — rejected |
-| **H1 Yahoo probe (this wave)** | Flat / no edge — rejected |
+| Month-aware / equity-curve / runup flatten | Consistency↑ mean↓ — rejected |
+| Dual-year ≥0.8% add-ons | **0 passers** |
+| Soft +AUDJPY | 2024 %pos↑ 2025 %pos↓ — rejected |
+| H1 Yahoo probe | Flat / no edge — rejected |
+| **Smooth many-leg + IS min(year) WF (this wave)** | Best IS ~0.81%/mo; HO %pos collapses — **rejected** |
+| **Metals dual-confirm (this wave)** | **None eligible** |
 
-## Gap remaining
+## Gap remaining / irreducible Yahoo limits
 
-1. **2024 mean still ~0.4%/mo** on official locked; flatteners that fix 2024 %pos cannot reach 1% mean without new uncorrelated edge.
-2. **Burstiness** — locked HO top3 ~81%; need ≤55% without killing mean (clip_hi=1.5 only trims to ~67–80%).
-3. **No dual-year diversifier** survives 2024∧2025 ≥0.8%/mo.
-4. **No FTMO MT5 exports** — all `approximate_non_ftmo`.
-5. Next: (a) build legs optimized for **monthly hit-rate** on IS (not OOS Sharpe alone); (b) purged multi-year panel with explicit top3/%pos constraints in WF; (c) FTMO exports when available.
+1. **2024 mean still ~0.4%/mo** on official locked; lock+diversifier IS search reaches ~0.8% with better 2024 %pos but **cannot hold ≥70% pos on holdout**.
+2. **Burstiness** — locked HO top3 ~81%; hard top3≤55% on both IS years: **zero** passers in 528-grid.
+3. **No dual-year diversifier** that is both strong and sign-stable 2024∧2025 under consistency gates.
+4. **No dual-confirm metals**; **no index history** (US30/NAS100/SPX) in repo for extra uncorrelated sleeves.
+5. **No FTMO MT5 exports** — all `approximate_non_ftmo`. Spreads/swap/sessions/Yahoo FX ≠ FTMO CFD book.
+6. **What FTMO `data/ftmo/` would unlock:** true spreads/commission/swap, session filters, deeper H1/M15, index CFDs if offered, and any go-live path (`ftmo_mt5_export`).
 
 ## Process / tests
 
-- pytest: `tests/test_month_equity_overlays.py`, `tests/test_clock_recycle.py` (+ prior suite).
-- `signal_lag=1`; IS grids only; holdout confirmation.
-- Overlay hyperparams scored on **2024 only** with consistency-first rubric; holdout never for selection.
-- RF forced to **8%** (locked); no leverage hike.
+- pytest: `tests/test_smooth_select.py` (+ prior overlay/clock/lookahead suite).
+- `signal_lag=1`; IS grids only (`2024`, `2025_IS` to holdout_start); holdout confirmation.
+- RF forced to **8%** (locked); per-leg = RF/n; no leverage hike.

@@ -1,5 +1,12 @@
 """Portfolio construction overlays (causal, research-only)."""
 
+from mt5_swing.portfolio.smooth_select import (
+    WindowStats,
+    expected_monthly_from_daily_vol,
+    greedy_decorrelated_pick,
+    min_mean_mo_score,
+    passes_smooth_constraints,
+)
 from mt5_swing.portfolio.overlays import (
     apply_equity_curve_target,
     apply_month_aware_scale,
@@ -12,6 +19,11 @@ from mt5_swing.portfolio.overlays import (
 )
 
 __all__ = [
+    "WindowStats",
+    "expected_monthly_from_daily_vol",
+    "greedy_decorrelated_pick",
+    "min_mean_mo_score",
+    "passes_smooth_constraints",
     "apply_equity_curve_target",
     "apply_month_aware_scale",
     "apply_runup_throttle",
