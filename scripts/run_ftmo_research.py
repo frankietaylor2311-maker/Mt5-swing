@@ -166,6 +166,7 @@ GRIDS = {
         "adx_chop": [16, 20],
         "rsi_low": [30, 35],
         "rsi_high": [65, 70],
+        "max_hold": [0, 20],
         "session_hours": [None],
     },
     "keltner_breakout": {

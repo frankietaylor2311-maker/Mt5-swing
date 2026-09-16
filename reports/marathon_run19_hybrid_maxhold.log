@@ -10,3 +10,8 @@ USDCAD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hol
 USDCAD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.30% n=107 gates=True holdout_ok=False source=approximate_non_ftmo
 USDCHF_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.12% n=69 gates=True holdout_ok=False source=approximate_non_ftmo
 USDCHF_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.50% n=50 gates=True holdout_ok=True source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.

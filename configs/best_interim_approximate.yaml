@@ -1,53 +1,16 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_chf_h4
+basket_tag: fx4_sharpe_first
 risk:
   risk_fraction: 0.02
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   atr_trail_mult: 0.0
   vol_target: false
-methodology: "Equal-weight on overlapping holdout dates (dropna any). Dual-confirm\
-  \ \u22641/symbol by OOS among FX."
-disclaimer: "Yahoo FX \u2260 FTMO MT5. Risk inside 1\u20132% band. No go-live without\
-  \ ftmo_mt5_export."
+methodology: "Dual FX \u22641/symbol ranked by OOS Sharpe then OOS return (a priori\
+  \ stability). Overlapping holdout dates."
+disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
-- symbol: USDJPY
-  timeframe: D1
-  strategy: hybrid_regime
-  params:
-    adx_chop: 20
-    adx_trend: 24
-    rsi_high: 70
-    rsi_low: 30
-    session_hours: null
-  oos_return: 0.0080407344524734
-  oos_trades: 35
-  holdout_return: 0.0182607723144145
-- symbol: AUDUSD
-  timeframe: D1
-  strategy: hybrid_regime
-  params:
-    adx_chop: 20
-    adx_trend: 24
-    rsi_high: 65
-    rsi_low: 35
-    session_hours: null
-  oos_return: 0.0025010862068843
-  oos_trades: 96
-  holdout_return: 0.0154763276018408
-- symbol: GBPUSD
-  timeframe: H4
-  strategy: breakout_donchian
-  params:
-    adx_min: 15
-    atr_pct_min: 0.15
-    donchian_window: 30
-    session_hours: null
-    use_mid_exit: false
-  oos_return: 0.0018690579365797
-  oos_trades: 104
-  holdout_return: 0.0326176264108935
 - symbol: USDCHF
   timeframe: H4
   strategy: bbands_reversion
@@ -61,3 +24,39 @@ candidates:
   oos_return: 0.0020822582035555
   oos_trades: 26
   holdout_return: 0.036036340113803
+- symbol: USDJPY
+  timeframe: D1
+  strategy: hybrid_regime
+  params:
+    adx_chop: 20
+    adx_trend: 24
+    rsi_high: 70
+    rsi_low: 30
+    session_hours: null
+  oos_return: 0.0080407344524734
+  oos_trades: 35
+  holdout_return: 0.0182607723144145
+- symbol: GBPUSD
+  timeframe: H4
+  strategy: breakout_donchian
+  params:
+    adx_min: 15
+    atr_pct_min: 0.15
+    donchian_window: 30
+    session_hours: null
+    use_mid_exit: false
+  oos_return: 0.0018690579365797
+  oos_trades: 104
+  holdout_return: 0.0326176264108935
+- symbol: AUDUSD
+  timeframe: D1
+  strategy: hybrid_regime
+  params:
+    adx_chop: 20
+    adx_trend: 24
+    rsi_high: 65
+    rsi_low: 35
+    session_hours: null
+  oos_return: 0.0025010862068843
+  oos_trades: 96
+  holdout_return: 0.0154763276018408

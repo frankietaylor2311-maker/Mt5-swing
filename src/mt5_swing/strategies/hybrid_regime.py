@@ -17,12 +17,14 @@ class HybridRegime:
         rsi_low: float = 32.0,
         rsi_high: float = 68.0,
         session_hours: str | None = None,
+        max_hold: int = 0,
     ):
         self.adx_trend = float(adx_trend)
         self.adx_chop = float(adx_chop)
         self.rsi_low = float(rsi_low)
         self.rsi_high = float(rsi_high)
         self.session_hours = session_hours or None
+        self.max_hold = int(max_hold)
 
     def _session_mask(self, index: pd.DatetimeIndex) -> pd.Series:
         if not self.session_hours:
@@ -54,6 +56,7 @@ class HybridRegime:
         sig = pd.Series(int(Signal.FLAT), index=data.index, dtype=int)
         last = int(Signal.FLAT)
         mode = "flat"
+        held = 0
         for i in range(len(sig)):
             if pd.isna(data["adx"].iloc[i]):
                 last = int(Signal.FLAT)
@@ -83,5 +86,13 @@ class HybridRegime:
             elif mode == "mr" and bool(mid.iloc[i]):
                 last = int(Signal.FLAT)
                 mode = "flat"
+            if last != int(Signal.FLAT):
+                held += 1
+                if self.max_hold > 0 and held >= self.max_hold:
+                    last = int(Signal.FLAT)
+                    mode = "flat"
+                    held = 0
+            else:
+                held = 0
             sig.iloc[i] = last
         return sig.astype(int)

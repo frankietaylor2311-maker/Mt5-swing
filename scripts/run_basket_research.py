@@ -64,7 +64,7 @@ def pick_candidates(df: pd.DataFrame, n: int = 4) -> pd.DataFrame:
         anch = cand[cand["anchored_gates_pass"] == True]  # noqa: E712
         if len(anch) >= max(2, n // 2):
             cand = anch
-    cand = cand.sort_values(["oos_return", "oos_sharpe"], ascending=False)
+    cand = cand.sort_values(["oos_sharpe", "oos_return", "oos_trades"], ascending=False)
     # Diversify: ≤1 leg/symbol and ≤1 per strategy name
     picked = []
     seen_sym, seen_strat = set(), set()
