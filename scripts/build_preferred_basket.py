@@ -102,6 +102,16 @@ def eval_basket(cand: pd.DataFrame, risk_fraction: float, tag: str) -> dict:
         strat = get_strategy(row["strategy"], **params)
         bt = rfr.bt_cfg_for(cfg, row["symbol"], row["strategy"])
         bt.risk_fraction = risk_fraction / n_legs
+        # Optional per-leg exits (IS-selected); also INTERIM_EXITS env JSON
+        exits = {}
+        if "exits" in row and isinstance(row["exits"], dict):
+            exits = row["exits"]
+        elif os.environ.get("INTERIM_EXITS"):
+            import json as _json
+            em = _json.loads(os.environ["INTERIM_EXITS"])
+            exits = em.get(f"{row['symbol']}|{row['timeframe']}|{row['strategy']}", {})
+        for k, v in (exits or {}).items():
+            setattr(bt, k, v)
         if len(holdout) < 50:
             continue
         res = run_backtest(holdout, strat, bt)

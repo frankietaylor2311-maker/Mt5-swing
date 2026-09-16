@@ -38,6 +38,8 @@ _SYMBOLS: dict[str, SymbolMeta] = {
     "GBPJPY": SymbolMeta("GBPJPY", digits=3, base_currency="GBP", quote_currency="JPY"),
     "AUDJPY": SymbolMeta("AUDJPY", digits=3, base_currency="AUD", quote_currency="JPY"),
     "EURCHF": SymbolMeta("EURCHF", digits=5, base_currency="EUR", quote_currency="CHF"),
+    "CADJPY": SymbolMeta("CADJPY", digits=3, base_currency="CAD", quote_currency="JPY"),
+    "NZDJPY": SymbolMeta("NZDJPY", digits=3, base_currency="NZD", quote_currency="JPY"),
     # Metals / indices — contract_size approximates FTMO CFD lots; verify in terminal
     "XAUUSD": SymbolMeta("XAUUSD", digits=2, contract_size=100.0, base_currency="XAU", quote_currency="USD"),
     "XAGUSD": SymbolMeta("XAGUSD", digits=3, contract_size=5000.0, base_currency="XAG", quote_currency="USD"),

@@ -191,6 +191,14 @@ GRIDS = {
         "max_hold": [0, 24],
         "session_hours": [None],
     },
+    "cci_reversion": {
+        "adx_max": [22, 28, 35],
+        "cci_low": [-120, -100],
+        "cci_high": [100, 120],
+        "exit_level": [0],
+        "require_htf_align": [False, True],
+        "session_hours": [None],
+    },
     "stoch_reversion": {
         "adx_max": [22, 28, 35],
         "stoch_low": [15, 20, 25],

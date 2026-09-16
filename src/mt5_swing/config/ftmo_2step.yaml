@@ -37,6 +37,8 @@ research_symbols:
   - EURGBP
   - AUDJPY
   - EURCHF
+  - CADJPY
+  - NZDJPY
   # Optional: US100 when FTMO exports available
 
 timeframes:

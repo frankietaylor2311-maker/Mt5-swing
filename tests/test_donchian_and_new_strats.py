@@ -162,3 +162,12 @@ def test_stoch_and_atr_channel_smoke_lookahead():
     sig_b = strat.generate_signals(feat2)
     n = len(sig_a) - 6 - 40
     assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()
+
+
+def test_cci_reversion_smoke():
+    from mt5_swing.strategies.cci_reversion import CciReversion
+    df = generate_sample_ohlc(n_bars=500, seed=55)
+    feat = apply_feature_pipeline(df, signal_lag=1)
+    assert "cci" in feat.columns
+    res = run_backtest(df, CciReversion(adx_max=40), BacktestConfig(symbol="EURUSD"))
+    assert len(res.equity) == len(df)

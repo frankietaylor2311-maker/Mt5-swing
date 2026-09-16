@@ -10,6 +10,8 @@ USDCHF_H4 cci_reversion: IS-grid best={'adx_max': 22, 'cci_high': 100, 'cci_low'
 USDCHF_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 EURGBP_H4 cci_reversion: IS-grid best={'adx_max': 28, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.16% n=24 gates=True holdout_ok=False source=approximate_non_ftmo
 EURGBP_D1 cci_reversion: IS-grid best={'adx_max': 22, 'cci_high': 120, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.26% n=14 gates=True holdout_ok=True source=approximate_non_ftmo
-run25: CADJPY/NZDJPY full WF — no dual OOS≥0.1% edge
-run26: cci_reversion — EURUSD D1 OOS+0.58% Sh1.54 but holdout fails; not promoted
-IS exit refine on interim FX4 trend legs → holdout +2.83%@2.5% OOS-Sharpe weights (beats +2.28% / +1.81%)
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
