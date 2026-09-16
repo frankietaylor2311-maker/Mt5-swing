@@ -1,0 +1,181 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "selected": {
+    "add_set": "corr0.25_n3",
+    "extras": [
+      "GBPJPY|H4|squeeze_breakout",
+      "EURGBP|D1|cci_reversion",
+      "EURAUD|H4|breakout_donchian"
+    ],
+    "clock": "h4=0.55",
+    "h4_share": 0.55,
+    "max_k": 3,
+    "recycle_cap": 2.0,
+    "vt": 0.0025,
+    "n_legs": 8
+  },
+  "risk_fraction": 0.08,
+  "risk_per_leg": 0.016,
+  "locked": [
+    {
+      "symbol": "USDCHF",
+      "timeframe": "H4",
+      "strategy": "bbands_reversion",
+      "params": {
+        "adx_max": 22,
+        "require_htf_align": false,
+        "require_rsi": false,
+        "rsi_high": 60,
+        "rsi_low": 35,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": false,
+      "oos_sharpe": 1.4388105975417105,
+      "weight": 0.18525255323923606,
+      "add_only": false
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "H4",
+      "strategy": "breakout_donchian",
+      "params": {
+        "adx_min": 15,
+        "atr_pct_min": 0.15,
+        "donchian_window": 30,
+        "session_hours": null,
+        "use_mid_exit": false
+      },
+      "exits": {
+        "atr_trail_mult": 0.0,
+        "atr_target_mult": 5.0,
+        "atr_stop_mult": 1.5,
+        "max_hold_bars": 24
+      },
+      "vol_target": true,
+      "oos_sharpe": 0.4337304658948822,
+      "weight": 0.05584451237845502,
+      "add_only": false
+    },
+    {
+      "symbol": "CADJPY",
+      "timeframe": "H4",
+      "strategy": "mean_reversion_regime",
+      "params": {
+        "adx_max": 25,
+        "rsi_high": 65,
+        "rsi_low": 35,
+        "session_hours": "7-20"
+      },
+      "exits": {
+        "max_hold_bars": 16
+      },
+      "vol_target": true,
+      "oos_sharpe": 1.7487450694017543,
+      "weight": 0.22515784191797253,
+      "add_only": false
+    },
+    {
+      "symbol": "AUDCAD",
+      "timeframe": "H4",
+      "strategy": "mean_reversion_regime",
+      "params": {
+        "adx_max": 30,
+        "rsi_high": 70,
+        "rsi_low": 30,
+        "session_hours": "7-20"
+      },
+      "exits": {
+        "atr_target_mult": 5.0,
+        "atr_stop_mult": 1.5,
+        "max_hold_bars": 24
+      },
+      "vol_target": false,
+      "oos_sharpe": 1.6442368784001269,
+      "weight": 0.21170199911938348,
+      "add_only": false
+    },
+    {
+      "symbol": "GBPCAD",
+      "timeframe": "D1",
+      "strategy": "bbands_reversion",
+      "params": {
+        "adx_max": 35,
+        "max_hold": 20,
+        "require_htf_align": false,
+        "require_rsi": false,
+        "rsi_high": 60,
+        "rsi_low": 35,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 2.501228768336857,
+      "weight": 0.32204309334495285,
+      "add_only": false
+    }
+  ],
+  "extras": [
+    {
+      "symbol": "GBPJPY",
+      "timeframe": "H4",
+      "strategy": "squeeze_breakout",
+      "params": {
+        "adx_min": 18,
+        "exit_bars": 16,
+        "lookback": 40,
+        "session_hours": null,
+        "squeeze_pct": 0.2
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 1.443692549661263,
+      "oos_return": 0.0054978159361414,
+      "oos_trades": 63,
+      "weight": 1.443692549661263,
+      "add_only": true,
+      "corr_2024": -0.29600917494417184
+    },
+    {
+      "symbol": "EURGBP",
+      "timeframe": "D1",
+      "strategy": "cci_reversion",
+      "params": {
+        "adx_max": 22,
+        "cci_high": 120,
+        "cci_low": -120,
+        "exit_level": 0,
+        "require_htf_align": false,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": false,
+      "oos_sharpe": 1.0985220971975689,
+      "oos_return": 0.0025563046309414,
+      "oos_trades": 14,
+      "weight": 1.0985220971975689,
+      "add_only": true,
+      "corr_2024": -0.027590973772021014
+    },
+    {
+      "symbol": "EURAUD",
+      "timeframe": "H4",
+      "strategy": "breakout_donchian",
+      "params": {
+        "adx_min": 0,
+        "atr_pct_min": 0.0,
+        "donchian_window": 30,
+        "session_hours": null,
+        "use_mid_exit": false
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 0.4882865098758222,
+      "oos_return": 0.0015245812418269,
+      "oos_trades": 65,
+      "weight": 0.4882865098758222,
+      "add_only": true,
+      "corr_2024": -0.24127633566409934
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+"""Causal portfolio overlays: clock budgets, corr, max-concurrent + idle recycle.
+
+All time-varying scales use information from t-1 (or earlier) to size t.
+Exposure after recycle is clipped so sum(weights) <= 1 (no extra leverage).
+"""
+
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+
+INITIAL = 100_000.0
+
+
+def apply_vol_target(
+    port: pd.Series,
+    target: float,
+    look: int = 60,
+    lo: float = 0.25,
+    hi: float = 3.0,
+) -> pd.Series:
+    """Scale next-bar returns by target / trailing vol (lagged)."""
+    if port is None or len(port) < 5:
+        return port if port is not None else pd.Series(dtype=float)
+    r = port.pct_change()
+    trail = r.shift(1).rolling(look, min_periods=max(20, look // 3)).std()
+    scale = (target / trail.replace(0, np.nan)).clip(lo, hi).fillna(1.0)
+    return (1.0 + r.fillna(0) * scale).cumprod() * float(port.iloc[0])
+
+
+def daily_return_corr(a: pd.Series, b: pd.Series, min_days: int = 20) -> float:
+    """Pearson corr of daily pct-changes. Fail-closed to 1.0 if too short."""
+    if a is None or b is None or a.empty or b.empty:
+        return 1.0
+    da = a.resample("1D").last().pct_change()
+    db = b.resample("1D").last().pct_change()
+    both = pd.concat([da.rename("a"), db.rename("b")], axis=1).dropna()
+    if len(both) < min_days:
+        return 1.0
+    c = float(both["a"].corr(both["b"]))
+    if c != c:
+        return 1.0
+    return c
+
+
+def clock_budget_weights(
+    timeframes: list[str],
+    base_weights: np.ndarray,
+    h4_share: float,
+) -> np.ndarray:
+    """Split a unit budget between H4 and D1; keep relative weights within clock.
+
+    If only one clock is present, returns renormalized base_weights (share ignored).
+    """
+    n = len(timeframes)
+    w = np.asarray(base_weights, dtype=float).reshape(-1)
+    if w.size != n:
+        raise ValueError("base_weights length must match timeframes")
+    w = np.maximum(w, 0.0)
+    tfs = [str(t).upper() for t in timeframes]
+    h4 = np.array([tf == "H4" for tf in tfs])
+    d1 = np.array([tf == "D1" for tf in tfs])
+    out = np.zeros(n, dtype=float)
+    hs = float(np.clip(h4_share, 0.0, 1.0))
+    if h4.any() and d1.any():
+        hw, dw = w[h4], w[d1]
+        hs_sum = hw.sum()
+        ds_sum = dw.sum()
+        if hs_sum <= 0:
+            hw = np.ones_like(hw)
+            hs_sum = hw.sum()
+        if ds_sum <= 0:
+            dw = np.ones_like(dw)
+            ds_sum = dw.sum()
+        out[h4] = (hw / hs_sum) * hs
+        out[d1] = (dw / ds_sum) * (1.0 - hs)
+    else:
+        s = w.sum()
+        out = (w / s) if s > 0 else np.ones(n) / n
+    tot = out.sum()
+    if tot <= 0:
+        return np.ones(n) / n
+    return out / tot
+
+
+def occupancy_frame(positions: list[pd.Series], index: pd.DatetimeIndex) -> pd.DataFrame:
+    """Reindex positions onto a common clock and ffill occupancy (0/1)."""
+    cols = []
+    for i, p in enumerate(positions):
+        s = p.reindex(index).ffill().fillna(0.0)
+        cols.append((s.abs() > 0).astype(float).rename(f"p{i}"))
+    if not cols:
+        return pd.DataFrame(index=index)
+    return pd.concat(cols, axis=1)
+
+
+def causal_max_concurrent_recycle(
+    returns: pd.DataFrame,
+    occupancy: pd.DataFrame,
+    weights: np.ndarray,
+    *,
+    max_k: int | None = None,
+    recycle_cap: float = 1.0,
+    priority: np.ndarray | None = None,
+    initial: float = INITIAL,
+) -> pd.Series:
+    """Mix lagged-occupancy legs, cap concurrent, recycle idle weight.
+
+    - Occupancy is shifted by 1 bar so today's mix cannot see today's fills.
+    - Among occupied legs, keep at most ``max_k`` by a-priori ``priority``.
+    - Idle / dropped weight is recycled into keepers: target exposure =
+      min(1, recycle_cap * keeper_weight_sum). ``recycle_cap=1`` is no recycle.
+    - Combined exposure never exceeds 1 (no leverage vs fully-invested basket).
+    """
+    if returns.empty:
+        return pd.Series(dtype=float)
+    rets = returns.sort_index()
+    occ = occupancy.reindex(rets.index).fillna(0.0)
+    if occ.shape[1] != rets.shape[1]:
+        raise ValueError("occupancy columns must match returns")
+    n = rets.shape[1]
+    w = np.asarray(weights, dtype=float).reshape(-1)
+    if w.size != n:
+        raise ValueError("weights length mismatch")
+    w = np.maximum(w, 0.0)
+    ws = w.sum()
+    w = (w / ws) if ws > 0 else np.ones(n) / n
+    pr = np.asarray(priority if priority is not None else w, dtype=float).reshape(-1)
+    if pr.size != n:
+        pr = w
+    k = int(max_k) if max_k is not None else n
+    k = max(1, min(k, n))
+    cap = float(max(recycle_cap, 0.0))
+
+    occ_lag = occ.shift(1).fillna(0.0).clip(lower=0.0, upper=1.0)
+    occ_v = occ_lag.to_numpy(dtype=float)
+    mask = np.zeros_like(occ_v)
+    for t in range(occ_v.shape[0]):
+        idx = np.flatnonzero(occ_v[t] > 0.5)
+        if idx.size == 0:
+            continue
+        if idx.size <= k:
+            mask[t, idx] = 1.0
+        else:
+            order = idx[np.argsort(-pr[idx], kind="stable")]
+            mask[t, order[:k]] = 1.0
+
+    raw = w.reshape(1, -1) * mask
+    s = raw.sum(axis=1, keepdims=True)
+    target = np.minimum(1.0, cap * s)
+    scale = np.divide(target, s, out=np.ones_like(s), where=s > 1e-12)
+    # idle rows keep zeros
+    scale = np.where(s > 1e-12, scale, 0.0)
+    w_t = raw * scale
+    r = (rets.fillna(0.0).to_numpy(dtype=float) * w_t).sum(axis=1)
+    eq = (1.0 + r).cumprod() * float(initial)
+    return pd.Series(eq, index=rets.index, name="equity")
+
+
+def combine_weighted(curves: list[pd.Series], weights: np.ndarray, initial: float = INITIAL) -> pd.Series:
+    eq = pd.concat(curves, axis=1, sort=True).sort_index().ffill().dropna(how="any")
+    if eq.empty:
+        return eq
+    w = np.asarray(weights, dtype=float)
+    w = w / w.sum() if w.sum() else np.ones(len(curves)) / len(curves)
+    norms = eq / eq.iloc[0]
+    return (norms * w).sum(axis=1) * initial
