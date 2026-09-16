@@ -1,7 +1,7 @@
-# Preferred basket (run12 @ 0.025)
+# Preferred basket (canonical from run12)
 
-A priori multi-asset recipe (XAU breakout + USDJPY D1 hybrid/BB + AUDUSD D1 hybrid if OOS-qualified).
-Holdout confirmation only. All approximate_non_ftmo.
+A priori: XAU breakout + USDJPY D1 hybrid/BB + AUDUSD D1 hybrid. OOS-ranked. Holdout confirmation only.
+All `approximate_non_ftmo`. Risk fraction 0.025 / n_legs.
 
 - return: 1.69%
 - static loss: 0.72%
