@@ -1,7 +1,1 @@
-{
-  "symbol": "AUDUSD",
-  "timeframe": "D1",
-  "data_source": "approximate_non_ftmo",
-  "source_detail": "yfinance AUDUSD=X",
-  "rows": 5290
-}
+{"data_source": "approximate_non_ftmo", "symbol": "AUDUSD", "timeframe": "D1", "bars": 3904, "start": "2011-09-15 23:00:00+00:00", "end": "2026-09-15 23:00:00+00:00", "provider": "yfinance", "years_d1": 15}

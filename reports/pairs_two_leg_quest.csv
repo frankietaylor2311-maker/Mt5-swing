@@ -1,0 +1,5 @@
+pair,win,entry,beta,oos_ret,oos_gates,oos_sharpe,holdout_ret,holdout_gates,holdout_sharpe,holdout_mean_mo,holdout_pct_pos,holdout_top3_share,data_source
+EURUSD/GBPUSD,40,1.75,0.6555,-0.0117,True,-0.306,-0.0214,True,-0.374,-0.0015,0.417,0.784,approximate_non_ftmo
+AUDUSD/NZDUSD,40,1.75,0.7019,0.0251,True,0.576,-0.0912,True,-1.852,-0.0068,0.25,1.0,approximate_non_ftmo
+EURJPY/GBPJPY,40,1.75,0.7997,-0.0363,True,-0.911,-0.0906,True,-2.767,-0.0065,0.167,1.0,approximate_non_ftmo
+AUDCAD/NZDCAD,40,1.75,0.7538,-0.0322,True,-0.801,-0.0953,True,-2.608,-0.0076,0.0,,approximate_non_ftmo

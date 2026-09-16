@@ -1,1 +1,1 @@
-{"data_source":"approximate_non_ftmo","symbol":"AUDCAD","timeframe":"D1","bars":2604,"start":"2016-09-14 23:00:00+00:00","end":"2026-09-14 23:00:00+00:00","provider":"yfinance"}
+{"data_source": "approximate_non_ftmo", "symbol": "AUDCAD", "timeframe": "D1", "bars": 3909, "start": "2011-09-14 23:00:00+00:00", "end": "2026-09-14 23:00:00+00:00", "provider": "yfinance", "years_d1": 15}

@@ -1,7 +1,1 @@
-{
-  "symbol": "USDCAD",
-  "timeframe": "D1",
-  "data_source": "approximate_non_ftmo",
-  "source_detail": "yfinance USDCAD=X",
-  "rows": 5981
-}
+{"data_source": "approximate_non_ftmo", "symbol": "USDCAD", "timeframe": "D1", "bars": 3904, "start": "2011-09-15 23:00:00+00:00", "end": "2026-09-15 23:00:00+00:00", "provider": "yfinance", "years_d1": 15}
