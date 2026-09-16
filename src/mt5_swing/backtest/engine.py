@@ -46,6 +46,9 @@ class BacktestConfig:
     max_loss_mode: str = "static_initial"  # static_initial | peak_to_trough
     daily_loss_mode: str = "ftmo_initial"  # ftmo_initial | pct_of_day_open
     daily_tz: str = "Europe/Prague"
+    use_atr_exits: bool = True  # ATR stop (+ optional target) after entry bar
+    atr_target_mult: float = 3.0  # 0 disables take-profit; stop uses atr_stop_mult
+    no_same_bar_exit: bool = True  # conservative: first check stops on bar after entry
 
 
 @dataclass
@@ -87,6 +90,9 @@ def run_backtest(
     lots = 0.0
     entry_price = 0.0
     entry_time = None
+    entry_bar = -1
+    stop_price = float("nan")
+    target_price = float("nan")
     eq_curve: list[float] = []
     pos_series: list[int] = []
     trades: list[dict] = []
@@ -107,6 +113,8 @@ def run_backtest(
 
     idx = data.index
     opens = data["open"].to_numpy(dtype=float)
+    highs = data["high"].to_numpy(dtype=float)
+    lows = data["low"].to_numpy(dtype=float)
     closes = data["close"].to_numpy(dtype=float)
     atrs = (
         data["atr"].to_numpy(dtype=float)
@@ -133,11 +141,10 @@ def run_backtest(
             raw = raw / exit_px
         return raw - abs(trade_lots) * cfg.commission_per_lot
 
-    def _close_position(i: int, bar_spread: float, reason: str) -> None:
-        nonlocal equity, position, lots, entry_price, entry_time
+    def _close_at(i: int, fill: float, reason: str) -> None:
+        nonlocal equity, position, lots, entry_price, entry_time, entry_bar, stop_price, target_price
         if position == 0 or lots <= 0:
             return
-        fill = opens[i] + _cost_offset(-position, bar_spread)
         pnl = _pnl_usd(position, lots, fill, entry_price)
         equity += pnl
         trades.append(
@@ -156,6 +163,15 @@ def run_backtest(
         lots = 0.0
         entry_price = 0.0
         entry_time = None
+        entry_bar = -1
+        stop_price = float("nan")
+        target_price = float("nan")
+
+    def _close_position(i: int, bar_spread: float, reason: str) -> None:
+        if position == 0 or lots <= 0:
+            return
+        fill = opens[i] + _cost_offset(-position, bar_spread)
+        _close_at(i, fill, reason)
 
     for i in range(len(data)):
         ts = idx[i]
@@ -189,6 +205,33 @@ def run_backtest(
                 target = 0
             elif int(np.sign(target)) != position:
                 target = 0  # only allow flatten, not reverse
+
+        # ATR stop / take-profit (no same-bar exit by default — anti optimistic path bias)
+        if (
+            cfg.use_atr_exits
+            and position != 0
+            and lots > 0
+            and stop_price == stop_price
+            and (not cfg.no_same_bar_exit or i > entry_bar)
+        ):
+            hit_stop = False
+            hit_tp = False
+            if position > 0:
+                hit_stop = lows[i] <= stop_price
+                hit_tp = (target_price == target_price) and highs[i] >= target_price
+            else:
+                hit_stop = highs[i] >= stop_price
+                hit_tp = (target_price == target_price) and lows[i] <= target_price
+            if hit_stop and hit_tp:
+                # Conservative: assume stop hit first when both in same bar
+                _close_at(i, float(stop_price), "atr_stop")
+                target = 0
+            elif hit_stop:
+                _close_at(i, float(stop_price), "atr_stop")
+                target = 0
+            elif hit_tp:
+                _close_at(i, float(target_price), "atr_target")
+                target = 0
 
         desired = int(np.sign(target))
 
@@ -225,8 +268,19 @@ def run_backtest(
                     fill = opens[i] + _cost_offset(desired, bar_spread)
                     entry_price = fill
                     entry_time = ts
+                    entry_bar = i
                     position = desired
                     lots = new_lots
+                    atr_v2 = atrs[i]
+                    if cfg.use_atr_exits and atr_v2 == atr_v2 and atr_v2 > 0:
+                        stop_price = fill - desired * cfg.atr_stop_mult * float(atr_v2)
+                        if cfg.atr_target_mult and cfg.atr_target_mult > 0:
+                            target_price = fill + desired * cfg.atr_target_mult * float(atr_v2)
+                        else:
+                            target_price = float("nan")
+                    else:
+                        stop_price = float("nan")
+                        target_price = float("nan")
 
         mtm = equity
         if position != 0 and lots > 0:

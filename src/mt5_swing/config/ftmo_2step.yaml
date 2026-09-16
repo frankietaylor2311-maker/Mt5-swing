@@ -47,8 +47,11 @@ risk:
   daily_loss_mode: ftmo_initial
   daily_tz: Europe/Prague
   flatten_on_breach: true
-  risk_fraction: 0.005
-  atr_stop_mult: 2.5
+  risk_fraction: 0.01
+  atr_stop_mult: 2.0
+  atr_target_mult: 3.0
+  use_atr_exits: true
+  no_same_bar_exit: true
   sizing: atr
   vol_target: true
   max_lot: 1.0

@@ -20,7 +20,7 @@ class EmaPullback:
         atr_pct_max: float = 1.0,
         atr_lookback: int = 100,
         session_hours: str | None = None,
-        use_macd_confirm: bool = True,
+        use_macd_confirm: bool = False,
     ):
         self.adx_threshold = float(adx_threshold)
         self.rsi_pullback_low = float(rsi_pullback_low)

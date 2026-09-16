@@ -75,6 +75,9 @@ def bt_cfg(cfg: dict, symbol: str) -> BacktestConfig:
         max_loss_mode=str(risk.get("max_loss_mode", "static_initial")),
         daily_loss_mode=str(risk.get("daily_loss_mode", "ftmo_initial")),
         daily_tz=str(risk.get("daily_tz", "Europe/Prague")),
+        use_atr_exits=bool(risk.get("use_atr_exits", True)),
+        atr_target_mult=float(risk.get("atr_target_mult", 3.0)),
+        no_same_bar_exit=bool(risk.get("no_same_bar_exit", True)),
     )
 
 
@@ -206,6 +209,9 @@ def main() -> None:
                     max_loss_mode=str(risk.get("max_loss_mode", "static_initial")),
                     daily_loss_mode=str(risk.get("daily_loss_mode", "ftmo_initial")),
                     daily_tz=str(risk.get("daily_tz", "Europe/Prague")),
+                    use_atr_exits=bool(risk.get("use_atr_exits", True)),
+                    atr_target_mult=float(risk.get("atr_target_mult", 3.0)),
+                    no_same_bar_exit=bool(risk.get("no_same_bar_exit", True)),
                 )
                 try:
                     base_wf = run_walk_forward(research, base, wf_cfg)

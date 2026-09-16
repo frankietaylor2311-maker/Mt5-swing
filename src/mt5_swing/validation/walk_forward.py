@@ -39,6 +39,9 @@ class WalkForwardConfig:
     max_loss_mode: str = "static_initial"
     daily_loss_mode: str = "ftmo_initial"
     daily_tz: str = "Europe/Prague"
+    use_atr_exits: bool = True
+    atr_target_mult: float = 3.0
+    no_same_bar_exit: bool = True
 
 
 @dataclass
@@ -121,6 +124,9 @@ def _bt_config(wf: WalkForwardConfig) -> BacktestConfig:
         max_loss_mode=wf.max_loss_mode,
         daily_loss_mode=wf.daily_loss_mode,
         daily_tz=wf.daily_tz,
+        use_atr_exits=wf.use_atr_exits,
+        atr_target_mult=wf.atr_target_mult,
+        no_same_bar_exit=wf.no_same_bar_exit,
     )
 
 
