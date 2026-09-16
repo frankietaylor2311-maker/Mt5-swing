@@ -195,6 +195,11 @@ MIN_IS_TRADES = 8
 def main() -> None:
     REPORTS.mkdir(parents=True, exist_ok=True)
     cfg = load_config(ROOT / "src" / "mt5_swing" / "config" / "ftmo_2step.yaml")
+    # Optional env override for risk experiments (IS grids still only on research set)
+    import os
+    _rf = os.environ.get("RISK_FRACTION", "").strip()
+    if _rf:
+        cfg.setdefault("risk", {})["risk_fraction"] = float(_rf)
     symbols = [s for s in cfg.get("research_symbols", ["EURUSD", "GBPUSD", "USDJPY"]) if resolve_csv(s, "H4") or resolve_csv(s, "D1")]
     # If only FX interim available
     if not symbols:
