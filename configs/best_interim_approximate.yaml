@@ -1,6 +1,6 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_oos_sharpe_w_is_exits_rf025
+basket_tag: fx4_oos_sharpe_w_is_exits_v2_rf025
 risk:
   risk_fraction: 0.025
   atr_stop_mult: 2.0
@@ -8,8 +8,8 @@ risk:
   atr_trail_mult: 0.0
   vol_target: false
 weights: oos_sharpe
-methodology: "Interim dual FX4; weights \u221D OOS Sharpe; per-leg ATR exits chosen\
-  \ on IS only (research 60%); risk=0.025 config default."
+methodology: Interim dual FX4; OOS-Sharpe weights; broader IS exit grid on ATR legs;
+  risk=0.025.
 disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDCHF
@@ -39,13 +39,13 @@ candidates:
     session_hours: null
   exits:
     atr_trail_mult: 1.5
-    atr_target_mult: 4.0
-    atr_stop_mult: 2.0
-    max_hold_bars: 0
+    atr_target_mult: 0.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 16
   oos_return: 0.0080407344524734
   oos_sharpe: 0.9497214056786872
   oos_trades: 35
-  holdout_return: 0.007375757159664653
+  holdout_return: 0.0024974723295172474
   weight: 0.30015710888234226
 - symbol: GBPUSD
   timeframe: H4
@@ -58,13 +58,13 @@ candidates:
     use_mid_exit: false
   exits:
     atr_trail_mult: 0.0
-    atr_target_mult: 4.0
-    atr_stop_mult: 2.0
-    max_hold_bars: 0
+    atr_target_mult: 5.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 24
   oos_return: 0.0018690579365797
   oos_sharpe: 0.4337304658948822
   oos_trades: 104
-  holdout_return: 0.053618372489276034
+  holdout_return: 0.06855593898108903
   weight: 0.13707944445472944
 - symbol: AUDUSD
   timeframe: D1
@@ -77,11 +77,11 @@ candidates:
     session_hours: null
   exits:
     atr_trail_mult: 0.0
-    atr_target_mult: 4.0
-    atr_stop_mult: 2.0
-    max_hold_bars: 0
+    atr_target_mult: 2.0
+    atr_stop_mult: 2.5
+    max_hold_bars: 16
   oos_return: 0.0025010862068843
   oos_sharpe: 0.3418185323810592
   oos_trades: 96
-  holdout_return: 0.015373227866581463
+  holdout_return: 0.011093733585602505
   weight: 0.10803090446148765
