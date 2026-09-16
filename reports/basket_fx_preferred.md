@@ -1,6 +1,6 @@
-# Preferred FX4 (OOS-Sharpe-first) @2%
+# Preferred FX4 @2% (Sharpe-first, min OOS 0.1%)
 
-Dual-confirm ≤1/symbol ranked by **OOS Sharpe then OOS return** (a priori). Overlapping dates. Not go-live.
+Dual-confirm ≤1/symbol; OOS Sharpe→return; **min OOS return 0.1%** (excludes noise duals). Overlapping dates. Not go-live.
 
 - return: 1.81%
 - static loss: 0.82%

@@ -10,39 +10,55 @@
 
 | Symbol | TF | Strategy | Source | OOS ret | OOS Sh | OOS n | Gates | Holdout ok | Go-live |
 |---|---|---|---|---:|---:|---:|:---:|:---:|:---:|
-| EURUSD | H4 | hybrid_regime | `approximate_non_ftmo` | 0.08% | -0.15 | 80 | PASS | NO | NO |
-| EURUSD | D1 | hybrid_regime | `approximate_non_ftmo` | -0.02% | 0.17 | 54 | PASS | NO | NO |
-| GBPUSD | H4 | hybrid_regime | `approximate_non_ftmo` | 0.30% | 0.28 | 91 | PASS | NO | NO |
-| GBPUSD | D1 | hybrid_regime | `approximate_non_ftmo` | 0.21% | 0.19 | 29 | PASS | NO | NO |
-| USDJPY | H4 | hybrid_regime | `approximate_non_ftmo` | 0.28% | 0.56 | 89 | PASS | NO | NO |
-| USDJPY | D1 | hybrid_regime | `approximate_non_ftmo` | 0.58% | 0.74 | 44 | PASS | YES | NO |
-| AUDUSD | H4 | hybrid_regime | `approximate_non_ftmo` | -0.32% | -0.69 | 101 | PASS | NO | NO |
-| AUDUSD | D1 | hybrid_regime | `approximate_non_ftmo` | -0.19% | -0.66 | 113 | PASS | YES | NO |
-| USDCAD | H4 | hybrid_regime | `approximate_non_ftmo` | 0.08% | 0.27 | 73 | PASS | YES | NO |
-| USDCAD | D1 | hybrid_regime | `approximate_non_ftmo` | 0.30% | 0.06 | 107 | PASS | NO | NO |
-| USDCHF | H4 | hybrid_regime | `approximate_non_ftmo` | 0.12% | -0.40 | 69 | PASS | NO | NO |
-| USDCHF | D1 | hybrid_regime | `approximate_non_ftmo` | -0.50% | -0.31 | 50 | PASS | YES | NO |
+| EURJPY | H4 | hybrid_regime | `approximate_non_ftmo` | -0.00% | -0.89 | 72 | PASS | NO | NO |
+| EURJPY | H4 | breakout_donchian | `approximate_non_ftmo` | 0.00% | 0.78 | 60 | PASS | YES | NO |
+| EURJPY | H4 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | YES | NO |
+| EURJPY | H4 | squeeze_breakout | `approximate_non_ftmo` | -0.00% | -0.32 | 102 | PASS | NO | NO |
+| EURJPY | H4 | keltner_breakout | `approximate_non_ftmo` | 0.00% | -0.29 | 75 | PASS | YES | NO |
+| EURJPY | D1 | hybrid_regime | `approximate_non_ftmo` | -0.01% | -0.51 | 42 | PASS | YES | NO |
+| EURJPY | D1 | breakout_donchian | `approximate_non_ftmo` | 0.00% | 0.19 | 21 | PASS | YES | NO |
+| EURJPY | D1 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.72 | 11 | PASS | YES | NO |
+| EURJPY | D1 | squeeze_breakout | `approximate_non_ftmo` | 0.01% | 0.64 | 63 | PASS | YES | NO |
+| EURJPY | D1 | keltner_breakout | `approximate_non_ftmo` | 0.00% | 0.20 | 34 | PASS | YES | NO |
+| GBPJPY | H4 | hybrid_regime | `approximate_non_ftmo` | 0.00% | 0.47 | 52 | PASS | NO | NO |
+| GBPJPY | H4 | breakout_donchian | `approximate_non_ftmo` | 0.01% | 0.94 | 81 | PASS | NO | NO |
+| GBPJPY | H4 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | YES | NO |
+| GBPJPY | H4 | squeeze_breakout | `approximate_non_ftmo` | 0.00% | 0.11 | 84 | PASS | NO | NO |
+| GBPJPY | H4 | keltner_breakout | `approximate_non_ftmo` | 0.00% | 0.54 | 78 | PASS | NO | NO |
+| GBPJPY | D1 | hybrid_regime | `approximate_non_ftmo` | 0.00% | 0.10 | 45 | PASS | NO | NO |
+| GBPJPY | D1 | breakout_donchian | `approximate_non_ftmo` | -0.01% | -0.64 | 35 | PASS | NO | NO |
+| GBPJPY | D1 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| GBPJPY | D1 | squeeze_breakout | `approximate_non_ftmo` | 0.00% | -0.03 | 70 | PASS | NO | NO |
+| GBPJPY | D1 | keltner_breakout | `approximate_non_ftmo` | -0.00% | -0.03 | 60 | PASS | NO | NO |
 
-### OOS profitable + gates (research WF): **8** / 12
-### Holdout profitable + gates: **4** / 12
+### OOS profitable + gates (research WF): **12** / 20
+### Holdout profitable + gates: **9** / 20
 ### FTMO go-live candidates (requires ftmo_mt5_export): **0**
 
 > **Blocker:** No `ftmo_mt5_export` data. Export H4/D1 from the Windows FTMO MT5 terminal and run `mt5-swing import-ftmo-data --file EURUSD_H4=/path/to.csv ...`.
 
 ## Refinements tried
 
-- EURUSD_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=0.08% n=80 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.02% n=54 gates=True holdout_ok=False source=approximate_non_ftmo
-- GBPUSD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.30% n=91 gates=True holdout_ok=False source=approximate_non_ftmo
-- GBPUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=0.21% n=29 gates=True holdout_ok=False source=approximate_non_ftmo
-- USDJPY_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.28% n=89 gates=True holdout_ok=False source=approximate_non_ftmo
-- USDJPY_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.58% n=44 gates=True holdout_ok=True source=approximate_non_ftmo
-- AUDUSD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.32% n=101 gates=True holdout_ok=False source=approximate_non_ftmo
-- AUDUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.19% n=113 gates=True holdout_ok=True source=approximate_non_ftmo
-- USDCAD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=0.08% n=73 gates=True holdout_ok=True source=approximate_non_ftmo
-- USDCAD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.30% n=107 gates=True holdout_ok=False source=approximate_non_ftmo
-- USDCHF_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.12% n=69 gates=True holdout_ok=False source=approximate_non_ftmo
-- USDCHF_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.50% n=50 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.00% n=72 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURJPY_H4 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.00% n=60 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_H4 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.3} OOS ret=-0.00% n=102 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURJPY_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.5, 'exit_to_mid': True, 'session_hours': None} OOS ret=0.00% n=75 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.01% n=42 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.1, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.00% n=21 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_D1 bbands_reversion: IS-grid best={'adx_max': 28, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=11 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 8, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.01% n=63 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURJPY_D1 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.00% n=34 gates=True holdout_ok=True source=approximate_non_ftmo
+- GBPJPY_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.00% n=52 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.01% n=81 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'require_htf_align': True, 'require_rsi': False, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=True source=approximate_non_ftmo
+- GBPJPY_H4 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.00% n=84 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.00% n=78 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.00% n=45 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_D1 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.1, 'donchian_window': 15, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.01% n=35 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_D1 bbands_reversion: IS-grid best={'adx_max': 28, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 8, 'lookback': 60, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.00% n=70 gates=True holdout_ok=False source=approximate_non_ftmo
+- GBPJPY_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.00% n=60 gates=True holdout_ok=False source=approximate_non_ftmo
 
 ## Anti-overfit notes
 

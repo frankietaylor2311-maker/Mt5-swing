@@ -32,6 +32,8 @@ research_symbols:
   - USDCAD
   - USDCHF
   - NZDUSD
+  - EURJPY
+  - GBPJPY
   # Optional: US100 when FTMO exports available
 
 timeframes:

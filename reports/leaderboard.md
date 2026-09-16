@@ -1,7 +1,7 @@
 # Research leaderboard
 
 Ranked by holdout_profitable_and_gates → meaningful OOS (≥10 trades + gates) → OOS return/Sharpe.
-Params selected on IS only; holdout never used for tuning. Zero-trade rows are not wins.
+Params selected on IS only; holdout never used for tuning.
 
 | Rank | Symbol | TF | Strategy | OOS ret | OOS Sh | OOS n | Holdout | Source |
 |---:|---|---|---|---:|---:|---:|:---:|---|
@@ -16,4 +16,6 @@ Params selected on IS only; holdout never used for tuning. Zero-trade rows are n
 | 9 | USDJPY | H4 | squeeze_breakout | 0.12% | 0.50 | 44 | YES | `approximate_non_ftmo` |
 | 10 | USDCAD | H4 | hybrid_regime | 0.08% | 0.27 | 73 | YES | `approximate_non_ftmo` |
 | 11 | USDCHF | H4 | breakout_donchian | 0.06% | -0.26 | 83 | YES | `approximate_non_ftmo` |
-| 12 | NZDUSD | D1 | squeeze_breakout | -0.05% | -0.29 | 34 | YES | `approximate_non_ftmo` |
+| 12 | EURJPY | D1 | squeeze_breakout | 0.01% | 0.64 | 63 | YES | `approximate_non_ftmo` |
+| 13 | EURJPY | H4 | breakout_donchian | 0.00% | 0.78 | 60 | YES | `approximate_non_ftmo` |
+| 14 | EURJPY | D1 | bbands_reversion | 0.00% | 0.72 | 11 | YES | `approximate_non_ftmo` |

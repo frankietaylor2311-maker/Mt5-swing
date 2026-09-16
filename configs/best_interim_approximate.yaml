@@ -1,14 +1,14 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_sharpe_first
+basket_tag: fx4_sharpe_first_minoos
 risk:
   risk_fraction: 0.02
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   atr_trail_mult: 0.0
   vol_target: false
-methodology: "Dual FX \u22641/symbol ranked by OOS Sharpe then OOS return (a priori\
-  \ stability). Overlapping holdout dates."
+methodology: "Dual FX \u22641/symbol; OOS Sharpe\u2192return; min OOS return 0.1%;\
+  \ overlapping holdout dates."
 disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDCHF

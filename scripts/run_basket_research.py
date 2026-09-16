@@ -42,6 +42,7 @@ def pick_candidates(df: pd.DataFrame, n: int = 4) -> pd.DataFrame:
         & (df["oos_gates_pass"] == True)  # noqa: E712
         & (df["oos_profitable"] == True)  # noqa: E712
         & (df["oos_sharpe"] > 0)
+        & (df["oos_return"] >= 0.001)
         & (df["is_return"] > 0)
     ].copy()
     # A priori symbol breadth: prefer symbols with ≥2 independent OOS-profitable rows
