@@ -33,6 +33,10 @@ Donchian included the current bar → breakouts never fired. Exclusive prior-N w
 - BB-family (FX): ~+1.5–1.7% gates PASS (run4–5)
 - Preferred XAU-breakout + USDJPY hybrid/BB: see `reports/basket_preferred.md`
 
+## Preferred basket v2 (holdout)
+- **+1.39%** return, gates **PASS**, Sharpe **0.95**
+- Legs: USDJPY D1 hybrid + XAUUSD H4/D1 breakout + USDJPY D1 bbands (OOS-ranked within a priori recipe)
+
 ## Honest blockers
 1. **No FTMO MT5 exports** — cannot set go-live true
 2. Yahoo gold ≠ FTMO XAUUSD CFD (spread/session/gap) — gold results exploratory

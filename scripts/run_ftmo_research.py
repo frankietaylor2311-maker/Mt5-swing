@@ -197,6 +197,9 @@ def main() -> None:
     refinements_log = []
     any_ftmo = False
 
+    sym_filter=[s.strip() for s in __import__('os').environ.get('RESEARCH_SYMBOLS','').split(',') if s.strip()]
+    if sym_filter:
+        symbols=[s for s in symbols if s in sym_filter]
     for symbol in symbols:
         for tf in tfs:
             path = resolve_csv(symbol, tf)
