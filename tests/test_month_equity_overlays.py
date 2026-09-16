@@ -317,3 +317,64 @@ def test_prior_month_win_throttle_causal_mutate_feb_last():
     jan2 = out2.loc[out2.index.month == 1].pct_change().fillna(0)
     assert np.allclose(jan1, jan2)
 
+
+
+def test_trailing_downside_vol_scale_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_trailing_downside_vol_scale
+
+    rng = np.random.default_rng(21)
+    rets = rng.normal(0.0005, 0.012, 250)
+    eq = _eq_from_returns(rets)
+    out = apply_trailing_downside_vol_scale(
+        eq, lookback_days=42, target_ddown=0.006, cool_floor=0.35, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_trailing_downside_vol_scale_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_trailing_downside_vol_scale
+
+    rng = np.random.default_rng(5)
+    rets = rng.normal(0.0002, 0.01, 200)
+    eq = _eq_from_returns(rets)
+    out1 = apply_trailing_downside_vol_scale(
+        eq, lookback_days=63, target_ddown=0.005, cool_floor=0.35, lo=0.25
+    )
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.7  # mutate future last bar
+    out2 = apply_trailing_downside_vol_scale(
+        eq2, lookback_days=63, target_ddown=0.005, cool_floor=0.35, lo=0.25
+    )
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_trailing_downside_vol_scale_cools_when_downside_spikes():
+    from mt5_swing.portfolio.overlays import apply_trailing_downside_vol_scale
+
+    # Mild positives, then a cluster of large negative days → later scale < 1
+    rets = np.concatenate(
+        [
+            np.full(80, 0.001),
+            np.full(20, -0.02),
+            np.full(40, 0.002),
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_trailing_downside_vol_scale(
+        eq, lookback_days=42, target_ddown=0.004, cool_floor=0.35, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # After the downside spike window, positive bars should be cooled
+    tail = slice(110, 130)
+    pos = r_raw.iloc[tail] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[tail][pos] < r_raw.iloc[tail][pos] - 1e-15).any()
+    # Never above unit scale on positives
+    assert (r_out[r_raw > 0] <= r_raw[r_raw > 0] + 1e-12).all()

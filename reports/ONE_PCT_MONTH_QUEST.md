@@ -3,6 +3,83 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
+Session: 2026-09-17 00:30 BST (wave: **causal trailing downside-vol scale** on locked sleeve ± frozen HO-robust wrebal / MTD).
+
+## Scoring rubric this wave (primary)
+
+1. High **% positive months** (prefer ≥70–75%)
+2. Lower **top-3 gain concentration** (prefer ≤~50–55%; reject if HO top3 worsens vs locked)
+3. Mean monthly **~1% stable** across 2024, 2025, 2026, holdout — **2024 cannot stay at 0.42%**
+4. Prefer **lower monthly variance / less lumpy** mean over higher bursty mean
+5. **Reject** candidates that boost mean via bursts even if gates PASS
+6. **No leverage increase** (RF fixed at 8%; overlay `hi≤1`)
+
+**Selection objective:** maximize `min(IS year mean_mo)` for `{2024, 2025_IS}` subject to %pos≥70% and top3≤55% (soft≤70%; soft also mean≥~0.95%). Holdout / full 2025–2026 **confirmation only** — promote only if holdout **also** clears ≥1% mean and ≥70% pos **and** each of 2024/2025/2026 clears the same.
+
+## Target vs result
+
+| Criterion | Target | Locked candidate | Met? |
+|-----------|--------|------------------|:----:|
+| Mean monthly on eval windows | ≥ ~1.0% | Holdout **+1.52%**; 2025 **+1.63%**; 2026 **+2.30%**; roll12_m6 **+1.13%**; **2024 +0.42%** | **Mostly — 2024 still short** |
+| % positive months | ≥ ~70–75% | Holdout **75%**; 2026 **88%**; 2025 **73%**; **2024 55%** | 2024 fails consistency |
+| Top-3 months share of gains | ≲ 50–55% | Holdout **~81%**; 2024 **74%** | **No — still bursty** |
+| Gates | PASS | All listed windows **PASS** | **Yes** |
+| Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
+
+**Verdict:** Official locked tag **unchanged**. Downside-vol wave: board **n=26**, soft=**4**, hard=**0**, promote=**0**. Best soft `wrebal+mtd_t0.015_a0.5+ddown_lb42_t0.004` (HO %pos 67%, nearly identical to prior-wave best soft). Ddown alone on locked does not lift 2024. **Promote: NO.** Still blocked on FTMO CSVs.
+
+## Locked candidate (unchanged — still official)
+
+**Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
+**Config:** `configs/quest_one_pct_candidate.yaml`
+
+Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py` → `quest_locked_verify_keepalive_0030`):
+
+| Window | Return | Mean mo | %pos | Top3 | Gates | P2T |
+|--------|-------:|--------:|-----:|-----:|:-----:|----:|
+| 2024 | +5.38% | **0.42%** | 55% | 74% | PASS | ~7% |
+| 2025 | +22.04% | **1.63%** | 73% | 69% | PASS | ~4% |
+| 2026 YTD | +20.0%+ | **2.30%** | 88% | 87% | PASS | ~6% |
+| holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
+| roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
+
+## Wave: trailing downside-vol scale (this)
+
+Scripts/helpers:
+- `scripts/quest_ddown_vol_consistency_wf.py`
+- `apply_trailing_downside_vol_scale` in `overlays.py` (daily downside std; lag-1; hi≤1)
+- Soft mean floor 0.0095 both IS windows; HO never for selection
+
+### Board
+
+| Family | Notes |
+|--------|-------|
+| baseline / ddown alone | 12-cell grid — no soft; 2024 stuck ~0.42% |
+| frozen_wrebal ± ddown | soft_mean or holdout_fail |
+| frozen_wrebal_mtd ± ddown | **4 soft** — all holdout_fail (HO %pos 67%) |
+| is_blend | soft_mean_fail (2024 < 0.95%) |
+
+**Totals:** soft=**4** hard=**0** promote=**0** (board n=26).
+
+### Best soft (not promote) — `wrebal+mtd_t0.015_a0.5_frozen+ddown_lb42_t0.004`
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.19%** | **82%** | **45%** | IS — soft OK |
+| 2025_IS | **1.74%** | **75%** | **64%** | IS — hard top3 fail |
+| holdout | **1.61%** | **67%** | **71%** | confirm — holdout_fail |
+
+**Promote: NO.** Locked tag unchanged.
+
+---
+
+## Prior session log (preserved)
+
+# One-percent per month quest — status
+
+**Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
+**Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
+
 Session: 2026-09-17 00:00 BST (wave: **causal prior-month win throttle + IS return-blend** on locked sleeve ± frozen HO-robust wrebal).
 
 ## Scoring rubric this wave (primary)

@@ -502,3 +502,64 @@ def apply_prior_month_win_throttle(
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     scale_s = scale.shift(1).fillna(1.0)
     return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
+
+
+def apply_trailing_downside_vol_scale(
+    port: pd.Series,
+    *,
+    lookback_days: int = 63,
+    target_ddown: float = 0.006,
+    cool_floor: float = 0.35,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal trailing downside-vol scale — cool only, never leverage (hi=1).
+
+    Converts equity to daily returns, estimates trailing downside volatility as
+    the rolling std of ``min(r, 0)`` over ``lookback_days`` (semideviation-style),
+    then sets ``scale = clip(target_ddown / max(trail, eps), floor, 1.0)``.
+
+    Scale is lagged one calendar day before multiplying returns and equity is
+    rebuilt from the portfolio start. Uses only information available at t-1 —
+    no look-ahead. Never increases leverage (upper clip is always 1.0).
+    ``cool_floor`` raises the effective lower clip above ``lo`` when larger
+    (default floor 0.35). Timezone-safe: daily resampling uses UTC-normalized
+    timestamps like sibling month overlays.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r_native = eq.pct_change().fillna(0.0)
+    # Normalize to naive UTC for daily resample / date mapping
+    eq_work = eq.copy()
+    if getattr(eq_work.index, "tz", None) is not None:
+        eq_work.index = eq_work.index.tz_convert("UTC").tz_localize(None)
+    eq_d = eq_work.resample("1D").last().dropna()
+    if len(eq_d) < 5:
+        return eq
+    r_d = eq_d.pct_change().fillna(0.0)
+    down = r_d.clip(upper=0.0)
+    lb = max(5, int(lookback_days))
+    min_p = max(10, lb // 3)
+    trail = down.rolling(lb, min_periods=min_p).std()
+    eps = 1e-12
+    eff_lo = max(float(lo), float(cool_floor))
+    # trail at day t includes r_t; lag so day t uses trail through t-1 only
+    scale_d = (
+        (float(target_ddown) / trail.replace(0, np.nan).clip(lower=eps))
+        .clip(lower=eff_lo, upper=1.0)
+        .fillna(1.0)
+    )
+    scale_d = scale_d.shift(1).fillna(1.0)
+    scale_d.index = pd.DatetimeIndex(scale_d.index).normalize()
+    if getattr(eq.index, "tz", None) is not None:
+        day_keys = eq.index.tz_convert("UTC").tz_localize(None).normalize()
+    else:
+        day_keys = pd.DatetimeIndex(eq.index).normalize()
+    scale_bars = (
+        pd.Series(day_keys, index=eq.index, dtype="datetime64[ns]")
+        .map(scale_d)
+        .ffill()
+        .fillna(1.0)
+    )
+    scale_bars = scale_bars.clip(lower=eff_lo, upper=1.0)
+    return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
