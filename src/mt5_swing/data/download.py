@@ -29,6 +29,8 @@ YFINANCE_FX = {
     "USDJPY": "USDJPY=X",
     "AUDUSD": "AUDUSD=X",
     "USDCAD": "USDCAD=X",
+    "USDCHF": "USDCHF=X",
+    "NZDUSD": "NZDUSD=X",
 }
 
 DEFAULT_SPREAD_PIPS = {

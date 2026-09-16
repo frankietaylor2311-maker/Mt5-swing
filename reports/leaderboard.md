@@ -2,7 +2,7 @@
 
 Ranked by holdout_profitable_and_gates → meaningful OOS (≥10 trades + gates) → OOS return/Sharpe.
 Params selected on IS only; holdout never used for tuning. Zero-trade rows are not wins.
-Canonical = run12 + run13 additions + run17 macd_trend.
+Canonical = run12 + run13 + run17 macd + run18 NZD/CHF.
 
 | Rank | Symbol | TF | Strategy | OOS ret | OOS Sh | OOS n | Holdout | Source |
 |---:|---|---|---|---:|---:|---:|:---:|---|
@@ -11,10 +11,10 @@ Canonical = run12 + run13 additions + run17 macd_trend.
 | 3 | AUDUSD | D1 | hybrid_regime | 0.25% | 0.34 | 96 | YES | `approximate_non_ftmo` |
 | 4 | USDJPY | D1 | bbands_reversion | 0.24% | 0.66 | 18 | YES | `approximate_non_ftmo` |
 | 5 | USDJPY | D1 | mean_reversion_regime | 0.23% | -0.20 | 12 | YES | `approximate_non_ftmo` |
-| 6 | GBPUSD | H4 | breakout_donchian | 0.19% | 0.43 | 104 | YES | `approximate_non_ftmo` |
-| 7 | XAUUSD | D1 | hybrid_regime | 0.17% | -0.17 | 214 | YES | `approximate_non_ftmo` |
-| 8 | USDJPY | H4 | squeeze_breakout | 0.12% | 0.50 | 44 | YES | `approximate_non_ftmo` |
-| 9 | USDCAD | H4 | hybrid_regime | 0.08% | 0.27 | 73 | YES | `approximate_non_ftmo` |
-| 10 | USDJPY | H4 | mean_reversion_regime | -0.06% | -0.24 | 28 | YES | `approximate_non_ftmo` |
-| 11 | USDCAD | H4 | breakout_donchian | -0.07% | -0.21 | 59 | YES | `approximate_non_ftmo` |
-| 12 | AUDUSD | D1 | bbands_reversion | -0.10% | 0.50 | 37 | YES | `approximate_non_ftmo` |
+| 6 | USDCHF | D1 | bbands_reversion | 0.22% | 1.17 | 21 | YES | `approximate_non_ftmo` |
+| 7 | USDCHF | H4 | bbands_reversion | 0.21% | 1.44 | 26 | YES | `approximate_non_ftmo` |
+| 8 | GBPUSD | H4 | breakout_donchian | 0.19% | 0.43 | 104 | YES | `approximate_non_ftmo` |
+| 9 | XAUUSD | D1 | hybrid_regime | 0.17% | -0.17 | 214 | YES | `approximate_non_ftmo` |
+| 10 | USDJPY | H4 | squeeze_breakout | 0.12% | 0.50 | 44 | YES | `approximate_non_ftmo` |
+| 11 | USDCAD | H4 | hybrid_regime | 0.08% | 0.27 | 73 | YES | `approximate_non_ftmo` |
+| 12 | USDCHF | H4 | breakout_donchian | 0.06% | -0.26 | 83 | YES | `approximate_non_ftmo` |

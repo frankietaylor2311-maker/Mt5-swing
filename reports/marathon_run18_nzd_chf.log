@@ -18,3 +18,8 @@ NZDUSD_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.1, 'do
 NZDUSD_D1 bbands_reversion: IS-grid best={'adx_max': 28, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 NZDUSD_D1 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 8, 'lookback': 60, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.05% n=34 gates=True holdout_ok=True source=approximate_non_ftmo
 NZDUSD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.05% n=65 gates=True holdout_ok=False source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.

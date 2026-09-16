@@ -30,6 +30,8 @@ research_symbols:
   - XAUUSD
   - AUDUSD
   - USDCAD
+  - USDCHF
+  - NZDUSD
   # Optional: US100 when FTMO exports available
 
 timeframes:

@@ -1,9 +1,8 @@
 # Marathon progress
 
 ## Best so far (approximate_non_ftmo)
-- Preferred FX3 ≤1/symbol @2%: **+1.50% holdout** (calendar-honest), gates PASS
-- Dual top: USDJPY D1 hybrid OOS 0.80% / hold +1.83%
-- Prior ~+1.7% basket was mixed-TF join–inflated; corrected +XAU exploratory +1.76%
-- OOS-only a priori basket still ~−0.8% holdout
-- FTMO exports absent — no go-live
-- pytest 28/28 green
+- **Preferred FX4 @2%: +1.81% holdout**, Sharpe 0.92, gates PASS (calendar-honest)
+  - USDJPY D1 hybrid · AUDUSD D1 hybrid · GBPUSD H4 breakout · USDCHF H4 bbands
+- Prior wave ~+1.7%; calendar-honest FX3 was +1.50%; FX4 improves on both
+- New duals: USDCHF H4/D1 bbands
+- FTMO exports absent — no go-live; pytest 28/28 green

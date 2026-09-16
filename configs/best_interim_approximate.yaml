@@ -1,20 +1,15 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx3_one_per_symbol
+basket_tag: fx4_chf_h4
 risk:
   risk_fraction: 0.02
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   atr_trail_mult: 0.0
   vol_target: false
-methodology: "Equal-weight on overlapping holdout dates only (dropna any) \u2014 fixes\
-  \ H4/D1 calendar bias."
-sensitivity:
-  trail_1.5_return: -0.039698748659177774
-  usdjpy_heavy_d1_return: 0.014118225816343921
-  with_xau_return: 0.017644251796870902
-disclaimer: "Yahoo FX/gold \u2260 FTMO MT5. Risk 2% inside pre-declared 1\u20132%\
-  \ band. Basket members = dual-confirm \u22641/symbol by OOS rank. No go-live without\
+methodology: "Equal-weight on overlapping holdout dates (dropna any). Dual-confirm\
+  \ \u22641/symbol by OOS among FX."
+disclaimer: "Yahoo FX \u2260 FTMO MT5. Risk inside 1\u20132% band. No go-live without\
   \ ftmo_mt5_export."
 candidates:
 - symbol: USDJPY
@@ -53,3 +48,16 @@ candidates:
   oos_return: 0.0018690579365797
   oos_trades: 104
   holdout_return: 0.0326176264108935
+- symbol: USDCHF
+  timeframe: H4
+  strategy: bbands_reversion
+  params:
+    adx_max: 22
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  oos_return: 0.0020822582035555
+  oos_trades: 26
+  holdout_return: 0.036036340113803
