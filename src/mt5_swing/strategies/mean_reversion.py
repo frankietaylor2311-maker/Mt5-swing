@@ -13,12 +13,12 @@ class MeanReversionRegime:
 
     def __init__(
         self,
-        rsi_low: float = 28.0,
-        rsi_high: float = 72.0,
-        adx_max: float = 18.0,
+        rsi_low: float = 35.0,
+        rsi_high: float = 65.0,
+        adx_max: float = 25.0,
         exit_low: float = 48.0,
         exit_high: float = 52.0,
-        atr_pct_max: float = 0.85,
+        atr_pct_max: float = 1.0,
         atr_lookback: int = 100,
         session_hours: str | None = None,
     ):

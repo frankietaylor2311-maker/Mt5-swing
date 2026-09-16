@@ -80,9 +80,15 @@ def adx(high: pd.Series, low: pd.Series, close: pd.Series, window: int = 14) -> 
 def donchian(
     high: pd.Series, low: pd.Series, window: int = 20
 ) -> tuple[pd.Series, pd.Series, pd.Series]:
-    """Upper/lower/mid Donchian channels using past window (includes current bar)."""
-    upper = high.rolling(window=window, min_periods=window).max()
-    lower = low.rolling(window=window, min_periods=window).min()
+    """Upper/lower/mid Donchian using *prior* ``window`` bars (excludes current).
+
+    Classic Turtle / breakout definition: break of the previous N-bar high/low.
+    Including the current bar made ``close > upper`` almost impossible.
+    """
+    prior_high = high.shift(1)
+    prior_low = low.shift(1)
+    upper = prior_high.rolling(window=window, min_periods=window).max()
+    lower = prior_low.rolling(window=window, min_periods=window).min()
     mid = (upper + lower) / 2.0
     return upper, lower, mid
 
@@ -118,6 +124,17 @@ def apply_feature_pipeline(
     feats["donchian_upper"] = upper
     feats["donchian_lower"] = lower
     feats["donchian_mid"] = mid
+    # Bollinger (causal rolling mean/std on close)
+    bb_mid = close.rolling(window=20, min_periods=20).mean()
+    bb_std = close.rolling(window=20, min_periods=20).std(ddof=0)
+    feats["bb_mid"] = bb_mid
+    feats["bb_upper"] = bb_mid + 2.0 * bb_std
+    feats["bb_lower"] = bb_mid - 2.0 * bb_std
+    # MACD-ish momentum (EMA12 - EMA26), causal
+    feats["ema_12"] = ema(close, 12)
+    feats["ema_26"] = ema(close, 26)
+    feats["macd"] = feats["ema_12"] - feats["ema_26"]
+    feats["macd_signal"] = feats["macd"].ewm(span=9, adjust=False, min_periods=9).mean()
 
     for name, series in feats.items():
         out[name] = lag(series, signal_lag) if signal_lag else series

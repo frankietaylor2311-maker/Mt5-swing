@@ -106,28 +106,52 @@ def split_holdout(df: pd.DataFrame, holdout_days: int) -> tuple[pd.DataFrame, pd
     return research, holdout
 
 
-# Constrained grids — small to limit overfit (IS only)
+# Constrained grids — small to limit overfit (IS only). Prefer trade-generating params.
 GRIDS = {
     "trend_ma_adx": {
-        "adx_threshold": [22, 26, 30],
-        "atr_pct_min": [0.0, 0.2],
-        "atr_pct_max": [0.85, 1.0],
+        "adx_threshold": [18, 22, 26],
+        "atr_pct_min": [0.0, 0.15],
+        "atr_pct_max": [0.9, 1.0],
         "session_hours": [None, "7-20"],
         "require_ema_align": [False, True],
     },
     "mean_reversion_regime": {
-        "rsi_low": [25, 30],
-        "rsi_high": [70, 75],
-        "adx_max": [15, 18],
+        "rsi_low": [30, 35],
+        "rsi_high": [65, 70],
+        "adx_max": [20, 25, 30],
         "session_hours": [None, "7-20"],
     },
     "breakout_donchian": {
-        "use_mid_exit": [True],
-        "adx_min": [15, 22],
-        "atr_pct_min": [0.0, 0.2],
+        "use_mid_exit": [True, False],
+        "adx_min": [0, 15, 20],
+        "atr_pct_min": [0.0, 0.1],
         "session_hours": [None, "7-20"],
     },
+    "ema_pullback": {
+        "adx_threshold": [15, 18, 22],
+        "rsi_pullback_low": [35, 40, 45],
+        "rsi_pullback_high": [55, 60, 65],
+        "use_macd_confirm": [True, False],
+        "session_hours": [None],
+    },
+    "hybrid_regime": {
+        "adx_trend": [20, 24],
+        "adx_chop": [16, 20],
+        "rsi_low": [30, 35],
+        "rsi_high": [65, 70],
+        "session_hours": [None],
+    },
+    "bbands_reversion": {
+        "adx_max": [22, 28, 35],
+        "require_rsi": [True, False],
+        "rsi_low": [35, 40],
+        "rsi_high": [60, 65],
+        "session_hours": [None],
+    },
 }
+
+# Minimum IS trades for a grid winner to count (anti zero-trade "wins")
+MIN_IS_TRADES = 8
 
 
 def main() -> None:
@@ -198,8 +222,9 @@ def main() -> None:
                     is_df,
                     strat_name,
                     grid,
-                    max_trials=16,
+                    max_trials=20,
                     bt_config=bt_cfg(cfg, symbol),
+                    min_trades=MIN_IS_TRADES,
                 )
                 # Normalize empty session string back to None
                 best_params = {}
@@ -276,11 +301,13 @@ def main() -> None:
                     "baseline_gates_pass": base_wf.gates_pass,
                 }
                 rows.append(row)
-                refinements_log.append(
+                msg = (
                     f"{symbol}_{tf} {strat_name}: IS-grid best={best_params} "
-                    f"OOS ret={oos.get('total_return', 0):.2%} gates={gates} "
-                    f"holdout_ok={hold_pass} source={source}"
+                    f"OOS ret={oos.get('total_return', 0):.2%} n={int(oos.get('n_trades') or 0)} "
+                    f"gates={gates} holdout_ok={hold_pass} source={source}"
                 )
+                refinements_log.append(msg)
+                print(msg, flush=True)
 
     df_out = pd.DataFrame(rows)
     csv_path = REPORTS / "walk_forward_summary.csv"
@@ -304,13 +331,13 @@ def main() -> None:
         lines.append("_No results — place FTMO MT5 CSVs in `data/ftmo/` or run interim download._")
     else:
         lines.append(
-            "| Symbol | TF | Strategy | Source | OOS ret | OOS MDD | OOS dDD | Gates | Holdout ok | Go-live |"
+            "| Symbol | TF | Strategy | Source | OOS ret | OOS Sh | OOS n | Gates | Holdout ok | Go-live |"
         )
         lines.append("|---|---|---|---|---:|---:|---:|:---:|:---:|:---:|")
         for r in rows:
             lines.append(
                 f"| {r['symbol']} | {r['timeframe']} | {r['strategy']} | `{r['data_source']}` | "
-                f"{r['oos_return']:.2%} | {r['oos_max_dd']:.2%} | {r['oos_daily_dd']:.2%} | "
+                f"{(r['oos_return'] or 0):.2%} | {(r['oos_sharpe'] or 0):.2f} | {int(r['oos_trades'] or 0)} | "
                 f"{'PASS' if r['oos_gates_pass'] else 'FAIL'} | "
                 f"{'YES' if r['holdout_profitable_and_gates'] else 'NO'} | "
                 f"{'YES' if r['ftmo_golive_candidate'] else 'NO'} |"
@@ -343,6 +370,39 @@ def main() -> None:
     md.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     (REPORTS / "refinements_log.txt").write_text("\n".join(refinements_log) + "\n", encoding="utf-8")
+
+    # Leaderboard: meaningful OOS trades + gates, ranked by holdout then OOS return/sharpe
+    if not df_out.empty:
+        lb = df_out.copy()
+        lb["oos_trades"] = lb["oos_trades"].fillna(0).astype(int)
+        lb["meaningful"] = (lb["oos_trades"] >= 10) & lb["oos_gates_pass"]
+        lb = lb.sort_values(
+            by=["holdout_profitable_and_gates", "meaningful", "oos_return", "oos_sharpe", "oos_trades"],
+            ascending=[False, False, False, False, False],
+        )
+        lb_path = REPORTS / "leaderboard.csv"
+        lb.to_csv(lb_path, index=False)
+        top = lb.head(12)
+        lb_md = [
+            "# Research leaderboard",
+            "",
+            "Ranked by holdout_profitable_and_gates → meaningful OOS (≥10 trades + gates) → OOS return/Sharpe.",
+            "Params selected on IS only; holdout never used for tuning. Zero-trade rows are not wins.",
+            "",
+            "| Rank | Symbol | TF | Strategy | OOS ret | OOS Sh | OOS n | Holdout | Source |",
+            "|---:|---|---|---|---:|---:|---:|:---:|---|",
+        ]
+        for i, (_, r) in enumerate(top.iterrows(), 1):
+            lb_md.append(
+                f"| {i} | {r['symbol']} | {r['timeframe']} | {r['strategy']} | "
+                f"{float(r['oos_return'] or 0):.2%} | {float(r['oos_sharpe'] or 0):.2f} | "
+                f"{int(r['oos_trades'])} | {'YES' if r['holdout_profitable_and_gates'] else 'NO'} | "
+                f"`{r['data_source']}` |"
+            )
+        (REPORTS / "leaderboard.md").write_text("\n".join(lb_md) + "\n", encoding="utf-8")
+        print(f"Wrote {lb_path}")
+        print(f"Wrote {REPORTS / 'leaderboard.md'}")
+
     print(f"Wrote {csv_path}")
     print(f"Wrote {md}")
     if not any_ftmo:
