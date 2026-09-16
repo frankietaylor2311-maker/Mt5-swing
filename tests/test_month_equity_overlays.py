@@ -78,3 +78,33 @@ def test_equity_curve_target_hi_cap():
     r_out = out.pct_change().fillna(0)
     mask = r_raw > 0
     assert (r_out[mask] <= r_raw[mask] + 1e-9).all()
+
+
+def test_mtd_gain_clip_caps_after_tau_and_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_mtd_gain_clip
+
+    # Steady +0.5%/day → MTD exceeds 3% quickly within a month
+    rets = np.full(40, 0.005)
+    eq = _eq_from_returns(rets)
+    out = apply_mtd_gain_clip(eq, tau=0.03, after_clip=0.0)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Never leverages: |scaled| <= |raw| when raw>0
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+    # After MTD crosses tau, some later same-month bars should be zeroed
+    assert (r_out.abs() < 1e-15).sum() >= 3
+
+
+def test_mtd_gain_clip_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_mtd_gain_clip
+
+    rng = np.random.default_rng(0)
+    rets = rng.normal(0.001, 0.01, 90)
+    eq = _eq_from_returns(rets)
+    # Mutating a future bar must not change past scaled returns
+    out1 = apply_mtd_gain_clip(eq, tau=0.02, after_clip=0.25)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.5
+    out2 = apply_mtd_gain_clip(eq2, tau=0.02, after_clip=0.25)
+    assert np.allclose(out1.iloc[:-1].pct_change().fillna(0), out2.iloc[:-1].pct_change().fillna(0))

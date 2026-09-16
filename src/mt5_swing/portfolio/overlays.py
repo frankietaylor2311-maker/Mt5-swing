@@ -271,3 +271,42 @@ def apply_runup_throttle(
     scale = scale.where(~(trail_lag > float(runup_thresh)), float(cool_scale))
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_mtd_gain_clip(
+    port: pd.Series,
+    *,
+    tau: float = 0.03,
+    after_clip: float = 0.0,
+    lo: float = 0.0,
+) -> pd.Series:
+    """Causal intra-month MTD gain clip — cut exposure once month-to-date exceeds tau.
+
+    At bar t, MTD is computed from month-start equity through bar t-1 only.
+    If that lagged MTD > ``tau``, next-bar scale becomes ``after_clip`` (clipped
+    to [lo, 1]). Never increases leverage (hi=1). Designed to soft-cap top-month
+    concentration without peeking at unfinished-bar or future months.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    # Month keys in the series timezone
+    if getattr(idx, "tz", None) is not None:
+        months = idx.tz_convert("UTC").to_period("M")
+    else:
+        months = idx.to_period("M")
+    # Month-start equity (first bar of each calendar month)
+    mo_start = eq.groupby(months).transform("first")
+    # MTD through prior bar: eq[t-1] / mo_start[t] - 1  (mo_start known at month open)
+    eq_lag = eq.shift(1)
+    mtd_lag = (eq_lag / mo_start.replace(0, np.nan) - 1.0).fillna(0.0)
+    # First bar of month: no prior bar in-month → mtd_lag uses prior month's last /
+    # same mo_start after shift can be stale; force 0 when month changes
+    mo_change = pd.Series(months, index=eq.index) != pd.Series(months, index=eq.index).shift(1)
+    mtd_lag = mtd_lag.where(~mo_change.fillna(True), 0.0)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(mtd_lag > float(tau)), float(after_clip))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])

@@ -1,0 +1,10 @@
+{
+  "promote": false,
+  "soft": 1,
+  "hard": 0,
+  "best_soft": "lock_mtdclip_t0.015_a0.0",
+  "best_clip_tau": 0.015,
+  "best_clip_after": 0.0,
+  "nearest": "lock_mtdclip_t0.015_a0.0",
+  "data_source": "approximate_non_ftmo"
+}

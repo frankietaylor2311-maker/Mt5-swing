@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 19:30 BST Europe/London (wave: **intraday→swing + cross-asset stack + missing-month diversifiers**).
+Session: 2026-09-16 21:13 BST Europe/London (wave: **D1 multi-year consistency repair + causal MTD gain-clip**).
 
 ## Scoring rubric this wave (primary)
 
@@ -26,14 +26,14 @@ Session: 2026-09-16 19:30 BST Europe/London (wave: **intraday→swing + cross-as
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. Pairs Δz proxy **abandoned** (illusory ~180×; real two-leg confirm_min ~0.30%/mo). This pivot wave (intraday→swing H1/M15, dual-confirm FX stacks, IS monthly scale, missing-month diversifiers) produced **0** soft / **0** hard IS passers and **0** promote. Nearest miss `lock+dual2` (USDJPY D1 hybrid + EURUSD D1 CCI) prints calendar means ≥1% but fails **2025_IS %pos 62.5%** and HO top3 (holdout_fail). **Promote: NO.** Target not met on `approximate_non_ftmo` — **FTMO MT5 history is the required unlock** (see Evidence section).
+**Verdict:** Official locked tag **unchanged**. This keep-alive wave (D1 unused OOS-passer add-ons + causal MTD gain-clip) produced **1** soft IS / **0** hard / **0** promote. Best soft `lock_mtdclip_t0.015_a0.0` lifts 2024 to **0.99%/mo, 73% pos, 52% top3** but calendar **2025 mean 0.89%** fails year-clear (≥1%) and IS max top3 **59%** fails hard≤55%. D1 add-on sleeves: **0** soft (2024 %pos stays <70%). **Promote: NO.** Still blocked on FTMO CSVs.
 
 ## Locked candidate (unchanged — still official)
 
 **Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
 **Config:** `configs/quest_one_pct_candidate.yaml`
 
-Verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; **GBPCAD_D1 not overwritten** by yfinance expand):
+Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py`):
 
 | Window | Return | Mean mo | %pos | Top3 | Gates | P2T |
 |--------|-------:|--------:|-----:|-----:|:-----:|----:|
@@ -43,9 +43,53 @@ Verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; **G
 | holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
 | roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
 
+## Wave: D1 multi-year consistency repair + MTD gain-clip (this)
 
+Scripts/helpers:
+- `scripts/quest_d1_consistency_repair_wf.py`
+- `src/mt5_swing/portfolio/overlays.py` — `apply_mtd_gain_clip` (causal intra-month MTD; hi≤1)
+- Screen: unused D1 OOS-passers from `reports/walk_forward_summary.csv` (not exact locked legs)
 
-## Wave: intraday→swing + cross-asset stack + missing-month (this)
+### Design
+
+1. **D1 pool:** OOS gates+profitable, sharpe>0.35; prefer unused symbols; RF fixed 8%; signal_lag=1.
+2. **Addon sleeves:** lock + single/pair D1 at sleeve ∈ {15…30%}; score only `{2024, 2025_IS}`; HO/2025/2026 confirm only.
+3. **MTD gain-clip:** tau chosen on **2024 only**; after_clip ∈ {0,0.25,0.5}; freeze; confirm.
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Promote | Notes |
+|--------|--:|--------:|--------:|--------:|-------|
+| baseline locked | 1 | 0 | 0 | 0 | 2024 still 0.42%/55% |
+| lock+D1 addon | 28 | **0** | 0 | 0 | Best `lock+EURUSD_bbands_s30` min_is_mo 0.42%; 2024 %pos 64% |
+| lock+D1 pair | 20 | **0** | 0 | 0 | 10 pair trials; no soft |
+| D1 alternate baskets | 8 | **0** | 0 | 0 | Solo D1 edges tiny (~0.02–0.18%/mo) |
+| MTD gain-clip | 1 | **1** | **0** | **0** | soft IS; year_clear_fail |
+| lock+addon+clip | 2 | 0 | 0 | 0 | soft regresses vs clip-alone |
+
+**Totals:** soft=**1** hard=**0** promote=**0** (board n=60). D1 pool screened=24; solo dual-year positive IS=7 (low corr to locked).
+
+### Best soft (not promote) — `lock_mtdclip_t0.015_a0.0`
+
+Tau=0.015, after_clip=0.0 chosen on 2024 only.
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **0.99%** | **73%** | **52%** | IS — soft OK; mean <1.00% for year-clear |
+| 2025_IS | **1.45%** | **75%** | **59%** | IS — soft OK; hard top3 fail (>55%) |
+| 2025 (cal) | **0.89%** | 73% | 56% | confirm — **mean <1%** → year_clear_fail |
+| 2026 | 1.91% | 88% | 77% | confirm |
+| holdout_365d | 1.37% | 75% | 66% | confirm — would clear HO soft top3≤70% |
+
+**Promote?** **No** — hard top3 fail; calendar 2025 mean 0.89%; 2024 mean 0.99% just shy of 1%. Locked tag unchanged.
+
+### Why D1 add-ons missed soft
+
+Unused D1 OOS-passers at basket-scale risk print dual-year positive means but **low %pos** (often 25–55% on 2024). Blending into locked lifts 2024 mean only marginally (0.42%→~0.42%) and rarely reaches %pos≥70%. Nearest addon miss: `lock+EURUSD_bbands_reversion_s30` (2024 0.42%/64% pos; 2025_IS 1.72%/75%).
+
+Details: `reports/quest_d1_consistency_repair.md`, `reports/quest_d1_consistency_board.csv`, `reports/quest_d1_consistency_solo.csv`, `reports/quest_d1_consistency_pool.csv`, `configs/quest_d1_consistency_selected.json`, `reports/quest_locked_verify_keepalive_2100.md`.
+
+## Wave: intraday→swing + cross-asset stack + missing-month (prior)
 
 Scripts/helpers:
 - `scripts/quest_intraday_crossasset_stack_wf.py`
