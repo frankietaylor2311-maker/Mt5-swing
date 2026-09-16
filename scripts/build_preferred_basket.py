@@ -40,6 +40,7 @@ INTERIM_FX4 = [
     ("USDJPY", "D1", "hybrid_regime"),
     ("GBPUSD", "H4", "breakout_donchian"),
     ("CADJPY", "H4", "mean_reversion_regime"),
+    ("AUDCAD", "H4", "mean_reversion_regime"),
 ]
 
 

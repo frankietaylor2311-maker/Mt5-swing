@@ -1,6 +1,6 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_equal_cadjpy_mr_vt_mh16_rf025
+basket_tag: fx5_equal_cadjpy_audcad_rf025
 risk:
   risk_fraction: 0.025
   atr_stop_mult: 2.0
@@ -8,8 +8,8 @@ risk:
   atr_trail_mult: 0.0
   vol_target: false
 weights: equal
-methodology: "Interim dual FX4; AUDUSD\u2192CADJPY H4 MR; equal weights; IS vol_target+max_hold\
-  \ 16 on CADJPY; IS exits on other legs; risk=0.025. Holdout confirmation only."
+methodology: Interim dual FX5; FX4 CADJPY set + AUDCAD H4 MR (OOS basket best); equal
+  weights; IS exits; risk=0.025. Holdout confirmation only.
 disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDCHF
@@ -27,8 +27,8 @@ candidates:
   oos_return: 0.0020822582035555
   oos_sharpe: 1.4388105975417105
   oos_trades: 26
-  holdout_return: 0.03760195093868979
-  weight: 0.25
+  holdout_return: 0.03618178104695002
+  weight: 0.2
 - symbol: USDJPY
   timeframe: D1
   strategy: hybrid_regime
@@ -47,8 +47,8 @@ candidates:
   oos_return: 0.0080407344524734
   oos_sharpe: 0.9497214056786872
   oos_trades: 35
-  holdout_return: 0.0024974723295172474
-  weight: 0.25
+  holdout_return: 0.0005202526984939837
+  weight: 0.2
 - symbol: GBPUSD
   timeframe: H4
   strategy: breakout_donchian
@@ -67,8 +67,8 @@ candidates:
   oos_return: 0.0018690579365797
   oos_sharpe: 0.4337304658948822
   oos_trades: 104
-  holdout_return: 0.0712978831991109
-  weight: 0.25
+  holdout_return: 0.07677331603853221
+  weight: 0.2
 - symbol: CADJPY
   timeframe: H4
   strategy: mean_reversion_regime
@@ -83,5 +83,23 @@ candidates:
   oos_return: 0.0033288030116773
   oos_sharpe: 1.7487450694017543
   oos_trades: 23
-  holdout_return: 0.0790877901939524
-  weight: 0.25
+  holdout_return: 0.08180375757001701
+  weight: 0.2
+- symbol: AUDCAD
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 30
+    rsi_high: 70
+    rsi_low: 30
+    session_hours: 7-20
+  exits:
+    atr_target_mult: 5.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 24
+  vol_target: false
+  oos_return: 0.0015795137208723
+  oos_sharpe: 1.6442368784001269
+  oos_trades: 20
+  holdout_return: 0.0024800190107174824
+  weight: 0.2

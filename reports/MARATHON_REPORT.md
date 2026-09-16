@@ -1,41 +1,34 @@
 # FTMO 2-Step Marathon Report (approximate_non_ftmo)
 
-**Wave through run37:** JPY pip fix → CADJPY dual; equal FX4; IS mh16 on CADJPY.  
-**As of:** 2026-09-16 ~10:15 Europe/London
+**As of:** 2026-09-16 ~10:25 Europe/London
 
-## Preferred basket (current best)
+## Preferred basket (current best by OOS proxy)
 
-| Basket | Holdout | Sharpe | Gates |
-|--------|--------:|-------:|-------|
-| Task baseline equal @2% | +1.81% | — | PASS |
-| FX4 oos_sharpe + IS exits + VT @2.5% | +2.88% | 1.23 | PASS |
-| FX4 equal (AUDUSD) @2.5% | +3.06% | 1.34 | PASS |
-| FX4 equal CADJPY MR vt @2.5% | +4.90% | 1.83 | PASS |
-| **Current FX4 equal CADJPY MR vt+mh16 @2.5%** | **+4.76%** | **1.78** | **PASS** |
+| Basket | Holdout | Sharpe | Gates | OOS proxy |
+|--------|--------:|-------:|-------|----------:|
+| Task baseline @2% | +1.81% | — | PASS | — |
+| FX4 oos_sharpe+IS @2.5% | +2.88% | 1.23 | PASS | — |
+| FX4 equal AUDUSD | +3.06% | 1.34 | PASS | −1.31% |
+| FX4 equal CADJPY vt+mh16 | +4.76% | 1.78 | PASS | +0.77% |
+| **Current FX5 equal +AUDCAD MR @2.5%** | **+3.96%** | **1.89** | **PASS** | **+0.99%** |
 
-**Δ vs +1.81%:** **+2.95 pp** (OOS proxy improved +0.73%→+0.77% with mh16; holdout confirmation slightly lower)
+**Δ vs +1.81%:** **+2.15 pp** (OOS-best construction; FX4 CADJPY remains stronger on holdout confirmation at +4.76%)
 
-**Legs:**
-- USDCHF H4 `bbands_reversion` (w=0.25)
-- USDJPY D1 `hybrid_regime` (w=0.25) — trail 1.5 / stop 1.5 / max_hold 16
-- GBPUSD H4 `breakout_donchian` (w=0.25) — tp 5 / stop 1.5 / max_hold 24 / vol_target
-- CADJPY H4 `mean_reversion_regime` (w=0.25) — **vol_target + max_hold 16** (IS)
+**Legs (dual ≤1/symbol):**
+1. USDCHF H4 bbands_reversion
+2. USDJPY D1 hybrid_regime (trail/stop 1.5, mh 16)
+3. GBPUSD H4 breakout_donchian (tp5/stop1.5/mh24, vol_target)
+4. CADJPY H4 mean_reversion_regime (vol_target, mh 16)
+5. AUDCAD H4 mean_reversion_regime (tp5/stop1.5/mh24 IS)
 
-**Config:** `configs/best_interim_approximate.yaml` (`fx4_equal_cadjpy_mr_vt_mh16_rf025`)
+**Config:** `fx5_equal_cadjpy_audcad_rf025`
 
-## Gates / methodology
+## Methodology
 
-- `signal_lag=1`; IS-only; holdout confirmation only; FTMO 5%/10% Prague
-- No go-live without `data/ftmo/`
-
-## Infra
-
-- Fixed `pip_value_per_lot` for quote=JPY (was ~1000 → 0.01 lots)
-- `willr_reversion` strategy; merge-protect research runner
+- signal_lag=1; IS-only; OOS basket selects among dual constructions; holdout confirmation only
+- JPY pip_value fix enabled CADJPY research
+- No golive without data/ftmo/
 
 ## Blockers
 
-1. No FTMO MT5 exports
-2. Short of challenge 10% target
-3. Yahoo ≠ broker CFD
-4. Pure Sharpe-first without interim lock fails holdout historically
+No FTMO exports; Yahoo≠CFD; short of 10% challenge target; pure Sharpe-first fails holdout.
