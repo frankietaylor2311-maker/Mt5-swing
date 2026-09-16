@@ -1,0 +1,1 @@
+{"data_source": "approximate_non_ftmo", "symbol": "USDJPY", "timeframe": "M15", "bars": 5647, "start": "2026-06-24 23:00:00+00:00", "end": "2026-09-16 17:15:00+00:00", "provider": "yfinance", "depth_note": "yahoo_m15_approx_60d_probe_only"}

@@ -1,0 +1,104 @@
+NOTE: overriding RISK_FRACTION=0.02 → 0.08
+data_source=approximate_non_ftmo RF=0.08 VT=0.0025 locked=fx4plus_gbpcad_d1_voltarget_0025
+NOTE: pairs Δz proxy abandoned — this wave does not promote pairs.
+dual-confirm FX=['AUDCAD', 'AUDJPY', 'AUDUSD', 'CADJPY', 'EURAUD', 'EURCAD', 'EURCHF', 'EURGBP', 'EURJPY', 'EURUSD', 'GBPCAD', 'GBPJPY', 'GBPUSD', 'NZDCAD', 'NZDJPY', 'USDCHF', 'USDJPY']
+expand pool=12: EURJPY:D1:ema_pullback, EURUSD:D1:cci_reversion, GBPJPY:H4:squeeze_breakout, NZDCAD:H4:mean_reversion_regime, EURCHF:H4:cci_reversion, EURGBP:D1:cci_reversion, AUDUSD:H4:bbands_reversion, USDJPY:D1:hybrid_regime, EURCAD:D1:bbands_reversion, AUDJPY:D1:mean_reversion_regime, NZDJPY:D1:mean_reversion_regime, EURAUD:H4:breakout_donchian
+metals dual-confirm eligible=0 (need H4+D1)
+=== Baseline locked + vt0025 ===
+  2024           mo= 0.42% pos=  55% top3=  74% gates=True
+  2025_IS        mo= 2.33% pos=  75% top3=  70% gates=True
+  2024           mo= 0.42% pos=  55% top3=  74% gates=True
+  2025           mo= 1.63% pos=  73% top3=  69% gates=True
+  2026           mo= 2.30% pos=  88% top3=  87% gates=True
+  holdout_365d   mo= 1.52% pos=  75% top3=  81% gates=True
+locked missing months 2024=5 2025_IS=2
+=== H1 download (intraday→swing) ===
+=== M15 download (probe; Yahoo ~60d) ===
+=== H1 swing single-leg IS screen ===
+  H1 AUDCAD  bbands_reversion       24= 0.00%/  0% tr=  9 25= 0.00%
+  H1 AUDCAD  mean_reversion_regime  24=-1.08%/ 27% tr= 92 25= 0.11%
+  H1 AUDCAD  breakout_donchian      24= 0.00%/  0% tr= 15 25=-1.43%
+  H1 AUDCAD  squeeze_breakout       24= 0.00%/  0% tr= 18 25= 0.00%
+  H1 AUDCAD  cci_reversion          24= 0.00%/  0% tr= 11 25= 0.24%
+  H1 AUDJPY  bbands_reversion       24=-0.81%/  0% tr= 63 25=-0.32%
+  H1 AUDJPY  mean_reversion_regime  24=-0.93%/ 18% tr= 46 25= 3.53%
+  H1 AUDJPY  breakout_donchian      24= 0.00%/  0% tr= 12 25=-1.18%
+  H1 AUDJPY  squeeze_breakout       24= 0.62%/ 18% tr=129 25= 0.00%
+  H1 AUDJPY  cci_reversion          24=-0.64%/  9% tr= 62 25= 0.10%
+  H1 AUDUSD  bbands_reversion       24= 0.00%/  0% tr= 20 25= 0.00%
+  H1 AUDUSD  mean_reversion_regime  24=-0.84%/  0% tr= 31 25=-0.95%
+  H1 AUDUSD  breakout_donchian      24=-0.72%/  0% tr= 59 25=-0.28%
+  H1 AUDUSD  squeeze_breakout       24= 0.00%/  0% tr=  6 25= 0.00%
+  H1 AUDUSD  cci_reversion          24=-1.38%/  9% tr= 96 25= 0.00%
+  H1 CADJPY  bbands_reversion       24=-0.37%/  0% tr= 25 25=-2.10%
+  H1 CADJPY  mean_reversion_regime  24=-0.62%/  0% tr= 30 25=-1.31%
+  H1 CADJPY  breakout_donchian      24=-0.14%/  0% tr= 51 25= 0.00%
+  H1 CADJPY  squeeze_breakout       24=-0.63%/  0% tr= 68 25= 0.00%
+  H1 CADJPY  cci_reversion          24=-0.29%/  0% tr= 29 25=-2.30%
+  H1 EURAUD  bbands_reversion       24=-0.27%/ 55% tr=230 25=-1.34%
+  H1 EURAUD  mean_reversion_regime  24=-0.72%/ 45% tr= 98 25=-0.78%
+  H1 EURAUD  breakout_donchian      24=-0.92%/  0% tr= 59 25= 0.00%
+  H1 EURAUD  squeeze_breakout       24= 0.00%/  0% tr= 23 25=-0.28%
+  H1 EURAUD  cci_reversion          24=-0.76%/ 55% tr=251 25=-0.97%
+  H1 EURCAD  bbands_reversion       24=-0.08%/ 45% tr=246 25=-0.00%
+  H1 EURCAD  mean_reversion_regime  24=-0.90%/ 36% tr=121 25=-1.11%
+  H1 EURCAD  breakout_donchian      24= 0.00%/  0% tr= 21 25= 0.00%
+  H1 EURCAD  squeeze_breakout       24= 0.00%/  0% tr= 35 25= 0.00%
+  H1 EURCAD  cci_reversion          24=-0.92%/ 45% tr=239 25= 0.64%
+  H1 EURCHF  bbands_reversion       24=-0.94%/  0% tr= 63 25= 0.72%
+  H1 EURCHF  mean_reversion_regime  24=-0.69%/  0% tr= 34 25= 3.06%
+  H1 EURCHF  breakout_donchian      24= 1.69%/ 55% tr=173 25=-0.42%
+  H1 EURCHF  squeeze_breakout       24= 0.00%/  0% tr=  4 25= 0.00%
+  H1 EURCHF  cci_reversion          24=-0.76%/  0% tr= 54 25= 0.57%
+  H1 EURGBP  bbands_reversion       24=-0.22%/ 18% tr=114 25=-1.50%
+  H1 EURGBP  mean_reversion_regime  24=-0.86%/ 18% tr= 50 25=-0.94%
+  H1 EURGBP  breakout_donchian      24= 0.00%/  0% tr= 35 25= 0.00%
+  H1 EURGBP  squeeze_breakout       24= 0.00%/  0% tr= 29 25= 0.00%
+  H1 EURGBP  cci_reversion          24=-0.71%/ 18% tr=120 25=-1.16%
+  H1 EURJPY  bbands_reversion       24= 0.00%/  0% tr= 12 25= 0.00%
+  H1 EURJPY  mean_reversion_regime  24=-0.53%/  0% tr= 20 25=-0.80%
+  H1 EURJPY  breakout_donchian      24= 0.00%/  0% tr=  8 25= 0.00%
+  H1 EURJPY  squeeze_breakout       24= 0.00%/  0% tr= 15 25= 0.00%
+  H1 EURJPY  cci_reversion          24= 0.00%/  0% tr= 14 25=-0.81%
+  H1 EURUSD  bbands_reversion       24= 0.00%/  0% tr=  8 25= 0.00%
+  H1 EURUSD  mean_reversion_regime  24= 0.88%/ 27% tr= 54 25= 0.00%
+  H1 EURUSD  breakout_donchian      24= 0.00%/  0% tr= 42 25= 0.17%
+  H1 EURUSD  squeeze_breakout       24= 0.00%/  0% tr= 47 25= 0.00%
+  H1 EURUSD  cci_reversion          24= 0.00%/  0% tr= 17 25= 0.00%
+  H1 GBPCAD  bbands_reversion       24=-1.07%/ 27% tr=235 25= 0.43%
+  H1 GBPCAD  mean_reversion_regime  24=-0.31%/ 55% tr=118 25=-0.52%
+  H1 GBPCAD  breakout_donchian      24=-0.29%/  0% tr= 67 25=-0.96%
+  H1 GBPCAD  squeeze_breakout       24=-0.68%/  0% tr=120 25= 0.00%
+  H1 GBPCAD  cci_reversion          24=-0.98%/ 36% tr=206 25=-0.82%
+  H1 GBPJPY  bbands_reversion       24= 0.00%/  0% tr= 10 25=-0.79%
+  H1 GBPJPY  mean_reversion_regime  24= 0.00%/  0% tr=  6 25=-1.15%
+  H1 GBPJPY  breakout_donchian      24= 0.00%/  0% tr= 39 25= 0.00%
+  H1 GBPJPY  squeeze_breakout       24= 0.00%/  0% tr= 41 25=-1.19%
+  H1 GBPJPY  cci_reversion          24= 0.00%/  0% tr= 10 25=-0.41%
+=== Cross-asset dual-confirm stacks (IS min year) ===
+  decorrelated pick: ['USDJPY_D1_hybrid_regime', 'EURUSD_D1_cci_reversion', 'NZDCAD_H4_mean_reversion_regime', 'EURCAD_D1_bbands_reversion']
+=== Evaluate stacks + IS monthly scale ===
+  baseline_locked|frozen1.0                IS_min_mo= 0.42% soft=False scale=1.000
+  baseline_locked|is_scale_1.000           IS_min_mo= 0.42% soft=False scale=1.000
+  lock+dual2|frozen1.0                     IS_min_mo= 1.03% soft=False scale=1.000
+  lock+dual2|is_scale_1.000                IS_min_mo= 1.03% soft=False scale=1.000
+  lock+dual3|frozen1.0                     IS_min_mo= 0.86% soft=False scale=1.000
+  lock+dual3|is_scale_1.000                IS_min_mo= 0.86% soft=False scale=1.000
+  lock+dual4|frozen1.0                     IS_min_mo= 0.73% soft=False scale=1.000
+  lock+dual4|is_scale_1.000                IS_min_mo= 0.73% soft=False scale=1.000
+  scratch_dual4|frozen1.0                  IS_min_mo= 0.60% soft=False scale=1.000
+  scratch_dual4|is_scale_1.000             IS_min_mo= 0.60% soft=False scale=1.000
+=== Missing-month diversifiers (must lift 2024 AND 2025 %pos) ===
+  fail missdiv::EURJPY_D1_ema_pullback: 2024_pct_pos_not_up
+  fail missdiv::EURUSD_D1_cci_reversion: 2025_pct_pos_not_up
+  fail missdiv::GBPJPY_H4_squeeze_breakout: 2025_pct_pos_not_up
+  fail missdiv::NZDCAD_H4_mean_reversion_regime: 2024_pct_pos_not_up
+  fail missdiv::EURCHF_H4_cci_reversion: 2024_pct_pos_not_up
+  fail missdiv::EURGBP_D1_cci_reversion: 2025_pct_pos_not_up
+  fail missdiv::AUDUSD_H4_bbands_reversion: 2024_pct_pos_not_up
+  PASS missdiv::USDJPY_D1_hybrid_regime pos24 55→64 pos25 75→88
+  fail missdiv::EURCAD_D1_bbands_reversion: 2025_pct_pos_not_up
+  fail missdiv::AUDJPY_D1_mean_reversion_regime: 2025_pct_pos_not_up
+
+Promote: NO (n=0)
+Wrote reports/quest_intraday_crossasset_stack.md

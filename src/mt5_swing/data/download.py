@@ -6,6 +6,7 @@ Source: Yahoo Finance via ``yfinance`` tickers ``EURUSD=X``, ``GBPUSD=X``, ``USD
 Limitations (document in README):
 - Intraday (1h) history is capped by Yahoo (~2–3 years). H4 is resampled from 1h
   closed bars only; incomplete trailing buckets are dropped.
+- M15 (15m) Yahoo depth is ~60 days — probe-only; cannot cover multi-year calendars.
 - Daily (D1) history can span 10–20+ years depending on the pair.
 - Yahoo FX quotes are not broker ticks: spreads/gaps differ from MT5; use for
   research only. Volume may be sparse or zero for FX.\n- **Not FTMO-ready:** tag every report using this data as ``approximate_non_ftmo``. Prefer ``data/mt5_import.py`` + FTMO MT5 exports.
@@ -194,8 +195,18 @@ def download_symbol_timeframe(
     if tf == "H1":
         h1 = fetch_yf_history(sym, interval="1h", period="730d")
         h1.attrs["timeframe"] = "H1"
+        h1.attrs["source_interval"] = "1h"
+        h1.attrs["data_source"] = "approximate_non_ftmo"
         return h1
-    raise ValueError(f"Unsupported timeframe {timeframe}; use H4, D1, or H1")
+    if tf == "M15":
+        # Yahoo 15m ≈ 60d — not enough for multi-year IS; probe / smoke only
+        m15 = fetch_yf_history(sym, interval="15m", period="60d")
+        m15.attrs["timeframe"] = "M15"
+        m15.attrs["source_interval"] = "15m"
+        m15.attrs["data_source"] = "approximate_non_ftmo"
+        m15.attrs["depth_note"] = "yahoo_m15_approx_60d_probe_only"
+        return m15
+    raise ValueError(f"Unsupported timeframe {timeframe}; use H4, D1, H1, or M15")
 
 
 def download_history(

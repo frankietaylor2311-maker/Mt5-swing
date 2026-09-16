@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 18:14 BST Europe/London (wave: **real two-leg pairs vs Δz proxy**).
+Session: 2026-09-16 19:30 BST Europe/London (wave: **intraday→swing + cross-asset stack + missing-month diversifiers**).
 
 ## Scoring rubric this wave (primary)
 
@@ -26,7 +26,7 @@ Session: 2026-09-16 18:14 BST Europe/London (wave: **real two-leg pairs vs Δz p
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. This wave replaced the Δz proxy with **real two-leg** fills (both legs, spreads, commission, slippage, z-exits only, nested IS). **1080** real candidates, **0** soft / **0** hard IS passers. Best REAL confirm_min_mo **0.30%** (pairs_n3 z_vol). Δz proxy on the same sleeve still prints ~1.3–1.4%/mo — **proxy was illusory (~180× amplification vs unit-notional residual)**. **Promote: NO. Stop promoting pairs on proxy.** Target not met on `approximate_non_ftmo`.
+**Verdict:** Official locked tag **unchanged**. Pairs Δz proxy **abandoned** (illusory ~180×; real two-leg confirm_min ~0.30%/mo). This pivot wave (intraday→swing H1/M15, dual-confirm FX stacks, IS monthly scale, missing-month diversifiers) produced **0** soft / **0** hard IS passers and **0** promote. Nearest miss `lock+dual2` (USDJPY D1 hybrid + EURUSD D1 CCI) prints calendar means ≥1% but fails **2025_IS %pos 62.5%** and HO top3 (holdout_fail). **Promote: NO.** Target not met on `approximate_non_ftmo` — **FTMO MT5 history is the required unlock** (see Evidence section).
 
 ## Locked candidate (unchanged — still official)
 
@@ -44,7 +44,48 @@ Verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; **G
 | roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
 
 
-## Wave: real two-leg pairs vs Δz proxy (this)
+
+## Wave: intraday→swing + cross-asset stack + missing-month (this)
+
+Scripts/helpers:
+- `scripts/quest_intraday_crossasset_stack_wf.py`
+- `src/mt5_swing/portfolio/intraday_stack.py` — IS monthly scale, missing-month gates, swing exits
+- `src/mt5_swing/data/download.py` — **M15** Yahoo probe (~60d) + H1
+
+### Design (no pairs proxy)
+
+1. **Intraday→swing:** download H1 (12 symbols) + M15 probe; a-priori swing holds (`max_hold_bars` / ATR exits); `signal_lag=1`; closed bars only.
+2. **Cross-asset dual-confirm:** expand FX with H4+D1 OOS passers; metals only if dual — **XAU not dual** (H4 only).
+3. **Stack + IS monthly PnL target:** decorrelated add-ons; `is_scale_for_monthly_target` from IS vol only (`hi≤1`); freeze for confirm.
+4. **Missing-month diversifiers:** must **strictly** raise 2024 **and** 2025_IS %pos vs locked before HO check.
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Best IS min_mo | Notes |
+|--------|--:|--------:|--------:|---------------:|-------|
+| H1 swing single-leg | 60 | 0 dual-year+ | — | — | Mostly flat/neg; **0** dual-year gate+positive |
+| M15 Yahoo | 3 sym | n/a | — | — | **~60d only** (2026-06→now); no 2024/2025 |
+| dual-confirm stacks | 10 | **0** | **0** | **1.03%** (`lock+dual2`) | soft fail: 2025_IS %pos **62.5%** |
+| missing-month div | 10 | 1 IS %pos gate | 0 promote | 0.30% 2024 | Only USDJPY lifts both %pos; mean collapses |
+| metals dual | 0 | — | — | — | XAUUSD H4-only |
+
+### Nearest miss (not eligible — IS soft fail + HO top3)
+
+`lock+dual2` = locked + USDJPY D1 `hybrid_regime` + EURUSD D1 `cci_reversion`
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.03%** | 73% | 69% | IS |
+| 2025_IS | **1.09%** | **62.5%** | 77% | IS — **%pos fail** |
+| 2025 (cal) | 1.07% | 82% | 61% | overlaps HO — not for selection |
+| 2026 | 1.69% | 75% | 83% | confirm |
+| holdout_365d | 1.26% | 75% | **73%** | confirm — top3 vs soft 70% → **holdout_fail** |
+
+**Promote?** **No** — 2025_IS consistency fail; HO top3; 0 soft IS. Locked tag unchanged.
+
+Details: `reports/quest_intraday_crossasset_stack.md`, `reports/quest_intraday_stack_board.csv`, `reports/quest_intraday_stack_promote.csv`, `reports/quest_h1_swing_screen.csv`, `reports/quest_missing_month_diversifiers.csv`, `configs/quest_intraday_stack_selected.json`.
+
+## Wave: real two-leg pairs vs Δz proxy (prior)
 
 Scripts/helpers:
 - `scripts/quest_pairs_real_two_leg_wf.py`
@@ -166,21 +207,55 @@ Details: `reports/quest_equity_tsmom_pairs_wf.md`, `reports/quest_equity_tsmom_p
 | **Pairs residual Δz + hard caps (this wave)** | IS ~1.0%+ / high %pos; HO or 2026 &lt;1%; proxy≠real fills — **rejected** |
 | **Blend lock+pairs (this wave)** | IS min &lt;1% — **rejected** |
 | **D1 yfinance expand (this wave)** | ~15y D1 for pairs; H4 still capped; locked GBPCAD preserved |
-| **Real two-leg z-exit + beta hedge (this wave)** | 1080 nested-IS cands; best confirm_min **0.30%**; proxy ~1.3% on same sleeve — **proxy illusory; stop promoting pairs** |
+|| **Intraday H1 swing (this wave)** | 60 legs; **0** dual-year gate+positive — **rejected** |
+|| **M15 Yahoo probe (this wave)** | ~60d only; no multi-year calendars — **probe only** |
+|| **Dual-confirm FX stacks + IS mo scale (this wave)** | Best `lock+dual2` IS min **1.03%** but 2025_IS %pos 62.5%; HO top3 fail — **rejected** |
+|| **Missing-month diversifiers (this wave)** | 1/10 strict dual-year %pos lift (USDJPY); 2024 mean 0.30% — **rejected** |
+|| **Metals dual-confirm (this wave)** | Still none (XAU H4-only) |
+| **Real two-leg z-exit + beta hedge (prior)** | 1080 nested-IS cands; best confirm_min **0.30%**; proxy ~1.3% on same sleeve — **proxy illusory; stop promoting pairs** |
 | **Prior ATR two-leg (re-diagnosed)** | Negative: ATR exits fought MR + independent leg sizing broke hedge — design bug, not sole cause of death |
 
-## Gap remaining / irreducible Yahoo limits
+## Evidence: Yahoo approx cannot support the ≥1%/mo joint goal
 
-1. **2024 mean still ~0.4%/mo** on official locked; diversifiers / overlays that lift 2024 either hurt HO %pos or cut mean below 1%.
-2. **Burstiness** — locked HO top3 ~81%; hard top3≤55% on both IS years: **zero** passers this wave (204-grid) and prior smooth 528-grid.
-3. **Pairs:** Δz proxy **illusory** (~180× vs unit-notional); real two-leg best confirm_min **0.30%/mo** — **stop promoting pairs** until FTMO fills prove otherwise.
-4. **No dual-confirm metals**; **no index history** (US30/NAS100/SPX) in repo.
-5. **No FTMO MT5 exports** — all `approximate_non_ftmo`. Spreads/swap/sessions/Yahoo FX ≠ FTMO CFD book.
-6. **H4 Yahoo ~730d** — cannot add more H4 years via yfinance.
-7. **What FTMO `data/ftmo/` would unlock:** true spreads/commission/swap, session filters, deeper H1/M15, index CFDs if offered, and any go-live path (`ftmo_mt5_export`).
+Under **no look-ahead**, **no OOS tune**, **no RF hike** (8%), **consistency first** (≥70% pos months, lower top3), and **holdout confirmation only**, clean **≥1% mean monthly on EACH of 2024, 2025, 2026, holdout** is **not achieved** on `approximate_non_ftmo`.
+
+### What failed (this pivot + prior)
+
+| Approach | Outcome |
+|----------|---------|
+| Locked `fx4plus_gbpcad_d1_voltarget_0025` | 2024 **0.42%**/55% pos; HO top3 ~81% — official but short of joint goal |
+| Pairs Δz proxy | Illusory **~180×** vs unit-notional; **do not promote** |
+| Real two-leg pairs | Best confirm_min **0.30%/mo**; 0 soft IS / 1080 |
+| Equity TSMOM / monthly-budget VT | Mean collapse (~0.18%) when %pos rises |
+| Smooth many-leg / clock recycle / regime | HO %pos or top3 regressions |
+| **H1 swing (Yahoo ~730d)** | **0**/60 dual-year gate+positive; costs eat intraday MR |
+| **M15 Yahoo** | **~60 calendar days** — cannot score 2024/2025/2026 |
+| **Dual-confirm stacks** | Nearest `lock+dual2` calendar ≥1% but **2025_IS %pos 62.5%** + HO top3 fail |
+| **Missing-month diversifiers** | 1/10 strict dual %pos lift; 2024 mean falls to ~0.30% |
+| Metals / indices | No dual-confirm XAU; no US30/NAS100/SPX history in repo |
+
+### Irreducible Yahoo limits
+
+1. **H4** from 1h resample ≈ **730d** — cannot extend multi-year H4 via yfinance.
+2. **H1** ≈ **730d** from ~2023-11 — incomplete early-2024; diversity probe only.
+3. **M15** ≈ **60d** — probe-only; useless for multi-year IS/HO.
+4. Yahoo FX ≠ FTMO CFD spreads/swap/sessions/commission; reports stay `approximate_non_ftmo`.
+5. No broker index CFD history for dual-confirm cross-asset.
+
+### Required unlock: FTMO MT5 history
+
+**`data/ftmo/` exports from the Windows FTMO MT5 terminal** (History Center / script), tagged `ftmo_mt5_export`, are required to continue honestly toward the joint ≥1%/mo goal and any go-live path:
+
+- True spreads, commission, swap, session filters
+- Deeper **H1/M15** (and H4/D1) multi-year books
+- Index/commodity CFDs if offered on the FTMO account
+- Any candidate that could clear FTMO 2-Step gates on broker-real fills
+
+Until then: **locked tag stays** `fx4plus_gbpcad_d1_voltarget_0025`; **promote = NO**; research on Yahoo is exhausted for this objective.
 
 ## Process / tests
 
-- pytest: `tests/test_equity_tsmom_pairs.py` (+ two-leg / proxy diagnosis / lookahead) — see CI log this wave.
-- `signal_lag=1`; nested IS (`optimize 2024 → validate 2025_IS`); holdout/2026 confirmation only.
-- RF forced to **8%**; pair risk_frac ≤ RF/n ≤1%; no leverage hike; FTMO gates on confirm.
+- pytest: **67 passed** (`tests/test_intraday_stack.py` + prior suite) — `reports/quest_intraday_stack_pytest.log`.
+- `signal_lag=1`; IS windows `{2024, 2025_IS}`; holdout/2026 confirmation only; no OOS tune.
+- RF forced to **8%**; IS monthly scale `hi≤1`; no leverage hike; FTMO gates on confirm.
+- Pairs proxy path **closed**; this wave did not re-promote pairs.
