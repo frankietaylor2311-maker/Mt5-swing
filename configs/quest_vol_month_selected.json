@@ -1,0 +1,15 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "best_overlay_is": {
+    "name": "eq_only_0.006",
+    "eq_target": 0.006,
+    "eq_lb": 6,
+    "eq_hi": 1.0
+  },
+  "best_overlay_score": 0.4594343016312158,
+  "dual_year_passers": [],
+  "h1_passers": [],
+  "promote_any": false,
+  "risk_fraction": 0.08,
+  "min_dual_year_mo": 0.008
+}

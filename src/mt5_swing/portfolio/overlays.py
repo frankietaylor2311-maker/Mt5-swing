@@ -165,3 +165,109 @@ def combine_weighted(curves: list[pd.Series], weights: np.ndarray, initial: floa
     w = w / w.sum() if w.sum() else np.ones(len(curves)) / len(curves)
     norms = eq / eq.iloc[0]
     return (norms * w).sum(axis=1) * initial
+
+
+def apply_month_aware_scale(
+    port: pd.Series,
+    *,
+    strong_mo: float = 0.025,
+    after_strong: float = 0.55,
+    dd_trigger: float = 0.035,
+    after_dd: float = 0.55,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal month / drawdown throttle — scales *down* only (never > 1).
+
+    For bars in calendar month M, month_scale uses the fully completed return of
+    month M-1 (first/last within M-1). Drawdown uses equity peak-to-trough lagged
+    one bar. Combined scale = min(month_scale, dd_scale) clipped to [lo, 1], then
+    lagged one more bar before multiplying returns.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert("UTC").tz_localize(None)
+    per = idx.to_period("M")
+    periods = list(dict.fromkeys(per))  # ordered unique
+    mo_ret: dict = {}
+    for p in periods:
+        chunk = eq.loc[per == p]
+        if len(chunk) < 2:
+            mo_ret[p] = 0.0
+        else:
+            mo_ret[p] = float(chunk.iloc[-1] / chunk.iloc[0] - 1.0)
+    p_index = {p: i for i, p in enumerate(periods)}
+    prior_vals = []
+    for p in per:
+        i = p_index[p]
+        prior_vals.append(mo_ret[periods[i - 1]] if i > 0 else 0.0)
+    prior_on_bars = pd.Series(prior_vals, index=eq.index, dtype=float)
+    mo_scale = pd.Series(1.0, index=eq.index)
+    mo_scale = mo_scale.where(prior_on_bars <= float(strong_mo), float(after_strong))
+
+    peak = eq.cummax()
+    dd = (peak - eq) / peak.replace(0, np.nan)
+    dd_lag = dd.shift(1).fillna(0.0)
+    dd_scale = pd.Series(1.0, index=eq.index)
+    dd_scale = dd_scale.where(dd_lag <= float(dd_trigger), float(after_dd))
+
+    scale = np.minimum(mo_scale.to_numpy(), dd_scale.to_numpy())
+    scale = np.clip(scale, float(lo), 1.0)
+    scale_s = pd.Series(scale, index=eq.index).shift(1).fillna(1.0)
+    return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
+
+
+def apply_equity_curve_target(
+    port: pd.Series,
+    *,
+    target_mo_vol: float = 0.012,
+    lookback_months: int = 6,
+    lo: float = 0.25,
+    hi: float = 1.0,
+) -> pd.Series:
+    """Scale bar returns so trailing monthly vol approaches ``target_mo_vol``.
+
+    Uses only completed months (shifted) — causal. ``hi`` defaults to 1.0 so this
+    is a flattener / de-leverager vs the input curve, not a leverage booster.
+    """
+    if port is None or len(port) < 40:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    m_last = eq.resample("ME").last()
+    m_ret = m_last.pct_change().dropna()
+    if len(m_ret) < 3:
+        return eq
+    lb = max(3, int(lookback_months))
+    trail = m_ret.rolling(lb, min_periods=3).std()
+    # shift so month-end vol estimate is usable only after that month closes
+    trail_s = trail.shift(1)
+    scale_m = (float(target_mo_vol) / trail_s.replace(0, np.nan)).clip(lo, hi)
+    scale_m = scale_m.fillna(1.0)
+    scale_bars = scale_m.reindex(eq.index, method="ffill").fillna(1.0)
+    scale_bars = scale_bars.shift(1).fillna(1.0).clip(lo, hi)
+    return (1.0 + r * scale_bars).cumprod() * float(eq.iloc[0])
+
+
+def apply_runup_throttle(
+    port: pd.Series,
+    *,
+    trail_bars: int = 42,
+    runup_thresh: float = 0.04,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """If lagged trailing return exceeds ``runup_thresh``, cut size (causal)."""
+    if port is None or len(port) < max(10, trail_bars + 2):
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    trail = eq / eq.shift(int(trail_bars)) - 1.0
+    trail_lag = trail.shift(1)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(trail_lag > float(runup_thresh)), float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
