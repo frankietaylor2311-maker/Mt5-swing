@@ -19,6 +19,7 @@ class TrendMAADX:
         atr_lookback: int = 100,
         session_hours: str | None = None,
         require_ema_align: bool = False,
+        require_htf_align: bool = False,
     ):
         """
         Parameters
@@ -34,6 +35,7 @@ class TrendMAADX:
         self.atr_lookback = int(atr_lookback)
         self.session_hours = session_hours or None
         self.require_ema_align = bool(require_ema_align)
+        self.require_htf_align = bool(require_htf_align)
 
     def _session_mask(self, index: pd.DatetimeIndex) -> pd.Series:
         if not self.session_hours:
@@ -76,6 +78,11 @@ class TrendMAADX:
             trend_up = trend_up & (data["ema_fast"] > data["sma_slow"])
             trend_dn = trend_dn & (data["ema_fast"] < data["sma_slow"])
             _ = px  # reserved for future filters
+        if self.require_htf_align and "htf_sma_fast" in data.columns:
+            htf_up = data["htf_sma_fast"] > data["htf_sma_slow"]
+            htf_dn = data["htf_sma_fast"] < data["htf_sma_slow"]
+            trend_up = trend_up & htf_up
+            trend_dn = trend_dn & htf_dn
         long_cond = trend_up & strong & sess & atr_ok
         short_cond = trend_dn & strong & sess & atr_ok
         sig = pd.Series(int(Signal.FLAT), index=data.index, dtype=int)

@@ -58,7 +58,7 @@ def test_lookahead_new_features_stable():
     bad.iloc[-8:, bad.columns.get_loc("close")] = 1e6
     bad.iloc[-8:, bad.columns.get_loc("high")] = 1e6
     b = apply_feature_pipeline(bad, signal_lag=1)
-    cols = ["bb_mid", "bb_upper", "macd", "donchian_upper"]
+    cols = ["bb_mid", "bb_upper", "macd", "donchian_upper", "htf_sma_fast"]
     cutoff = -8 - 40
     left = a[cols].iloc[:cutoff]
     right = b[cols].iloc[:cutoff]

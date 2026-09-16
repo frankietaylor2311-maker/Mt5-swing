@@ -1,22 +1,30 @@
-# Marathon progress (interim)
+# Marathon progress
 
-**UTC start:** see marathon_start_utc.txt  
-**Commit pushed:** `fc74033` — Donchian prior-window fix + 3 new strategies + min-trade IS scoring.
+**Elapsed:** ~15–20 min into multi-hour push (continuing).
 
-## Diagnosis fixed
-- `breakout_donchian` had **0 trades** because Donchian included the current bar (`close > upper` impossible).
-- Exclusive prior-N window restores Turtle-style breaks; OOS now shows **dozens** of trades on H4.
-- Zero-trade “wins” rejected via `min_trades=8` in `constrained_grid_search`.
+## Commits
+- `fc74033` Donchian prior-window fix + ema_pullback/hybrid/bbands + min-trade IS scoring
+- `64978cf` ATR stop/target exits + risk_fraction 0.01 + run1 leaderboard
+- (latest) Run2 archive + strategy-aware ATR + keltner
 
-## New strategies
-- `ema_pullback`, `hybrid_regime`, `bbands_reversion` (registered; look-ahead tests green).
+## Hard gates discipline
+- IS-only param grids; holdout never for tuning
+- signal_lag=1 intact; look-ahead tests green (25 pytest)
+- Zero-trade “wins” rejected (`min_trades=8`)
 
-## Early run1 snippets (approximate_non_ftmo)
-| Combo | OOS ret | OOS n | Gates | Holdout |
-|---|---:|---:|:---:|:---:|
-| EURUSD H4 bbands | +0.07% | 37 | PASS | NO |
-| EURUSD H4 ema_pullback | +0.01% | 22 | PASS | NO |
-| EURUSD H4 MR | +0.04% | 8 | PASS | NO |
-| EURUSD D1 bbands | +0.15% | 30 | PASS | NO |
+## Results (approximate_non_ftmo — NOT go-live)
+| Pass | OOS prof+gates | Holdout ok | Zero-trade OOS | Max OOS ret | Mean OOS n |
+|------|---------------:|-----------:|---------------:|------------:|-----------:|
+| Pre  | 6/18 | 4/18 | many | ~0.20% | ~0–50 |
+| Run1 | 23/36 | 15/36 | **0** | ~0.27% | ~26 |
+| Run2 | 24/36 | 9/36 | **0** | ~0.55% | ~46 |
 
-FTMO exports: still **absent**. `ftmo_golive_candidate` stays false.
+**FTMO exports:** still empty (`data/ftmo/`). `ftmo_golive_candidate` remains false.
+
+## Best dual (OOS+holdout) so far
+- GBPUSD D1 trend_ma_adx / GBPUSD H4 bbands / USDJPY H4+D1 bbands / hybrid D1
+- Absolute returns still small vs FTMO 10%/5% targets — edge thin on Yahoo interim data.
+
+## Next
+- Run3: strategy-aware ATR + keltner
+- Basket of OOS-ranked legs (holdout confirmation only)

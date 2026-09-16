@@ -18,6 +18,7 @@ class BBandsReversion:
         require_rsi: bool = True,
         rsi_low: float = 40.0,
         rsi_high: float = 60.0,
+        require_htf_align: bool = False,
     ):
         self.adx_max = float(adx_max)
         self.exit_to_mid = bool(exit_to_mid)
@@ -25,6 +26,7 @@ class BBandsReversion:
         self.require_rsi = bool(require_rsi)
         self.rsi_low = float(rsi_low)
         self.rsi_high = float(rsi_high)
+        self.require_htf_align = bool(require_htf_align)
 
     def _session_mask(self, index: pd.DatetimeIndex) -> pd.Series:
         if not self.session_hours:
@@ -51,6 +53,12 @@ class BBandsReversion:
         if self.require_rsi and "rsi" in data.columns:
             long_cond = long_cond & (data["rsi"] < self.rsi_low)
             short_cond = short_cond & (data["rsi"] > self.rsi_high)
+        if self.require_htf_align and "htf_sma_fast" in data.columns and "htf_sma_slow" in data.columns:
+            # Fade only with (or against) HTF — long dips in HTF uptrend, shorts in HTF downtrend
+            htf_up = data["htf_sma_fast"] > data["htf_sma_slow"]
+            htf_dn = data["htf_sma_fast"] < data["htf_sma_slow"]
+            long_cond = long_cond & htf_up
+            short_cond = short_cond & htf_dn
         sig = pd.Series(int(Signal.FLAT), index=data.index, dtype=int)
         last = int(Signal.FLAT)
         for i in range(len(sig)):

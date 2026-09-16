@@ -132,8 +132,9 @@ GRIDS = {
         "adx_threshold": [18, 22, 26],
         "atr_pct_min": [0.0, 0.15],
         "atr_pct_max": [0.9, 1.0],
-        "session_hours": [None, "7-20"],
+        "session_hours": [None],
         "require_ema_align": [False, True],
+        "require_htf_align": [False, True],
     },
     "mean_reversion_regime": {
         "rsi_low": [30, 35],
@@ -172,6 +173,7 @@ GRIDS = {
         "require_rsi": [True, False],
         "rsi_low": [35, 40],
         "rsi_high": [60, 65],
+        "require_htf_align": [False, True],
         "session_hours": [None],
     },
 }
@@ -207,7 +209,9 @@ def main() -> None:
             research, holdout = split_holdout(df, holdout_days)
             train, test, step = wf_bars_for(tf, len(research))
 
-            for strat_name in list_strategies():
+            focus = [s.strip() for s in __import__("os").environ.get("FOCUS_STRATS", "").split(",") if s.strip()]
+            strat_list = focus if focus else list_strategies()
+            for strat_name in strat_list:
                 # --- Baseline WF on research set (fixed default params) ---
                 base = get_strategy(strat_name)
                 risk = cfg.get("risk", {})

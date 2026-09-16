@@ -135,6 +135,9 @@ def apply_feature_pipeline(
     feats["ema_26"] = ema(close, 26)
     feats["macd"] = feats["ema_12"] - feats["ema_26"]
     feats["macd_signal"] = feats["macd"].ewm(span=9, adjust=False, min_periods=9).mean()
+    # Higher-TF proxy from same bar series (e.g. ~20/50 D1 on H4≈6 bars/day)
+    feats["htf_sma_fast"] = sma(close, 120)
+    feats["htf_sma_slow"] = sma(close, 300)
 
     for name, series in feats.items():
         out[name] = lag(series, signal_lag) if signal_lag else series

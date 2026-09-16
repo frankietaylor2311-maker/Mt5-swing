@@ -5,15 +5,15 @@ Params selected on IS only; holdout never used for tuning. Zero-trade rows are n
 
 | Rank | Symbol | TF | Strategy | OOS ret | OOS Sh | OOS n | Holdout | Source |
 |---:|---|---|---|---:|---:|---:|:---:|---|
-| 1 | USDJPY | D1 | bbands_reversion | 0.16% | 0.86 | 31 | YES | `approximate_non_ftmo` |
-| 2 | GBPUSD | H4 | breakout_donchian | 0.14% | 0.28 | 106 | YES | `approximate_non_ftmo` |
-| 3 | USDJPY | H4 | bbands_reversion | 0.14% | 0.68 | 38 | YES | `approximate_non_ftmo` |
-| 4 | GBPUSD | H4 | bbands_reversion | 0.06% | 0.70 | 75 | YES | `approximate_non_ftmo` |
-| 5 | EURUSD | H4 | bbands_reversion | 0.05% | 0.67 | 24 | YES | `approximate_non_ftmo` |
-| 6 | GBPUSD | D1 | bbands_reversion | -0.10% | -0.16 | 51 | YES | `approximate_non_ftmo` |
-| 7 | USDJPY | H4 | mean_reversion_regime | -0.17% | -0.44 | 31 | YES | `approximate_non_ftmo` |
-| 8 | GBPUSD | D1 | mean_reversion_regime | -0.37% | -0.63 | 47 | YES | `approximate_non_ftmo` |
-| 9 | USDJPY | D1 | mean_reversion_regime | 0.11% | 0.35 | 7 | YES | `approximate_non_ftmo` |
-| 10 | GBPUSD | D1 | breakout_donchian | 0.55% | 1.11 | 47 | NO | `approximate_non_ftmo` |
-| 11 | USDJPY | D1 | hybrid_regime | 0.49% | 1.08 | 35 | NO | `approximate_non_ftmo` |
-| 12 | GBPUSD | H4 | hybrid_regime | 0.43% | 0.99 | 71 | NO | `approximate_non_ftmo` |
+| 1 | USDJPY | D1 | hybrid_regime | 0.50% | 1.03 | 35 | YES | `approximate_non_ftmo` |
+| 2 | USDJPY | D1 | bbands_reversion | 0.26% | 0.74 | 18 | YES | `approximate_non_ftmo` |
+| 3 | USDJPY | H4 | breakout_donchian | 0.15% | 0.39 | 87 | YES | `approximate_non_ftmo` |
+| 4 | USDJPY | D1 | mean_reversion_regime | 0.07% | -0.62 | 18 | YES | `approximate_non_ftmo` |
+| 5 | USDJPY | H4 | mean_reversion_regime | -0.07% | -0.25 | 28 | YES | `approximate_non_ftmo` |
+| 6 | GBPUSD | D1 | bbands_reversion | -0.10% | -0.14 | 23 | YES | `approximate_non_ftmo` |
+| 7 | GBPUSD | H4 | mean_reversion_regime | -0.17% | -0.00 | 22 | YES | `approximate_non_ftmo` |
+| 8 | GBPUSD | D1 | mean_reversion_regime | -0.25% | 0.35 | 15 | YES | `approximate_non_ftmo` |
+| 9 | GBPUSD | D1 | breakout_donchian | 0.58% | 1.03 | 47 | NO | `approximate_non_ftmo` |
+| 10 | GBPUSD | H4 | hybrid_regime | 0.31% | 0.29 | 91 | NO | `approximate_non_ftmo` |
+| 11 | EURUSD | D1 | bbands_reversion | 0.26% | 0.73 | 17 | NO | `approximate_non_ftmo` |
+| 12 | USDJPY | D1 | breakout_donchian | 0.23% | 0.41 | 30 | NO | `approximate_non_ftmo` |
