@@ -51,3 +51,23 @@ def fixed_fractional_size(
     lots = max(min_lot, min(max_lot, lots))
     steps = int(lots / lot_step)
     return round(steps * lot_step, 2)
+
+
+def volatility_scale(
+    realized_atr: float,
+    median_atr: float,
+    *,
+    target_ratio: float = 1.0,
+    min_scale: float = 0.25,
+    max_scale: float = 1.5,
+) -> float:
+    """
+    Scale position size inversely with ATR vs a causal median reference.
+
+    Higher realized ATR → smaller scale (volatility targeting).
+    """
+    if realized_atr <= 0 or median_atr <= 0:
+        return 1.0
+    # Want exposure ~ target_ratio * median / realized
+    raw = target_ratio * (median_atr / realized_atr)
+    return float(max(min_scale, min(max_scale, raw)))

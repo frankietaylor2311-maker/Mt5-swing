@@ -28,6 +28,17 @@ class WalkForwardConfig:
     symbol: str = "EURUSD"
     signal_lag: int = 1
     initial_equity: float = 10_000.0
+    risk_fraction: float = 0.005
+    atr_stop_mult: float = 2.0
+    sizing: str = "atr"
+    vol_target: bool = True
+    max_lot: float = 1.0
+    commission_per_lot: float = 7.0
+    slippage_pips: float = 0.5
+    default_spread_pips: float = 1.2
+    max_loss_mode: str = "static_initial"
+    daily_loss_mode: str = "ftmo_initial"
+    daily_tz: str = "Europe/Prague"
 
 
 @dataclass
@@ -62,7 +73,8 @@ class WalkForwardResult:
         ddd = self.aggregate_oos.get("max_daily_dd", float("nan"))
         pass_mdd = self.aggregate_oos.get("passed_max_dd_gate", False)
         pass_ddd = self.aggregate_oos.get("passed_daily_dd_gate", False)
-        print(f"  Max peak-to-trough DD < 10%: {mdd:.2%} -> {'PASS' if pass_mdd else 'FAIL'}")
+        static = self.aggregate_oos.get("static_loss_from_initial", mdd)
+        print(f"  Max loss (static/P2T per mode) < 10%: static={static:.2%} p2t={mdd:.2%} -> {'PASS' if pass_mdd else 'FAIL'}")
         print(f"  Max daily DD < 5%:          {ddd:.2%} -> {'PASS' if pass_ddd else 'FAIL'}")
         overall = "PASS" if self.gates_pass else "FAIL"
         print(f"  Overall risk gates:         {overall}")
@@ -98,6 +110,17 @@ def _bt_config(wf: WalkForwardConfig) -> BacktestConfig:
         signal_lag=wf.signal_lag,
         max_dd=wf.max_dd,
         daily_dd=wf.daily_dd,
+        risk_fraction=wf.risk_fraction,
+        atr_stop_mult=wf.atr_stop_mult,
+        sizing=wf.sizing,
+        vol_target=wf.vol_target,
+        max_lot=wf.max_lot,
+        commission_per_lot=wf.commission_per_lot,
+        slippage_pips=wf.slippage_pips,
+        default_spread_pips=wf.default_spread_pips,
+        max_loss_mode=wf.max_loss_mode,
+        daily_loss_mode=wf.daily_loss_mode,
+        daily_tz=wf.daily_tz,
     )
 
 
@@ -108,6 +131,7 @@ def _aggregate_metrics(metric_dicts: list[dict], max_dd: float, daily_dd: float)
     avg_ret = sum(m["total_return"] for m in metric_dicts) / len(metric_dicts)
     max_dd_v = max(m["max_drawdown"] for m in metric_dicts)
     max_ddd_v = max(m["max_daily_dd"] for m in metric_dicts)
+    static_loss_v = max(m.get("static_loss_from_initial", m["max_drawdown"]) for m in metric_dicts)
     avg_sh = sum(m["sharpe"] for m in metric_dicts) / len(metric_dicts)
     n_trades = sum(m["n_trades"] for m in metric_dicts)
     # Win rate weighted by trades
@@ -115,12 +139,15 @@ def _aggregate_metrics(metric_dicts: list[dict], max_dd: float, daily_dd: float)
         win_rate = sum(m["win_rate"] * m["n_trades"] for m in metric_dicts) / n_trades
     else:
         win_rate = 0.0
-    pass_mdd = max_dd_v < max_dd
+    # Gate max-loss using static_from_initial when present (FTMO 2-Step); else peak-to-trough
+    gate_loss = static_loss_v
+    pass_mdd = gate_loss < max_dd
     pass_ddd = max_ddd_v < daily_dd
     return {
         "total_return": avg_ret,
         "max_drawdown": max_dd_v,
         "max_daily_dd": max_ddd_v,
+        "static_loss_from_initial": static_loss_v,
         "sharpe": avg_sh,
         "n_trades": n_trades,
         "win_rate": win_rate,

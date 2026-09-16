@@ -70,3 +70,16 @@ data/raw/
 data/downloaded/
 !data/sample/
 !data/sample/**
+
+# FTMO MT5 exports (prefer LFS for large files; keep meta)
+data/raw/
+data/downloaded/
+# Interim Yahoo — OK to commit if modest size; mark approximate_non_ftmo
+!data/history/
+!data/history/**
+!data/ftmo/
+!data/ftmo/**
+!data/sample/
+!data/sample/**
+!reports/
+!reports/**

@@ -1,0 +1,102 @@
+# FTMO Challenge: 2-Step — swing research config
+# https://ftmo.com/en/2-step-challenge/  |  https://ftmo.com/en/trading-objectives/
+#
+# Style: swing (H4 / D1 holds) — not scalp.
+# Live MT5 only on Windows FTMO terminal; research imports CSV exports.
+#
+# Risk (2-Step):
+#   Max Daily Loss 5%: equity ≥ balance@00:00 Europe/Prague − 5%×initial_capital
+#   Max Loss 10%: STATIC floor — equity ≥ 90%×initial_capital (NOT peak-to-trough)
+# Peak-to-trough DD is still computed for reports but does not define the 2-Step gate.
+
+prop_firm: FTMO
+challenge_type: 2-Step
+style: swing
+
+challenge:
+  max_daily_loss: 0.05          # of initial simulated capital (FTMO amount)
+  max_loss: 0.10                # static from initial simulated capital
+  max_loss_mode: static_initial
+  daily_loss_mode: ftmo_initial
+  daily_tz: Europe/Prague       # CE(S)T reset
+  profit_target_phase1: 0.10
+  profit_target_phase2: 0.05
+  min_trading_days: 4
+
+research_symbols:
+  - EURUSD
+  - GBPUSD
+  - USDJPY
+  # Optional when FTMO MT5 exports available:
+  # - XAUUSD
+  # - US100
+
+timeframes:
+  - H4
+  - D1
+
+symbols:
+  forex_majors: [EURUSD, GBPUSD, USDJPY, USDCHF, USDCAD, AUDUSD, NZDUSD]
+  metals: [XAUUSD, XAGUSD]
+  indices: [US30, US100, US500, GER40, UK100]
+
+risk:
+  max_peak_to_trough_dd: 0.10   # used as the 10% static max-loss amount when mode=static_initial
+  max_daily_dd: 0.05
+  max_loss_mode: static_initial
+  daily_loss_mode: ftmo_initial
+  daily_tz: Europe/Prague
+  flatten_on_breach: true
+  risk_fraction: 0.005
+  atr_stop_mult: 2.5
+  sizing: atr
+  vol_target: true
+  max_lot: 1.0
+
+backtest:
+  initial_equity: 100000
+  commission_per_lot: 7.0
+  slippage_pips: 0.5
+  default_spread_pips: 1.2
+  signal_lag: 1
+
+default_spreads_pips:
+  EURUSD: 1.2
+  GBPUSD: 1.4
+  USDJPY: 1.2
+  XAUUSD: 25.0
+  US100: 1.5
+
+walk_forward:
+  mode: rolling
+  train_bars: 500
+  test_bars: 100
+  step_bars: 100
+  min_train_bars: 200
+  holdout_days: 365
+
+data:
+  ftmo_dir: data/ftmo
+  interim_dir: data/history
+  require_ftmo_for_golive: true
+
+strategy:
+  name: trend_ma_adx
+  params:
+    adx_threshold: 24
+    atr_pct_min: 0.15
+    atr_pct_max: 0.90
+    session_hours: "7-20"
+    require_ema_align: true
+
+optimize:
+  max_trials: 24
+  param_grid:
+    adx_threshold: [20, 24, 28]
+    atr_pct_min: [0.0, 0.15]
+    atr_pct_max: [0.85, 1.0]
+
+broker:
+  live: false
+  stub: true
+  note: "Live only on Windows FTMO MT5 — never install MT5 on Linux."

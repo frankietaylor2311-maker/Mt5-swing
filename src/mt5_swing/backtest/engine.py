@@ -20,7 +20,7 @@ from mt5_swing.backtest.metrics import Metrics, compute_metrics
 from mt5_swing.data.symbols import get_symbol_meta, pip_value_per_lot
 from mt5_swing.features.indicators import apply_feature_pipeline
 from mt5_swing.risk.monitors import KillSwitch, RiskLimits
-from mt5_swing.risk.sizing import atr_position_size, fixed_fractional_size
+from mt5_swing.risk.sizing import atr_position_size, fixed_fractional_size, volatility_scale
 
 
 @dataclass
@@ -39,6 +39,13 @@ class BacktestConfig:
     daily_dd: float = 0.05
     flatten_on_breach: bool = True
     periods_per_year: float = 252 * 6
+    vol_target: bool = False
+    vol_lookback: int = 100
+    max_lot: float = 2.0
+    min_lot: float = 0.01
+    max_loss_mode: str = "static_initial"  # static_initial | peak_to_trough
+    daily_loss_mode: str = "ftmo_initial"  # ftmo_initial | pct_of_day_open
+    daily_tz: str = "Europe/Prague"
 
 
 @dataclass
@@ -90,6 +97,10 @@ def run_backtest(
             max_peak_to_trough_dd=cfg.max_dd,
             max_daily_dd=cfg.daily_dd,
             flatten_on_breach=cfg.flatten_on_breach,
+            max_loss_mode=cfg.max_loss_mode,  # type: ignore[arg-type]
+            daily_loss_mode=cfg.daily_loss_mode,  # type: ignore[arg-type]
+            daily_tz=cfg.daily_tz,
+            initial_capital=cfg.initial_equity,
         )
     )
     ks.reset(cfg.initial_equity)
@@ -194,11 +205,22 @@ def run_backtest(
                         atr_stop_mult=cfg.atr_stop_mult,
                         pip_size=pip,
                         pip_value=pip_value_per_lot(cfg.symbol, float(opens[i])),
+                        min_lot=cfg.min_lot,
+                        max_lot=cfg.max_lot,
                     )
                 elif cfg.sizing == "fixed":
                     new_lots = cfg.fixed_lot
                 else:
-                    new_lots = fixed_fractional_size(equity)
+                    new_lots = fixed_fractional_size(equity, min_lot=cfg.min_lot, max_lot=cfg.max_lot)
+                if cfg.vol_target and atr_v == atr_v and atr_v > 0 and i >= 1:
+                    # Causal median ATR over lookback ending at i-1 / current lagged atr
+                    lo = max(0, i - cfg.vol_lookback)
+                    window = atrs[lo : i + 1]
+                    window = window[~np.isnan(window)]
+                    if len(window) >= 10:
+                        med = float(np.median(window))
+                        new_lots *= volatility_scale(float(atr_v), med)
+                        new_lots = max(cfg.min_lot, min(cfg.max_lot, round(int(new_lots / 0.01) * 0.01, 2)))
                 if new_lots > 0:
                     fill = opens[i] + _cost_offset(desired, bar_spread)
                     entry_price = fill
@@ -225,6 +247,10 @@ def run_backtest(
         max_dd_gate=cfg.max_dd,
         daily_dd_gate=cfg.daily_dd,
         periods_per_year=cfg.periods_per_year,
+        max_loss_mode=cfg.max_loss_mode,  # type: ignore[arg-type]
+        daily_loss_mode=cfg.daily_loss_mode,  # type: ignore[arg-type]
+        daily_tz=cfg.daily_tz,
+        initial_equity=cfg.initial_equity,
     )
     return BacktestResult(
         equity=equity_s,

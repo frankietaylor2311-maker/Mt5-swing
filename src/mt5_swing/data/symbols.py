@@ -29,6 +29,21 @@ _SYMBOLS: dict[str, SymbolMeta] = {
     "EURUSD": SymbolMeta("EURUSD", digits=5, base_currency="EUR", quote_currency="USD"),
     "GBPUSD": SymbolMeta("GBPUSD", digits=5, base_currency="GBP", quote_currency="USD"),
     "USDJPY": SymbolMeta("USDJPY", digits=3, base_currency="USD", quote_currency="JPY"),
+    "USDCHF": SymbolMeta("USDCHF", digits=5, base_currency="USD", quote_currency="CHF"),
+    "USDCAD": SymbolMeta("USDCAD", digits=5, base_currency="USD", quote_currency="CAD"),
+    "AUDUSD": SymbolMeta("AUDUSD", digits=5, base_currency="AUD", quote_currency="USD"),
+    "NZDUSD": SymbolMeta("NZDUSD", digits=5, base_currency="NZD", quote_currency="USD"),
+    "EURGBP": SymbolMeta("EURGBP", digits=5, base_currency="EUR", quote_currency="GBP"),
+    "EURJPY": SymbolMeta("EURJPY", digits=3, base_currency="EUR", quote_currency="JPY"),
+    "GBPJPY": SymbolMeta("GBPJPY", digits=3, base_currency="GBP", quote_currency="JPY"),
+    # Metals / indices — contract_size approximates FTMO CFD lots; verify in terminal
+    "XAUUSD": SymbolMeta("XAUUSD", digits=2, contract_size=100.0, base_currency="XAU", quote_currency="USD"),
+    "XAGUSD": SymbolMeta("XAGUSD", digits=3, contract_size=5000.0, base_currency="XAG", quote_currency="USD"),
+    "US30": SymbolMeta("US30", digits=1, contract_size=1.0, base_currency="US30", quote_currency="USD"),
+    "US100": SymbolMeta("US100", digits=1, contract_size=1.0, base_currency="US100", quote_currency="USD"),
+    "US500": SymbolMeta("US500", digits=1, contract_size=1.0, base_currency="US500", quote_currency="USD"),
+    "GER40": SymbolMeta("GER40", digits=1, contract_size=1.0, base_currency="GER40", quote_currency="EUR"),
+    "UK100": SymbolMeta("UK100", digits=1, contract_size=1.0, base_currency="UK100", quote_currency="GBP"),
 }
 
 

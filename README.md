@@ -9,15 +9,17 @@ validation (rolling default + anchored). Live/paper routing uses the optional
 sample data.
 
 > **Honest default:** baseline strategies are research templates. They may **fail**
-> the 10% / 5% risk gates on sample data. The framework reports IS/OOS metrics and
-> pass/fail honestly — it does **not** claim OOS profitability.
+> the 10% / 5% risk gates on sample or interim public data. The framework reports IS/OOS metrics and
+> pass/fail honestly — it does **not** claim OOS profitability or FTMO readiness
+> on `approximate_non_ftmo` data.
 
 ## Hard risk rules
 
 | Gate | Limit | Definition |
 |------|-------|------------|
-| Peak-to-trough max DD | **&lt; 10%** | `(peak_equity − equity) / peak_equity` |
-| Daily DD | **&lt; 5%** | Equity vs **prior calendar-day close** (UTC date of the bar index): `(E_prior_day_close − E_t) / E_prior_day_close` |
+| FTMO 2-Step Max Loss | **&lt; 10%** | **Static** from initial capital: `(initial − equity) / initial` (not peak-to-trough) |
+| FTMO 2-Step Max Daily Loss | **&lt; 5%** | Loss from balance at **00:00 Europe/Prague** / **initial**: `(E_prague_sod − E_t) / initial` |
+| Peak-to-trough DD (info) | — | `(peak − equity) / peak` — reported but not the 2-Step gate |
 
 On breach: **halt new entries**. If past the flatten threshold (defaults to the same
 limit; configurable), **flatten** open exposure.
@@ -45,11 +47,48 @@ Optional MT5 (Windows + running terminal):
 pip install -e ".[mt5]"
 ```
 
+## FTMO Challenge research data
+
+**Production path:** export OHLC from the **Windows FTMO MT5** terminal (History Center
+or a script), then import:
+
+```bash
+python -m mt5_swing.cli import-ftmo-data \
+  --file EURUSD_H4=/path/from/mt5/EURUSD_H4.csv \
+  --file GBPUSD_H4=/path/from/mt5/GBPUSD_H4.csv
+# writes data/ftmo/*.csv with data_source=ftmo_mt5_export
+```
+
+Config: [`src/mt5_swing/config/ftmo_2step.yaml`](src/mt5_swing/config/ftmo_2step.yaml) — **2-Step**
+Challenge: **static** max loss **&lt; 10%** of initial capital; max daily loss **&lt; 5%** of
+initial vs balance at **00:00 Europe/Prague** (not UTC). Peak-to-trough DD is informational.
+Swing style: H4/D1. Basket: EURUSD, GBPUSD, USDJPY (+ optional XAUUSD/index when exported).
+
+**Do not install MetaTrader 5 on Linux.** Live/paper against FTMO runs on the always-on
+Windows PC later.
+
+**Interim public data (Yahoo via yfinance):** optional only when FTMO exports are not
+available yet. Every file/report must be labeled `approximate_non_ftmo` and must **not**
+be treated as FTMO go-live pass criteria.
+
+```bash
+python -m mt5_swing.cli download-data --interim-public --all-ftmo-research
+python -m mt5_swing.cli download-data --synthetic --symbol EURUSD  # offline tests
+```
+
+Batch walk-forward + constrained IS refine (holdout last ~1y never used for selection):
+
+```bash
+python scripts/run_ftmo_research.py
+# → reports/walk_forward_summary.md
+```
+
 ## Quick start
+
 
 ```bash
 # Generate / ensure sample CSVs under data/sample/
-python -m mt5_swing.cli download-data --symbol EURUSD --timeframe H4
+python -m mt5_swing.cli download-data --synthetic --symbol EURUSD --timeframe H4
 
 # Single backtest
 python -m mt5_swing.cli backtest --symbol EURUSD --strategy trend_ma_adx
@@ -82,14 +121,14 @@ features/signals) and walk-forward smoke tests.
 
 ```
 src/mt5_swing/
-  data/          OHLC CSV loader, sample generator, symbol/pip metadata
+  data/          OHLC loader, FTMO/MT5 CSV import, interim yfinance, sample generator
   features/      Point-in-time indicators + explicit lag
   strategies/    Strategy protocol + trend MA/ADX, mean-reversion+regime, breakout
   backtest/      Bar backtester (spread/commission/slippage, sizing hooks)
   risk/          ATR / fixed-fractional sizing, MaxDD + DailyDD, kill-switch
   validation/    Walk-forward (rolling + anchored), OOS report, overfit checks
   broker/mt5/    Client with stub mode; live gated by --live
-  config/        default.yaml (EURUSD, GBPUSD, USDJPY, H4/D1)
+  config/        default.yaml + ftmo.yaml (Challenge gates & symbol universe)
   cli.py         download-data, backtest, walk-forward, optimize, paper-trade, live-trade
 ```
 

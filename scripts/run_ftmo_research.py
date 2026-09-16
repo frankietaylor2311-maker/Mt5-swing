@@ -1,0 +1,353 @@
+#!/usr/bin/env python3
+"""
+FTMO 2-Step Challenge walk-forward research runner (swing H4/D1).
+
+- Prefers data/ftmo/ (MT5 exports). If missing, uses data/history/ interim public
+  and labels every row/report as approximate_non_ftmo.
+- Param selection uses ONLY pre-holdout bars (last holdout_days excluded).
+- Final holdout is confirmation only — never used to pick params.
+- Does NOT claim FTMO go-live readiness on approximate_non_ftmo data.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from dataclasses import asdict
+from datetime import timedelta
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from mt5_swing.backtest.engine import BacktestConfig, run_backtest
+from mt5_swing.config import load_config
+from mt5_swing.data.loader import load_ohlc_csv
+from mt5_swing.optimize import constrained_grid_search
+from mt5_swing.strategies.registry import get_strategy, list_strategies
+from mt5_swing.validation.walk_forward import WalkForwardConfig, run_walk_forward
+
+FTMO_DIR = ROOT / "data" / "ftmo"
+HIST_DIR = ROOT / "data" / "history"
+REPORTS = ROOT / "reports"
+
+
+def data_source_for(path: Path) -> str:
+    meta = path.with_suffix(".meta.json")
+    if meta.exists():
+        try:
+            return json.loads(meta.read_text()).get("data_source", "unknown")
+        except Exception:
+            pass
+    if "ftmo" in path.parts:
+        return "ftmo_mt5_export"
+    if "history" in path.parts:
+        return "approximate_non_ftmo"
+    return "unknown"
+
+
+def resolve_csv(symbol: str, tf: str) -> Path | None:
+    for d in (FTMO_DIR, HIST_DIR):
+        p = d / f"{symbol}_{tf}.csv"
+        if p.exists():
+            return p
+    return None
+
+
+def bt_cfg(cfg: dict, symbol: str) -> BacktestConfig:
+    risk, bt = cfg.get("risk", {}), cfg.get("backtest", {})
+    return BacktestConfig(
+        symbol=symbol,
+        initial_equity=float(bt.get("initial_equity", 100_000)),
+        commission_per_lot=float(bt.get("commission_per_lot", 7.0)),
+        slippage_pips=float(bt.get("slippage_pips", 0.5)),
+        default_spread_pips=float(bt.get("default_spread_pips", 1.2)),
+        signal_lag=int(bt.get("signal_lag", 1)),
+        max_dd=float(risk.get("max_peak_to_trough_dd", 0.10)),
+        daily_dd=float(risk.get("max_daily_dd", 0.05)),
+        risk_fraction=float(risk.get("risk_fraction", 0.005)),
+        atr_stop_mult=float(risk.get("atr_stop_mult", 2.0)),
+        sizing=str(risk.get("sizing", "atr")),
+        vol_target=bool(risk.get("vol_target", True)),
+        max_lot=float(risk.get("max_lot", 1.0)),
+        max_loss_mode=str(risk.get("max_loss_mode", "static_initial")),
+        daily_loss_mode=str(risk.get("daily_loss_mode", "ftmo_initial")),
+        daily_tz=str(risk.get("daily_tz", "Europe/Prague")),
+    )
+
+
+def wf_bars_for(tf: str, n: int) -> tuple[int, int, int]:
+    if tf.upper() == "D1":
+        # ~2y train / ~4m test on daily
+        train, test, step = 504, 84, 84
+    else:
+        train, test, step = 500, 100, 100
+    # shrink if series short
+    if n < train + test + step:
+        train = max(200, n // 3)
+        test = max(40, n // 10)
+        step = test
+    return train, test, step
+
+
+def split_holdout(df: pd.DataFrame, holdout_days: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if df.empty:
+        return df, df
+    end = df.index.max()
+    cut = end - timedelta(days=holdout_days)
+    research = df.loc[df.index < cut]
+    holdout = df.loc[df.index >= cut]
+    # Ensure research has enough bars; if not, use 80/20 chronological split
+    if len(research) < 300 or len(holdout) < 50:
+        cut_i = int(len(df) * 0.8)
+        research, holdout = df.iloc[:cut_i], df.iloc[cut_i:]
+    return research, holdout
+
+
+# Constrained grids — small to limit overfit (IS only)
+GRIDS = {
+    "trend_ma_adx": {
+        "adx_threshold": [22, 26, 30],
+        "atr_pct_min": [0.0, 0.2],
+        "atr_pct_max": [0.85, 1.0],
+        "session_hours": [None, "7-20"],
+        "require_ema_align": [False, True],
+    },
+    "mean_reversion_regime": {
+        "rsi_low": [25, 30],
+        "rsi_high": [70, 75],
+        "adx_max": [15, 18],
+        "session_hours": [None, "7-20"],
+    },
+    "breakout_donchian": {
+        "use_mid_exit": [True],
+        "adx_min": [15, 22],
+        "atr_pct_min": [0.0, 0.2],
+        "session_hours": [None, "7-20"],
+    },
+}
+
+
+def main() -> None:
+    REPORTS.mkdir(parents=True, exist_ok=True)
+    cfg = load_config(ROOT / "src" / "mt5_swing" / "config" / "ftmo_2step.yaml")
+    symbols = [s for s in cfg.get("research_symbols", ["EURUSD", "GBPUSD", "USDJPY"]) if resolve_csv(s, "H4") or resolve_csv(s, "D1")]
+    # If only FX interim available
+    if not symbols:
+        symbols = ["EURUSD", "GBPUSD", "USDJPY"]
+    tfs = cfg.get("timeframes", ["H4", "D1"])
+    holdout_days = int(cfg.get("walk_forward", {}).get("holdout_days", 365))
+
+    rows = []
+    refinements_log = []
+    any_ftmo = False
+
+    for symbol in symbols:
+        for tf in tfs:
+            path = resolve_csv(symbol, tf)
+            if path is None:
+                refinements_log.append(f"SKIP {symbol}_{tf}: no CSV in data/ftmo or data/history")
+                continue
+            source = data_source_for(path)
+            if source == "ftmo_mt5_export":
+                any_ftmo = True
+            df = load_ohlc_csv(path, symbol=symbol, timeframe=tf)
+            research, holdout = split_holdout(df, holdout_days)
+            train, test, step = wf_bars_for(tf, len(research))
+
+            for strat_name in list_strategies():
+                # --- Baseline WF on research set (fixed default params) ---
+                base = get_strategy(strat_name)
+                risk = cfg.get("risk", {})
+                bt = cfg.get("backtest", {})
+                wf_cfg = WalkForwardConfig(
+                    mode="rolling",
+                    train_bars=train,
+                    test_bars=test,
+                    step_bars=step,
+                    symbol=symbol,
+                    max_dd=float(risk.get("max_peak_to_trough_dd", 0.10)),
+                    daily_dd=float(risk.get("max_daily_dd", 0.05)),
+                    initial_equity=float(bt.get("initial_equity", 100_000)),
+                    risk_fraction=float(risk.get("risk_fraction", 0.005)),
+                    atr_stop_mult=float(risk.get("atr_stop_mult", 2.0)),
+                    sizing=str(risk.get("sizing", "atr")),
+                    vol_target=bool(risk.get("vol_target", True)),
+                    max_lot=float(risk.get("max_lot", 1.0)),
+                    commission_per_lot=float(bt.get("commission_per_lot", 7.0)),
+                    slippage_pips=float(bt.get("slippage_pips", 0.5)),
+                    default_spread_pips=float(bt.get("default_spread_pips", 1.2)),
+                    max_loss_mode=str(risk.get("max_loss_mode", "static_initial")),
+                    daily_loss_mode=str(risk.get("daily_loss_mode", "ftmo_initial")),
+                    daily_tz=str(risk.get("daily_tz", "Europe/Prague")),
+                )
+                try:
+                    base_wf = run_walk_forward(research, base, wf_cfg)
+                except ValueError as e:
+                    refinements_log.append(f"WF skip {strat_name} {symbol}_{tf}: {e}")
+                    continue
+
+                # --- Constrained IS optimize on first 60% of research only ---
+                cut = int(len(research) * 0.6)
+                is_df = research.iloc[:cut]
+                grid = GRIDS.get(strat_name, {})
+                # Flatten session_hours None properly for grid
+                opt = constrained_grid_search(
+                    is_df,
+                    strat_name,
+                    grid,
+                    max_trials=16,
+                    bt_config=bt_cfg(cfg, symbol),
+                )
+                # Normalize empty session string back to None
+                best_params = {}
+                if opt:
+                    best_params = dict(opt[0]["params"])
+                    if not best_params.get("session_hours"):
+                        best_params["session_hours"] = None
+
+                refined = get_strategy(strat_name, **best_params) if best_params else base
+                try:
+                    ref_wf = run_walk_forward(research, refined, wf_cfg)
+                except ValueError as e:
+                    refinements_log.append(f"refined WF skip {strat_name} {symbol}_{tf}: {e}")
+                    ref_wf = base_wf
+
+                # Anchored: one pass only when series long enough (keeps runtime bounded)
+                anch_wf = None
+                if len(research) >= train + 2 * test:
+                    wf_anch = WalkForwardConfig(**{**wf_cfg.__dict__, "mode": "anchored"})
+                    try:
+                        anch_wf = run_walk_forward(research, refined, wf_anch)
+                    except ValueError:
+                        anch_wf = None
+
+                # Holdout confirmation ONLY (no param change)
+                hold_m = None
+                if len(holdout) >= 50:
+                    hold_res = run_backtest(holdout, refined, bt_cfg(cfg, symbol))
+                    hold_m = hold_res.metrics.as_dict()
+
+                oos = ref_wf.aggregate_oos
+                profitable = float(oos.get("total_return", 0)) > 0
+                gates = bool(oos.get("gates_pass", False))
+                hold_pass = bool(hold_m and hold_m.get("gates_pass") and hold_m.get("total_return", 0) > 0)
+
+                # FTMO go-live candidate only if real FTMO data + OOS profit + gates + holdout
+                golive_candidate = (
+                    source == "ftmo_mt5_export" and profitable and gates and hold_pass
+                )
+
+                row = {
+                    "symbol": symbol,
+                    "timeframe": tf,
+                    "strategy": strat_name,
+                    "data_source": source,
+                    "bars_total": len(df),
+                    "bars_research": len(research),
+                    "bars_holdout": len(holdout),
+                    "range_start": str(df.index.min()),
+                    "range_end": str(df.index.max()),
+                    "params": json.dumps(best_params),
+                    "wf_mode": "rolling",
+                    "folds": len(ref_wf.folds),
+                    "is_return": ref_wf.aggregate_is.get("total_return"),
+                    "oos_return": oos.get("total_return"),
+                    "oos_max_dd": oos.get("max_drawdown"),
+                    "oos_daily_dd": oos.get("max_daily_dd"),
+                    "oos_sharpe": oos.get("sharpe"),
+                    "oos_trades": oos.get("n_trades"),
+                    "oos_gates_pass": gates,
+                    "oos_profitable": profitable,
+                    "overfit_oos_weaker": ref_wf.summary.get("overfit", {}).get("oos_weaker"),
+                    "anchored_oos_return": (anch_wf.aggregate_oos.get("total_return") if anch_wf else None),
+                    "anchored_gates_pass": (anch_wf.gates_pass if anch_wf else None),
+                    "holdout_return": (hold_m or {}).get("total_return"),
+                    "holdout_max_dd": (hold_m or {}).get("max_drawdown"),
+                    "holdout_daily_dd": (hold_m or {}).get("max_daily_dd"),
+                    "holdout_sharpe": (hold_m or {}).get("sharpe"),
+                    "holdout_trades": (hold_m or {}).get("n_trades"),
+                    "holdout_gates_pass": (hold_m or {}).get("gates_pass"),
+                    "holdout_profitable_and_gates": hold_pass,
+                    "ftmo_golive_candidate": golive_candidate,
+                    "baseline_oos_return": base_wf.aggregate_oos.get("total_return"),
+                    "baseline_gates_pass": base_wf.gates_pass,
+                }
+                rows.append(row)
+                refinements_log.append(
+                    f"{symbol}_{tf} {strat_name}: IS-grid best={best_params} "
+                    f"OOS ret={oos.get('total_return', 0):.2%} gates={gates} "
+                    f"holdout_ok={hold_pass} source={source}"
+                )
+
+    df_out = pd.DataFrame(rows)
+    csv_path = REPORTS / "walk_forward_summary.csv"
+    df_out.to_csv(csv_path, index=False)
+
+    # Markdown report
+    md = REPORTS / "walk_forward_summary.md"
+    lines = [
+        "# Walk-forward research summary",
+        "",
+        f"- Generated by `scripts/run_ftmo_research.py`",
+        f"- FTMO exports present: **{any_ftmo}**",
+        f"- If `data_source=approximate_non_ftmo`: results are **interim only**, not FTMO go-live criteria.",
+        f"- Holdout: last ~{holdout_days} days (or 20% if short series); never used for param selection.",
+        f"- Risk gates (2-Step): static max loss < 10% of initial; daily loss < 5% of initial (Prague midnight). Peak-to-trough reported separately.",
+        "",
+        "## Results",
+        "",
+    ]
+    if df_out.empty:
+        lines.append("_No results — place FTMO MT5 CSVs in `data/ftmo/` or run interim download._")
+    else:
+        lines.append(
+            "| Symbol | TF | Strategy | Source | OOS ret | OOS MDD | OOS dDD | Gates | Holdout ok | Go-live |"
+        )
+        lines.append("|---|---|---|---|---:|---:|---:|:---:|:---:|:---:|")
+        for r in rows:
+            lines.append(
+                f"| {r['symbol']} | {r['timeframe']} | {r['strategy']} | `{r['data_source']}` | "
+                f"{r['oos_return']:.2%} | {r['oos_max_dd']:.2%} | {r['oos_daily_dd']:.2%} | "
+                f"{'PASS' if r['oos_gates_pass'] else 'FAIL'} | "
+                f"{'YES' if r['holdout_profitable_and_gates'] else 'NO'} | "
+                f"{'YES' if r['ftmo_golive_candidate'] else 'NO'} |"
+            )
+        lines.append("")
+        passed = [r for r in rows if r["oos_profitable"] and r["oos_gates_pass"]]
+        lines.append(f"### OOS profitable + gates (research WF): **{len(passed)}** / {len(rows)}")
+        hold_ok = [r for r in rows if r["holdout_profitable_and_gates"]]
+        lines.append(f"### Holdout profitable + gates: **{len(hold_ok)}** / {len(rows)}")
+        golive = [r for r in rows if r["ftmo_golive_candidate"]]
+        lines.append(f"### FTMO go-live candidates (requires ftmo_mt5_export): **{len(golive)}**")
+        if not any_ftmo:
+            lines.append("")
+            lines.append(
+                "> **Blocker:** No `ftmo_mt5_export` data. Export H4/D1 from the Windows FTMO MT5 "
+                "terminal and run `mt5-swing import-ftmo-data --file EURUSD_H4=/path/to.csv ...`."
+            )
+    lines.append("")
+    lines.append("## Refinements tried")
+    lines.append("")
+    for line in refinements_log:
+        lines.append(f"- {line}")
+    lines.append("")
+    lines.append("## Anti-overfit notes")
+    lines.append("")
+    lines.append("- Params chosen on IS portion of research set only (constrained grid ≤24 trials).")
+    lines.append("- Walk-forward OOS folds never used for selection.")
+    lines.append("- Holdout used only for final confirmation.")
+    lines.append("- signal_lag=1 and causal indicators unchanged.")
+    md.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    (REPORTS / "refinements_log.txt").write_text("\n".join(refinements_log) + "\n", encoding="utf-8")
+    print(f"Wrote {csv_path}")
+    print(f"Wrote {md}")
+    if not any_ftmo:
+        print("NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.")
+
+
+if __name__ == "__main__":
+    main()

@@ -26,6 +26,9 @@ dev = [
 mt5 = [
     "MetaTrader5>=5.0.45; platform_system=='Windows'",
 ]
+data = [
+    "yfinance>=0.2.40",
+]
 
 [project.scripts]
 mt5-swing = "mt5_swing.cli:main"

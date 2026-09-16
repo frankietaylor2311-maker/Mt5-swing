@@ -1,0 +1,19 @@
+# Best interim (approximate_non_ftmo) configs from constrained IS + WF OOS.
+# NOT FTMO go-live. Re-validate on ftmo_mt5_export after Windows export import.
+# Selection: IS grid only; holdout confirmation only — never tuned on holdout.
+
+data_source: approximate_non_ftmo
+challenge: FTMO_2-Step
+risk_gates: {static_max_loss: 0.10, daily_loss: 0.05, daily_tz: Europe/Prague}
+
+candidates:
+  - symbol: EURUSD
+    timeframe: D1
+    strategy: trend_ma_adx
+    params: {adx_threshold: 22, atr_pct_max: 0.85, atr_pct_min: 0.2, require_ema_align: false, session_hours: null}
+    note: "WF OOS + holdout both profitable with gates PASS on interim Yahoo D1"
+  - symbol: USDJPY
+    timeframe: D1
+    strategy: mean_reversion_regime
+    params: {adx_max: 18, rsi_high: 70, rsi_low: 25, session_hours: null}
+    note: "WF OOS + holdout profitable + gates on interim; tiny edge"

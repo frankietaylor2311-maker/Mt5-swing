@@ -121,5 +121,7 @@ def apply_feature_pipeline(
 
     for name, series in feats.items():
         out[name] = lag(series, signal_lag) if signal_lag else series
+    # Lagged close for strategies that must not peek same-bar close vs channels
+    out["signal_close"] = lag(close, signal_lag) if signal_lag else close.copy()
     out.attrs["signal_lag"] = signal_lag
     return out

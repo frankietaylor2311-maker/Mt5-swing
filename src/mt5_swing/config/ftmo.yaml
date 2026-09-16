@@ -1,0 +1,26 @@
+# Deprecated alias — prefer ftmo_2step.yaml for FTMO Challenge: 2-Step swing research.
+# This file includes the 2-Step file via documentation only; load ftmo_2step.yaml explicitly.
+# Kept so older CLI references resolve to Challenge-style 10%/5% gates.
+
+prop_firm: FTMO
+challenge_type: 2-Step
+note: "Use config/ftmo_2step.yaml as the canonical 2-Step swing config."
+
+include_hint: ftmo_2step.yaml
+
+risk:
+  max_peak_to_trough_dd: 0.10
+  max_daily_dd: 0.05
+  max_loss_mode: static_initial
+  daily_loss_mode: ftmo_initial
+  daily_tz: Europe/Prague
+  risk_fraction: 0.005
+  sizing: atr
+  vol_target: true
+
+backtest:
+  initial_equity: 100000
+  signal_lag: 1
+
+research_symbols: [EURUSD, GBPUSD, USDJPY]
+timeframes: [H4, D1]
