@@ -7,3 +7,9 @@
 - FX5_GBPCAD_stoch_reversion: OOS=2.20% HO=3.46%
 - FX5_GBPCAD_bbands_reversion: OOS=2.06% HO=3.07%
 - FX5_EURJPY_ema_pullback: OOS=1.94% HO=3.43%
+
+## Late EURGBP replace (oos_sharpe)
+
+- CURRENT: OOS=3.27% HO=4.39%
+- replGBP→EURGBP D1 willr: OOS=3.30% HO=3.68% (marginal OOS; not promoted — HO dilution)
+- replGBP→EURGBP D1 cci: OOS=3.03% HO=3.82% (worse OOS)
