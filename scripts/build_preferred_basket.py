@@ -196,7 +196,7 @@ def main() -> None:
     print(cand[["symbol", "timeframe", "strategy", "oos_return", "oos_sharpe", "oos_trades"]].to_string(index=False))
     result = eval_basket(cand, rf, tag)
     print(json.dumps({k: v for k, v in result.items() if k != "candidates"}, indent=2))
-    if result.get("candidates") and os.environ.get("WRITE_CFG", "1") not in ("0", "false", "no"):
+    if result.get("candidates") and os.environ.get("WRITE_CFG", "0") in ("1", "true", "yes"):
         cfg_out = {
             "data_source": "approximate_non_ftmo",
             "challenge": "FTMO_2-Step",
