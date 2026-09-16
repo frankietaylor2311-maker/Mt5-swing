@@ -1,37 +1,65 @@
-# Best interim after run10. NOT FTMO go-live.
+# Best interim after run12 (6 symbols). NOT FTMO go-live.
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-risk: {risk_fraction: 0.02, atr_stop_mult: 2.0, atr_target_mult: 3.0, vol_target: false}
+risk: {risk_fraction: 0.025, atr_stop_mult: 2.0, atr_target_mult: 3.0, vol_target: false}
 risk_gates: {static_max_loss: 0.10, daily_loss: 0.05, daily_tz: Europe/Prague}
-disclaimer: "XAUUSD from Yahoo GC=F ≠ FTMO gold CFD. Re-validate on ftmo_mt5_export."
+disclaimer: "Yahoo FX/gold ≠ FTMO MT5. Re-validate on ftmo_mt5_export before any go-live."
 
 candidates:
   - symbol: USDJPY
     timeframe: D1
     strategy: hybrid_regime
     params: {"adx_chop": 20, "adx_trend": 24, "rsi_high": 70, "rsi_low": 30, "session_hours": null}
-    oos_return: 0.007891
+    oos_return: 0.008041
     oos_trades: 35
-    holdout_return: 0.013249
+    holdout_return: 0.018261
+  - symbol: XAUUSD
+    timeframe: H4
+    strategy: breakout_donchian
+    params: {"adx_min": 0, "atr_pct_min": 0.15, "donchian_window": 15, "session_hours": null, "use_mid_exit": false}
+    oos_return: 0.006279
+    oos_trades: 60
+    holdout_return: 0.232533
+  - symbol: AUDUSD
+    timeframe: D1
+    strategy: hybrid_regime
+    params: {"adx_chop": 20, "adx_trend": 24, "rsi_high": 65, "rsi_low": 35, "session_hours": null}
+    oos_return: 0.002501
+    oos_trades: 96
+    holdout_return: 0.015476
   - symbol: USDJPY
     timeframe: D1
     strategy: bbands_reversion
     params: {"adx_max": 22, "require_htf_align": false, "require_rsi": false, "rsi_high": 60, "rsi_low": 35, "session_hours": null}
-    oos_return: 0.002804
+    oos_return: 0.002403
     oos_trades: 18
     holdout_return: 0.052434
-  - symbol: XAUUSD
+  - symbol: USDJPY
     timeframe: D1
-    strategy: hybrid_regime
-    params: {"adx_chop": 20, "adx_trend": 20, "rsi_high": 70, "rsi_low": 30, "session_hours": null}
-    oos_return: 0.001914
-    oos_trades: 207
-    holdout_return: 0.096097
-  - symbol: XAUUSD
+    strategy: mean_reversion_regime
+    params: {"adx_max": 30, "rsi_high": 70, "rsi_low": 30, "session_hours": null}
+    oos_return: 0.002291
+    oos_trades: 12
+    holdout_return: 0.074657
+  - symbol: GBPUSD
     timeframe: H4
     strategy: breakout_donchian
     params: {"adx_min": 15, "atr_pct_min": 0.15, "donchian_window": 30, "session_hours": null, "use_mid_exit": false}
-    oos_return: 0.001633
-    oos_trades: 52
-    holdout_return: 0.154852
-preferred_basket_holdout: {return: 0.0174, gates: true, sharpe: 0.99}
+    oos_return: 0.001869
+    oos_trades: 104
+    holdout_return: 0.032618
+  - symbol: XAUUSD
+    timeframe: D1
+    strategy: hybrid_regime
+    params: {"adx_chop": 20, "adx_trend": 20, "rsi_high": 70, "rsi_low": 35, "session_hours": null}
+    oos_return: 0.001747
+    oos_trades: 214
+    holdout_return: 0.124904
+  - symbol: USDCAD
+    timeframe: H4
+    strategy: hybrid_regime
+    params: {"adx_chop": 20, "adx_trend": 24, "rsi_high": 65, "rsi_low": 30, "session_hours": null}
+    oos_return: 0.000752
+    oos_trades: 73
+    holdout_return: 0.016306
+preferred_basket: see reports/basket_preferred.md
