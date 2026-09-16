@@ -410,6 +410,34 @@ def main() -> None:
 
     df_out = pd.DataFrame(rows)
     csv_path = REPORTS / "walk_forward_summary.csv"
+    # Default: merge into existing summary (protects prior symbols). Set REPLACE_SUMMARY=1 to overwrite.
+    import os as _os
+    if csv_path.exists() and _os.environ.get("REPLACE_SUMMARY", "").lower() not in ("1", "true", "yes"):
+        prev = pd.read_csv(csv_path)
+        keys = ["symbol", "timeframe", "strategy"]
+        if not df_out.empty and set(keys).issubset(df_out.columns) and set(keys).issubset(prev.columns):
+            protect = {
+                tuple(x.strip().split("|"))
+                for x in _os.environ.get("PROTECT_LEGS", "").split(",")
+                if x.strip() and "|" in x
+            }
+            # default protect interim preferred legs
+            if not protect:
+                protect = {
+                    ("USDCHF", "H4", "bbands_reversion"),
+                    ("USDJPY", "D1", "hybrid_regime"),
+                    ("GBPUSD", "H4", "breakout_donchian"),
+                    ("AUDUSD", "D1", "hybrid_regime"),
+                }
+            keep = prev.copy()
+            for _, row in df_out.iterrows():
+                k = (row["symbol"], row["timeframe"], row["strategy"])
+                if k in protect:
+                    continue
+                keep = keep[~((keep["symbol"] == k[0]) & (keep["timeframe"] == k[1]) & (keep["strategy"] == k[2]))]
+                keep = pd.concat([keep, pd.DataFrame([row])], ignore_index=True)
+            df_out = keep
+            print(f"Merged into existing summary → {len(df_out)} rows (protect {len(protect)} interim legs)")
     df_out.to_csv(csv_path, index=False)
 
     # Markdown report

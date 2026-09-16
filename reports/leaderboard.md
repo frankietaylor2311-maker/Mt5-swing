@@ -5,15 +5,15 @@ Params selected on IS only; holdout never used for tuning. Zero-trade rows are n
 
 | Rank | Symbol | TF | Strategy | OOS ret | OOS Sh | OOS n | Holdout | Source |
 |---:|---|---|---|---:|---:|---:|:---:|---|
-| 1 | NZDCAD | D1 | bbands_reversion | 0.18% | 0.32 | 23 | YES | `approximate_non_ftmo` |
-| 2 | EURAUD | H4 | breakout_donchian | 0.15% | 0.49 | 65 | YES | `approximate_non_ftmo` |
-| 3 | EURAUD | D1 | hybrid_regime | -0.04% | -0.23 | 47 | YES | `approximate_non_ftmo` |
-| 4 | NZDCAD | D1 | cci_reversion | -0.41% | -0.48 | 27 | YES | `approximate_non_ftmo` |
-| 5 | NZDCAD | D1 | stoch_reversion | -1.04% | -2.00 | 41 | YES | `approximate_non_ftmo` |
-| 6 | NZDCAD | D1 | breakout_donchian | 0.40% | 0.95 | 32 | NO | `approximate_non_ftmo` |
-| 7 | NZDCAD | H4 | bbands_reversion | 0.15% | 0.78 | 31 | NO | `approximate_non_ftmo` |
-| 8 | NZDCAD | H4 | cci_reversion | 0.08% | 0.58 | 35 | NO | `approximate_non_ftmo` |
-| 9 | NZDCAD | H4 | stoch_reversion | -0.03% | -0.01 | 49 | NO | `approximate_non_ftmo` |
-| 10 | EURAUD | H4 | hybrid_regime | -0.07% | -0.93 | 78 | NO | `approximate_non_ftmo` |
-| 11 | EURAUD | D1 | breakout_donchian | -0.16% | -0.47 | 19 | NO | `approximate_non_ftmo` |
-| 12 | NZDCAD | D1 | hybrid_regime | -0.24% | -0.15 | 43 | NO | `approximate_non_ftmo` |
+| 1 | GBPCAD | D1 | bbands_reversion | 0.84% | 2.50 | 40 | YES | `approximate_non_ftmo` |
+| 2 | USDJPY | D1 | hybrid_regime | 0.80% | 0.95 | 35 | YES | `approximate_non_ftmo` |
+| 3 | GBPCAD | D1 | cci_reversion | 0.68% | 1.87 | 30 | YES | `approximate_non_ftmo` |
+| 4 | GBPCAD | D1 | stoch_reversion | 0.63% | 1.78 | 56 | YES | `approximate_non_ftmo` |
+| 5 | XAUUSD | H4 | breakout_donchian | 0.63% | 0.51 | 60 | YES | `approximate_non_ftmo` |
+| 6 | AUDUSD | D1 | atr_channel_breakout | 0.39% | 0.08 | 120 | YES | `approximate_non_ftmo` |
+| 7 | AUDCAD | D1 | cci_reversion | 0.36% | 0.56 | 29 | YES | `approximate_non_ftmo` |
+| 8 | EURGBP | D1 | mean_reversion_regime | 0.33% | 0.64 | 10 | YES | `approximate_non_ftmo` |
+| 9 | EURGBP | D1 | cci_reversion | 0.26% | 1.10 | 14 | YES | `approximate_non_ftmo` |
+| 10 | AUDUSD | D1 | hybrid_regime | 0.25% | 0.34 | 96 | YES | `approximate_non_ftmo` |
+| 11 | USDJPY | D1 | bbands_reversion | 0.24% | 0.66 | 18 | YES | `approximate_non_ftmo` |
+| 12 | USDCHF | D1 | bbands_reversion | 0.23% | 1.36 | 30 | YES | `approximate_non_ftmo` |
