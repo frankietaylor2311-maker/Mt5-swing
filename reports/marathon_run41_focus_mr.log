@@ -34,3 +34,9 @@ GBPCAD_H4 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require
 GBPCAD_D1 willr_reversion: IS-grid best={'adx_max': 28, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -10, 'willr_low': -90} OOS ret=0.50% n=44 gates=True holdout_ok=True source=approximate_non_ftmo
 GBPCAD_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 120, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.68% n=30 gates=True holdout_ok=True source=approximate_non_ftmo
 GBPCAD_D1 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 85, 'stoch_low': 15} OOS ret=0.63% n=56 gates=True holdout_ok=True source=approximate_non_ftmo
+Merged into existing summary → 494 rows (protect 4 interim legs)
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
