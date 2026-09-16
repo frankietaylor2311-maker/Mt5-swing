@@ -1,0 +1,7 @@
+{
+  "symbol": "XAUUSD",
+  "timeframe": "D1",
+  "data_source": "approximate_non_ftmo",
+  "source_detail": "yfinance GC=F daily",
+  "rows": 6536
+}

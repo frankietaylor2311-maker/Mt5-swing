@@ -1,0 +1,7 @@
+{
+  "symbol": "XAUUSD",
+  "timeframe": "H4",
+  "data_source": "approximate_non_ftmo",
+  "source_detail": "yfinance GC=F 1h\u2192H4",
+  "rows": 3714
+}

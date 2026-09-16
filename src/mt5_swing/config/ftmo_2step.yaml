@@ -27,9 +27,8 @@ research_symbols:
   - EURUSD
   - GBPUSD
   - USDJPY
-  # Optional when FTMO MT5 exports available:
-  # - XAUUSD
-  # - US100
+  - XAUUSD
+  # Optional: US100 when FTMO exports available
 
 timeframes:
   - H4
