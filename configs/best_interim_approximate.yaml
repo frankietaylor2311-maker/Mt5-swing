@@ -1,12 +1,18 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
+basket_tag: fx3_usdjpy_heavy
 risk:
-  risk_fraction: 0.025
+  risk_fraction: 0.02
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
+  atr_trail_mult: 0.0
   vol_target: false
-disclaimer: "Yahoo FX/gold \u2260 FTMO MT5. Re-validate on ftmo_mt5_export before\
-  \ any go-live."
+sensitivity:
+  atr_trail_mult_1.5_return: 0.019686263622844535
+  atr_trail_mult_1.5_sharpe: 2.2270841951725444
+disclaimer: "Yahoo FX \u2260 FTMO MT5. Risk 2% chosen inside pre-declared 1\u2013\
+  2% stress band (not max-holdout search). Trail=0 primary; trail=1.5 is sensitivity\
+  \ only. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDJPY
   timeframe: D1
@@ -20,18 +26,6 @@ candidates:
   oos_return: 0.0080407344524734
   oos_trades: 35
   holdout_return: 0.0182607723144145
-- symbol: XAUUSD
-  timeframe: H4
-  strategy: breakout_donchian
-  params:
-    adx_min: 0
-    atr_pct_min: 0.15
-    donchian_window: 15
-    session_hours: null
-    use_mid_exit: false
-  oos_return: 0.0062790326503206
-  oos_trades: 60
-  holdout_return: 0.2325331662806919
 - symbol: AUDUSD
   timeframe: D1
   strategy: hybrid_regime

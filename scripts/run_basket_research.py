@@ -29,7 +29,14 @@ spec.loader.exec_module(rfr)
 
 
 def pick_candidates(df: pd.DataFrame, n: int = 4) -> pd.DataFrame:
-    """OOS-only selection with stability filters (never uses holdout columns)."""
+    """OOS-only selection with stability filters (never uses holdout columns).
+
+    A priori rules:
+    - ≥15 OOS trades, gates pass, OOS profitable, OOS Sharpe>0, IS return>0
+    - Prefer rows where OOS is weaker than IS (overfit_oos_weaker) when present
+    - Prefer anchored_gates_pass when present
+    - At most one leg per symbol AND at most one per strategy family
+    """
     cand = df[
         (df["oos_trades"] >= 15)
         & (df["oos_gates_pass"] == True)  # noqa: E712
@@ -37,14 +44,35 @@ def pick_candidates(df: pd.DataFrame, n: int = 4) -> pd.DataFrame:
         & (df["oos_sharpe"] > 0)
         & (df["is_return"] > 0)
     ].copy()
+    # A priori symbol breadth: prefer symbols with ≥2 independent OOS-profitable rows
+    # (cross-strategy/TF agreement) — never uses holdout.
+    breadth = (
+        df[(df["oos_trades"] >= 10) & (df["oos_gates_pass"] == True) & (df["oos_profitable"] == True)]
+        .groupby("symbol")
+        .size()
+    )
+    cand["_breadth"] = cand["symbol"].map(breadth).fillna(0)
+    broad = cand[cand["_breadth"] >= 2]
+    if len(broad) >= max(2, n // 2):
+        cand = broad
+    if "overfit_oos_weaker" in cand.columns:
+        # Prefer non-lucky OOS (weaker than IS); keep others as fallback
+        preferred = cand[cand["overfit_oos_weaker"] == True]  # noqa: E712
+        if len(preferred) >= max(2, n // 2):
+            cand = preferred
+    if "anchored_gates_pass" in cand.columns:
+        anch = cand[cand["anchored_gates_pass"] == True]  # noqa: E712
+        if len(anch) >= max(2, n // 2):
+            cand = anch
     cand = cand.sort_values(["oos_return", "oos_sharpe"], ascending=False)
-    # Diversify: at most one leg per symbol
+    # Diversify: ≤1 leg/symbol and ≤1 per strategy name
     picked = []
-    seen = set()
+    seen_sym, seen_strat = set(), set()
     for _, row in cand.iterrows():
-        if row["symbol"] in seen:
+        if row["symbol"] in seen_sym or row["strategy"] in seen_strat:
             continue
-        seen.add(row["symbol"])
+        seen_sym.add(row["symbol"])
+        seen_strat.add(row["strategy"])
         picked.append(row)
         if len(picked) >= n:
             break
@@ -82,7 +110,15 @@ def main() -> None:
             params["session_hours"] = None
         strat = get_strategy(row["strategy"], **params)
         bt = rfr.bt_cfg_for(cfg, row["symbol"], row["strategy"])
-        bt.risk_fraction = float(cfg.get("risk", {}).get("risk_fraction", 0.01)) / n_legs
+        base_rf = float(os.environ.get("RISK_FRACTION") or cfg.get("risk", {}).get("risk_fraction", 0.01))
+        bt.risk_fraction = base_rf / n_legs
+        # Optional exit stress (a priori; not tuned on holdout)
+        trail = os.environ.get("ATR_TRAIL_MULT", "").strip()
+        if trail:
+            bt.atr_trail_mult = float(trail)
+        hold = os.environ.get("MAX_HOLD_BARS", "").strip()
+        if hold:
+            bt.max_hold_bars = int(hold)
         if len(holdout) < 50:
             continue
         res = run_backtest(holdout, strat, bt)

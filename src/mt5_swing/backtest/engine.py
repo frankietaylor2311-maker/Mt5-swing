@@ -49,6 +49,8 @@ class BacktestConfig:
     use_atr_exits: bool = True  # ATR stop (+ optional target) after entry bar
     atr_target_mult: float = 3.0  # 0 disables take-profit; stop uses atr_stop_mult
     no_same_bar_exit: bool = True  # conservative: first check stops on bar after entry
+    atr_trail_mult: float = 0.0  # >0 enables ATR trailing stop from favorable extreme
+    max_hold_bars: int = 0  # >0 flat after N bars in trade (time stop)
 
 
 @dataclass
@@ -93,6 +95,7 @@ def run_backtest(
     entry_bar = -1
     stop_price = float("nan")
     target_price = float("nan")
+    extreme_px = float("nan")  # favorable extreme for trailing stop
     eq_curve: list[float] = []
     pos_series: list[int] = []
     trades: list[dict] = []
@@ -206,32 +209,52 @@ def run_backtest(
             elif int(np.sign(target)) != position:
                 target = 0  # only allow flatten, not reverse
 
-        # ATR stop / take-profit (no same-bar exit by default — anti optimistic path bias)
-        if (
-            cfg.use_atr_exits
-            and position != 0
-            and lots > 0
-            and stop_price == stop_price
-            and (not cfg.no_same_bar_exit or i > entry_bar)
-        ):
-            hit_stop = False
-            hit_tp = False
-            if position > 0:
-                hit_stop = lows[i] <= stop_price
-                hit_tp = (target_price == target_price) and highs[i] >= target_price
-            else:
-                hit_stop = highs[i] >= stop_price
-                hit_tp = (target_price == target_price) and lows[i] <= target_price
-            if hit_stop and hit_tp:
-                # Conservative: assume stop hit first when both in same bar
-                _close_at(i, float(stop_price), "atr_stop")
-                target = 0
-            elif hit_stop:
-                _close_at(i, float(stop_price), "atr_stop")
-                target = 0
-            elif hit_tp:
-                _close_at(i, float(target_price), "atr_target")
-                target = 0
+        # ATR stop / take-profit / trail / time-stop (no same-bar exit by default)
+        if position != 0 and lots > 0 and (not cfg.no_same_bar_exit or i > entry_bar):
+            atr_v_exit = atrs[i]
+            # Update trailing stop from favorable extreme (causal: uses this bar's high/low)
+            if (
+                cfg.use_atr_exits
+                and cfg.atr_trail_mult
+                and cfg.atr_trail_mult > 0
+                and atr_v_exit == atr_v_exit
+                and atr_v_exit > 0
+            ):
+                if position > 0:
+                    extreme_px = highs[i] if extreme_px != extreme_px else max(extreme_px, highs[i])
+                    trail = extreme_px - cfg.atr_trail_mult * float(atr_v_exit)
+                    if stop_price != stop_price or trail > stop_price:
+                        stop_price = trail
+                else:
+                    extreme_px = lows[i] if extreme_px != extreme_px else min(extreme_px, lows[i])
+                    trail = extreme_px + cfg.atr_trail_mult * float(atr_v_exit)
+                    if stop_price != stop_price or trail < stop_price:
+                        stop_price = trail
+            if cfg.use_atr_exits and stop_price == stop_price:
+                hit_stop = False
+                hit_tp = False
+                if position > 0:
+                    hit_stop = lows[i] <= stop_price
+                    hit_tp = (target_price == target_price) and highs[i] >= target_price
+                else:
+                    hit_stop = highs[i] >= stop_price
+                    hit_tp = (target_price == target_price) and lows[i] <= target_price
+                if hit_stop and hit_tp:
+                    # Conservative: assume stop hit first when both in same bar
+                    _close_at(i, float(stop_price), "atr_stop")
+                    target = 0
+                elif hit_stop:
+                    reason = "atr_trail" if (cfg.atr_trail_mult and cfg.atr_trail_mult > 0) else "atr_stop"
+                    _close_at(i, float(stop_price), reason)
+                    target = 0
+                elif hit_tp:
+                    _close_at(i, float(target_price), "atr_target")
+                    target = 0
+            # Time stop after ATR checks (still no same-bar by gate above)
+            if position != 0 and cfg.max_hold_bars and cfg.max_hold_bars > 0:
+                if (i - entry_bar) >= cfg.max_hold_bars:
+                    _close_position(i, bar_spread, "time_stop")
+                    target = 0
 
         desired = int(np.sign(target))
 
@@ -272,6 +295,7 @@ def run_backtest(
                     position = desired
                     lots = new_lots
                     atr_v2 = atrs[i]
+                    extreme_px = fill
                     if cfg.use_atr_exits and atr_v2 == atr_v2 and atr_v2 > 0:
                         stop_price = fill - desired * cfg.atr_stop_mult * float(atr_v2)
                         if cfg.atr_target_mult and cfg.atr_target_mult > 0:

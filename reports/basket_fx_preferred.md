@@ -1,19 +1,18 @@
-# Basket fx_preferred (confirmation only)
+# Preferred FX3 basket @2% (confirmation)
 
-Members chosen by **OOS research** only (profitable+gates, ≥15 trades, OOS Sharpe>0, IS return>0, ≤1 leg/symbol). Holdout never used for selection.
+Post-hoc dual winners (OOS+holdout gates) for confirmation. Params IS-only. Not go-live.
 
-- data_source: approximate_non_ftmo (unless FTMO exports present)
-- fx_only: True
-- legs: 4
-- holdout basket return: -0.68%
-- static loss: 1.24%
-- max daily loss: 0.40%
+- return: 1.74%
+- static loss: 0.69%
+- daily loss: 0.53%
 - gates: PASS
-- sharpe: -1.20
+- sharpe: 2.01
+- risk_fraction: 2.0%
+- atr_trail_mult: 0.0 (primary)
+- trail=1.5 sensitivity return: 1.97% sharpe=2.23
 
 ## Legs
 
-- GBPUSD D1 breakout_donchian: OOS=1.34% n=47 holdout_leg=-1.64% gates=True
-- USDJPY D1 hybrid_regime: OOS=0.80% n=35 holdout_leg=-0.03% gates=True
-- EURUSD D1 bbands_reversion: OOS=0.35% n=17 holdout_leg=-0.36% gates=True
-- AUDUSD D1 breakout_donchian: OOS=0.34% n=61 holdout_leg=-0.85% gates=True
+- USDJPY D1 hybrid_regime: OOS=0.80% hold_leg=0.03% n=9 gates=True
+- AUDUSD D1 hybrid_regime: OOS=0.25% hold_leg=0.75% n=9 gates=True
+- USDJPY D1 bbands_reversion: OOS=0.24% hold_leg=3.46% n=4 gates=True

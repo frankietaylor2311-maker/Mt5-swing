@@ -10,6 +10,7 @@ from mt5_swing.strategies.ema_pullback import EmaPullback
 from mt5_swing.strategies.hybrid_regime import HybridRegime
 from mt5_swing.strategies.keltner_breakout import KeltnerBreakout
 from mt5_swing.strategies.squeeze_breakout import SqueezeBreakout
+from mt5_swing.strategies.macd_trend import MacdTrend
 from mt5_swing.strategies.mean_reversion import MeanReversionRegime
 from mt5_swing.strategies.trend_ma_adx import TrendMAADX
 
@@ -22,6 +23,7 @@ _REGISTRY = {
     BBandsReversion.name: BBandsReversion,
     KeltnerBreakout.name: KeltnerBreakout,
     SqueezeBreakout.name: SqueezeBreakout,
+    MacdTrend.name: MacdTrend,
 }
 
 

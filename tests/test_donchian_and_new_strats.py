@@ -100,3 +100,42 @@ def test_squeeze_signals_stable_under_future_sabotage():
     sig_b = strat.generate_signals(feat2)
     n = len(sig_a) - 5 - 60
     assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()
+
+
+def test_macd_trend_smoke_and_lookahead_stable():
+    from mt5_swing.strategies.macd_trend import MacdTrend
+
+    df = generate_sample_ohlc(n_bars=600, seed=33)
+    cfg = BacktestConfig(symbol="EURUSD", initial_equity=100_000, use_atr_exits=True)
+    strat = MacdTrend(adx_min=10.0, max_hold=20)
+    res = run_backtest(df, strat, cfg)
+    assert len(res.equity) == len(df)
+    feat = apply_feature_pipeline(df, signal_lag=1)
+    sig_a = strat.generate_signals(feat)
+    bad = df.copy()
+    bad.iloc[-6:, bad.columns.get_loc("close")] *= 5
+    bad.iloc[-6:, bad.columns.get_loc("high")] *= 5
+    feat2 = apply_feature_pipeline(bad, signal_lag=1)
+    sig_b = strat.generate_signals(feat2)
+    n = len(sig_a) - 6 - 40
+    assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()
+
+
+def test_atr_trail_and_time_stop_reasons():
+    from mt5_swing.strategies.trend_ma_adx import TrendMAADX
+
+    df = generate_sample_ohlc(n_bars=500, seed=19)
+    cfg = BacktestConfig(
+        symbol="EURUSD",
+        use_atr_exits=True,
+        atr_stop_mult=2.0,
+        atr_target_mult=0.0,
+        atr_trail_mult=1.5,
+        max_hold_bars=30,
+        risk_fraction=0.01,
+    )
+    res = run_backtest(df, TrendMAADX(adx_threshold=12), cfg)
+    if len(res.trades) == 0:
+        return
+    reasons = set(res.trades["reason"].unique())
+    assert reasons & {"atr_stop", "atr_trail", "time_stop", "signal", "kill_switch_flatten"}

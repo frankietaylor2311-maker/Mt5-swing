@@ -1,0 +1,29 @@
+EURUSD_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+EURUSD_H4 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.01% n=118 gates=True holdout_ok=False source=approximate_non_ftmo
+EURUSD_D1 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+EURUSD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': True, 'session_hours': None} OOS ret=-1.03% n=70 gates=True holdout_ok=False source=approximate_non_ftmo
+GBPUSD_H4 macd_trend: IS-grid best={'adx_min': 15, 'exit_on_cross': True, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+GBPUSD_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.15% n=109 gates=True holdout_ok=False source=approximate_non_ftmo
+GBPUSD_D1 macd_trend: IS-grid best={'adx_min': 15, 'exit_on_cross': True, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.57% n=67 gates=True holdout_ok=False source=approximate_non_ftmo
+GBPUSD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.63% n=60 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.07% n=122 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_D1 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.65% n=51 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': True, 'session_hours': None} OOS ret=0.10% n=35 gates=True holdout_ok=False source=approximate_non_ftmo
+XAUUSD_H4 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.39% n=73 gates=True holdout_ok=False source=approximate_non_ftmo
+XAUUSD_H4 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=-1.68% n=86 gates=False holdout_ok=False source=approximate_non_ftmo
+XAUUSD_D1 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+XAUUSD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.68% n=322 gates=True holdout_ok=False source=approximate_non_ftmo
+AUDUSD_H4 macd_trend: IS-grid best={'adx_min': 15, 'exit_on_cross': True, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.18% n=120 gates=True holdout_ok=False source=approximate_non_ftmo
+AUDUSD_H4 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.67% n=99 gates=True holdout_ok=False source=approximate_non_ftmo
+AUDUSD_D1 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.10% n=148 gates=True holdout_ok=False source=approximate_non_ftmo
+AUDUSD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.31% n=165 gates=False holdout_ok=False source=approximate_non_ftmo
+USDCAD_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'max_hold': 16, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+USDCAD_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.5, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.12% n=70 gates=True holdout_ok=False source=approximate_non_ftmo
+USDCAD_D1 macd_trend: IS-grid best={'adx_min': 15, 'exit_on_cross': True, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+USDCAD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.02% n=106 gates=False holdout_ok=False source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.

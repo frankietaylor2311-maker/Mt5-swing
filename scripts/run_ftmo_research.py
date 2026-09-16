@@ -78,6 +78,8 @@ def bt_cfg(cfg: dict, symbol: str) -> BacktestConfig:
         use_atr_exits=bool(risk.get("use_atr_exits", True)),
         atr_target_mult=float(risk.get("atr_target_mult", 3.0)),
         no_same_bar_exit=bool(risk.get("no_same_bar_exit", True)),
+        atr_trail_mult=float(risk.get("atr_trail_mult", 0.0) or 0.0),
+        max_hold_bars=int(risk.get("max_hold_bars", 0) or 0),
     )
 
 
@@ -88,6 +90,7 @@ ATR_EXIT_STRATS = {
     "hybrid_regime",
     "keltner_breakout",
     "squeeze_breakout",
+    "macd_trend",
 }
 # Mean-reversion / BB already have mid exits — ATR stops often cut winners early.
 
@@ -178,6 +181,13 @@ GRIDS = {
         "exit_bars": [8, 16],
         "session_hours": [None],
     },
+    "macd_trend": {
+        "adx_min": [12, 18],
+        "require_htf_align": [False, True],
+        "exit_on_cross": [True, False],
+        "max_hold": [0, 24],
+        "session_hours": [None],
+    },
     "bbands_reversion": {
         "adx_max": [22, 28, 35],
         "require_rsi": [True, False],
@@ -200,6 +210,12 @@ def main() -> None:
     _rf = os.environ.get("RISK_FRACTION", "").strip()
     if _rf:
         cfg.setdefault("risk", {})["risk_fraction"] = float(_rf)
+    _trail = os.environ.get("ATR_TRAIL_MULT", "").strip()
+    if _trail:
+        cfg.setdefault("risk", {})["atr_trail_mult"] = float(_trail)
+    _hold = os.environ.get("MAX_HOLD_BARS", "").strip()
+    if _hold:
+        cfg.setdefault("risk", {})["max_hold_bars"] = int(_hold)
     symbols = [s for s in cfg.get("research_symbols", ["EURUSD", "GBPUSD", "USDJPY"]) if resolve_csv(s, "H4") or resolve_csv(s, "D1")]
     # If only FX interim available
     if not symbols:
