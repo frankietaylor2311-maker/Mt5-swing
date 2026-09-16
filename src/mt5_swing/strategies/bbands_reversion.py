@@ -19,6 +19,7 @@ class BBandsReversion:
         rsi_low: float = 40.0,
         rsi_high: float = 60.0,
         require_htf_align: bool = False,
+        max_hold: int = 0,
     ):
         self.adx_max = float(adx_max)
         self.exit_to_mid = bool(exit_to_mid)
@@ -27,6 +28,7 @@ class BBandsReversion:
         self.rsi_low = float(rsi_low)
         self.rsi_high = float(rsi_high)
         self.require_htf_align = bool(require_htf_align)
+        self.max_hold = int(max_hold)
 
     def _session_mask(self, index: pd.DatetimeIndex) -> pd.Series:
         if not self.session_hours:
@@ -61,17 +63,30 @@ class BBandsReversion:
             short_cond = short_cond & htf_dn
         sig = pd.Series(int(Signal.FLAT), index=data.index, dtype=int)
         last = int(Signal.FLAT)
+        held = 0
         for i in range(len(sig)):
             if pd.isna(data["bb_mid"].iloc[i]) or pd.isna(data["adx"].iloc[i]):
                 last = int(Signal.FLAT)
+                held = 0
             elif bool(long_cond.iloc[i]):
                 last = int(Signal.LONG)
+                held = 0
             elif bool(short_cond.iloc[i]):
                 last = int(Signal.SHORT)
+                held = 0
             elif self.exit_to_mid:
                 if last == int(Signal.LONG) and px.iloc[i] >= data["bb_mid"].iloc[i]:
                     last = int(Signal.FLAT)
+                    held = 0
                 elif last == int(Signal.SHORT) and px.iloc[i] <= data["bb_mid"].iloc[i]:
                     last = int(Signal.FLAT)
+                    held = 0
+            if last != int(Signal.FLAT):
+                held += 1
+                if self.max_hold > 0 and held >= self.max_hold:
+                    last = int(Signal.FLAT)
+                    held = 0
+            else:
+                held = 0
             sig.iloc[i] = last
         return sig.astype(int)

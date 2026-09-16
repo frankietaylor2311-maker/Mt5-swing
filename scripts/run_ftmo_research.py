@@ -150,9 +150,9 @@ GRIDS = {
     "breakout_donchian": {
         # Order biased toward prior IS-competitive regions (selection still IS-only)
         "use_mid_exit": [False, True],
-        "adx_min": [0, 15, 22],
+        "adx_min": [0, 12, 15, 22],
         "atr_pct_min": [0.1, 0.0, 0.15],
-        "donchian_window": [30, 20, 15, 40],
+        "donchian_window": [30, 25, 20, 15, 40, 55],
         "session_hours": [None],
     },
     "ema_pullback": {
@@ -221,6 +221,7 @@ GRIDS = {
         "rsi_low": [35, 40],
         "rsi_high": [60, 65],
         "require_htf_align": [False, True],
+        "max_hold": [0, 20],
         "session_hours": [None],
     },
 }

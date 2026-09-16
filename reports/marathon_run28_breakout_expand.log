@@ -1,0 +1,13 @@
+GBPUSD_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.15, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.19% n=104 gates=True holdout_ok=True source=approximate_non_ftmo
+GBPUSD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.30% n=91 gates=True holdout_ok=False source=approximate_non_ftmo
+GBPUSD_D1 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.0, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=1.17% n=47 gates=True holdout_ok=False source=approximate_non_ftmo
+GBPUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=0.23% n=36 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.12% n=87 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.28% n=89 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.15, 'donchian_window': 40, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.41% n=17 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.58% n=44 gates=True holdout_ok=True source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
