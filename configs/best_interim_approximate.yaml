@@ -1,6 +1,6 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_equal_cadjpy_mr_is_vt_rf025
+basket_tag: fx4_equal_cadjpy_mr_vt_mh16_rf025
 risk:
   risk_fraction: 0.025
   atr_stop_mult: 2.0
@@ -8,9 +8,8 @@ risk:
   atr_trail_mult: 0.0
   vol_target: false
 weights: equal
-methodology: "Interim dual FX4; replace AUDUSD\u2192CADJPY H4 mean_reversion (dual\u2265\
-  2; OOS basket best after JPY pip-value fix); equal weights; IS vol_target on CADJPY+GBPUSD;\
-  \ risk=0.025. Holdout confirmation only."
+methodology: "Interim dual FX4; AUDUSD\u2192CADJPY H4 MR; equal weights; IS vol_target+max_hold\
+  \ 16 on CADJPY; IS exits on other legs; risk=0.025. Holdout confirmation only."
 disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDCHF
@@ -78,10 +77,11 @@ candidates:
     rsi_high: 65
     rsi_low: 35
     session_hours: 7-20
-  exits: {}
+  exits:
+    max_hold_bars: 16
   vol_target: true
   oos_return: 0.0033288030116773
   oos_sharpe: 1.7487450694017543
   oos_trades: 23
-  holdout_return: 0.08462482590321208
+  holdout_return: 0.0790877901939524
   weight: 0.25
