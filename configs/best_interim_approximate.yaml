@@ -1,15 +1,15 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_equal_chf_gbp_cadjpy_audcad_rf025
+basket_tag: fx4_oos_sharpe_chf_gbp_cadjpy_audcad_rf025
 risk:
   risk_fraction: 0.025
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   atr_trail_mult: 0.0
   vol_target: false
-weights: equal
-methodology: Interim dual FX4; drop USDJPY for AUDCAD H4 MR (OOS-best among FX4/FX5);
-  equal; IS exits; risk=0.025. Holdout confirmation only.
+weights: oos_sharpe
+methodology: "Interim dual FX4 (CHF/GBP/CADJPY/AUDCAD); weights \u221D OOS Sharpe\
+  \ (beats equal on OOS); IS exits; risk=0.025. Holdout confirmation only."
 disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDCHF
@@ -28,7 +28,7 @@ candidates:
   oos_sharpe: 1.4388105975417105
   oos_trades: 26
   holdout_return: 0.03760195093868979
-  weight: 0.25
+  weight: 0.2732512220477973
 - symbol: GBPUSD
   timeframe: H4
   strategy: breakout_donchian
@@ -48,7 +48,7 @@ candidates:
   oos_sharpe: 0.4337304658948822
   oos_trades: 104
   holdout_return: 0.0712978831991109
-  weight: 0.25
+  weight: 0.08237177294053205
 - symbol: CADJPY
   timeframe: H4
   strategy: mean_reversion_regime
@@ -64,7 +64,7 @@ candidates:
   oos_sharpe: 1.7487450694017543
   oos_trades: 23
   holdout_return: 0.0790877901939524
-  weight: 0.25
+  weight: 0.33211232116340933
 - symbol: AUDCAD
   timeframe: H4
   strategy: mean_reversion_regime
@@ -82,4 +82,4 @@ candidates:
   oos_sharpe: 1.6442368784001269
   oos_trades: 20
   holdout_return: 0.004649887393640029
-  weight: 0.25
+  weight: 0.3122646838482613

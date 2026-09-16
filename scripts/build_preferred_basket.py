@@ -87,7 +87,7 @@ def eval_basket(cand: pd.DataFrame, risk_fraction: float, tag: str) -> dict:
     holdout_days = int(cfg.get("walk_forward", {}).get("holdout_days", 365))
     initial = float(cfg.get("backtest", {}).get("initial_equity", 100_000))
     n_legs = max(len(cand), 1)
-    weight_mode = os.environ.get("WEIGHTS", "equal").strip().lower()
+    weight_mode = os.environ.get("WEIGHTS", "oos_sharpe").strip().lower()
     hold_curves, notes, candidates = [], [], []
     sharpes = []
     for _, row in cand.iterrows():
