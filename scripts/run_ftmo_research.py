@@ -87,6 +87,7 @@ ATR_EXIT_STRATS = {
     "ema_pullback",
     "hybrid_regime",
     "keltner_breakout",
+    "squeeze_breakout",
 }
 # Mean-reversion / BB already have mid exits — ATR stops often cut winners early.
 
@@ -168,6 +169,13 @@ GRIDS = {
         "atr_mult": [1.25, 1.5, 2.0],
         "adx_min": [12, 18],
         "exit_to_mid": [True, False],
+        "session_hours": [None],
+    },
+    "squeeze_breakout": {
+        "squeeze_pct": [0.2, 0.3],
+        "lookback": [40, 60],
+        "adx_min": [10, 18],
+        "exit_bars": [8, 16],
         "session_hours": [None],
     },
     "bbands_reversion": {

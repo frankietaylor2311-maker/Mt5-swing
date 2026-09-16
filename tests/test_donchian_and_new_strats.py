@@ -12,6 +12,7 @@ from mt5_swing.strategies.bbands_reversion import BBandsReversion
 from mt5_swing.strategies.breakout import BreakoutDonchian
 from mt5_swing.strategies.ema_pullback import EmaPullback
 from mt5_swing.strategies.hybrid_regime import HybridRegime
+from mt5_swing.strategies.squeeze_breakout import SqueezeBreakout
 from pathlib import Path
 
 
@@ -45,7 +46,7 @@ def test_breakout_can_fire_on_history():
 def test_new_strategies_smoke_and_trades():
     df = generate_sample_ohlc(n_bars=600, seed=21)
     cfg = BacktestConfig(symbol="EURUSD", initial_equity=100_000)
-    for strat in (EmaPullback(), HybridRegime(), BBandsReversion(require_rsi=False)):
+    for strat in (EmaPullback(), HybridRegime(), BBandsReversion(require_rsi=False), SqueezeBreakout(adx_min=0.0)):
         res = run_backtest(df, strat, cfg)
         assert len(res.equity) == len(df)
         assert isinstance(res.metrics.gates_pass, bool)
@@ -85,3 +86,17 @@ def test_atr_exits_produce_stop_or_target_reasons():
         return  # synthetic may be flat; do not fail
     reasons = set(res.trades["reason"].unique())
     assert reasons & {"atr_stop", "atr_target", "signal", "kill_switch_flatten"}
+
+
+def test_squeeze_signals_stable_under_future_sabotage():
+    df = generate_sample_ohlc(n_bars=300, seed=9)
+    feat = apply_feature_pipeline(df, signal_lag=1)
+    strat = SqueezeBreakout(adx_min=0.0, lookback=40)
+    sig_a = strat.generate_signals(feat)
+    bad = df.copy()
+    bad.iloc[-5:, bad.columns.get_loc("close")] *= 10
+    bad.iloc[-5:, bad.columns.get_loc("high")] *= 10
+    feat2 = apply_feature_pipeline(bad, signal_lag=1)
+    sig_b = strat.generate_signals(feat2)
+    n = len(sig_a) - 5 - 60
+    assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()

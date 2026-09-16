@@ -30,3 +30,8 @@ AUDUSD_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookb
 AUDUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.25% n=96 gates=True holdout_ok=True source=approximate_non_ftmo
 AUDUSD_D1 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.34% n=61 gates=True holdout_ok=False source=approximate_non_ftmo
 AUDUSD_D1 bbands_reversion: IS-grid best={'adx_max': 22, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 60, 'rsi_low': 40, 'session_hours': None} OOS ret=-0.10% n=37 gates=True holdout_ok=True source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
