@@ -19,6 +19,7 @@ class BreakoutDonchian:
         atr_pct_max: float = 1.0,
         atr_lookback: int = 100,
         session_hours: str | None = None,
+        donchian_window: int = 20,
     ):
         self.use_mid_exit = bool(use_mid_exit)
         self.adx_min = float(adx_min)
@@ -26,6 +27,7 @@ class BreakoutDonchian:
         self.atr_pct_max = float(atr_pct_max)
         self.atr_lookback = int(atr_lookback)
         self.session_hours = session_hours or None
+        self.donchian_window = int(donchian_window)
 
     def _session_mask(self, index: pd.DatetimeIndex) -> pd.Series:
         if not self.session_hours:
@@ -54,29 +56,34 @@ class BreakoutDonchian:
         return ok
 
     def generate_signals(self, data: pd.DataFrame) -> pd.Series:
-        required = {"close", "donchian_upper", "donchian_lower", "donchian_mid"}
-        missing = required - set(data.columns)
-        if missing:
-            raise ValueError(f"{self.name} missing features: {missing}")
-        px = data["close"]
-        if "signal_close" in data.columns:
-            px = data["signal_close"]
+        px = data["signal_close"] if "signal_close" in data.columns else data["close"]
+        if self.donchian_window != 20 and {"high", "low"}.issubset(data.columns):
+            from mt5_swing.features.indicators import donchian, lag
+            lag_n = int(getattr(data, "attrs", {}).get("signal_lag", 1) or 1)
+            u, l, m = donchian(data["high"], data["low"], self.donchian_window)
+            upper, lower, mid = lag(u, lag_n), lag(l, lag_n), lag(m, lag_n)
+        else:
+            required = {"donchian_upper", "donchian_lower", "donchian_mid"}
+            missing = required - set(data.columns)
+            if missing:
+                raise ValueError(f"{self.name} missing features: {missing}")
+            upper, lower, mid = data["donchian_upper"], data["donchian_lower"], data["donchian_mid"]
         filt = self._filters(data)
-        long_cond = (px > data["donchian_upper"]) & filt
-        short_cond = (px < data["donchian_lower"]) & filt
+        long_cond = (px > upper) & filt
+        short_cond = (px < lower) & filt
         sig = pd.Series(int(Signal.FLAT), index=data.index, dtype=int)
         last = int(Signal.FLAT)
         for i in range(len(sig)):
-            if pd.isna(data["donchian_upper"].iloc[i]):
+            if pd.isna(upper.iloc[i]):
                 last = int(Signal.FLAT)
             elif bool(long_cond.iloc[i]):
                 last = int(Signal.LONG)
             elif bool(short_cond.iloc[i]):
                 last = int(Signal.SHORT)
             elif self.use_mid_exit:
-                if last == int(Signal.LONG) and px.iloc[i] < data["donchian_mid"].iloc[i]:
+                if last == int(Signal.LONG) and px.iloc[i] < mid.iloc[i]:
                     last = int(Signal.FLAT)
-                elif last == int(Signal.SHORT) and px.iloc[i] > data["donchian_mid"].iloc[i]:
+                elif last == int(Signal.SHORT) and px.iloc[i] > mid.iloc[i]:
                     last = int(Signal.FLAT)
             sig.iloc[i] = last
         return sig.astype(int)

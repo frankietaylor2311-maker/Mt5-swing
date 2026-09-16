@@ -146,7 +146,8 @@ GRIDS = {
         "use_mid_exit": [True, False],
         "adx_min": [0, 15, 20],
         "atr_pct_min": [0.0, 0.1],
-        "session_hours": [None, "7-20"],
+        "donchian_window": [15, 20, 30],
+        "session_hours": [None],
     },
     "ema_pullback": {
         "adx_threshold": [15, 18, 22],
