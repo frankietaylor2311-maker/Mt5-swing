@@ -1,31 +1,28 @@
-# Best interim after run4 (vol_target=false, strategy-aware ATR, HTF optional).
-# approximate_non_ftmo — NOT FTMO go-live. IS-only selection; holdout confirmation only.
-
+# Best interim after run7 (+XAUUSD Yahoo GC=F). NOT FTMO go-live.
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-risk: {risk_fraction: 0.015, atr_stop_mult: 2.0, atr_target_mult: 3.0, vol_target: false}
+risk: {risk_fraction: 0.02, atr_stop_mult: 2.0, atr_target_mult: 3.0, vol_target: false}
 risk_gates: {static_max_loss: 0.10, daily_loss: 0.05, daily_tz: Europe/Prague}
+disclaimer: "XAUUSD Yahoo futures ≠ FTMO gold CFD. Re-validate on ftmo_mt5_export."
 
 candidates:
   - symbol: USDJPY
     timeframe: D1
     strategy: hybrid_regime
     params: {adx_chop: 20, adx_trend: 24, rsi_high: 70, rsi_low: 30, session_hours: null}
-    note: "Best dual run4 — OOS ~0.50% / 35 trades + holdout ok"
+    note: "Best FX dual — OOS 0.79% / 35 trades / holdout ok"
+  - symbol: XAUUSD
+    timeframe: H4
+    strategy: breakout_donchian
+    params: {"adx_min": 0, "atr_pct_min": 0.1, "donchian_window": 30, "session_hours": null, "use_mid_exit": false}
+    note: "Strong dual on interim gold — treat as exploratory"
+  - symbol: XAUUSD
+    timeframe: D1
+    strategy: breakout_donchian
+    note: "High trade count dual on interim gold"
   - symbol: USDJPY
     timeframe: D1
     strategy: bbands_reversion
     params: {adx_max: 22, require_htf_align: false, require_rsi: false, rsi_high: 60, rsi_low: 35, session_hours: null}
-  - symbol: USDJPY
-    timeframe: H4
-    strategy: breakout_donchian
-    params: {adx_min: 15, atr_pct_min: 0.0, session_hours: null, use_mid_exit: true}
-  - symbol: GBPUSD
-    timeframe: H4
-    strategy: bbands_reversion
-    params: {adx_max: 35, require_rsi: true, rsi_high: 60, rsi_low: 40, session_hours: null}
-    note: "Strong run1 dual; re-check each pass"
 
-basket_note: >
-  A priori BB-family OOS-ranked basket (run4) holdout ~+1.11% gates PASS sharpe~1.12
-  on approximate data — still far from FTMO phase targets; needs FTMO exports.
+basket_xau_usdjpy_holdout: {return: -0.0148, gates: true, sharpe: -1.27}
