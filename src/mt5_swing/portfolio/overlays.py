@@ -389,3 +389,71 @@ def apply_after_loss_throttle(
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     scale_s = scale.shift(1).fillna(1.0)
     return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
+
+
+def apply_trailing_gain_concentration_dampen(
+    port: pd.Series,
+    *,
+    lookback_months: int = 6,
+    thresh: float = 0.60,
+    cool_scale: float = 0.5,
+    k: int = 3,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal trailing gain-concentration dampener — scale down only (never > 1).
+
+    For bars in calendar month M, inspect the last ``lookback_months`` *fully
+    completed* months before M (or fewer early in the series). Among positive
+    completed-month returns in that window, concentration = sum(top-K positives)
+    / sum(all positives). When fewer than 2 positive months exist in the window,
+    concentration is treated as 1.0 (max dampen trigger if above thresh) — this
+    is the fail-closed choice so sparse early history does not silently skip.
+
+    If concentration > ``thresh``, scale = ``cool_scale``, else 1.0. Scale is
+    clipped to [lo, 1] and lagged one bar before multiplying returns (same
+    causal contract as ``apply_month_aware_scale`` / ``apply_after_loss_throttle``).
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert("UTC").tz_localize(None)
+    per = idx.to_period("M")
+    periods = list(dict.fromkeys(per))  # ordered unique
+    mo_ret: dict = {}
+    for p in periods:
+        chunk = eq.loc[per == p]
+        if len(chunk) < 2:
+            mo_ret[p] = 0.0
+        else:
+            mo_ret[p] = float(chunk.iloc[-1] / chunk.iloc[0] - 1.0)
+    p_index = {p: i for i, p in enumerate(periods)}
+    lb = max(1, int(lookback_months))
+    kk = max(1, int(k))
+    conc_vals = []
+    for p in per:
+        i = p_index[p]
+        # Fully completed months strictly before current month p
+        start = max(0, i - lb)
+        window = periods[start:i]
+        pos = [mo_ret[q] for q in window if mo_ret[q] > 0.0]
+        if len(pos) < 2:
+            # Fail-closed: treat as fully concentrated when <2 positives
+            conc = 1.0
+        else:
+            pos_arr = np.asarray(pos, dtype=float)
+            total = float(pos_arr.sum())
+            if total <= 0:
+                conc = 1.0
+            else:
+                top = np.sort(pos_arr)[::-1][: min(kk, len(pos_arr))]
+                conc = float(top.sum() / total)
+        conc_vals.append(conc)
+    conc_on_bars = pd.Series(conc_vals, index=eq.index, dtype=float)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(conc_on_bars > float(thresh)), float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_s = scale.shift(1).fillna(1.0)
+    return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])

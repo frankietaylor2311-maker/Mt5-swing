@@ -3,6 +3,98 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
+Session: 2026-09-16 23:36 BST (wave: **causal trailing gain-concentration dampen** on locked sleeve ± frozen HO-robust wrebal).
+
+## Scoring rubric this wave (primary)
+
+1. High **% positive months** (prefer ≥70–75%)
+2. Lower **top-3 gain concentration** (prefer ≤~50–55%; reject if HO top3 worsens vs locked)
+3. Mean monthly **~1% stable** across 2024, 2025, 2026, holdout — **2024 cannot stay at 0.42%**
+4. Prefer **lower monthly variance / less lumpy** mean over higher bursty mean
+5. **Reject** candidates that boost mean via bursts even if gates PASS
+6. **No leverage increase** (RF fixed at 8%; overlay `hi≤1`)
+
+**Selection objective:** maximize `min(IS year mean_mo)` for `{2024, 2025_IS}` subject to %pos≥70% and top3≤55% (soft≤70%; soft also mean≥~1%). Holdout / full 2025–2026 **confirmation only** — promote only if holdout **also** clears ≥1% mean and ≥70% pos **and** each of 2024/2025/2026 clears the same.
+
+## Target vs result
+
+| Criterion | Target | Locked candidate | Met? |
+|-----------|--------|------------------|:----:|
+| Mean monthly on eval windows | ≥ ~1.0% | Holdout **+1.52%**; 2025 **+1.63%**; 2026 **+2.30%**; roll12_m6 **+1.13%**; **2024 +0.42%** | **Mostly — 2024 still short** |
+| % positive months | ≥ ~70–75% | Holdout **75%**; 2026 **88%**; 2025 **73%**; **2024 55%** | 2024 fails consistency |
+| Top-3 months share of gains | ≲ 50–55% | Holdout **~81%**; 2024 **74%** | **No — still bursty** |
+| Gates | PASS | All listed windows **PASS** | **Yes** |
+| Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
+
+**Verdict:** Official locked tag **unchanged**. Conc-dampen wave: board **n=8**, soft=**4**, hard=**0**, promote=**0**. Primary thresh≤0.70 always-fires on 2024 (top3-of-pos≈0.88–1.0). Best soft remains prior `wrebal+mtd_t0.015_a0.5` (HO %pos 67%). Soft `wrebal+mtd+conc` lifts HO %pos to **75%** but HO top3 **70.7%** and hard IS top3 fail. **Promote: NO.** Still blocked on FTMO CSVs.
+
+## Locked candidate (unchanged — still official)
+
+**Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
+**Config:** `configs/quest_one_pct_candidate.yaml`
+
+Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py` → `quest_locked_verify_keepalive_2330`):
+
+| Window | Return | Mean mo | %pos | Top3 | Gates | P2T |
+|--------|-------:|--------:|-----:|-----:|:-----:|----:|
+| 2024 | +5.38% | **0.42%** | 55% | 74% | PASS | ~7% |
+| 2025 | +22.04% | **1.63%** | 73% | 69% | PASS | ~4% |
+| 2026 YTD | +20.0%+ | **2.30%** | 88% | 87% | PASS | ~6% |
+| holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
+| roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
+
+## Wave: trailing gain-concentration dampen (this)
+
+Scripts/helpers:
+- `scripts/quest_conc_dampen_consistency_wf.py` (importlib reuse of refine helpers + frozen wrebal from `quest_ho_robust_selected.json`)
+- `apply_trailing_gain_concentration_dampen` in `overlays.py` (completed months; <2 positives → conc=1.0; lag-1; hi≤1)
+- Nested pick on 2024; HO never for selection; soft mean floor 0.0095 both IS windows
+- Grid: lb∈{4,6,8}, thresh∈{0.55..0.70}+mild{0.80,0.85,0.90}, cool∈{0.35,0.5,0.65}, K=3
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Promote | Notes |
+|--------|--:|--------:|--------:|--------:|-------|
+| baseline | 1 | 0 | 0 | 0 | 2024 0.42%/55%/74% |
+| conc_dampen | 1 | 0 | 0 | 0 | best lb8 th0.9 cs0.65; mean crushed |
+| frozen_wrebal | 1 | 0 | 0 | 0 | soft_mean_fail (2024 0.68%) |
+| frozen_wrebal_conc | 1 | 0 | 0 | 0 | soft_mean_fail |
+| frozen_wrebal_mtd | 2 | **2** | 0 | 0 | **best soft**; holdout_fail |
+| frozen_wrebal_mtd_conc | 1 | **1** | 0 | 0 | HO %pos 75% but top3 70.7% |
+| mtd_gain_clip_prior | 1 | **1** | 0 | 0 | year_clear_fail |
+
+**Totals:** soft=**4** hard=**0** promote=**0** (board n=8).
+
+### Best soft (not promote) — `wrebal_…+mtd_t0.015_a0.5_frozen`
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.18%** | **82%** | **45%** | IS — soft OK; hard OK this window |
+| 2025_IS | **1.74%** | **75%** | **64%** | IS — soft OK; hard top3 fail |
+| 2025 (cal) | **1.11%** | 73% | 61% | confirm |
+| 2026 | **2.41%** | 75% | 80% | confirm |
+| holdout | **1.69%** | **67%** | **71%** | confirm — holdout_fail |
+
+### Soft near-miss — `wrebal+mtd+conc_lb6_th0.85_cs0.65`
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.06%** | **82%** | **47%** | IS soft |
+| 2025_IS | **1.30%** | **75%** | **61%** | hard top3 fail |
+| holdout | **1.11%** | **75%** | **71%** | HO %pos OK; top3 70.7%>70% soft |
+
+**Promote: NO.** Locked tag unchanged.
+
+---
+
+
+## Prior session log (preserved)
+
+# One-percent per month quest — status
+
+**Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
+**Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
+
 Session: 2026-09-16 23:00 BST Europe/London (wave: **causal MTD loss-halt + after-loss throttle** on locked sleeve).
 
 ## Scoring rubric this wave (primary)

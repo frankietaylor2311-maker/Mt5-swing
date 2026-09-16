@@ -193,3 +193,74 @@ def test_after_loss_throttle_causal_mutate_feb_last():
     jan1 = out1.loc[out1.index.month == 1].pct_change().fillna(0)
     jan2 = out2.loc[out2.index.month == 1].pct_change().fillna(0)
     assert np.allclose(jan1, jan2)
+
+
+def test_trailing_gain_concentration_dampen_never_increases_vs_unit_scale():
+    from mt5_swing.portfolio.overlays import apply_trailing_gain_concentration_dampen
+
+    rng = np.random.default_rng(11)
+    # Lumpy positive months then mixed — dampener should only scale down
+    chunks = []
+    for _ in range(10):
+        chunks.append(np.full(20, 0.004))
+        chunks.append(rng.normal(0.0001, 0.003, 10))
+    rets = np.concatenate(chunks)
+    eq = _eq_from_returns(rets)
+    out = apply_trailing_gain_concentration_dampen(
+        eq, lookback_months=4, thresh=0.55, cool_scale=0.5, k=3, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_trailing_gain_concentration_dampen_causal_prefix_invariance():
+    from mt5_swing.portfolio.overlays import apply_trailing_gain_concentration_dampen
+
+    rng = np.random.default_rng(2)
+    rets = rng.normal(0.001, 0.008, 200)
+    eq = _eq_from_returns(rets)
+    out1 = apply_trailing_gain_concentration_dampen(
+        eq, lookback_months=6, thresh=0.60, cool_scale=0.35, k=3
+    )
+    eq2 = eq.copy()
+    # Mutate only the last bar — past scaled returns must be unchanged
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.4
+    out2 = apply_trailing_gain_concentration_dampen(
+        eq2, lookback_months=6, thresh=0.60, cool_scale=0.35, k=3
+    )
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_trailing_gain_concentration_dampen_uses_completed_months_only():
+    from mt5_swing.portfolio.overlays import apply_trailing_gain_concentration_dampen
+
+    # Build ~8 months of daily bars with highly concentrated early gains
+    idx = pd.date_range("2024-01-01", periods=240, freq="D", tz="UTC")
+    rets = np.full(240, 0.0002)
+    # January huge; Feb–Apr mild positive; later mild
+    # Find month boundaries roughly by calendar
+    for i, t in enumerate(idx):
+        if t.month == 1:
+            rets[i] = 0.008  # strong Jan
+        elif t.month in (2, 3, 4):
+            rets[i] = 0.0005
+    eq = pd.Series(np.cumprod(1.0 + rets) * 100_000.0, index=idx)
+    # Aggressive dampen: any concentration > 0.5 cools hard
+    out = apply_trailing_gain_concentration_dampen(
+        eq, lookback_months=4, thresh=0.50, cool_scale=0.35, k=3, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Early January (no completed prior months → conc=1.0 fail-closed, but
+    # scale is lagged one bar; mid-Jan may cool after first bar). Mid-May should
+    # see completed Jan–Apr with Jan dominating positives → cool.
+    may = out.index[out.index.month == 5]
+    assert len(may) > 5
+    i = out.index.get_loc(may[5])
+    if r_raw.iloc[i] > 1e-15:
+        assert r_out.iloc[i] < r_raw.iloc[i] - 1e-15
