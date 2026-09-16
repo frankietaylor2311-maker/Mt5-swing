@@ -1,0 +1,48 @@
+# Default research / execution config for mt5_swing
+# Hard risk gates: max peak-to-trough DD < 10%; daily DD < 5%
+# Daily DD = equity vs prior calendar-day close (UTC date of bar index)
+
+symbols:
+  - EURUSD
+  - GBPUSD
+  - USDJPY
+
+timeframes:
+  - H4
+  - D1
+
+risk:
+  max_peak_to_trough_dd: 0.10
+  max_daily_dd: 0.05
+  flatten_on_breach: true
+  risk_fraction: 0.01
+  atr_stop_mult: 2.0
+  sizing: atr
+
+backtest:
+  initial_equity: 10000
+  commission_per_lot: 7.0
+  slippage_pips: 0.5
+  default_spread_pips: 1.2
+  signal_lag: 1
+
+walk_forward:
+  mode: rolling   # rolling | anchored
+  train_bars: 500
+  test_bars: 100
+  step_bars: 100
+  min_train_bars: 200
+
+strategy:
+  name: trend_ma_adx
+  params: {}
+
+optimize:
+  # Constrained grid — keep small to limit overfit risk
+  max_trials: 20
+  param_grid:
+    adx_threshold: [15, 20, 25]
+
+broker:
+  live: false   # must pass --live on CLI to enable
+  stub: true

@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE / tooling
+.idea/
+.vscode/
+*.swp
+*.swo
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / local credentials — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials.json
+
+# MT5 / trading local artifacts
+*.ex4
+*.ex5
+*.mq4
+*.mq5
+logs/
+*.log
+results/
+output/
+*.pkl
+*.joblib
+
+# Local data dumps (keep sample generator; ignore large downloads)
+data/raw/
+data/downloaded/
+!data/sample/
+!data/sample/**

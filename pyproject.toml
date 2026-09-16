@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mt5_swing"
+version = "0.1.0"
+description = "Swing-trading research and execution toolkit for MetaTrader 5 (forex/CFDs)"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Frankie Taylor" }]
+keywords = ["metatrader5", "forex", "swing-trading", "backtest", "walk-forward"]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "pyyaml>=6.0",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+]
+mt5 = [
+    "MetaTrader5>=5.0.45; platform_system=='Windows'",
+]
+
+[project.scripts]
+mt5-swing = "mt5_swing.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mt5_swing"]
+
+[tool.hatch.build]
+[tool.hatch.build.targets.wheel.sources]
+"src/mt5_swing" = "mt5_swing"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
