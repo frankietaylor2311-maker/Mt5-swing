@@ -93,6 +93,17 @@ def donchian(
     return upper, lower, mid
 
 
+
+def stochastic(
+    high: pd.Series, low: pd.Series, close: pd.Series, window: int = 14
+) -> pd.Series:
+    """Slow %K stochastic (causal rolling)."""
+    lowest = low.rolling(window=window, min_periods=window).min()
+    highest = high.rolling(window=window, min_periods=window).max()
+    denom = (highest - lowest).replace(0.0, np.nan)
+    return 100.0 * (close - lowest) / denom
+
+
 def apply_feature_pipeline(
     df: pd.DataFrame,
     *,
@@ -135,6 +146,7 @@ def apply_feature_pipeline(
     feats["ema_26"] = ema(close, 26)
     feats["macd"] = feats["ema_12"] - feats["ema_26"]
     feats["macd_signal"] = feats["macd"].ewm(span=9, adjust=False, min_periods=9).mean()
+    feats["stoch_k"] = stochastic(high, low, close, 14)
     # Higher-TF proxy from same bar series (e.g. ~20/50 D1 on H4≈6 bars/day)
     feats["htf_sma_fast"] = sma(close, 120)
     feats["htf_sma_slow"] = sma(close, 300)

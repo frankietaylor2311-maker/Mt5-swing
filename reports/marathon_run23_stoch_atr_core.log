@@ -26,7 +26,8 @@ NZDUSD_H4 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require
 NZDUSD_H4 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.01% n=128 gates=True holdout_ok=True source=approximate_non_ftmo
 NZDUSD_D1 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 80, 'stoch_low': 15} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 NZDUSD_D1 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-run21: EURGBP/AUDJPY/EURCHF core-strats WF (FOCUS leftover cleared later)
-run22: stoch/atr/squeeze/keltner/macd/ema on new pairs
-run23: stoch+atr_channel on core FX — USDCHF D1 stoch OOS+0.49%, AUDUSD D1 atr OOS+0.36%
-portfolio: OOS-Sharpe weights on interim FX4 @2.5% → holdout +2.28% (beats +1.81%@2% equal)
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.

@@ -91,6 +91,7 @@ ATR_EXIT_STRATS = {
     "keltner_breakout",
     "squeeze_breakout",
     "macd_trend",
+    "atr_channel_breakout",
 }
 # Mean-reversion / BB already have mid exits — ATR stops often cut winners early.
 
@@ -187,6 +188,22 @@ GRIDS = {
         "require_htf_align": [False, True],
         "exit_on_cross": [True],
         "hold_while_hist": [True, False],
+        "max_hold": [0, 24],
+        "session_hours": [None],
+    },
+    "stoch_reversion": {
+        "adx_max": [22, 28, 35],
+        "stoch_low": [15, 20, 25],
+        "stoch_high": [75, 80, 85],
+        "exit_mid": [50],
+        "require_htf_align": [False, True],
+        "session_hours": [None],
+    },
+    "atr_channel_breakout": {
+        "atr_mult": [1.5, 2.0, 2.5],
+        "adx_min": [12, 18],
+        "exit_to_mid": [True, False],
+        "require_htf_align": [False, True],
         "max_hold": [0, 24],
         "session_hours": [None],
     },

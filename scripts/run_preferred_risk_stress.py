@@ -11,6 +11,7 @@ import os
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 
@@ -36,12 +37,16 @@ def main() -> None:
     if not candidates:
         print("No candidates in", cfg_path)
         return
-    # FX-only by default for FTMO-relevant stress
     fx_only = os.environ.get("FX_ONLY", "1").lower() in ("1", "true", "yes")
     if fx_only:
         candidates = [c for c in candidates if c["symbol"] not in ("XAUUSD", "XAGUSD")]
-    risks = [float(x) for x in os.environ.get("RISK_SWEEP", "0.01,0.015,0.02").split(",") if x.strip()]
+    risks = [
+        float(x)
+        for x in os.environ.get("RISK_SWEEP", "0.01,0.015,0.02,0.025").split(",")
+        if x.strip()
+    ]
     trail = float(os.environ.get("ATR_TRAIL_MULT", "0") or 0)
+    weight_mode = os.environ.get("WEIGHTS", best.get("weights", "equal")).strip().lower()
     cfg = load_config(ROOT / "src" / "mt5_swing" / "config" / "ftmo_2step.yaml")
     holdout_days = int(cfg.get("walk_forward", {}).get("holdout_days", 365))
     initial = float(cfg.get("backtest", {}).get("initial_equity", 100_000))
@@ -54,13 +59,15 @@ def main() -> None:
         f"- fx_only: {fx_only}",
         f"- legs: {n_legs}",
         f"- atr_trail_mult: {trail}",
-        "- Note: params from IS grids; holdout never used to choose risk.",
+        f"- weights: {weight_mode}",
+        "- Note: params from IS grids; holdout never used to choose risk/weights.",
         "",
         "| Risk/trade | Basket ret | Static loss | Daily loss | Gates | Sharpe |",
         "|---:|---:|---:|---:|:---:|---:|",
     ]
     for rf in risks:
         hold_curves = []
+        used = []
         for c in candidates:
             path = rfr.resolve_csv(c["symbol"], c["timeframe"])
             if path is None:
@@ -81,14 +88,19 @@ def main() -> None:
             hold_curves.append(
                 res.equity.rename(f"{c['symbol']}_{c['timeframe']}_{c['strategy']}")
             )
+            used.append(c)
         if not hold_curves:
             continue
-        eq = pd.concat(hold_curves, axis=1, sort=True).sort_index().ffill()
-        # Require all legs present (mixed TF calendars otherwise bias early H4-only rows)
-        eq = eq.dropna(how="any")
+        eq = pd.concat(hold_curves, axis=1, sort=True).sort_index().ffill().dropna(how="any")
         if eq.empty:
             continue
-        port = (eq / eq.iloc[0]).mean(axis=1) * initial
+        norms = eq / eq.iloc[0]
+        if weight_mode == "oos_sharpe":
+            sh = np.array([max(float(c.get("oos_sharpe") or 0.01), 0.01) for c in used], dtype=float)
+            w = sh / sh.sum()
+            port = (norms * w).sum(axis=1) * initial
+        else:
+            port = norms.mean(axis=1) * initial
         m = compute_metrics(
             port,
             None,
@@ -107,9 +119,11 @@ def main() -> None:
     lines.append("## Legs (params IS-selected)")
     lines.append("")
     for c in candidates:
+        w = c.get("weight")
+        wtxt = f" w={float(w):.3f}" if w is not None else ""
         lines.append(
             f"- {c['symbol']} {c['timeframe']} {c['strategy']}: "
-            f"OOS={float(c.get('oos_return', 0)):.2%} hold={float(c.get('holdout_return', 0)):.2%}"
+            f"OOS={float(c.get('oos_return', 0)):.2%} hold={float(c.get('holdout_return', 0)):.2%}{wtxt}"
         )
     out = ROOT / "reports" / "basket_risk_stress.md"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")

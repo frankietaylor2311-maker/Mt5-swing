@@ -139,3 +139,26 @@ def test_atr_trail_and_time_stop_reasons():
         return
     reasons = set(res.trades["reason"].unique())
     assert reasons & {"atr_stop", "atr_trail", "time_stop", "signal", "kill_switch_flatten"}
+
+
+def test_stoch_and_atr_channel_smoke_lookahead():
+    from mt5_swing.strategies.stoch_reversion import StochReversion
+    from mt5_swing.strategies.atr_channel import AtrChannelBreakout
+
+    df = generate_sample_ohlc(n_bars=600, seed=41)
+    cfg = BacktestConfig(symbol="EURUSD", initial_equity=100_000)
+    for strat in (StochReversion(adx_max=40), AtrChannelBreakout(adx_min=5.0)):
+        res = run_backtest(df, strat, cfg)
+        assert len(res.equity) == len(df)
+    feat = apply_feature_pipeline(df, signal_lag=1)
+    assert "stoch_k" in feat.columns
+    strat = StochReversion(adx_max=40)
+    sig_a = strat.generate_signals(feat)
+    bad = df.copy()
+    bad.iloc[-6:, bad.columns.get_loc("close")] *= 5
+    bad.iloc[-6:, bad.columns.get_loc("high")] *= 5
+    bad.iloc[-6:, bad.columns.get_loc("low")] *= 5
+    feat2 = apply_feature_pipeline(bad, signal_lag=1)
+    sig_b = strat.generate_signals(feat2)
+    n = len(sig_a) - 6 - 40
+    assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()

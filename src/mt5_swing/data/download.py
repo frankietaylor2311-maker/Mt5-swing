@@ -33,6 +33,9 @@ YFINANCE_FX = {
     "NZDUSD": "NZDUSD=X",
     "EURJPY": "EURJPY=X",
     "GBPJPY": "GBPJPY=X",
+    "EURGBP": "EURGBP=X",
+    "AUDJPY": "AUDJPY=X",
+    "EURCHF": "EURCHF=X",
 }
 
 DEFAULT_SPREAD_PIPS = {
