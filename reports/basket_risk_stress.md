@@ -1,7 +1,7 @@
-# Risk stress FX5
+# Risk stress
 
-- 1.0%: ret=2.04% static=0.15% daily=0.16% gates=PASS sharpe=1.95
-- 1.5%: ret=2.87% static=0.23% daily=0.24% gates=PASS sharpe=1.87
-- 2.0%: ret=3.64% static=0.22% daily=0.31% gates=PASS sharpe=1.90
-- 2.5%: ret=3.96% static=0.17% daily=0.36% gates=PASS sharpe=1.89
-- 3.0%: ret=3.91% static=0.18% daily=0.37% gates=PASS sharpe=1.81
+- 1.0%: ret=3.07% static=0.23% daily=0.25% gates=PASS sharpe=2.00
+- 1.5%: ret=4.35% static=0.30% daily=0.37% gates=PASS sharpe=2.00
+- 2.0%: ret=4.93% static=0.21% daily=0.45% gates=PASS sharpe=2.01
+- 2.5%: ret=4.82% static=0.22% daily=0.46% gates=PASS sharpe=1.91
+- 3.0%: ret=4.73% static=0.22% daily=0.46% gates=PASS sharpe=1.86
