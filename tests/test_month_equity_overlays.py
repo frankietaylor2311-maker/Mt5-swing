@@ -108,3 +108,88 @@ def test_mtd_gain_clip_is_causal_no_future_peek():
     eq2.iloc[-1] = eq2.iloc[-1] * 1.5
     out2 = apply_mtd_gain_clip(eq2, tau=0.02, after_clip=0.25)
     assert np.allclose(out1.iloc[:-1].pct_change().fillna(0), out2.iloc[:-1].pct_change().fillna(0))
+
+
+def test_mtd_loss_halt_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_mtd_loss_halt
+
+    rng = np.random.default_rng(3)
+    rets = rng.normal(0.0005, 0.01, 90)
+    eq = _eq_from_returns(rets)
+    out = apply_mtd_loss_halt(eq, tau=0.02, after_halt=0.0)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_mtd_loss_halt_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_mtd_loss_halt
+
+    rng = np.random.default_rng(0)
+    rets = rng.normal(0.0, 0.012, 90)
+    eq = _eq_from_returns(rets)
+    out1 = apply_mtd_loss_halt(eq, tau=0.015, after_halt=0.25)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.5  # mutate future last bar
+    out2 = apply_mtd_loss_halt(eq2, tau=0.015, after_halt=0.25)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_mtd_loss_halt_flattens_after_large_intra_month_drop():
+    from mt5_swing.portfolio.overlays import apply_mtd_loss_halt
+
+    # Steady mild then a large drop early in month → later bars flattened
+    rets = np.concatenate([np.full(5, 0.001), np.array([-0.04]), np.full(25, 0.002)])
+    eq = _eq_from_returns(rets)
+    out = apply_mtd_loss_halt(eq, tau=0.02, after_halt=0.0)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # After the drop, MTD through prior bar < -tau → later same-month bars ~0
+    assert (r_out.iloc[8:].abs() < 1e-14).sum() >= 5
+    # Drop bar itself still applies (scale decided on prior MTD)
+    assert abs(r_out.iloc[6] - r_raw.iloc[6]) < 1e-12 or r_out.iloc[6] == 0.0
+
+
+def test_after_loss_throttle_losing_jan_scales_feb_not_jan():
+    from mt5_swing.portfolio.overlays import apply_after_loss_throttle
+
+    idx = pd.date_range("2024-01-01", periods=60, freq="D", tz="UTC")
+    rets = np.full(60, 0.001)
+    # Make January a clear loser: large negative mid-month
+    rets[10] = -0.08
+    eq = pd.Series(np.cumprod(1.0 + rets) * 100_000.0, index=idx)
+    out = apply_after_loss_throttle(eq, after_loss=0.5, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Mid-January (no completed prior losing month): unscaled
+    assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
+    # Mid-February should be scaled down vs raw when raw > 0
+    feb = out.index[out.index.month == 2]
+    assert len(feb) > 5
+    i = out.index.get_loc(feb[5])
+    if r_raw.iloc[i] > 1e-15:
+        assert r_out.iloc[i] < r_raw.iloc[i] - 1e-15
+        assert abs(r_out.iloc[i] - 0.5 * r_raw.iloc[i]) < 1e-10
+
+
+def test_after_loss_throttle_causal_mutate_feb_last():
+    from mt5_swing.portfolio.overlays import apply_after_loss_throttle
+
+    idx = pd.date_range("2024-01-01", periods=60, freq="D", tz="UTC")
+    rets = np.full(60, 0.001)
+    rets[10] = -0.08  # losing January
+    eq = pd.Series(np.cumprod(1.0 + rets) * 100_000.0, index=idx)
+    out1 = apply_after_loss_throttle(eq, after_loss=0.5, lo=0.25)
+    eq2 = eq.copy()
+    # Mutate last February bar — must not change January scaled returns
+    feb_mask = eq2.index.month == 2
+    feb_idx = eq2.index[feb_mask]
+    eq2.loc[feb_idx[-1]] = eq2.loc[feb_idx[-1]] * 1.2
+    out2 = apply_after_loss_throttle(eq2, after_loss=0.5, lo=0.25)
+    jan1 = out1.loc[out1.index.month == 1].pct_change().fillna(0)
+    jan2 = out2.loc[out2.index.month == 1].pct_change().fillna(0)
+    assert np.allclose(jan1, jan2)

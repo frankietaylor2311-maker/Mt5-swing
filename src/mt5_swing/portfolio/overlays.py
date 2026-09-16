@@ -310,3 +310,82 @@ def apply_mtd_gain_clip(
     scale = scale.where(~(mtd_lag > float(tau)), float(after_clip))
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_mtd_loss_halt(
+    port: pd.Series,
+    *,
+    tau: float = 0.02,
+    after_halt: float = 0.0,
+    lo: float = 0.0,
+) -> pd.Series:
+    """Causal intra-month MTD loss halt — flatten once month-to-date drops below -tau.
+
+    At bar t, MTD is computed from month-start equity through bar t-1 only
+    (same month-start / month-change rules as ``apply_mtd_gain_clip``).
+    If that lagged MTD < ``-tau``, next-bar scale becomes ``after_halt``
+    (typically 0 or 0.25), clipped to [lo, 1]. Never increases leverage (hi=1).
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        months = idx.tz_convert("UTC").to_period("M")
+    else:
+        months = idx.to_period("M")
+    mo_start = eq.groupby(months).transform("first")
+    eq_lag = eq.shift(1)
+    mtd_lag = (eq_lag / mo_start.replace(0, np.nan) - 1.0).fillna(0.0)
+    mo_change = pd.Series(months, index=eq.index) != pd.Series(months, index=eq.index).shift(1)
+    mtd_lag = mtd_lag.where(~mo_change.fillna(True), 0.0)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(mtd_lag < -float(tau)), float(after_halt))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_after_loss_throttle(
+    port: pd.Series,
+    *,
+    after_loss: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal prior-month loss throttle — scale current month if M-1 finished negative.
+
+    Uses only the *fully completed* calendar month M-1 return (first/last within
+    M-1), identical causal contract to ``apply_month_aware_scale``'s month leg.
+    Bars in month M see prior_month_return = return(M-1); if that return < 0,
+    scale = ``after_loss`` (in {0.25, 0.5, 0.75} typically), else 1.0.
+    Scale is clipped to [lo, 1] (never leverage) and lagged one bar before
+    multiplying returns so the decision at t uses information available at t-1.
+    Losing January does not change January scales; February is scaled down.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert("UTC").tz_localize(None)
+    per = idx.to_period("M")
+    periods = list(dict.fromkeys(per))  # ordered unique
+    mo_ret: dict = {}
+    for p in periods:
+        chunk = eq.loc[per == p]
+        if len(chunk) < 2:
+            mo_ret[p] = 0.0
+        else:
+            mo_ret[p] = float(chunk.iloc[-1] / chunk.iloc[0] - 1.0)
+    p_index = {p: i for i, p in enumerate(periods)}
+    prior_vals = []
+    for p in per:
+        i = p_index[p]
+        prior_vals.append(mo_ret[periods[i - 1]] if i > 0 else 0.0)
+    prior_on_bars = pd.Series(prior_vals, index=eq.index, dtype=float)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(prior_on_bars < 0.0), float(after_loss))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_s = scale.shift(1).fillna(1.0)
+    return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])

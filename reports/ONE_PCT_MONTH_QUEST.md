@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 22:40 BST Europe/London (wave: **HO-robust consistency** — budget VT / equity_tsmom / dense wrebal / wrebal+MTD+budget on locked sleeve).
+Session: 2026-09-16 23:00 BST Europe/London (wave: **causal MTD loss-halt + after-loss throttle** on locked sleeve).
 
 ## Scoring rubric this wave (primary)
 
@@ -26,14 +26,14 @@ Session: 2026-09-16 22:40 BST Europe/London (wave: **HO-robust consistency** —
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. HO-robust wave (budget VT / tsmom / dense wrebal / nested overlays) produced **2** soft IS / **0** hard / **0** promote. Best soft again `wrebal_…+mtd_t0.015_a0.5` (2024 **1.20%/82%/45%**; HO **1.69%/67%/71%**) — hard top3 fail + holdout_fail. Monthly/daily budget and equity_tsmom alone did not soft-pass. **Promote: NO.** Still blocked on FTMO CSVs.
+**Verdict:** Official locked tag **unchanged**. Loss-halt wave produced **4** soft IS / **0** hard / **0** promote. Best soft `lock_mtd_t0.015_a0.0+lh_t0.02_ah0.0` (2024 **1.05%/73%/52%**; HO **0.89%/67%/74%**) — hard top3 fail + holdout_fail. Alone loss-halt / after-loss did not soft-pass. **Promote: NO.** Still blocked on FTMO CSVs.
 
 ## Locked candidate (unchanged — still official)
 
 **Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
 **Config:** `configs/quest_one_pct_candidate.yaml`
 
-Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py` → `quest_locked_verify_keepalive_2240`):
+Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py` → `quest_locked_verify_keepalive_2300`):
 
 | Window | Return | Mean mo | %pos | Top3 | Gates | P2T |
 |--------|-------:|--------:|-----:|-----:|:-----:|----:|
@@ -42,6 +42,44 @@ Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; 
 | 2026 YTD | +20.0%+ | **2.30%** | 88% | 87% | PASS | ~6% |
 | holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
 | roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
+
+## Wave: causal MTD loss-halt + after-loss throttle (this)
+
+Scripts/helpers:
+- `scripts/quest_loss_halt_consistency_wf.py` (new; importlib reuse of refine helpers)
+- `apply_mtd_loss_halt` / `apply_after_loss_throttle` in `overlays.py`
+- Nested pick on 2024; HO never for selection; soft mean floor 0.0095 both IS windows
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Promote | Notes |
+|--------|--:|--------:|--------:|--------:|-------|
+| baseline | 1 | 0 | 0 | 0 | 2024 0.42%/55%/74% |
+| mtd_loss_halt | 3 | 0 | 0 | 0 | best τ=0.02 ah=0; 2024 %pos still 55% |
+| after_loss_throttle | 1 | 0 | 0 | 0 | after_loss=0.25; IS fail |
+| combo_lh_al | 1 | 0 | 0 | 0 | IS fail |
+| combo_lh_mtd | 1 | **1** | 0 | 0 | holdout_fail |
+| combo_lh_mtd_prior | 1 | **1** | 0 | 0 | twin of nested |
+| combo_al_mtd | 1 | 0 | 0 | 0 | IS fail |
+| combo_al_mtd_prior | 1 | 0 | 0 | 0 | soft_mean_fail |
+| mtd_gain_clip_prior | 1 | **1** | 0 | 0 | year_clear_fail (2025 cal) |
+| combo_prior_mtd_lh | 1 | **1** | 0 | 0 | **best soft**; holdout_fail |
+
+**Totals:** soft=**4** hard=**0** promote=**0** (board n=12).
+
+### Best soft (not promote) — `lock_mtd_t0.015_a0.0+lh_t0.02_ah0.0`
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.05%** | **73%** | **52%** | IS — soft OK; hard OK this window |
+| 2025_IS | **1.37%** | **75%** | **59%** | IS — soft OK; hard top3 fail (>55%) |
+| 2025 (cal) | **0.79%** | 73% | 56% | confirm — below 1% |
+| 2026 | **1.89%** | 88% | 81% | confirm |
+| holdout | **0.89%** | **67%** | **74%** | confirm — holdout_fail |
+
+**Promote: NO.** Locked tag unchanged.
+
+---
 
 ## Wave: HO-robust consistency (this)
 

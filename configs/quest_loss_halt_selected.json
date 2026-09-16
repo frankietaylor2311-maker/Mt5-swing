@@ -1,0 +1,56 @@
+{
+  "promote": false,
+  "soft": 4,
+  "hard": 0,
+  "board_n": 12,
+  "best_soft": "lock_mtd_t0.015_a0.0+lh_t0.02_ah0.0",
+  "best_hard": null,
+  "nearest": "lock_mtd_t0.015_a0.0+lh_t0.02_ah0.0",
+  "best_loss_halt": {
+    "tau": 0.02,
+    "after_halt": 0.0
+  },
+  "best_after_loss": {
+    "after_loss": 0.25
+  },
+  "best_lh_mtd": {
+    "tau": 0.015,
+    "after": 0.0
+  },
+  "best_al_mtd": {
+    "tau": 0.015,
+    "after": 0.5
+  },
+  "best_prior_mtd_lh": {
+    "tau": 0.02,
+    "after_halt": 0.0
+  },
+  "prior_mtd_near": {
+    "tau": 0.015,
+    "after": 0.0
+  },
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_changed": false,
+  "data_source": "approximate_non_ftmo",
+  "rf": 0.08,
+  "port_vol_target": 0.0025,
+  "mean_floor": 0.0095,
+  "best_soft_metrics": {
+    "mo_2024": 0.01052782552936919,
+    "pos_2024": 0.7272727272727273,
+    "top3_2024": 0.5155394306077201,
+    "mo_2025_IS": 0.01368516776335503,
+    "pos_2025_IS": 0.75,
+    "top3_2025_IS": 0.5870014752312511,
+    "mo_2025": 0.007928734584867182,
+    "pos_2025": 0.7272727272727273,
+    "top3_2025": 0.5634416296927753,
+    "mo_2026": 0.018906063207166382,
+    "pos_2026": 0.875,
+    "top3_2026": 0.8133107401321782,
+    "mo_holdout": 0.008924575478445764,
+    "pos_holdout": 0.6666666666666666,
+    "top3_holdout": 0.735932522892881,
+    "note": "holdout_fail"
+  }
+}
