@@ -199,6 +199,14 @@ GRIDS = {
         "require_htf_align": [False, True],
         "session_hours": [None],
     },
+    "willr_reversion": {
+        "adx_max": [22, 28, 35],
+        "willr_low": [-90, -80],
+        "willr_high": [-20, -10],
+        "exit_mid": [-50],
+        "require_htf_align": [False, True],
+        "session_hours": [None],
+    },
     "stoch_reversion": {
         "adx_max": [22, 28, 35],
         "stoch_low": [15, 20, 25],

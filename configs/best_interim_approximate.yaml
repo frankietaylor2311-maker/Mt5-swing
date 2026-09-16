@@ -1,15 +1,15 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx4_oos_sharpe_is_exits_vt_rf025
+basket_tag: fx4_equal_is_exits_vt_rf025
 risk:
   risk_fraction: 0.025
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   atr_trail_mult: 0.0
   vol_target: false
-weights: oos_sharpe
-methodology: Interim dual FX4; OOS-Sharpe weights; IS exits + IS vol_target on ATR
-  legs; risk=0.025.
+weights: equal
+methodology: Interim dual FX4; equal weights (OOS basket beats oos_sharpe); IS exits
+  + IS vol_target on GBPUSD; risk=0.025. Holdout confirmation only.
 disclaimer: "Yahoo FX \u2260 FTMO MT5. No go-live without ftmo_mt5_export."
 candidates:
 - symbol: USDCHF
@@ -28,7 +28,7 @@ candidates:
   oos_sharpe: 1.4388105975417105
   oos_trades: 26
   holdout_return: 0.03760195093868979
-  weight: 0.45473254220144055
+  weight: 0.25
 - symbol: USDJPY
   timeframe: D1
   strategy: hybrid_regime
@@ -48,7 +48,7 @@ candidates:
   oos_sharpe: 0.9497214056786872
   oos_trades: 35
   holdout_return: 0.0024974723295172474
-  weight: 0.30015710888234226
+  weight: 0.25
 - symbol: GBPUSD
   timeframe: H4
   strategy: breakout_donchian
@@ -68,7 +68,7 @@ candidates:
   oos_sharpe: 0.4337304658948822
   oos_trades: 104
   holdout_return: 0.0712978831991109
-  weight: 0.13707944445472944
+  weight: 0.25
 - symbol: AUDUSD
   timeframe: D1
   strategy: hybrid_regime
@@ -88,4 +88,4 @@ candidates:
   oos_sharpe: 0.3418185323810592
   oos_trades: 96
   holdout_return: 0.011093733585602505
-  weight: 0.10803090446148765
+  weight: 0.25

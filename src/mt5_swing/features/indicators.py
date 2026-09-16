@@ -105,6 +105,14 @@ def stochastic(
 
 
 
+def willr(high: pd.Series, low: pd.Series, close: pd.Series, window: int = 14) -> pd.Series:
+    """Williams %R (causal), range typically [-100, 0]."""
+    highest = high.rolling(window=window, min_periods=window).max()
+    lowest = low.rolling(window=window, min_periods=window).min()
+    denom = (highest - lowest).replace(0.0, np.nan)
+    return -100.0 * (highest - close) / denom
+
+
 def cci(high: pd.Series, low: pd.Series, close: pd.Series, window: int = 20) -> pd.Series:
     """Commodity Channel Index (causal)."""
     tp = (high + low + close) / 3.0
@@ -157,6 +165,7 @@ def apply_feature_pipeline(
     feats["macd_signal"] = feats["macd"].ewm(span=9, adjust=False, min_periods=9).mean()
     feats["stoch_k"] = stochastic(high, low, close, 14)
     feats["cci"] = cci(high, low, close, 20)
+    feats["willr"] = willr(high, low, close, 14)
     # Higher-TF proxy from same bar series (e.g. ~20/50 D1 on H4≈6 bars/day)
     feats["htf_sma_fast"] = sma(close, 120)
     feats["htf_sma_slow"] = sma(close, 300)

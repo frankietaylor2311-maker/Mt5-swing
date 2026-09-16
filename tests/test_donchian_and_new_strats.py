@@ -171,3 +171,23 @@ def test_cci_reversion_smoke():
     assert "cci" in feat.columns
     res = run_backtest(df, CciReversion(adx_max=40), BacktestConfig(symbol="EURUSD"))
     assert len(res.equity) == len(df)
+
+
+def test_willr_reversion_smoke_lookahead():
+    from mt5_swing.strategies.willr_reversion import WillrReversion
+
+    df = generate_sample_ohlc(n_bars=500, seed=61)
+    feat = apply_feature_pipeline(df, signal_lag=1)
+    assert "willr" in feat.columns
+    strat = WillrReversion(adx_max=40)
+    res = run_backtest(df, strat, BacktestConfig(symbol="EURUSD"))
+    assert len(res.equity) == len(df)
+    sig_a = strat.generate_signals(feat)
+    bad = df.copy()
+    bad.iloc[-6:, bad.columns.get_loc("close")] *= 5
+    bad.iloc[-6:, bad.columns.get_loc("high")] *= 5
+    bad.iloc[-6:, bad.columns.get_loc("low")] *= 5
+    feat2 = apply_feature_pipeline(bad, signal_lag=1)
+    sig_b = strat.generate_signals(feat2)
+    n = len(sig_a) - 6 - 40
+    assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()

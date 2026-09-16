@@ -14,6 +14,7 @@ from mt5_swing.strategies.macd_trend import MacdTrend
 from mt5_swing.strategies.stoch_reversion import StochReversion
 from mt5_swing.strategies.atr_channel import AtrChannelBreakout
 from mt5_swing.strategies.cci_reversion import CciReversion
+from mt5_swing.strategies.willr_reversion import WillrReversion
 from mt5_swing.strategies.mean_reversion import MeanReversionRegime
 from mt5_swing.strategies.trend_ma_adx import TrendMAADX
 
@@ -30,6 +31,7 @@ _REGISTRY = {
     StochReversion.name: StochReversion,
     AtrChannelBreakout.name: AtrChannelBreakout,
     CciReversion.name: CciReversion,
+    WillrReversion.name: WillrReversion,
 }
 
 
