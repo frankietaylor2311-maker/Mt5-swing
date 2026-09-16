@@ -1,0 +1,157 @@
+data_source=approximate_non_ftmo RF=0.08 VT=0.0025 tag_locked=fx4plus_gbpcad_d1_voltarget_0025
+end=2026-09-16 00:00:00+00:00 holdout_start=2025-09-16 00:00:00+00:00 IS=['2024', '2025_IS'] CONF=['2025', '2026', 'holdout_365d']
+  legs ready 2024: [1596, 1596, 1597, 1602, 262]
+  legs ready 2025_IS: [1125, 1125, 1125, 1129, 182]
+  legs ready 2025: [1591, 1590, 1591, 1596, 257]
+  legs ready 2026: [1121, 1121, 1120, 1122, 184]
+  legs ready holdout_365d: [1587, 1586, 1586, 1589, 259]
+baseline 2024 mo=0.42% pos=55% top3=74%
+best 2024 monthly_budget={'target_mo': 0.015, 'lookback_months': 4, 'assumed_sharpe': 0.8}
+best 2024 daily_budget={'target_mo': 0.008, 'assumed_sharpe': 0.8, 'look': 42}
+best 2024 equity_tsmom={'lookback': 42, 'neg_scale': 0.2, 'pos_scale': 0.85, 'flat_band': 0.0}
+weight candidates=207
+best weight sc=(0.006947717475139892, 0.75, -0.6958783537057224) w=[0.3282, 0.0291, 0.2413, 0.1776, 0.2238]
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+best wrebal+MTD={'tau': 0.015, 'after': 0.5}
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+best wrebal+monthly_budget={'target_mo': 0.015, 'lookback_months': 6, 'assumed_sharpe': 0.8}
+best wrebal+daily_budget={'target_mo': 0.008, 'assumed_sharpe': 0.8, 'look': 42}
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+combo adds done (pieces=3)
+BOARD soft=2 hard=0 promote=0 n=9
+Wrote /workspace/Mt5-swing/reports/quest_ho_robust_consistency.md
+{
+  "promote": false,
+  "soft": 2,
+  "hard": 0,
+  "board_n": 9,
+  "best_soft": "wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5",
+  "best_hard": null,
+  "nearest": "wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5",
+  "best_monthly_budget": {
+    "target_mo": 0.015,
+    "lookback_months": 4,
+    "assumed_sharpe": 0.8
+  },
+  "best_daily_budget": {
+    "target_mo": 0.008,
+    "assumed_sharpe": 0.8,
+    "look": 42
+  },
+  "best_equity_tsmom": {
+    "lookback": 42,
+    "neg_scale": 0.2,
+    "pos_scale": 0.85,
+    "flat_band": 0.0
+  },
+  "best_weights": [
+    0.328198,
+    0.029051,
+    0.2413,
+    0.177605,
+    0.223846
+  ],
+  "best_wrebal_mtd": {
+    "tau": 0.015,
+    "after": 0.5
+  },
+  "best_wrebal_monthly_budget": {
+    "target_mo": 0.015,
+    "lookback_months": 6,
+    "assumed_sharpe": 0.8
+  },
+  "best_wrebal_daily_budget": {
+    "target_mo": 0.008,
+    "assumed_sharpe": 0.8,
+    "look": 42
+  },
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_changed": false,
+  "data_source": "approximate_non_ftmo",
+  "rf": 0.08,
+  "port_vol_target": 0.0025,
+  "weight_candidates": 207,
+  "best_soft_metrics": {
+    "mo_2024": 0.012017770072218744,
+    "pos_2024": 0.8181818181818182,
+    "top3_2024": 0.4490326015019151,
+    "mo_2025_IS": 0.0173718527463477,
+    "pos_2025_IS": 0.75,
+    "top3_2025_IS": 0.6424783691419996,
+    "mo_2025": 0.01108338391651318,
+    "pos_2025": 0.7272727272727273,
+    "top3_2025": 0.6068506546655767,
+    "mo_2026": 0.02407556779840958,
+    "pos_2026": 0.75,
+    "top3_2026": 0.8028799130663445,
+    "mo_holdout": 0.016864888778908644,
+    "pos_holdout": 0.6666666666666666,
+    "top3_holdout": 0.7119221359060102,
+    "note": "holdout_fail"
+  }
+}

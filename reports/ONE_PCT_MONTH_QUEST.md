@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 22:10 BST Europe/London (wave: **consistency overlay refine** — MTD/month/runup/eqtarget/combos + IS weight rebalance; no D1 add-ons).
+Session: 2026-09-16 22:40 BST Europe/London (wave: **HO-robust consistency** — budget VT / equity_tsmom / dense wrebal / wrebal+MTD+budget on locked sleeve).
 
 ## Scoring rubric this wave (primary)
 
@@ -14,7 +14,7 @@ Session: 2026-09-16 22:10 BST Europe/London (wave: **consistency overlay refine*
 5. **Reject** candidates that boost mean via bursts even if gates PASS
 6. **No leverage increase** (RF fixed at 8%; overlay `hi≤1`)
 
-**Selection objective:** maximize `min(IS year mean_mo)` for `{2024, 2025_IS}` subject to %pos≥70% and top3≤55% (soft≤70%). Holdout / full 2025–2026 **confirmation only** — promote only if holdout **also** clears ≥1% mean and ≥70% pos **and** each of 2024/2025/2026 clears the same.
+**Selection objective:** maximize `min(IS year mean_mo)` for `{2024, 2025_IS}` subject to %pos≥70% and top3≤55% (soft≤70%; soft also mean≥~1%). Holdout / full 2025–2026 **confirmation only** — promote only if holdout **also** clears ≥1% mean and ≥70% pos **and** each of 2024/2025/2026 clears the same.
 
 ## Target vs result
 
@@ -26,14 +26,14 @@ Session: 2026-09-16 22:10 BST Europe/London (wave: **consistency overlay refine*
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. This keep-alive wave (causal overlays + IS weight rebalance on locked sleeve) produced **8** soft IS / **0** hard / **0** promote. Best soft `wrebal_…+mtd_t0.015_a0.5` lifts 2024 to **1.20%/mo, 82% pos, 45% top3** and calendar 2025 to **1.11%**, but IS max top3 **64%** fails hard≤55% and holdout **67% pos / 71% top3** fails promote confirm. **Promote: NO.** Still blocked on FTMO CSVs.
+**Verdict:** Official locked tag **unchanged**. HO-robust wave (budget VT / tsmom / dense wrebal / nested overlays) produced **2** soft IS / **0** hard / **0** promote. Best soft again `wrebal_…+mtd_t0.015_a0.5` (2024 **1.20%/82%/45%**; HO **1.69%/67%/71%**) — hard top3 fail + holdout_fail. Monthly/daily budget and equity_tsmom alone did not soft-pass. **Promote: NO.** Still blocked on FTMO CSVs.
 
 ## Locked candidate (unchanged — still official)
 
 **Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
 **Config:** `configs/quest_one_pct_candidate.yaml`
 
-Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py`):
+Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; `scripts/eval_windowed_consistency.py` → `quest_locked_verify_keepalive_2240`):
 
 | Window | Return | Mean mo | %pos | Top3 | Gates | P2T |
 |--------|-------:|--------:|-----:|-----:|:-----:|----:|
@@ -42,6 +42,43 @@ Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; 
 | 2026 YTD | +20.0%+ | **2.30%** | 88% | 87% | PASS | ~6% |
 | holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
 | roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
+
+## Wave: HO-robust consistency (this)
+
+Scripts/helpers:
+- `scripts/quest_ho_robust_consistency_wf.py` (new; importlib reuse of refine + eval helpers)
+- `apply_monthly_budget_vt` / `apply_daily_budget_vt` / `apply_equity_tsmom` from `equity_tsmom.py`
+- Nested pick on 2024; weights max min(2024,2025_IS); HO never for selection
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Promote | Notes |
+|--------|--:|--------:|--------:|--------:|-------|
+| baseline | 1 | 0 | 0 | 0 | 2024 0.42%/55%/74% |
+| monthly_budget_vt | 1 | 0 | 0 | 0 | IS fail |
+| daily_budget_vt | 1 | 0 | 0 | 0 | IS fail |
+| equity_tsmom | 1 | 0 | 0 | 0 | IS fail |
+| weight_rebalance | 1 | 0 | 0 | 0 | soft_mean_fail (2024 0.69%) |
+| wrebal_plus_mtd | 1 | **1** | 0 | 0 | **best soft**; holdout_fail |
+| wrebal_plus_monthly_budget | 1 | 0 | 0 | 0 | soft_mean_fail |
+| wrebal_plus_daily_budget | 1 | 0 | 0 | 0 | soft_mean_fail |
+| wrebal_combo_two | 1 | **1** | 0 | 0 | mb+mtd; holdout_fail |
+
+**Totals:** soft=**2** hard=**0** promote=**0** (board n=9; weight grid 207 unique).
+
+### Best soft (not promote) — `wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5`
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.20%** | **82%** | **45%** | IS — soft OK; hard OK on this window |
+| 2025_IS | **1.74%** | **75%** | **64%** | IS — soft OK; hard top3 fail (>55%) |
+| 2025 (cal) | **1.11%** | 73% | 61% | confirm |
+| 2026 | **2.41%** | 75% | 80% | confirm |
+| holdout | **1.69%** | **67%** | **71%** | confirm — holdout_fail |
+
+**Promote: NO.** Locked tag unchanged.
+
+---
 
 ## Wave: consistency overlay refine (this)
 
