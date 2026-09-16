@@ -76,3 +76,9 @@ NZDCAD_D1 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 8, 'lookba
 NZDCAD_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 20} OOS ret=-1.04% n=41 gates=True holdout_ok=True source=approximate_non_ftmo
 NZDCAD_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': False, 'session_hours': None} OOS ret=0.31% n=31 gates=True holdout_ok=False source=approximate_non_ftmo
 NZDCAD_D1 willr_reversion: IS-grid best={'adx_max': 35, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -20, 'willr_low': -80} OOS ret=-0.84% n=72 gates=True holdout_ok=True source=approximate_non_ftmo
+Merged into existing summary → 494 rows (protect 4 interim legs)
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
