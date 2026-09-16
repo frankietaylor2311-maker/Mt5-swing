@@ -40,6 +40,8 @@ research_symbols:
   - CADJPY
   - NZDJPY
   - EURCAD
+  - AUDCAD
+  - GBPCAD
   # Optional: US100 when FTMO exports available
 
 timeframes:

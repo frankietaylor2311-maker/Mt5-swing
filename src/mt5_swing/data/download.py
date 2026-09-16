@@ -39,6 +39,8 @@ YFINANCE_FX = {
     "CADJPY": "CADJPY=X",
     "NZDJPY": "NZDJPY=X",
     "EURCAD": "EURCAD=X",
+    "AUDCAD": "AUDCAD=X",
+    "GBPCAD": "GBPCAD=X",
 }
 
 DEFAULT_SPREAD_PIPS = {
