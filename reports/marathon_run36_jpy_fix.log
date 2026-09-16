@@ -102,3 +102,9 @@ CADJPY_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookb
 CADJPY_D1 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 15} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 CADJPY_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 CADJPY_D1 willr_reversion: IS-grid best={'adx_max': 28, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -20, 'willr_low': -90} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+Merged into existing summary → 418 rows (protect 4 interim legs)
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.

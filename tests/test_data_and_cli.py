@@ -47,3 +47,14 @@ def test_cli_walk_forward_smoke():
     assert "Walk-forward" in result.output
     assert "Out-of-sample" in result.output
     assert "Overall risk gates" in result.output
+
+
+def test_pip_value_jpy_crosses_not_inflated():
+    from mt5_swing.data.symbols import pip_value_per_lot
+    # USDJPY and EURJPY should be same order (~$6–10 / pip / lot near 150)
+    u = pip_value_per_lot("USDJPY", 150.0)
+    e = pip_value_per_lot("EURJPY", 165.0)
+    assert 4.0 < u < 12.0, u
+    assert 4.0 < e < 12.0, e
+    # Bug regression: without /price EURJPY was ~1000
+    assert e < 50.0

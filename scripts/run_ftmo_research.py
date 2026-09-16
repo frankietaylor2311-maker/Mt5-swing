@@ -435,7 +435,7 @@ def main() -> None:
                     ("USDCHF", "H4", "bbands_reversion"),
                     ("USDJPY", "D1", "hybrid_regime"),
                     ("GBPUSD", "H4", "breakout_donchian"),
-                    ("AUDUSD", "D1", "hybrid_regime"),
+                    ("CADJPY", "H4", "mean_reversion_regime"),
                 }
             keep = prev.copy()
             for _, row in df_out.iterrows():

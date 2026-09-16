@@ -1,26 +1,27 @@
-# Preferred FX4 @2.5% equal + IS exits + IS vol_target
+# Preferred FX4 @2.5% equal + CADJPY MR (JPY pip fix)
 
-Equal weights selected vs oos_sharpe on OOS basket only; IS exits unchanged; holdout confirmation.
+AUDUSD→CADJPY H4 mean_reversion selected by OOS basket vs FX4-equal; IS vol_target; holdout confirmation.
 
-- return: 3.06%
-- static loss: 0.62%
-- daily loss: 0.34%
+- return: 4.90%
+- static loss: 0.08%
+- daily loss: 0.46%
 - gates: PASS
-- sharpe: 1.34
+- sharpe: 1.83
+- OOS proxy: 0.73% (sh 0.40)
 - risk_fraction: 2.5%
 - weight_mode: equal
 
 ## Legs
 
-- USDCHF H4 bbands_reversion: oos_leg=-1.55% n=29 ho_leg=3.76%
-- USDJPY D1 hybrid_regime: oos_leg=1.04% n=92 ho_leg=0.25%
-- GBPUSD H4 breakout_donchian: oos_leg=-3.87% n=88 ho_leg=7.13%
-- AUDUSD D1 hybrid_regime: oos_leg=-0.69% n=110 ho_leg=1.11%
+- USDCHF H4 bbands_reversion: OOS_sh=1.44 ho_leg=3.76% w=0.250 vt=False ex={}
+- USDJPY D1 hybrid_regime: OOS_sh=0.95 ho_leg=0.25% w=0.250 vt=False ex={'atr_trail_mult': 1.5, 'atr_target_mult': 0.0, 'atr_stop_mult': 1.5, 'max_hold_bars': 16}
+- GBPUSD H4 breakout_donchian: OOS_sh=0.43 ho_leg=7.13% w=0.250 vt=True ex={'atr_trail_mult': 0.0, 'atr_target_mult': 5.0, 'atr_stop_mult': 1.5, 'max_hold_bars': 24}
+- CADJPY H4 mean_reversion_regime: OOS_sh=1.75 ho_leg=8.46% w=0.250 vt=True ex={}
 
-## Risk stress (same exits/weights)
+## Risk stress
 
-- 1.0%: ret=1.89% static=0.40% daily=0.19% gates=PASS sharpe=1.43
-- 1.5%: ret=2.58% static=0.57% daily=0.29% gates=PASS sharpe=1.39
-- 2.0%: ret=3.06% static=0.61% daily=0.33% gates=PASS sharpe=1.41
-- 2.5%: ret=3.06% static=0.62% daily=0.34% gates=PASS sharpe=1.34
-- 3.0%: ret=3.09% static=0.61% daily=0.34% gates=PASS sharpe=1.32
+- 1.0%: ret=3.32% static=0.06% daily=0.23% gates=PASS sharpe=2.06
+- 1.5%: ret=4.65% static=0.06% daily=0.32% gates=PASS sharpe=2.02
+- 2.0%: ret=5.04% static=0.04% daily=0.41% gates=PASS sharpe=1.94
+- 2.5%: ret=4.90% static=0.08% daily=0.46% gates=PASS sharpe=1.83
+- 3.0%: ret=4.89% static=0.07% daily=0.46% gates=PASS sharpe=1.80

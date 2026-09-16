@@ -45,6 +45,7 @@ _SYMBOLS: dict[str, SymbolMeta] = {
     "GBPCAD": SymbolMeta("GBPCAD", digits=5, base_currency="GBP", quote_currency="CAD"),
     "EURAUD": SymbolMeta("EURAUD", digits=5, base_currency="EUR", quote_currency="AUD"),
     "NZDCAD": SymbolMeta("NZDCAD", digits=5, base_currency="NZD", quote_currency="CAD"),
+    "CADCHF": SymbolMeta("CADCHF", digits=5, base_currency="CAD", quote_currency="CHF"),
     # Metals / indices — contract_size approximates FTMO CFD lots; verify in terminal
     "XAUUSD": SymbolMeta("XAUUSD", digits=2, contract_size=100.0, base_currency="XAU", quote_currency="USD"),
     "XAGUSD": SymbolMeta("XAGUSD", digits=3, contract_size=5000.0, base_currency="XAG", quote_currency="USD"),
@@ -74,13 +75,17 @@ def pip_value_per_lot(symbol: str, price: float | None = None) -> float:
     Approximate USD pip value for 1.0 standard lot.
 
     For XXXUSD: pip_value ≈ contract_size * pip_size (in USD).
-    For USDJPY: pip_value ≈ contract_size * pip_size / price (convert JPY→USD).
+    For *JPY (incl. EURJPY/GBPJPY): pip_value ≈ (contract_size * pip_size) / price
+    (1000 JPY per pip → USD via pair price; exact for USDJPY, ~OK for crosses).
+    For USDCHF/USDCAD: raw / price converts quote→USD when base is USD.
     """
     meta = get_symbol_meta(symbol)
     raw = meta.contract_size * meta.pip_size
     if meta.quote_currency == "USD":
         return raw
+    if price and price > 0 and meta.quote_currency == "JPY":
+        return raw / price
     if meta.base_currency == "USD" and price and price > 0:
         return raw / price
-    # Fallback: treat as quote=USD
+    # Fallback: treat as quote=USD (unknown crosses without FX matrix)
     return raw

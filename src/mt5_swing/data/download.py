@@ -43,6 +43,7 @@ YFINANCE_FX = {
     "GBPCAD": "GBPCAD=X",
     "EURAUD": "EURAUD=X",
     "NZDCAD": "NZDCAD=X",
+    "CADCHF": "CADCHF=X",
 }
 
 DEFAULT_SPREAD_PIPS = {
