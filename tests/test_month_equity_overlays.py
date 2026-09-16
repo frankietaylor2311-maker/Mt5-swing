@@ -264,3 +264,56 @@ def test_trailing_gain_concentration_dampen_uses_completed_months_only():
     i = out.index.get_loc(may[5])
     if r_raw.iloc[i] > 1e-15:
         assert r_out.iloc[i] < r_raw.iloc[i] - 1e-15
+
+def test_prior_month_win_throttle_strong_jan_scales_feb_not_jan():
+    from mt5_swing.portfolio.overlays import apply_prior_month_win_throttle
+
+    idx = pd.date_range("2024-01-01", periods=60, freq="D", tz="UTC")
+    rets = np.full(60, 0.001)
+    # Make January a clear winner: large positive mid-month
+    rets[10] = 0.08
+    eq = pd.Series(np.cumprod(1.0 + rets) * 100_000.0, index=idx)
+    out = apply_prior_month_win_throttle(eq, win_tau=0.02, cool_scale=0.5, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Mid-January (no completed prior strong month): unscaled
+    assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
+    # Mid-February should be scaled down vs raw when raw > 0
+    feb = out.index[out.index.month == 2]
+    assert len(feb) > 5
+    i = out.index.get_loc(feb[5])
+    if r_raw.iloc[i] > 1e-15:
+        assert r_out.iloc[i] < r_raw.iloc[i] - 1e-15
+        assert abs(r_out.iloc[i] - 0.5 * r_raw.iloc[i]) < 1e-10
+
+
+def test_prior_month_win_throttle_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_prior_month_win_throttle
+
+    rng = np.random.default_rng(11)
+    rets = rng.normal(0.001, 0.01, 120)
+    eq = _eq_from_returns(rets)
+    out = apply_prior_month_win_throttle(eq, win_tau=0.015, cool_scale=0.35, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_prior_month_win_throttle_causal_mutate_feb_last():
+    from mt5_swing.portfolio.overlays import apply_prior_month_win_throttle
+
+    idx = pd.date_range("2024-01-01", periods=60, freq="D", tz="UTC")
+    rets = np.full(60, 0.001)
+    rets[10] = 0.08  # strong January
+    eq = pd.Series(np.cumprod(1.0 + rets) * 100_000.0, index=idx)
+    out1 = apply_prior_month_win_throttle(eq, win_tau=0.02, cool_scale=0.5, lo=0.25)
+    eq2 = eq.copy()
+    feb_mask = eq2.index.month == 2
+    feb_idx = eq2.index[feb_mask]
+    eq2.loc[feb_idx[-1]] = eq2.loc[feb_idx[-1]] * 1.2
+    out2 = apply_prior_month_win_throttle(eq2, win_tau=0.02, cool_scale=0.5, lo=0.25)
+    jan1 = out1.loc[out1.index.month == 1].pct_change().fillna(0)
+    jan2 = out2.loc[out2.index.month == 1].pct_change().fillna(0)
+    assert np.allclose(jan1, jan2)
+

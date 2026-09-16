@@ -457,3 +457,48 @@ def apply_trailing_gain_concentration_dampen(
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     scale_s = scale.shift(1).fillna(1.0)
     return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
+
+def apply_prior_month_win_throttle(
+    port: pd.Series,
+    *,
+    win_tau: float = 0.02,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal prior-month win throttle — scale current month if M-1 finished strong.
+
+    Uses only the *fully completed* calendar month M-1 return (first/last within
+    M-1), identical causal contract to ``apply_after_loss_throttle``.
+    Bars in month M see prior_month_return = return(M-1); if that return >
+    ``win_tau``, scale = ``cool_scale``, else 1.0.
+    Scale is clipped to [lo, 1] (never leverage) and lagged one bar before
+    multiplying returns so the decision at t uses information available at t-1.
+    A strong January does not change January scales; February is scaled down.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert("UTC").tz_localize(None)
+    per = idx.to_period("M")
+    periods = list(dict.fromkeys(per))  # ordered unique
+    mo_ret: dict = {}
+    for p in periods:
+        chunk = eq.loc[per == p]
+        if len(chunk) < 2:
+            mo_ret[p] = 0.0
+        else:
+            mo_ret[p] = float(chunk.iloc[-1] / chunk.iloc[0] - 1.0)
+    p_index = {p: i for i, p in enumerate(periods)}
+    prior_vals = []
+    for p in per:
+        i = p_index[p]
+        prior_vals.append(mo_ret[periods[i - 1]] if i > 0 else 0.0)
+    prior_on_bars = pd.Series(prior_vals, index=eq.index, dtype=float)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(prior_on_bars > float(win_tau)), float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_s = scale.shift(1).fillna(1.0)
+    return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
