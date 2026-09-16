@@ -1,0 +1,61 @@
+data_source=approximate_non_ftmo RF=0.08 VT=0.0025 tag_locked=fx4plus_gbpcad_d1_voltarget_0025
+end=2026-09-16 00:00:00+00:00 holdout_start=2025-09-16 00:00:00+00:00 IS=['2024', '2025_IS'] CONF=['2025', '2026', 'holdout_365d']
+  legs ready 2024: [1596, 1596, 1597, 1602, 262]
+  legs ready 2025_IS: [1125, 1125, 1125, 1129, 182]
+  legs ready 2025: [1591, 1590, 1591, 1596, 257]
+  legs ready 2026: [1121, 1121, 1120, 1122, 184]
+  legs ready holdout_365d: [1587, 1586, 1586, 1589, 259]
+baseline 2024 mo=0.42% pos=55% top3=74%
+lstreak: lock+lstreak_n2_c0.25 soft=False 2024=0.33% HO=1.03%/50% note=is_fail
+lstreak: lock+lstreak_n2_c0.35 soft=False 2024=0.35% HO=1.09%/50% note=is_fail
+lstreak: lock+lstreak_n2_c0.5 soft=False 2024=0.36% HO=1.19%/50% note=is_fail
+lstreak: lock+lstreak_n2_c0.65 soft=False 2024=0.38% HO=1.29%/58% note=is_fail
+lstreak: lock+lstreak_n3_c0.25 soft=False 2024=0.54% HO=1.37%/75% note=is_fail
+lstreak: lock+lstreak_n3_c0.35 soft=False 2024=0.53% HO=1.39%/67% note=is_fail
+lstreak: lock+lstreak_n3_c0.5 soft=False 2024=0.50% HO=1.42%/67% note=is_fail
+lstreak: lock+lstreak_n3_c0.65 soft=False 2024=0.48% HO=1.45%/67% note=is_fail
+lstreak: lock+lstreak_n4_c0.25 soft=False 2024=0.36% HO=1.65%/75% note=is_fail
+lstreak: lock+lstreak_n4_c0.35 soft=False 2024=0.37% HO=1.64%/75% note=is_fail
+lstreak: lock+lstreak_n4_c0.5 soft=False 2024=0.38% HO=1.61%/75% note=is_fail
+lstreak: lock+lstreak_n4_c0.65 soft=False 2024=0.39% HO=1.58%/75% note=is_fail
+lstreak: lock+lstreak_n5_c0.25 soft=False 2024=0.32% HO=1.55%/75% note=is_fail
+lstreak: lock+lstreak_n5_c0.35 soft=False 2024=0.33% HO=1.55%/75% note=is_fail
+lstreak: lock+lstreak_n5_c0.5 soft=False 2024=0.35% HO=1.54%/75% note=is_fail
+lstreak: lock+lstreak_n5_c0.65 soft=False 2024=0.37% HO=1.54%/75% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+wrebal+mtd: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen soft=True 2024=1.18% HO=1.69%/67% note=holdout_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+wrebal+mtd: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.65_frozen soft=True 2024=1.03% HO=1.70%/67% note=holdout_fail
+wrebal+lstreak: wrebal_0.328_0.029_0.241_0.178_0.224+lstreak_n2_c0.65_frozen soft=False note=is_fail
+wrebal+lstreak: wrebal_0.328_0.029_0.241_0.178_0.224+lstreak_n3_c0.25_frozen soft=False note=is_fail
+wrebal+mtd+lstreak: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+lstreak_n5_c0.25 soft=True note=holdout_fail HO_pos=67%
+wrebal+mtd+lstreak: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.65_frozen+lstreak_n5_c0.25 soft=True note=holdout_fail HO_pos=67%
+blend a=0.40 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+lstreak_n5_c0.25: soft=True 2024=0.70% HO=1.58%/67% note=holdout_fail
+blend a=0.55 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+lstreak_n5_c0.25: soft=True 2024=0.80% HO=1.60%/67% note=holdout_fail
+blend a=0.40 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen: soft=True 2024=0.73% HO=1.59%/67% note=holdout_fail
+blend a=0.55 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen: soft=True 2024=0.84% HO=1.61%/67% note=holdout_fail
+blend a=0.40 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.65_frozen+lstreak_n5_c0.25: soft=True 2024=0.64% HO=1.58%/67% note=holdout_fail
+blend a=0.55 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.65_frozen+lstreak_n5_c0.25: soft=True 2024=0.72% HO=1.60%/67% note=holdout_fail
+BOARD raw n=30
+BOARD n=30 soft=4 hard=0 promote=0
+Wrote /workspace/Mt5-swing/reports/quest_loss_streak_board.csv
+Wrote /workspace/Mt5-swing/reports/quest_loss_streak_consistency.md
+Wrote /workspace/Mt5-swing/configs/quest_loss_streak_selected.json

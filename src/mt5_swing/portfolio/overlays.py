@@ -563,3 +563,59 @@ def apply_trailing_downside_vol_scale(
     )
     scale_bars = scale_bars.clip(lower=eff_lo, upper=1.0)
     return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
+
+
+def apply_daily_loss_streak_cool(
+    port: pd.Series,
+    *,
+    streak_n: int = 3,
+    cool_scale: float = 0.35,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal daily loss-streak cool — cut size after N down days in a row.
+
+    Builds a daily equity series, counts consecutive negative daily returns using
+    only completed days through t-1, and if that streak >= ``streak_n`` sets
+    scale = ``cool_scale`` for the next day. A non-negative day resets the
+    streak. Scale is mapped back onto the native bar index (timezone-safe) and
+    clipped to [lo, 1] — never leverage (hi=1). Designed to truncate losing
+    streaks mid-month without peeking at unfinished bars or future days.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r_native = eq.pct_change().fillna(0.0)
+    eq_work = eq.copy()
+    if getattr(eq_work.index, "tz", None) is not None:
+        eq_work.index = eq_work.index.tz_convert("UTC").tz_localize(None)
+    eq_d = eq_work.resample("1D").last().dropna()
+    if len(eq_d) < 5:
+        return eq
+    r_d = eq_d.pct_change().fillna(0.0)
+    n = max(1, int(streak_n))
+    # streak_end[t] = consecutive negatives ending on day t (includes day t)
+    streak = np.zeros(len(r_d), dtype=int)
+    vals = r_d.to_numpy()
+    for i in range(len(vals)):
+        if vals[i] < 0.0:
+            streak[i] = (streak[i - 1] + 1) if i > 0 else 1
+        else:
+            streak[i] = 0
+    # Decision for day t uses streak through t-1 only
+    streak_lag = pd.Series(streak, index=r_d.index).shift(1).fillna(0).astype(int)
+    scale_d = pd.Series(1.0, index=r_d.index)
+    scale_d = scale_d.where(~(streak_lag >= n), float(cool_scale))
+    scale_d = scale_d.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_d.index = pd.DatetimeIndex(scale_d.index).normalize()
+    if getattr(eq.index, "tz", None) is not None:
+        day_keys = eq.index.tz_convert("UTC").tz_localize(None).normalize()
+    else:
+        day_keys = pd.DatetimeIndex(eq.index).normalize()
+    scale_bars = (
+        pd.Series(day_keys, index=eq.index, dtype="datetime64[ns]")
+        .map(scale_d)
+        .ffill()
+        .fillna(1.0)
+    )
+    scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
+    return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])

@@ -378,3 +378,57 @@ def test_trailing_downside_vol_scale_cools_when_downside_spikes():
     assert (r_out.iloc[tail][pos] < r_raw.iloc[tail][pos] - 1e-15).any()
     # Never above unit scale on positives
     assert (r_out[r_raw > 0] <= r_raw[r_raw > 0] + 1e-12).all()
+
+
+def test_daily_loss_streak_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_daily_loss_streak_cool
+
+    rng = np.random.default_rng(11)
+    rets = rng.normal(0.0003, 0.01, 180)
+    eq = _eq_from_returns(rets)
+    out = apply_daily_loss_streak_cool(eq, streak_n=3, cool_scale=0.35, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_daily_loss_streak_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_daily_loss_streak_cool
+
+    rng = np.random.default_rng(9)
+    rets = rng.normal(0.0002, 0.01, 160)
+    eq = _eq_from_returns(rets)
+    out1 = apply_daily_loss_streak_cool(eq, streak_n=3, cool_scale=0.4, lo=0.25)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.6
+    out2 = apply_daily_loss_streak_cool(eq2, streak_n=3, cool_scale=0.4, lo=0.25)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_daily_loss_streak_cool_triggers_after_n_down_days():
+    from mt5_swing.portfolio.overlays import apply_daily_loss_streak_cool
+
+    # 5 up, then 4 down, then ups — after 3rd consecutive down day, next day cools
+    rets = np.concatenate(
+        [
+            np.full(5, 0.01),
+            np.full(4, -0.015),
+            np.full(10, 0.01),
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_daily_loss_streak_cool(eq, streak_n=3, cool_scale=0.35, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Day index 5,6,7,8 are downs (0-based after first NaN pct). Streak through
+    # day 7 (3 downs: 5,6,7) → day 8 should be cooled (4th down day).
+    # After downs, positive days: first positive after streak should also see cool
+    # if prior day ended with streak>=3.
+    # Index 9 is first up after downs — streak_lag at day 9 = 4 (>=3) → cool
+    assert r_out.iloc[9] < r_raw.iloc[9] - 1e-15
+    # Early ups before any streak should be uncooled
+    assert abs(r_out.iloc[3] - r_raw.iloc[3]) < 1e-12
