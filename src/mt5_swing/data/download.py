@@ -38,6 +38,7 @@ YFINANCE_FX = {
     "EURCHF": "EURCHF=X",
     "CADJPY": "CADJPY=X",
     "NZDJPY": "NZDJPY=X",
+    "EURCAD": "EURCAD=X",
 }
 
 DEFAULT_SPREAD_PIPS = {

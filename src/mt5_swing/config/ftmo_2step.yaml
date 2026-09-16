@@ -39,6 +39,7 @@ research_symbols:
   - EURCHF
   - CADJPY
   - NZDJPY
+  - EURCAD
   # Optional: US100 when FTMO exports available
 
 timeframes:
