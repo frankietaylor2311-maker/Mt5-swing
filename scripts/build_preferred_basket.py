@@ -112,6 +112,10 @@ def eval_basket(cand: pd.DataFrame, risk_fraction: float, tag: str) -> dict:
             exits = em.get(f"{row['symbol']}|{row['timeframe']}|{row['strategy']}", {})
         for k, v in (exits or {}).items():
             setattr(bt, k, v)
+        if "vol_target_flag" in row and bool(row["vol_target_flag"]):
+            bt.vol_target = True
+        if any(str(k).startswith("atr_") for k in (exits or {})):
+            bt.use_atr_exits = True
         if len(holdout) < 50:
             continue
         res = run_backtest(holdout, strat, bt)
@@ -199,6 +203,23 @@ def main() -> None:
     rf = float(os.environ.get("RISK_FRACTION") or cfg.get("risk", {}).get("risk_fraction", 0.025))
     tag = os.environ.get("BASKET_TAG", "rebuild_probe")
     cand = pick_preferred(df, n=n)
+    # Overlay IS exits / vol_target / weights from locked preferred yaml when present
+    best_yaml = ROOT / "configs" / "best_interim_approximate.yaml"
+    if best_yaml.exists() and os.environ.get("INTERIM_FX4", "1").lower() in ("1", "true", "yes"):
+        locked = yaml.safe_load(best_yaml.read_text())
+        lock_map = {
+            (c["symbol"], c["timeframe"], c["strategy"]): c
+            for c in (locked.get("candidates") or [])
+        }
+        exits_col, vt_col = [], []
+        for _, row in cand.iterrows():
+            key = (row["symbol"], row["timeframe"], row["strategy"])
+            L = lock_map.get(key, {})
+            exits_col.append(dict(L.get("exits") or {}))
+            vt_col.append(bool(L.get("vol_target", False)))
+        cand = cand.copy()
+        cand["exits"] = exits_col
+        cand["vol_target_flag"] = vt_col
     if cand.empty:
         print("No preferred candidates")
         return

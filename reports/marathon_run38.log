@@ -1,0 +1,5 @@
+USDCAD_H4 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+USDCAD_H4 bbands_reversion: IS-grid best={'adx_max': 28, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 40, 'session_hours': None} OOS ret=-0.12% n=24 gates=True holdout_ok=False source=approximate_non_ftmo
+USDCAD_H4 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.07% n=59 gates=True holdout_ok=True source=approximate_non_ftmo
+USDCAD_H4 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.20% n=33 gates=True holdout_ok=False source=approximate_non_ftmo
+USDCAD_H4 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 65, 'rsi_pullback_low': 40, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.03% n=19 gates=True holdout_ok=False source=approximate_non_ftmo

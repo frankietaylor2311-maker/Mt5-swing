@@ -82,6 +82,13 @@ def main() -> None:
             bt.risk_fraction = rf / n_legs
             if trail > 0:
                 bt.atr_trail_mult = trail
+            exits = dict(c.get("exits") or {})
+            if c.get("vol_target"):
+                exits["vol_target"] = True
+            for k, v in exits.items():
+                setattr(bt, k, v)
+            if any(str(k).startswith("atr_") for k in exits):
+                bt.use_atr_exits = True
             if len(holdout) < 50:
                 continue
             res = run_backtest(holdout, strat, bt)
