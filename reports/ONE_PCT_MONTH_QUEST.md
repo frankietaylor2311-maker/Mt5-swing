@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 21:13 BST Europe/London (wave: **D1 multi-year consistency repair + causal MTD gain-clip**).
+Session: 2026-09-16 22:10 BST Europe/London (wave: **consistency overlay refine** — MTD/month/runup/eqtarget/combos + IS weight rebalance; no D1 add-ons).
 
 ## Scoring rubric this wave (primary)
 
@@ -26,7 +26,7 @@ Session: 2026-09-16 21:13 BST Europe/London (wave: **D1 multi-year consistency r
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. This keep-alive wave (D1 unused OOS-passer add-ons + causal MTD gain-clip) produced **1** soft IS / **0** hard / **0** promote. Best soft `lock_mtdclip_t0.015_a0.0` lifts 2024 to **0.99%/mo, 73% pos, 52% top3** but calendar **2025 mean 0.89%** fails year-clear (≥1%) and IS max top3 **59%** fails hard≤55%. D1 add-on sleeves: **0** soft (2024 %pos stays <70%). **Promote: NO.** Still blocked on FTMO CSVs.
+**Verdict:** Official locked tag **unchanged**. This keep-alive wave (causal overlays + IS weight rebalance on locked sleeve) produced **8** soft IS / **0** hard / **0** promote. Best soft `wrebal_…+mtd_t0.015_a0.5` lifts 2024 to **1.20%/mo, 82% pos, 45% top3** and calendar 2025 to **1.11%**, but IS max top3 **64%** fails hard≤55% and holdout **67% pos / 71% top3** fails promote confirm. **Promote: NO.** Still blocked on FTMO CSVs.
 
 ## Locked candidate (unchanged — still official)
 
@@ -42,6 +42,50 @@ Re-verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; 
 | 2026 YTD | +20.0%+ | **2.30%** | 88% | 87% | PASS | ~6% |
 | holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
 | roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
+
+## Wave: consistency overlay refine (this)
+
+Scripts/helpers:
+- `scripts/quest_consistency_overlay_refine_wf.py` (new)
+- Existing overlays in `src/mt5_swing/portfolio/overlays.py` (no new functions)
+- Nested pick on 2024 / IS dual for weights; HO never for selection
+
+### Design
+
+1. Rebuild locked basket (VT=0.0025, warmup=250, RF=0.08).
+2. Grid causal overlays: finer MTD τ×after; month_aware; runup; equity_curve_target (hi=1); combos of ≤2.
+3. IS-only simplex/Dirichlet weight perturbations around oos_sharpe; freeze best max min(2024,2025_IS) with %pos≥70% top3 soft≤70%.
+4. Promote only soft+hard IS **and** year_clear (2024/2025/2026 ≥1% & ≥70% pos) **and** holdout clears.
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Promote | Notes |
+|--------|--:|--------:|--------:|--------:|-------|
+| baseline locked | 1 | 0 | 0 | 0 | 2024 0.42%/55%/74% |
+| mtd_gain_clip | 4 | **4** | 0 | 0 | best τ=0.015 a=0.0; year_clear_fail on cal 2025 |
+| month_aware / runup / eqtarget | 3 | 0 | 0 | 0 | alone insufficient for soft dual-year |
+| combo_two | 5 | **2** | 0 | 0 | MTD+runup soft; year_clear_fail |
+| weight_rebalance | 2 | **1** | 0 | 0 | soft; HO %pos 67% |
+| weight_plus_mtd | 1 | **1** | 0 | 0 | **best soft**; holdout_fail |
+| weight_plus_month | 1 | 0 | 0 | 0 | IS fail |
+
+**Totals:** soft=**8** hard=**0** promote=**0** (board n=17).
+
+### Best soft (not promote) — `wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5`
+
+Weights IS-chosen (boost USDCHF/CADJPY/GBPCAD, cut GBPUSD); MTD τ=0.015 after=0.5 re-picked on reweighted 2024.
+
+| Window | Mean mo | %pos | Top3 | Role |
+|--------|--------:|-----:|-----:|------|
+| 2024 | **1.20%** | **82%** | **45%** | IS — soft OK; hard OK on this window |
+| 2025_IS | **1.74%** | **75%** | **64%** | IS — soft OK; hard top3 fail (>55%) |
+| 2025 (cal) | **1.11%** | 73% | 61% | confirm — clears ≥1% mean |
+| 2026 | **2.41%** | 75% | 80% | confirm |
+| holdout | **1.69%** | **67%** | **71%** | confirm — **%pos&top3 fail** → holdout_fail |
+
+**Promote: NO.** Locked tag unchanged.
+
+---
 
 ## Wave: D1 multi-year consistency repair + MTD gain-clip (this)
 
