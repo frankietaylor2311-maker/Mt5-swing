@@ -43,6 +43,8 @@ _SYMBOLS: dict[str, SymbolMeta] = {
     "EURCAD": SymbolMeta("EURCAD", digits=5, base_currency="EUR", quote_currency="CAD"),
     "AUDCAD": SymbolMeta("AUDCAD", digits=5, base_currency="AUD", quote_currency="CAD"),
     "GBPCAD": SymbolMeta("GBPCAD", digits=5, base_currency="GBP", quote_currency="CAD"),
+    "EURAUD": SymbolMeta("EURAUD", digits=5, base_currency="EUR", quote_currency="AUD"),
+    "NZDCAD": SymbolMeta("NZDCAD", digits=5, base_currency="NZD", quote_currency="CAD"),
     # Metals / indices — contract_size approximates FTMO CFD lots; verify in terminal
     "XAUUSD": SymbolMeta("XAUUSD", digits=2, contract_size=100.0, base_currency="XAU", quote_currency="USD"),
     "XAGUSD": SymbolMeta("XAGUSD", digits=3, contract_size=5000.0, base_currency="XAG", quote_currency="USD"),

@@ -42,6 +42,8 @@ research_symbols:
   - EURCAD
   - AUDCAD
   - GBPCAD
+  - EURAUD
+  - NZDCAD
   # Optional: US100 when FTMO exports available
 
 timeframes:

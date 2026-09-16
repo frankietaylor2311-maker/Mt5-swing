@@ -18,3 +18,8 @@ NZDCAD_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low'
 NZDCAD_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 20} OOS ret=-1.04% n=41 gates=True holdout_ok=True source=approximate_non_ftmo
 NZDCAD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.24% n=43 gates=True holdout_ok=False source=approximate_non_ftmo
 NZDCAD_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.40% n=32 gates=True holdout_ok=False source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
