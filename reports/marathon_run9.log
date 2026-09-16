@@ -1,12 +1,17 @@
 USDJPY_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.12% n=87 gates=True holdout_ok=False source=approximate_non_ftmo
 USDJPY_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.28% n=89 gates=True holdout_ok=False source=approximate_non_ftmo
 USDJPY_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'require_htf_align': True, 'require_rsi': False, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-USDJPY_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.15, 'donchian_window': 40, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.41% n=17 gates=True holdout_ok=False source=approximate_non_ftmo
+USDJPY_D1 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.15, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': True} OOS ret=0.42% n=30 gates=True holdout_ok=False source=approximate_non_ftmo
 USDJPY_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.79% n=35 gates=True holdout_ok=True source=approximate_non_ftmo
 USDJPY_D1 bbands_reversion: IS-grid best={'adx_max': 22, 'require_htf_align': False, 'require_rsi': False, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.28% n=18 gates=True holdout_ok=True source=approximate_non_ftmo
-XAUUSD_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.15, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.16% n=52 gates=True holdout_ok=True source=approximate_non_ftmo
+XAUUSD_H4 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.15, 'donchian_window': 40, 'session_hours': None, 'use_mid_exit': True} OOS ret=-0.27% n=28 gates=True holdout_ok=True source=approximate_non_ftmo
 XAUUSD_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.46% n=46 gates=True holdout_ok=True source=approximate_non_ftmo
 XAUUSD_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'require_htf_align': False, 'require_rsi': False, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.33% n=12 gates=True holdout_ok=False source=approximate_non_ftmo
-XAUUSD_D1 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.1, 'donchian_window': 40, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.19% n=119 gates=False holdout_ok=True source=approximate_non_ftmo
+XAUUSD_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.0, 'donchian_window': 15, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.49% n=436 gates=True holdout_ok=True source=approximate_non_ftmo
 XAUUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.19% n=207 gates=True holdout_ok=True source=approximate_non_ftmo
 XAUUSD_D1 bbands_reversion: IS-grid best={'adx_max': 28, 'require_htf_align': True, 'require_rsi': False, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.

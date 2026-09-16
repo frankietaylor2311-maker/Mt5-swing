@@ -143,10 +143,11 @@ GRIDS = {
         "session_hours": [None, "7-20"],
     },
     "breakout_donchian": {
-        "use_mid_exit": [True, False],
-        "adx_min": [0, 15, 20],
-        "atr_pct_min": [0.0, 0.1],
-        "donchian_window": [15, 20, 30],
+        # Order biased toward prior IS-competitive regions (selection still IS-only)
+        "use_mid_exit": [False, True],
+        "adx_min": [0, 15, 22],
+        "atr_pct_min": [0.1, 0.0, 0.15],
+        "donchian_window": [30, 20, 15, 40],
         "session_hours": [None],
     },
     "ema_pullback": {
@@ -263,7 +264,7 @@ def main() -> None:
                     is_df,
                     strat_name,
                     grid,
-                    max_trials=20,
+                    max_trials=32,
                     bt_config=bt_cfg_for(cfg, symbol, strat_name),
                     min_trades=MIN_IS_TRADES,
                 )

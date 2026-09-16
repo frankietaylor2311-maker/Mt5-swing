@@ -35,8 +35,12 @@ def constrained_grid_search(
     keys = sorted(param_grid.keys())
     combos = list(itertools.product(*(param_grid[k] for k in keys)))
     if len(combos) > max_trials:
-        # Prefer diverse first slice; still deterministic
-        combos = combos[:max_trials]
+        # Deterministic diverse subsample (stride), not only the lexicographic head
+        step = max(1, len(combos) // max_trials)
+        sampled = combos[::step][:max_trials]
+        if len(sampled) < max_trials:
+            sampled = (sampled + combos[: max_trials - len(sampled)])[:max_trials]
+        combos = sampled
 
     results: list[dict[str, Any]] = []
     for combo in combos:
