@@ -10,171 +10,223 @@
 
 | Symbol | TF | Strategy | Source | OOS ret | OOS Sh | OOS n | Gates | Holdout ok | Go-live |
 |---|---|---|---|---:|---:|---:|:---:|:---:|:---:|
-| NZDJPY | H4 | atr_channel_breakout | `approximate_non_ftmo` | -0.05% | -0.08 | 112 | PASS | YES | NO |
-| NZDJPY | H4 | bbands_reversion | `approximate_non_ftmo` | 0.07% | 0.10 | 10 | PASS | NO | NO |
-| NZDJPY | H4 | breakout_donchian | `approximate_non_ftmo` | 0.02% | -0.05 | 66 | PASS | YES | NO |
-| NZDJPY | H4 | cci_reversion | `approximate_non_ftmo` | -0.04% | 0.02 | 24 | PASS | NO | NO |
-| NZDJPY | H4 | ema_pullback | `approximate_non_ftmo` | -0.04% | -0.22 | 23 | PASS | NO | NO |
-| NZDJPY | H4 | hybrid_regime | `approximate_non_ftmo` | 0.21% | 0.49 | 70 | PASS | NO | NO |
-| NZDJPY | H4 | keltner_breakout | `approximate_non_ftmo` | -0.23% | -0.87 | 123 | PASS | YES | NO |
-| NZDJPY | H4 | macd_trend | `approximate_non_ftmo` | -0.31% | -1.17 | 91 | PASS | YES | NO |
-| NZDJPY | H4 | mean_reversion_regime | `approximate_non_ftmo` | 0.01% | 0.26 | 17 | PASS | NO | NO |
-| NZDJPY | H4 | squeeze_breakout | `approximate_non_ftmo` | 0.13% | 0.31 | 62 | PASS | YES | NO |
-| NZDJPY | H4 | stoch_reversion | `approximate_non_ftmo` | 0.13% | 0.66 | 50 | PASS | NO | NO |
-| NZDJPY | H4 | trend_ma_adx | `approximate_non_ftmo` | 0.42% | 0.30 | 65 | PASS | NO | NO |
-| NZDJPY | H4 | willr_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDJPY | D1 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDJPY | D1 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDJPY | D1 | breakout_donchian | `approximate_non_ftmo` | 0.21% | 0.37 | 35 | PASS | NO | NO |
-| NZDJPY | D1 | cci_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDJPY | D1 | ema_pullback | `approximate_non_ftmo` | -0.19% | -0.84 | 7 | PASS | NO | NO |
-| NZDJPY | D1 | hybrid_regime | `approximate_non_ftmo` | -0.03% | -0.57 | 43 | PASS | NO | NO |
-| NZDJPY | D1 | keltner_breakout | `approximate_non_ftmo` | -0.30% | -1.02 | 38 | PASS | NO | NO |
-| NZDJPY | D1 | macd_trend | `approximate_non_ftmo` | 0.67% | 0.66 | 123 | PASS | NO | NO |
-| NZDJPY | D1 | mean_reversion_regime | `approximate_non_ftmo` | 0.50% | 0.81 | 13 | PASS | NO | NO |
-| NZDJPY | D1 | squeeze_breakout | `approximate_non_ftmo` | 0.43% | 0.16 | 72 | PASS | NO | NO |
-| NZDJPY | D1 | stoch_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDJPY | D1 | trend_ma_adx | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDJPY | D1 | willr_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | H4 | atr_channel_breakout | `approximate_non_ftmo` | 0.09% | 0.31 | 90 | PASS | NO | NO |
-| EURAUD | H4 | bbands_reversion | `approximate_non_ftmo` | -0.46% | -1.29 | 36 | PASS | NO | NO |
-| EURAUD | H4 | breakout_donchian | `approximate_non_ftmo` | 0.15% | 0.49 | 65 | PASS | YES | NO |
-| EURAUD | H4 | cci_reversion | `approximate_non_ftmo` | -0.38% | -1.24 | 34 | PASS | NO | NO |
-| EURAUD | H4 | ema_pullback | `approximate_non_ftmo` | -0.02% | -0.14 | 12 | PASS | YES | NO |
-| EURAUD | H4 | hybrid_regime | `approximate_non_ftmo` | -0.07% | -0.93 | 78 | PASS | NO | NO |
-| EURAUD | H4 | keltner_breakout | `approximate_non_ftmo` | 0.17% | 0.47 | 67 | PASS | NO | NO |
-| EURAUD | H4 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | YES | NO |
-| EURAUD | H4 | mean_reversion_regime | `approximate_non_ftmo` | -0.09% | -0.45 | 5 | PASS | YES | NO |
-| EURAUD | H4 | squeeze_breakout | `approximate_non_ftmo` | -0.11% | -0.58 | 85 | PASS | YES | NO |
-| EURAUD | H4 | stoch_reversion | `approximate_non_ftmo` | -0.39% | -0.92 | 75 | PASS | NO | NO |
-| EURAUD | H4 | trend_ma_adx | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | H4 | willr_reversion | `approximate_non_ftmo` | -0.30% | -0.83 | 56 | PASS | NO | NO |
-| EURAUD | D1 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | D1 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | D1 | breakout_donchian | `approximate_non_ftmo` | -0.16% | -0.47 | 19 | PASS | NO | NO |
-| EURAUD | D1 | cci_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | D1 | ema_pullback | `approximate_non_ftmo` | -0.00% | -0.00 | 10 | PASS | YES | NO |
-| EURAUD | D1 | hybrid_regime | `approximate_non_ftmo` | -0.04% | -0.23 | 47 | PASS | YES | NO |
-| EURAUD | D1 | keltner_breakout | `approximate_non_ftmo` | 0.29% | 0.41 | 49 | PASS | YES | NO |
-| EURAUD | D1 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | D1 | mean_reversion_regime | `approximate_non_ftmo` | -0.03% | -0.01 | 13 | PASS | NO | NO |
-| EURAUD | D1 | squeeze_breakout | `approximate_non_ftmo` | -0.19% | -0.07 | 62 | PASS | YES | NO |
-| EURAUD | D1 | stoch_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | D1 | trend_ma_adx | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| EURAUD | D1 | willr_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDCAD | H4 | atr_channel_breakout | `approximate_non_ftmo` | -0.17% | -0.43 | 75 | PASS | NO | NO |
-| NZDCAD | H4 | bbands_reversion | `approximate_non_ftmo` | 0.15% | 0.78 | 31 | PASS | NO | NO |
-| NZDCAD | H4 | breakout_donchian | `approximate_non_ftmo` | -0.30% | -0.99 | 61 | PASS | NO | NO |
-| NZDCAD | H4 | cci_reversion | `approximate_non_ftmo` | 0.08% | 0.58 | 35 | PASS | NO | NO |
-| NZDCAD | H4 | ema_pullback | `approximate_non_ftmo` | -0.06% | -0.01 | 25 | PASS | YES | NO |
-| NZDCAD | H4 | hybrid_regime | `approximate_non_ftmo` | -0.43% | -1.41 | 101 | PASS | NO | NO |
-| NZDCAD | H4 | keltner_breakout | `approximate_non_ftmo` | -0.53% | -1.69 | 66 | PASS | NO | NO |
-| NZDCAD | H4 | macd_trend | `approximate_non_ftmo` | -0.03% | -1.04 | 124 | PASS | NO | NO |
-| NZDCAD | H4 | mean_reversion_regime | `approximate_non_ftmo` | 0.19% | 1.35 | 12 | PASS | NO | NO |
-| NZDCAD | H4 | squeeze_breakout | `approximate_non_ftmo` | -0.07% | -0.19 | 53 | PASS | NO | NO |
-| NZDCAD | H4 | stoch_reversion | `approximate_non_ftmo` | -0.03% | -0.01 | 49 | PASS | NO | NO |
-| NZDCAD | H4 | trend_ma_adx | `approximate_non_ftmo` | -0.32% | -1.52 | 90 | PASS | NO | NO |
-| NZDCAD | H4 | willr_reversion | `approximate_non_ftmo` | 0.01% | 0.11 | 47 | PASS | NO | NO |
-| NZDCAD | D1 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
-| NZDCAD | D1 | bbands_reversion | `approximate_non_ftmo` | 0.18% | 0.32 | 23 | PASS | YES | NO |
-| NZDCAD | D1 | breakout_donchian | `approximate_non_ftmo` | 0.40% | 0.95 | 32 | PASS | NO | NO |
-| NZDCAD | D1 | cci_reversion | `approximate_non_ftmo` | -0.41% | -0.48 | 27 | PASS | YES | NO |
-| NZDCAD | D1 | ema_pullback | `approximate_non_ftmo` | 0.08% | -0.22 | 11 | PASS | YES | NO |
-| NZDCAD | D1 | hybrid_regime | `approximate_non_ftmo` | -0.24% | -0.15 | 43 | PASS | NO | NO |
-| NZDCAD | D1 | keltner_breakout | `approximate_non_ftmo` | -0.20% | -0.39 | 62 | PASS | NO | NO |
-| NZDCAD | D1 | macd_trend | `approximate_non_ftmo` | -0.34% | -1.05 | 52 | PASS | NO | NO |
-| NZDCAD | D1 | mean_reversion_regime | `approximate_non_ftmo` | -0.18% | -0.09 | 13 | PASS | YES | NO |
-| NZDCAD | D1 | squeeze_breakout | `approximate_non_ftmo` | 0.02% | 0.04 | 36 | PASS | YES | NO |
-| NZDCAD | D1 | stoch_reversion | `approximate_non_ftmo` | -1.04% | -2.00 | 41 | PASS | YES | NO |
-| NZDCAD | D1 | trend_ma_adx | `approximate_non_ftmo` | 0.31% | 0.89 | 31 | PASS | NO | NO |
-| NZDCAD | D1 | willr_reversion | `approximate_non_ftmo` | -0.84% | -1.17 | 72 | PASS | YES | NO |
+| USDCAD | H4 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| USDCAD | H4 | bbands_reversion | `approximate_non_ftmo` | -0.12% | -0.59 | 24 | PASS | NO | NO |
+| USDCAD | H4 | breakout_donchian | `approximate_non_ftmo` | -0.07% | -0.21 | 59 | PASS | YES | NO |
+| USDCAD | H4 | cci_reversion | `approximate_non_ftmo` | -0.20% | -0.58 | 33 | PASS | NO | NO |
+| USDCAD | H4 | ema_pullback | `approximate_non_ftmo` | -0.03% | -0.76 | 19 | PASS | NO | NO |
+| USDCAD | H4 | hybrid_regime | `approximate_non_ftmo` | 0.08% | 0.27 | 73 | PASS | YES | NO |
+| USDCAD | H4 | keltner_breakout | `approximate_non_ftmo` | -0.12% | -0.61 | 70 | PASS | YES | NO |
+| USDCAD | H4 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| USDCAD | H4 | mean_reversion_regime | `approximate_non_ftmo` | 0.08% | 0.37 | 5 | PASS | NO | NO |
+| USDCAD | H4 | squeeze_breakout | `approximate_non_ftmo` | -0.41% | -1.43 | 87 | PASS | NO | NO |
+| USDCAD | H4 | stoch_reversion | `approximate_non_ftmo` | -0.24% | -1.27 | 59 | PASS | NO | NO |
+| USDCAD | H4 | trend_ma_adx | `approximate_non_ftmo` | 0.11% | 0.26 | 71 | PASS | NO | NO |
+| USDCAD | H4 | willr_reversion | `approximate_non_ftmo` | -0.24% | -1.32 | 47 | PASS | NO | NO |
+| USDCAD | D1 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| USDCAD | D1 | bbands_reversion | `approximate_non_ftmo` | -0.10% | 0.03 | 31 | PASS | YES | NO |
+| USDCAD | D1 | breakout_donchian | `approximate_non_ftmo` | -0.07% | -0.51 | 89 | PASS | NO | NO |
+| USDCAD | D1 | cci_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| USDCAD | D1 | ema_pullback | `approximate_non_ftmo` | -0.03% | -0.93 | 35 | PASS | NO | NO |
+| USDCAD | D1 | hybrid_regime | `approximate_non_ftmo` | -0.10% | -0.80 | 166 | PASS | NO | NO |
+| USDCAD | D1 | keltner_breakout | `approximate_non_ftmo` | 0.00% | -0.25 | 101 | PASS | NO | NO |
+| USDCAD | D1 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| USDCAD | D1 | mean_reversion_regime | `approximate_non_ftmo` | -0.08% | 0.43 | 50 | PASS | NO | NO |
+| USDCAD | D1 | squeeze_breakout | `approximate_non_ftmo` | 0.03% | 0.18 | 118 | PASS | YES | NO |
+| USDCAD | D1 | stoch_reversion | `approximate_non_ftmo` | 0.05% | 0.44 | 133 | PASS | NO | NO |
+| USDCAD | D1 | trend_ma_adx | `approximate_non_ftmo` | -0.10% | -0.58 | 147 | PASS | NO | NO |
+| USDCAD | D1 | willr_reversion | `approximate_non_ftmo` | 0.07% | 0.28 | 158 | PASS | NO | NO |
+| NZDUSD | H4 | atr_channel_breakout | `approximate_non_ftmo` | -0.01% | -0.19 | 128 | PASS | YES | NO |
+| NZDUSD | H4 | bbands_reversion | `approximate_non_ftmo` | -0.03% | 0.13 | 39 | PASS | NO | NO |
+| NZDUSD | H4 | breakout_donchian | `approximate_non_ftmo` | -0.27% | -1.34 | 102 | PASS | NO | NO |
+| NZDUSD | H4 | cci_reversion | `approximate_non_ftmo` | -0.05% | -0.02 | 38 | PASS | NO | NO |
+| NZDUSD | H4 | ema_pullback | `approximate_non_ftmo` | -0.11% | -0.43 | 24 | PASS | NO | NO |
+| NZDUSD | H4 | hybrid_regime | `approximate_non_ftmo` | -0.07% | -0.44 | 96 | PASS | NO | NO |
+| NZDUSD | H4 | keltner_breakout | `approximate_non_ftmo` | -0.13% | -0.60 | 133 | PASS | NO | NO |
+| NZDUSD | H4 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | H4 | mean_reversion_regime | `approximate_non_ftmo` | 0.01% | 0.25 | 6 | PASS | NO | NO |
+| NZDUSD | H4 | squeeze_breakout | `approximate_non_ftmo` | -0.18% | -0.74 | 113 | PASS | NO | NO |
+| NZDUSD | H4 | stoch_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | H4 | trend_ma_adx | `approximate_non_ftmo` | -0.17% | -0.65 | 93 | PASS | NO | NO |
+| NZDUSD | H4 | willr_reversion | `approximate_non_ftmo` | -0.23% | -0.79 | 82 | PASS | NO | NO |
+| NZDUSD | D1 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | D1 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | D1 | breakout_donchian | `approximate_non_ftmo` | 0.24% | -0.10 | 30 | PASS | NO | NO |
+| NZDUSD | D1 | cci_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | D1 | ema_pullback | `approximate_non_ftmo` | -0.11% | -0.45 | 10 | PASS | NO | NO |
+| NZDUSD | D1 | hybrid_regime | `approximate_non_ftmo` | -0.24% | -0.95 | 46 | PASS | NO | NO |
+| NZDUSD | D1 | keltner_breakout | `approximate_non_ftmo` | -0.04% | -0.50 | 65 | PASS | NO | NO |
+| NZDUSD | D1 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | D1 | mean_reversion_regime | `approximate_non_ftmo` | -0.21% | -0.16 | 25 | PASS | YES | NO |
+| NZDUSD | D1 | squeeze_breakout | `approximate_non_ftmo` | -0.06% | -0.29 | 34 | PASS | YES | NO |
+| NZDUSD | D1 | stoch_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | D1 | trend_ma_adx | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| NZDUSD | D1 | willr_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCHF | H4 | atr_channel_breakout | `approximate_non_ftmo` | -0.15% | -1.17 | 94 | PASS | NO | NO |
+| EURCHF | H4 | bbands_reversion | `approximate_non_ftmo` | 0.01% | 0.44 | 30 | PASS | YES | NO |
+| EURCHF | H4 | breakout_donchian | `approximate_non_ftmo` | -0.12% | -0.85 | 54 | PASS | YES | NO |
+| EURCHF | H4 | cci_reversion | `approximate_non_ftmo` | 0.14% | 1.20 | 38 | PASS | YES | NO |
+| EURCHF | H4 | ema_pullback | `approximate_non_ftmo` | 0.03% | -0.10 | 22 | PASS | NO | NO |
+| EURCHF | H4 | hybrid_regime | `approximate_non_ftmo` | -0.05% | -0.64 | 86 | PASS | NO | NO |
+| EURCHF | H4 | keltner_breakout | `approximate_non_ftmo` | -0.14% | -0.93 | 84 | PASS | YES | NO |
+| EURCHF | H4 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCHF | H4 | mean_reversion_regime | `approximate_non_ftmo` | -0.14% | -0.04 | 8 | PASS | NO | NO |
+| EURCHF | H4 | squeeze_breakout | `approximate_non_ftmo` | -0.13% | -0.92 | 59 | PASS | NO | NO |
+| EURCHF | H4 | stoch_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | YES | NO |
+| EURCHF | H4 | trend_ma_adx | `approximate_non_ftmo` | 0.04% | -0.55 | 45 | PASS | NO | NO |
+| EURCHF | H4 | willr_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | YES | NO |
+| EURCHF | D1 | atr_channel_breakout | `approximate_non_ftmo` | -0.79% | -1.93 | 57 | PASS | YES | NO |
+| EURCHF | D1 | bbands_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCHF | D1 | breakout_donchian | `approximate_non_ftmo` | -0.70% | -0.87 | 34 | PASS | YES | NO |
+| EURCHF | D1 | cci_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCHF | D1 | ema_pullback | `approximate_non_ftmo` | 0.05% | 0.09 | 9 | PASS | NO | NO |
+| EURCHF | D1 | hybrid_regime | `approximate_non_ftmo` | -0.49% | -1.02 | 45 | PASS | YES | NO |
+| EURCHF | D1 | keltner_breakout | `approximate_non_ftmo` | -0.71% | -1.05 | 33 | PASS | NO | NO |
+| EURCHF | D1 | macd_trend | `approximate_non_ftmo` | -0.39% | -0.92 | 63 | PASS | NO | NO |
+| EURCHF | D1 | mean_reversion_regime | `approximate_non_ftmo` | 0.42% | 1.34 | 6 | PASS | NO | NO |
+| EURCHF | D1 | squeeze_breakout | `approximate_non_ftmo` | -0.38% | -0.74 | 60 | PASS | YES | NO |
+| EURCHF | D1 | stoch_reversion | `approximate_non_ftmo` | 0.13% | 0.76 | 33 | PASS | NO | NO |
+| EURCHF | D1 | trend_ma_adx | `approximate_non_ftmo` | -0.51% | -0.81 | 45 | PASS | YES | NO |
+| EURCHF | D1 | willr_reversion | `approximate_non_ftmo` | 0.06% | 0.62 | 16 | PASS | NO | NO |
+| EURCAD | H4 | atr_channel_breakout | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCAD | H4 | bbands_reversion | `approximate_non_ftmo` | 0.12% | 0.69 | 25 | PASS | YES | NO |
+| EURCAD | H4 | breakout_donchian | `approximate_non_ftmo` | -0.05% | -0.14 | 79 | PASS | NO | NO |
+| EURCAD | H4 | cci_reversion | `approximate_non_ftmo` | 0.09% | 0.29 | 20 | PASS | NO | NO |
+| EURCAD | H4 | ema_pullback | `approximate_non_ftmo` | 0.05% | 0.07 | 24 | PASS | NO | NO |
+| EURCAD | H4 | hybrid_regime | `approximate_non_ftmo` | 0.08% | 0.03 | 87 | PASS | NO | NO |
+| EURCAD | H4 | keltner_breakout | `approximate_non_ftmo` | -0.06% | -0.53 | 63 | PASS | NO | NO |
+| EURCAD | H4 | macd_trend | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCAD | H4 | mean_reversion_regime | `approximate_non_ftmo` | 0.08% | 0.73 | 11 | PASS | YES | NO |
+| EURCAD | H4 | squeeze_breakout | `approximate_non_ftmo` | 0.12% | 0.66 | 61 | PASS | NO | NO |
+| EURCAD | H4 | stoch_reversion | `approximate_non_ftmo` | 0.08% | -0.38 | 40 | PASS | NO | NO |
+| EURCAD | H4 | trend_ma_adx | `approximate_non_ftmo` | 0.15% | 0.48 | 85 | PASS | NO | NO |
+| EURCAD | H4 | willr_reversion | `approximate_non_ftmo` | 0.08% | -0.38 | 40 | PASS | NO | NO |
+| EURCAD | D1 | atr_channel_breakout | `approximate_non_ftmo` | -0.32% | -0.67 | 12 | PASS | NO | NO |
+| EURCAD | D1 | bbands_reversion | `approximate_non_ftmo` | 0.21% | 0.92 | 23 | PASS | YES | NO |
+| EURCAD | D1 | breakout_donchian | `approximate_non_ftmo` | 0.07% | 0.26 | 17 | PASS | NO | NO |
+| EURCAD | D1 | cci_reversion | `approximate_non_ftmo` | 0.11% | 0.20 | 26 | PASS | YES | NO |
+| EURCAD | D1 | ema_pullback | `approximate_non_ftmo` | 0.04% | 0.12 | 7 | PASS | YES | NO |
+| EURCAD | D1 | hybrid_regime | `approximate_non_ftmo` | 0.02% | 0.35 | 39 | PASS | NO | NO |
+| EURCAD | D1 | keltner_breakout | `approximate_non_ftmo` | 0.02% | 0.24 | 17 | PASS | NO | NO |
+| EURCAD | D1 | macd_trend | `approximate_non_ftmo` | -0.01% | -0.69 | 43 | PASS | YES | NO |
+| EURCAD | D1 | mean_reversion_regime | `approximate_non_ftmo` | 0.30% | 0.93 | 6 | PASS | NO | NO |
+| EURCAD | D1 | squeeze_breakout | `approximate_non_ftmo` | -0.85% | -2.03 | 75 | PASS | YES | NO |
+| EURCAD | D1 | stoch_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCAD | D1 | trend_ma_adx | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
+| EURCAD | D1 | willr_reversion | `approximate_non_ftmo` | 0.00% | 0.00 | 0 | PASS | NO | NO |
 
-### OOS profitable + gates (research WF): **24** / 78
-### Holdout profitable + gates: **22** / 78
+### OOS profitable + gates (research WF): **33** / 104
+### Holdout profitable + gates: **26** / 104
 ### FTMO go-live candidates (requires ftmo_mt5_export): **0**
 
 > **Blocker:** No `ftmo_mt5_export` data. Export H4/D1 from the Windows FTMO MT5 terminal and run `mt5-swing import-ftmo-data --file EURUSD_H4=/path/to.csv ...`.
 
 ## Refinements tried
 
-- NZDJPY_H4 atr_channel_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.05% n=112 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDJPY_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.07% n=10 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.1, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.02% n=66 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDJPY_H4 cci_reversion: IS-grid best={'adx_max': 22, 'cci_high': 100, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.04% n=24 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 ema_pullback: IS-grid best={'adx_threshold': 18, 'rsi_pullback_high': 55, 'rsi_pullback_low': 45, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.04% n=23 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.21% n=70 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.23% n=123 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDJPY_H4 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.31% n=91 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDJPY_H4 mean_reversion_regime: IS-grid best={'adx_max': 25, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': '7-20'} OOS ret=0.01% n=17 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.13% n=62 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDJPY_H4 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 15} OOS ret=0.13% n=50 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 trend_ma_adx: IS-grid best={'adx_threshold': 22, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': False, 'session_hours': None} OOS ret=0.42% n=65 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_H4 willr_reversion: IS-grid best={'adx_max': 22, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -10, 'willr_low': -90} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 atr_channel_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 bbands_reversion: IS-grid best={'adx_max': 35, 'max_hold': 0, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 40, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.21% n=35 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 ema_pullback: IS-grid best={'adx_threshold': 18, 'rsi_pullback_high': 60, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.19% n=7 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.03% n=43 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.30% n=38 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 macd_trend: IS-grid best={'adx_min': 12, 'exit_on_cross': True, 'hold_while_hist': True, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.67% n=123 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 mean_reversion_regime: IS-grid best={'adx_max': 30, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.50% n=13 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookback': 60, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.43% n=72 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 20} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 1.0, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDJPY_D1 willr_reversion: IS-grid best={'adx_max': 28, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -10, 'willr_low': -80} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 atr_channel_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.09% n=90 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 bbands_reversion: IS-grid best={'adx_max': 35, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 60, 'rsi_low': 40, 'session_hours': None} OOS ret=-0.46% n=36 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.15% n=65 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_H4 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.38% n=34 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 60, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.02% n=12 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.07% n=78 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.17% n=67 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_H4 mean_reversion_regime: IS-grid best={'adx_max': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.09% n=5 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_H4 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.11% n=85 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_H4 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 15} OOS ret=-0.39% n=75 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 trend_ma_adx: IS-grid best={'adx_threshold': 22, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_H4 willr_reversion: IS-grid best={'adx_max': 28, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -10, 'willr_low': -90} OOS ret=-0.30% n=56 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 atr_channel_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.5, 'exit_to_mid': True, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 bbands_reversion: IS-grid best={'adx_max': 35, 'max_hold': 0, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 40, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.16% n=19 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 65, 'rsi_pullback_low': 40, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.00% n=10 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.04% n=47 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_D1 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.29% n=49 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_D1 macd_trend: IS-grid best={'adx_min': 12, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 mean_reversion_regime: IS-grid best={'adx_max': 30, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.03% n=13 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.19% n=62 gates=True holdout_ok=True source=approximate_non_ftmo
-- EURAUD_D1 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 25} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 1.0, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- EURAUD_D1 willr_reversion: IS-grid best={'adx_max': 35, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -10, 'willr_low': -90} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.17% n=75 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': False, 'rsi_high': 60, 'rsi_low': 40, 'session_hours': None} OOS ret=0.15% n=31 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.1, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.30% n=61 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 cci_reversion: IS-grid best={'adx_max': 28, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.08% n=35 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 55, 'rsi_pullback_low': 40, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.06% n=25 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.43% n=101 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.53% n=66 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'hold_while_hist': True, 'max_hold': 24, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.03% n=124 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 mean_reversion_regime: IS-grid best={'adx_max': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=0.19% n=12 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 16, 'lookback': 60, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.07% n=53 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 85, 'stoch_low': 20} OOS ret=-0.03% n=49 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.32% n=90 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_H4 willr_reversion: IS-grid best={'adx_max': 22, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -10, 'willr_low': -80} OOS ret=0.01% n=47 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 bbands_reversion: IS-grid best={'adx_max': 35, 'max_hold': 0, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.18% n=23 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.40% n=32 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.41% n=27 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_D1 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 55, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=0.08% n=11 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.24% n=43 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.20% n=62 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.34% n=52 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 mean_reversion_regime: IS-grid best={'adx_max': 30, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.18% n=13 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_D1 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 8, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.02% n=36 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 20} OOS ret=-1.04% n=41 gates=True holdout_ok=True source=approximate_non_ftmo
-- NZDCAD_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': False, 'session_hours': None} OOS ret=0.31% n=31 gates=True holdout_ok=False source=approximate_non_ftmo
-- NZDCAD_D1 willr_reversion: IS-grid best={'adx_max': 35, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -20, 'willr_low': -80} OOS ret=-0.84% n=72 gates=True holdout_ok=True source=approximate_non_ftmo
+- USDCAD_H4 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 bbands_reversion: IS-grid best={'adx_max': 28, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 40, 'session_hours': None} OOS ret=-0.12% n=24 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.07% n=59 gates=True holdout_ok=True source=approximate_non_ftmo
+- USDCAD_H4 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.20% n=33 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 65, 'rsi_pullback_low': 40, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.03% n=19 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=0.08% n=73 gates=True holdout_ok=True source=approximate_non_ftmo
+- USDCAD_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.5, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.12% n=70 gates=True holdout_ok=True source=approximate_non_ftmo
+- USDCAD_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 mean_reversion_regime: IS-grid best={'adx_max': 20, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=0.08% n=5 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.41% n=87 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 85, 'stoch_low': 25} OOS ret=-0.24% n=59 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 trend_ma_adx: IS-grid best={'adx_threshold': 22, 'atr_pct_max': 1.0, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': False, 'session_hours': None} OOS ret=0.11% n=71 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_H4 willr_reversion: IS-grid best={'adx_max': 28, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -10, 'willr_low': -80} OOS ret=-0.24% n=47 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.5, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 bbands_reversion: IS-grid best={'adx_max': 22, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.10% n=31 gates=True holdout_ok=True source=approximate_non_ftmo
+- USDCAD_D1 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.07% n=89 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 ema_pullback: IS-grid best={'adx_threshold': 18, 'rsi_pullback_high': 55, 'rsi_pullback_low': 40, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.03% n=35 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.10% n=166 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.00% n=101 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 mean_reversion_regime: IS-grid best={'adx_max': 25, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.08% n=50 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 8, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.03% n=118 gates=True holdout_ok=True source=approximate_non_ftmo
+- USDCAD_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 85, 'stoch_low': 15} OOS ret=0.05% n=133 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.10% n=147 gates=True holdout_ok=False source=approximate_non_ftmo
+- USDCAD_D1 willr_reversion: IS-grid best={'adx_max': 22, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -20, 'willr_low': -80} OOS ret=0.07% n=158 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.01% n=128 gates=True holdout_ok=True source=approximate_non_ftmo
+- NZDUSD_H4 bbands_reversion: IS-grid best={'adx_max': 28, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': False, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.03% n=39 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 breakout_donchian: IS-grid best={'adx_min': 15, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.27% n=102 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -120, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.05% n=38 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 ema_pullback: IS-grid best={'adx_threshold': 18, 'rsi_pullback_high': 55, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.11% n=24 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.07% n=96 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.13% n=133 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 macd_trend: IS-grid best={'adx_min': 12, 'exit_on_cross': True, 'hold_while_hist': True, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 mean_reversion_regime: IS-grid best={'adx_max': 20, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': '7-20'} OOS ret=0.01% n=6 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookback': 60, 'session_hours': None, 'squeeze_pct': 0.3} OOS ret=-0.18% n=113 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 80, 'stoch_low': 20} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 trend_ma_adx: IS-grid best={'adx_threshold': 22, 'atr_pct_max': 1.0, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.17% n=93 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_H4 willr_reversion: IS-grid best={'adx_max': 35, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -20, 'willr_low': -90} OOS ret=-0.23% n=82 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 bbands_reversion: IS-grid best={'adx_max': 35, 'max_hold': 0, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.1, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.24% n=30 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 cci_reversion: IS-grid best={'adx_max': 35, 'cci_high': 100, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 ema_pullback: IS-grid best={'adx_threshold': 18, 'rsi_pullback_high': 55, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=-0.11% n=10 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.24% n=46 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': True, 'session_hours': None} OOS ret=-0.04% n=65 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 macd_trend: IS-grid best={'adx_min': 12, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 mean_reversion_regime: IS-grid best={'adx_max': 30, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.21% n=25 gates=True holdout_ok=True source=approximate_non_ftmo
+- NZDUSD_D1 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 8, 'lookback': 60, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.06% n=34 gates=True holdout_ok=True source=approximate_non_ftmo
+- NZDUSD_D1 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 80, 'stoch_low': 15} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 1.0, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- NZDUSD_D1 willr_reversion: IS-grid best={'adx_max': 35, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -20, 'willr_low': -90} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 atr_channel_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 24, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.15% n=94 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 bbands_reversion: IS-grid best={'adx_max': 28, 'max_hold': 20, 'require_htf_align': False, 'require_rsi': True, 'rsi_high': 65, 'rsi_low': 40, 'session_hours': None} OOS ret=0.01% n=30 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_H4 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.0, 'donchian_window': 30, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.12% n=54 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_H4 cci_reversion: IS-grid best={'adx_max': 28, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.14% n=38 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_H4 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 55, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=0.03% n=22 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=-0.05% n=86 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.25, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.14% n=84 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 mean_reversion_regime: IS-grid best={'adx_max': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': '7-20'} OOS ret=-0.14% n=8 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.13% n=59 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 stoch_reversion: IS-grid best={'adx_max': 28, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 75, 'stoch_low': 25} OOS ret=0.00% n=0 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_H4 trend_ma_adx: IS-grid best={'adx_threshold': 22, 'atr_pct_max': 1.0, 'atr_pct_min': 0.0, 'require_ema_align': True, 'require_htf_align': False, 'session_hours': None} OOS ret=0.04% n=45 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_H4 willr_reversion: IS-grid best={'adx_max': 28, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -10, 'willr_low': -90} OOS ret=0.00% n=0 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_D1 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 1.5, 'exit_to_mid': True, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.79% n=57 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_D1 bbands_reversion: IS-grid best={'adx_max': 35, 'max_hold': 0, 'require_htf_align': True, 'require_rsi': True, 'rsi_high': 60, 'rsi_low': 35, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 breakout_donchian: IS-grid best={'adx_min': 12, 'atr_pct_min': 0.1, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.70% n=34 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_D1 cci_reversion: IS-grid best={'adx_max': 28, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 60, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=0.05% n=9 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 hybrid_regime: IS-grid best={'adx_chop': 16, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 65, 'rsi_low': 30, 'session_hours': None} OOS ret=-0.49% n=45 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.71% n=33 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.39% n=63 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 mean_reversion_regime: IS-grid best={'adx_max': 30, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.42% n=6 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 16, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.3} OOS ret=-0.38% n=60 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 85, 'stoch_low': 25} OOS ret=0.13% n=33 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCHF_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 1.0, 'atr_pct_min': 0.15, 'require_ema_align': True, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.51% n=45 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCHF_D1 willr_reversion: IS-grid best={'adx_max': 22, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -10, 'willr_low': -90} OOS ret=0.06% n=16 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 atr_channel_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 1.5, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 bbands_reversion: IS-grid best={'adx_max': 22, 'max_hold': 0, 'require_htf_align': False, 'require_rsi': False, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.12% n=25 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_H4 breakout_donchian: IS-grid best={'adx_min': 22, 'atr_pct_min': 0.0, 'donchian_window': 20, 'session_hours': None, 'use_mid_exit': False} OOS ret=-0.05% n=79 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 cci_reversion: IS-grid best={'adx_max': 22, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.09% n=20 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 60, 'rsi_pullback_low': 45, 'session_hours': None, 'use_macd_confirm': False} OOS ret=0.05% n=24 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 24, 'max_hold': 20, 'rsi_high': 70, 'rsi_low': 30, 'session_hours': None} OOS ret=0.08% n=87 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 keltner_breakout: IS-grid best={'adx_min': 18, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=-0.06% n=63 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 mean_reversion_regime: IS-grid best={'adx_max': 25, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': '7-20'} OOS ret=0.08% n=11 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_H4 squeeze_breakout: IS-grid best={'adx_min': 18, 'exit_bars': 8, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=0.12% n=61 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': False, 'session_hours': None, 'stoch_high': 80, 'stoch_low': 20} OOS ret=0.08% n=40 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.0, 'require_ema_align': False, 'require_htf_align': False, 'session_hours': None} OOS ret=0.15% n=85 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_H4 willr_reversion: IS-grid best={'adx_max': 22, 'exit_mid': -50, 'require_htf_align': False, 'session_hours': None, 'willr_high': -20, 'willr_low': -80} OOS ret=0.08% n=40 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.5, 'exit_to_mid': False, 'max_hold': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.32% n=12 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 bbands_reversion: IS-grid best={'adx_max': 22, 'max_hold': 0, 'require_htf_align': False, 'require_rsi': False, 'rsi_high': 65, 'rsi_low': 35, 'session_hours': None} OOS ret=0.21% n=23 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_D1 breakout_donchian: IS-grid best={'adx_min': 0, 'atr_pct_min': 0.0, 'donchian_window': 40, 'session_hours': None, 'use_mid_exit': False} OOS ret=0.07% n=17 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 cci_reversion: IS-grid best={'adx_max': 22, 'cci_high': 120, 'cci_low': -100, 'exit_level': 0, 'require_htf_align': False, 'session_hours': None} OOS ret=0.11% n=26 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_D1 ema_pullback: IS-grid best={'adx_threshold': 15, 'rsi_pullback_high': 60, 'rsi_pullback_low': 35, 'session_hours': None, 'use_macd_confirm': False} OOS ret=0.04% n=7 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_D1 hybrid_regime: IS-grid best={'adx_chop': 20, 'adx_trend': 20, 'max_hold': 0, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=0.02% n=39 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 keltner_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.0, 'exit_to_mid': False, 'session_hours': None} OOS ret=0.02% n=17 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': False, 'session_hours': None} OOS ret=-0.01% n=43 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_D1 mean_reversion_regime: IS-grid best={'adx_max': 20, 'rsi_high': 70, 'rsi_low': 35, 'session_hours': None} OOS ret=0.30% n=6 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 squeeze_breakout: IS-grid best={'adx_min': 10, 'exit_bars': 8, 'lookback': 40, 'session_hours': None, 'squeeze_pct': 0.2} OOS ret=-0.85% n=75 gates=True holdout_ok=True source=approximate_non_ftmo
+- EURCAD_D1 stoch_reversion: IS-grid best={'adx_max': 22, 'exit_mid': 50, 'require_htf_align': True, 'session_hours': None, 'stoch_high': 85, 'stoch_low': 25} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 trend_ma_adx: IS-grid best={'adx_threshold': 18, 'atr_pct_max': 0.9, 'atr_pct_min': 0.15, 'require_ema_align': False, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+- EURCAD_D1 willr_reversion: IS-grid best={'adx_max': 22, 'exit_mid': -50, 'require_htf_align': True, 'session_hours': None, 'willr_high': -20, 'willr_low': -80} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 
 ## Anti-overfit notes
 

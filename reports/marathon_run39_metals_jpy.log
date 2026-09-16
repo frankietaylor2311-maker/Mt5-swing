@@ -1,0 +1,1 @@
+XAUUSD_H4 atr_channel_breakout: IS-grid best={'adx_min': 12, 'atr_mult': 2.5, 'exit_to_mid': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
