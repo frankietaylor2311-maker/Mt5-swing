@@ -1,0 +1,80 @@
+data_source=approximate_non_ftmo RF=0.08 locked=fx4plus_gbpcad_d1_voltarget_0025
+Nested IS: optimize 2024 → validate 2025_IS; HO/2026 confirmation only. Real two-leg.
+end=2026-09-15 23:00:00+00:00 holdout_start=2025-09-15 23:00:00+00:00 2025_IS→2025-09-15
+  fit2024 EURUSD/GBPUSD beta=0.703 adf=-1.52
+  fit2024 AUDUSD/NZDUSD beta=0.715 adf=-1.94
+  fit2024 EURUSD/USDCHF beta=-0.439 adf=-1.08
+  fit2024 AUDCAD/NZDCAD beta=0.779 adf=-1.61
+  fit2024 EURJPY/GBPJPY beta=0.826 adf=-1.79
+  fit2024 EURCHF/USDCHF beta=0.566 adf=-1.08
+  fit2024 GBPCAD/USDCAD beta=0.785 adf=-1.81
+  fit2024 EURAUD/AUDUSD beta=-0.311 adf=-2.53
+unique pairs by ADF: 8
+=== Diagnosis: Δz proxy vs real two-leg ===
+  proxy  sizing=z_vol          2024 mo=1.280% pos=82% amp≈nan
+  real   sizing=z_vol          2024 mo=0.888% pos=45% amp≈181.4940500727301
+  real   sizing=unit_residual  2024 mo=0.013% pos=55% amp≈181.4940500727301
+=== Nested IS grid (real two-leg, z_vol + unit_residual) ===
+board=1080 soft=0 hard=0 best_min_mo=0.510% (real_n2_z_vol)
+  real_n3_z_vol                e=2.25 x=0.3 rf=0.005 min_mo=0.094% pos=73% t3=71% soft=False
+  real_n3_z_vol                e=2.25 x=0.3 rf=0.005 min_mo=0.171% pos=73% t3=71% soft=False
+  real_n4_z_vol                e=2.25 x=0.3 rf=0.005 min_mo=0.070% pos=73% t3=71% soft=False
+  real_n4_z_vol                e=2.25 x=0.3 rf=0.005 min_mo=0.128% pos=73% t3=72% soft=False
+  real_n3_unit_residual        e=1.75 x=0.5 rf=0.01 min_mo=0.001% pos=64% t3=72% soft=False
+  real_n3_unit_residual        e=1.75 x=0.5 rf=0.01 min_mo=0.001% pos=64% t3=72% soft=False
+  real_n3_z_vol                e=2.0 x=0.3 rf=0.005 min_mo=0.077% pos=62% t3=72% soft=False
+  real_n4_z_vol                e=2.0 x=0.3 rf=0.005 min_mo=0.058% pos=62% t3=72% soft=False
+  real_n3_unit_residual        e=2.0 x=0.5 rf=0.01 min_mo=0.002% pos=64% t3=72% soft=False
+  real_n3_unit_residual        e=2.0 x=0.5 rf=0.01 min_mo=0.003% pos=64% t3=72% soft=False
+=== Confirm 10 frozen candidates ===
+  real_n2_z_vol                    2024           mo= 0.519% pos=  45% top3=  73% gates=True
+  real_n2_z_vol                    2025           mo= 0.352% pos=  55% top3=  69% gates=True
+  real_n2_z_vol                    2026           mo=-0.255% pos=  38% top3= 100% gates=False
+  real_n2_z_vol                    holdout_365d   mo=-0.564% pos=  42% top3=  93% gates=False
+  real_n3_z_vol                    2024           mo= 0.747% pos=  73% top3=  71% gates=True
+  real_n3_z_vol                    2025           mo= 0.575% pos=  73% top3=  58% gates=True
+  real_n3_z_vol                    2026           mo= 0.481% pos=  50% top3=  83% gates=True
+  real_n3_z_vol                    holdout_365d   mo= 0.296% pos=  50% top3=  59% gates=True
+  real_n2_z_vol                    2024           mo= 0.627% pos=  73% top3=  76% gates=True
+  real_n2_z_vol                    2025           mo= 0.416% pos=  64% top3=  64% gates=True
+  real_n2_z_vol                    2026           mo=-0.205% pos=  38% top3= 100% gates=False
+  real_n2_z_vol                    holdout_365d   mo=-0.382% pos=  42% top3=  79% gates=False
+  real_n2_z_vol                    2024           mo= 0.428% pos=  45% top3=  83% gates=True
+  real_n2_z_vol                    2025           mo= 0.714% pos=  64% top3=  61% gates=True
+  real_n2_z_vol                    2026           mo= 0.452% pos=  62% top3=  72% gates=False
+  real_n2_z_vol                    holdout_365d   mo= 0.201% pos=  67% top3=  52% gates=False
+  real_n2_z_vol                    2024           mo= 0.732% pos=  64% top3=  72% gates=True
+  real_n2_z_vol                    2025           mo= 0.516% pos=  64% top3=  64% gates=True
+  real_n2_z_vol                    2026           mo= 0.110% pos=  50% top3=  86% gates=False
+  real_n2_z_vol                    holdout_365d   mo=-0.051% pos=  50% top3=  61% gates=False
+  real_n3_z_vol                    2024           mo= 0.207% pos=  73% top3=  61% gates=True
+  real_n3_z_vol                    2025           mo= 0.107% pos=  73% top3=  60% gates=True
+  real_n3_z_vol                    2026           mo=-0.005% pos=  38% top3= 100% gates=True
+  real_n3_z_vol                    holdout_365d   mo=-0.049% pos=  42% top3=  77% gates=True
+  real_n3_z_vol                    2024           mo= 0.373% pos=  73% top3=  61% gates=True
+  real_n3_z_vol                    2025           mo= 0.194% pos=  73% top3=  60% gates=True
+  real_n3_z_vol                    2026           mo=-0.008% pos=  38% top3= 100% gates=True
+  real_n3_z_vol                    holdout_365d   mo=-0.087% pos=  42% top3=  77% gates=True
+  real_n4_z_vol                    2024           mo= 0.156% pos=  73% top3=  60% gates=True
+  real_n4_z_vol                    2025           mo= 0.080% pos=  73% top3=  60% gates=True
+  real_n4_z_vol                    2026           mo=-0.004% pos=  38% top3= 100% gates=True
+  real_n4_z_vol                    holdout_365d   mo=-0.037% pos=  42% top3=  77% gates=True
+  real_n4_z_vol                    2024           mo= 0.282% pos=  73% top3=  61% gates=True
+  real_n4_z_vol                    2025           mo= 0.146% pos=  73% top3=  60% gates=True
+  real_n4_z_vol                    2026           mo=-0.006% pos=  38% top3= 100% gates=True
+  real_n4_z_vol                    holdout_365d   mo=-0.066% pos=  42% top3=  77% gates=True
+  real_n3_unit_residual            2024           mo= 0.006% pos=  64% top3=  71% gates=True
+  real_n3_unit_residual            2025           mo= 0.003% pos=  82% top3=  51% gates=True
+  real_n3_unit_residual            2026           mo= 0.003% pos=  88% top3=  78% gates=True
+  real_n3_unit_residual            holdout_365d   mo= 0.001% pos=  83% top3=  55% gates=True
+=== Proxy reference (not promote-eligible) on best REAL pair set ===
+  PROXY 2024           mo= 1.370% pos=  91%
+  PROXY 2025           mo= 1.401% pos= 100%
+  PROXY 2026           mo= 1.329% pos= 100%
+  PROXY holdout_365d   mo= 1.361% pos= 100%
+{
+  "promote": false,
+  "proxy_illusory": true,
+  "best_confirm_min_mo": 0.0029596110700103595
+}
+Wrote reports/quest_pairs_real_*.csv/md and configs/quest_pairs_real_selected.json

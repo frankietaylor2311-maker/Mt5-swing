@@ -15,12 +15,15 @@ from mt5_swing.portfolio.equity_tsmom import (
 )
 from mt5_swing.portfolio.pairs_residual import (
     backtest_residual_equity,
+    backtest_two_leg_spread,
     combine_sleeve_curves,
+    diagnose_proxy_vs_residual,
     engle_granger_adf_stat,
     hedge_ratio_ols,
     per_leg_risk,
     residual_log,
     rolling_zscore,
+    zscore_position_series,
 )
 from mt5_swing.portfolio.smooth_select import WindowStats
 
@@ -119,3 +122,69 @@ def test_combine_sleeve_respects_max_gross():
     # Half gross → closer to flat cash path
     assert abs(float(half.iloc[-1]) - 100_000.0) < abs(float(full.iloc[-1]) - 100_000.0) or True
     assert len(half) == len(full)
+
+
+def test_diagnose_proxy_amplification_and_two_leg_costs():
+    idx = pd.date_range("2020-01-01", periods=400, freq="B", tz="UTC")
+    rng = np.random.default_rng(42)
+    x = pd.Series(np.exp(np.cumsum(rng.normal(0, 0.004, size=400))), index=idx, name="x")
+    y = pd.Series(
+        np.exp(0.8 * np.log(x.to_numpy()) + rng.normal(0, 0.0015, size=400)),
+        index=idx,
+        name="y",
+    )
+    beta = hedge_ratio_ols(y, x)
+    res = residual_log(y, x, beta)
+    z = rolling_zscore(res, 40)
+    diag = diagnose_proxy_vs_residual(z, res)
+    assert diag["amplification"] > 10  # residual sd ≪ 1 ⇒ Δz proxy inflated
+    from mt5_swing.portfolio.pairs_residual import backtest_two_leg_spread, zscore_position_series
+
+    pos = zscore_position_series(z.dropna(), entry=2.0, exit_z=0.3)
+    assert set(pos.unique()).issubset({-1, 0, 1})
+    eq_unit = backtest_two_leg_spread(
+        y, x, z, beta,
+        symbol_a="EURUSD",
+        symbol_b="GBPUSD",
+        risk_frac=0.01,
+        sizing="unit_residual",
+        residual_for_sd=res,
+        sd_win=40,
+    )
+    eq_z = backtest_two_leg_spread(
+        y, x, z, beta,
+        symbol_a="EURUSD",
+        symbol_b="GBPUSD",
+        risk_frac=0.01,
+        sizing="z_vol",
+        residual_for_sd=res,
+        sd_win=40,
+    )
+    assert len(eq_unit) > 50 and len(eq_z) > 50
+    # unit residual must not explode like the Δz proxy
+    assert float(eq_unit.iloc[-1] / eq_unit.iloc[0]) < 2.0
+
+
+def test_two_leg_signal_lag_no_lookahead():
+    from mt5_swing.portfolio.pairs_residual import backtest_two_leg_spread
+
+    idx = pd.date_range("2021-01-01", periods=250, freq="B", tz="UTC")
+    rng = np.random.default_rng(7)
+    b = pd.Series(np.exp(np.cumsum(rng.normal(0, 0.003, size=250))), index=idx)
+    a = pd.Series(np.exp(np.log(b.to_numpy()) + rng.normal(0, 0.001, size=250)), index=idx)
+    beta = hedge_ratio_ols(a, b)
+    res = residual_log(a, b, beta)
+    z = rolling_zscore(res, 30)
+    eq1 = backtest_two_leg_spread(
+        a, b, z, beta, symbol_a="EURUSD", symbol_b="GBPUSD", sizing="unit_residual", residual_for_sd=res, sd_win=30
+    )
+    # Perturb a future price far ahead — early equity must be unchanged (causality)
+    a2 = a.copy()
+    a2.iloc[200] *= 1.05
+    res2 = residual_log(a2, b, beta)
+    z2 = rolling_zscore(res2, 30)
+    eq2 = backtest_two_leg_spread(
+        a2, b, z2, beta, symbol_a="EURUSD", symbol_b="GBPUSD", sizing="unit_residual", residual_for_sd=res2, sd_win=30
+    )
+    n = min(len(eq1), len(eq2), 150)
+    assert np.allclose(eq1.iloc[:120].values, eq2.iloc[:120].values, rtol=1e-9, atol=1e-6)

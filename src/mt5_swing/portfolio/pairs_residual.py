@@ -169,3 +169,211 @@ def combine_sleeve_curves(
     # Idle cash earns 0 — residual weight (1-gross) stays in cash
     port = (norms * w).sum(axis=1) + (1.0 - gross)
     return port * float(initial)
+
+
+def zscore_position_series(
+    z: pd.Series,
+    *,
+    entry: float = 2.0,
+    exit_z: float = 0.30,
+) -> pd.Series:
+    """Causal MR position from z (+1 long residual, -1 short). No lag yet."""
+    if z is None or len(z) == 0:
+        return pd.Series(dtype=int)
+    sig = np.zeros(len(z), dtype=int)
+    last = 0
+    vals = z.to_numpy(dtype=float)
+    for i, zi in enumerate(vals):
+        if zi != zi:
+            last = 0
+        elif zi > float(entry):
+            last = -1
+        elif zi < -float(entry):
+            last = 1
+        elif abs(zi) < float(exit_z):
+            last = 0
+        sig[i] = last
+    return pd.Series(sig, index=z.index, name="pos_raw")
+
+
+def diagnose_proxy_vs_residual(
+    z: pd.Series,
+    residual: pd.Series,
+    *,
+    risk_frac: float = 0.01,
+) -> dict:
+    """Quantify Δz proxy amplification vs true log-residual returns.
+
+    Proxy maps ``pos * Δz * risk_frac``; true residual map is
+    ``pos * Δres * risk_frac``. Ratio mean|Δz|/mean|Δres| ≈ 1/sd(res).
+    """
+    both = pd.concat([z.rename("z"), residual.rename("res")], axis=1, sort=True).dropna()
+    if len(both) < 40:
+        return {"n": len(both), "amplification": float("nan")}
+    dz = both["z"].diff().abs()
+    dr = both["res"].diff().abs()
+    mean_dz = float(dz.mean())
+    mean_dr = float(dr.mean())
+    amp = mean_dz / mean_dr if mean_dr > 1e-18 else float("inf")
+    sd = float(both["res"].std())
+    return {
+        "n": int(len(both)),
+        "mean_abs_dz": mean_dz,
+        "mean_abs_dres": mean_dr,
+        "amplification": amp,
+        "residual_sd": sd,
+        "implied_proxy_vs_unit_notional": amp,
+        "note": (
+            "Δz proxy ≈ true_residual_pnl * (1/rolling_sd); "
+            f"amplification≈{amp:.1f}x vs unit-notional residual map at risk_frac={risk_frac}"
+        ),
+    }
+
+
+def _round_lot(x: float, *, min_lot: float = 0.01, max_lot: float = 50.0) -> float:
+    if x <= 0 or x != x:
+        return 0.0
+    stepped = max(float(min_lot), min(float(max_lot), round(x / float(min_lot)) * float(min_lot)))
+    return float(stepped)
+
+
+def backtest_two_leg_spread(
+    close_a: pd.Series,
+    close_b: pd.Series,
+    z: pd.Series,
+    beta: float,
+    *,
+    symbol_a: str,
+    symbol_b: str,
+    entry: float = 2.0,
+    exit_z: float = 0.30,
+    risk_frac: float = 0.01,
+    initial: float = 100_000.0,
+    spread_pips_a: float = 1.2,
+    spread_pips_b: float = 1.4,
+    commission_per_lot: float = 7.0,
+    slippage_pips: float = 0.5,
+    max_lot: float = 50.0,
+    min_lot: float = 0.01,
+    sizing: str = "z_vol",  # z_vol | unit_residual
+    max_abs_bar_ret: float = 0.02,
+    residual_for_sd: pd.Series | None = None,
+    sd_win: int = 40,
+) -> pd.Series:
+    """Real two-leg FX spread MR with both legs, spreads, commission, slippage.
+
+    Positions follow lagged z (signal_lag=1). Exits are z-exit only (no ATR
+    stops — those fought MR in the prior negative two-leg basket).
+
+    Sizing modes:
+    - ``z_vol``: dollar notional on A = risk_frac * equity / rolling_sd(residual)
+      so 1σ residual move ≈ risk_frac equity (matches Δz-proxy economics).
+    - ``unit_residual``: notional_A = risk_frac * equity (true log-residual map;
+      exposes proxy amplification as illusory when sd ≪ 1).
+
+    Hedge: lots_b sized so |dollar log-exposure_B| = |beta| * dollar log-exposure_A.
+    """
+    from mt5_swing.data.symbols import get_symbol_meta, pip_value_per_lot
+
+    if close_a is None or close_b is None or z is None or len(z) < 40:
+        return pd.Series(dtype=float)
+
+    both = pd.concat(
+        [close_a.rename("a"), close_b.rename("b"), z.rename("z")],
+        axis=1,
+        sort=True,
+    ).dropna()
+    if len(both) < 40:
+        return pd.Series(dtype=float)
+
+    if residual_for_sd is None:
+        residual_for_sd = residual_log(both["a"], both["b"], float(beta))
+    sd_series = (
+        residual_for_sd.reindex(both.index)
+        .rolling(int(sd_win), min_periods=int(sd_win))
+        .std(ddof=0)
+        .replace(0, np.nan)
+    )
+
+    raw = zscore_position_series(both["z"], entry=entry, exit_z=exit_z)
+    pos = raw.shift(1).fillna(0).astype(int)
+
+    meta_a = get_symbol_meta(symbol_a)
+    meta_b = get_symbol_meta(symbol_b)
+    pip_a = meta_a.pip_size
+    pip_b = meta_b.pip_size
+
+    eq = float(initial)
+    curve = np.empty(len(both), dtype=float)
+    lots_a = 0.0
+    lots_b = 0.0
+    dir_a = 0
+    dir_b = 0
+    prev_pos = 0
+    pa = both["a"].to_numpy(dtype=float)
+    pb = both["b"].to_numpy(dtype=float)
+    pos_arr = pos.to_numpy(dtype=int)
+    sds = sd_series.to_numpy(dtype=float)
+
+    def _leg_pnl_usd(direction: int, lots: float, d_px: float, px: float, sym: str, meta, pip: float) -> float:
+        if direction == 0 or lots <= 0:
+            return 0.0
+        pv = pip_value_per_lot(sym, float(px) if px > 0 else None)
+        return float(direction * lots * (d_px / pip) * pv)
+
+    def _turn_cost(lots: float, spread_pips: float, px: float, sym: str) -> float:
+        if lots <= 0:
+            return 0.0
+        pv = pip_value_per_lot(sym, float(px) if px > 0 else None)
+        spread_slip = (0.5 * float(spread_pips) + float(slippage_pips)) * pv * lots
+        comm = 0.5 * float(commission_per_lot) * lots
+        return float(spread_slip + comm)
+
+    for i in range(len(both)):
+        if i > 0 and dir_a != 0 and lots_a > 0:
+            d_a = pa[i] - pa[i - 1]
+            d_b = pb[i] - pb[i - 1]
+            pnl = _leg_pnl_usd(dir_a, lots_a, d_a, pa[i], symbol_a, meta_a, pip_a)
+            pnl += _leg_pnl_usd(dir_b, lots_b, d_b, pb[i], symbol_b, meta_b, pip_b)
+            r = pnl / eq if eq > 0 else 0.0
+            r = max(-float(max_abs_bar_ret), min(float(max_abs_bar_ret), r))
+            eq *= 1.0 + r
+
+        target = int(pos_arr[i])
+        if target != prev_pos:
+            if prev_pos != 0 and lots_a > 0:
+                eq -= _turn_cost(lots_a, spread_pips_a, pa[i], symbol_a)
+                eq -= _turn_cost(lots_b, spread_pips_b, pb[i], symbol_b)
+                lots_a = lots_b = 0.0
+                dir_a = dir_b = 0
+            if target != 0 and eq > 0 and pa[i] > 0 and pb[i] > 0:
+                sd = sds[i]
+                if sizing == "unit_residual":
+                    notional = float(risk_frac) * eq
+                else:
+                    if sd != sd or sd < 1e-8:
+                        notional = 0.0
+                    else:
+                        notional = float(risk_frac) * eq / float(sd)
+                if notional > 0:
+                    la = notional / (meta_a.contract_size * pa[i])
+                    lb = abs(float(beta)) * notional / (meta_b.contract_size * pb[i])
+                    la = _round_lot(la, min_lot=min_lot, max_lot=max_lot)
+                    lb = _round_lot(lb, min_lot=min_lot, max_lot=max_lot)
+                    if la > 0 and lb > 0:
+                        dir_a = 1 if target > 0 else -1
+                        dir_b = -1 if target > 0 else 1
+                        lots_a, lots_b = la, lb
+                        eq -= _turn_cost(lots_a, spread_pips_a, pa[i], symbol_a)
+                        eq -= _turn_cost(lots_b, spread_pips_b, pb[i], symbol_b)
+            if target == 0:
+                prev_pos = 0
+            elif lots_a > 0:
+                prev_pos = target
+            else:
+                prev_pos = 0
+                dir_a = dir_b = 0
+
+        curve[i] = max(eq, 1.0)
+
+    return pd.Series(curve, index=both.index, name="equity")

@@ -1,0 +1,569 @@
+{
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "data_source": "approximate_non_ftmo",
+  "rf": 0.08,
+  "promote": false,
+  "proxy_illusory": true,
+  "diagnosis": [
+    {
+      "mode": "proxy",
+      "sizing": "z_vol",
+      "mean_mo": 0.012797376538977522,
+      "pct_pos": 0.8181818181818182,
+      "amplification": NaN,
+      "pair": "EURAUD/AUDUSD"
+    },
+    {
+      "mode": "real",
+      "sizing": "z_vol",
+      "mean_mo": 0.008875945563031678,
+      "pct_pos": 0.45454545454545453,
+      "amplification": 181.4940500727301,
+      "pair": "EURAUD/AUDUSD"
+    },
+    {
+      "mode": "real",
+      "sizing": "unit_residual",
+      "mean_mo": 0.00012725072230766111,
+      "pct_pos": 0.5454545454545454,
+      "amplification": 181.4940500727301,
+      "pair": "EURAUD/AUDUSD"
+    }
+  ],
+  "n_candidates": 1080,
+  "n_soft": 0,
+  "n_hard": 0,
+  "best_is": {
+    "idea": "real_n3_z_vol",
+    "params": "{\"betas_2024\": {\"AUDUSD/NZDUSD\": 0.7150032270701753, \"EURAUD/AUDUSD\": -0.31093367860651805, \"GBPCAD/USDCAD\": 0.7854865692584787}, \"entry\": 2.25, \"exit_z\": 0.3, \"nested\": \"opt2024_val2025\", \"pairs\": [\"EURAUD/AUDUSD:w40\", \"AUDUSD/NZDUSD:w40\", \"GBPCAD/USDCAD:w40\"], \"risk_frac\": 0.005, \"sizing\": \"z_vol\", \"sleeve_budget\": 0.55}",
+    "score": -Infinity,
+    "min_mean_mo": 0.0009385564216655429,
+    "soft_pass": false,
+    "sizing": "z_vol"
+  },
+  "best_real_confirm": {
+    "idea": "real_n3_z_vol",
+    "params": "{\"betas_2024\": {\"AUDUSD/NZDUSD\": 0.7150032270701753, \"EURAUD/AUDUSD\": -0.31093367860651805, \"GBPCAD/USDCAD\": 0.7854865692584787}, \"entry\": 2.0, \"exit_z\": 0.3, \"nested\": \"opt2024_val2025\", \"pairs\": [\"EURAUD/AUDUSD:w40\", \"AUDUSD/NZDUSD:w40\", \"GBPCAD/USDCAD:w40\"], \"risk_frac\": 0.01, \"sizing\": \"z_vol\", \"sleeve_budget\": 1.0}",
+    "sizing": "z_vol",
+    "promote": false,
+    "reason": [
+      "is_soft_fail",
+      "holdout_fail",
+      "years_fail"
+    ],
+    "year_map": {
+      "2024": {
+        "mean_mo": 0.007467929093459633,
+        "pct_pos": 0.7272727272727273,
+        "top3": 0.7095221674204638,
+        "gates": true,
+        "p2t": 0.035808441691593265
+      },
+      "2025": {
+        "mean_mo": 0.00574696852833119,
+        "pct_pos": 0.7272727272727273,
+        "top3": 0.5841974148325833,
+        "gates": true,
+        "p2t": 0.027438120145682657
+      },
+      "2026": {
+        "mean_mo": 0.004808434996144514,
+        "pct_pos": 0.5,
+        "top3": 0.8253609003536438,
+        "gates": true,
+        "p2t": 0.0942830749886801
+      }
+    },
+    "holdout": {
+      "mean_mo": 0.0029596110700103595,
+      "pct_pos": 0.5,
+      "top3": 0.5907157464367028,
+      "gates": true,
+      "p2t": 0.0943118255852865
+    },
+    "confirm_min_mo": 0.0029596110700103595
+  },
+  "proxy_ref": {
+    "idea": "proxy_ref",
+    "windows": {
+      "2024": {
+        "idea": "proxy_ref",
+        "params": "{\"betas_2024\": {\"AUDUSD/NZDUSD\": 0.7150032270701753, \"EURAUD/AUDUSD\": -0.31093367860651805, \"GBPCAD/USDCAD\": 0.7854865692584787}, \"entry\": 2.0, \"exit_z\": 0.3, \"nested\": \"opt2024_val2025\", \"pairs\": [\"EURAUD/AUDUSD:w40\", \"AUDUSD/NZDUSD:w40\", \"GBPCAD/USDCAD:w40\"], \"risk_frac\": 0.01, \"sizing\": \"z_vol\", \"sleeve_budget\": 1.0}",
+        "window": "2024",
+        "ret": 0.16934207164154857,
+        "mean_mo": 0.013696782184148432,
+        "pct_pos": 0.9090909090909091,
+        "top3": 0.44384152413702666,
+        "gates": true,
+        "p2t": 0.006757505870267819,
+        "n_months": 11,
+        "role": "proxy_ref",
+        "sizing": "proxy"
+      },
+      "2025": {
+        "idea": "proxy_ref",
+        "params": "{\"betas_2024\": {\"AUDUSD/NZDUSD\": 0.7150032270701753, \"EURAUD/AUDUSD\": -0.31093367860651805, \"GBPCAD/USDCAD\": 0.7854865692584787}, \"entry\": 2.0, \"exit_z\": 0.3, \"nested\": \"opt2024_val2025\", \"pairs\": [\"EURAUD/AUDUSD:w40\", \"AUDUSD/NZDUSD:w40\", \"GBPCAD/USDCAD:w40\"], \"risk_frac\": 0.01, \"sizing\": \"z_vol\", \"sleeve_budget\": 1.0}",
+        "window": "2025",
+        "ret": 0.1774021720112513,
+        "mean_mo": 0.014007042445851521,
+        "pct_pos": 1.0,
+        "top3": 0.5384232228098278,
+        "gates": true,
+        "p2t": 0.00863080052631994,
+        "n_months": 11,
+        "role": "proxy_ref",
+        "sizing": "proxy"
+      },
+      "2026": {
+        "idea": "proxy_ref",
+        "params": "{\"betas_2024\": {\"AUDUSD/NZDUSD\": 0.7150032270701753, \"EURAUD/AUDUSD\": -0.31093367860651805, \"GBPCAD/USDCAD\": 0.7854865692584787}, \"entry\": 2.0, \"exit_z\": 0.3, \"nested\": \"opt2024_val2025\", \"pairs\": [\"EURAUD/AUDUSD:w40\", \"AUDUSD/NZDUSD:w40\", \"GBPCAD/USDCAD:w40\"], \"risk_frac\": 0.01, \"sizing\": \"z_vol\", \"sleeve_budget\": 1.0}",
+        "window": "2026",
+        "ret": 0.11893395465969014,
+        "mean_mo": 0.013288912077653564,
+        "pct_pos": 1.0,
+        "top3": 0.6433131746560267,
+        "gates": true,
+        "p2t": 0.009068116651780422,
+        "n_months": 8,
+        "role": "proxy_ref",
+        "sizing": "proxy"
+      },
+      "holdout_365d": {
+        "idea": "proxy_ref",
+        "params": "{\"betas_2024\": {\"AUDUSD/NZDUSD\": 0.7150032270701753, \"EURAUD/AUDUSD\": -0.31093367860651805, \"GBPCAD/USDCAD\": 0.7854865692584787}, \"entry\": 2.0, \"exit_z\": 0.3, \"nested\": \"opt2024_val2025\", \"pairs\": [\"EURAUD/AUDUSD:w40\", \"AUDUSD/NZDUSD:w40\", \"GBPCAD/USDCAD:w40\"], \"risk_frac\": 0.01, \"sizing\": \"z_vol\", \"sleeve_budget\": 1.0}",
+        "window": "holdout_365d",
+        "ret": 0.1762491614849795,
+        "mean_mo": 0.013605391017082321,
+        "pct_pos": 1.0,
+        "top3": 0.46193746377279166,
+        "gates": true,
+        "p2t": 0.00905014201326717,
+        "n_months": 12,
+        "role": "proxy_ref",
+        "sizing": "proxy"
+      }
+    }
+  },
+  "promote_results": [
+    {
+      "idea": "real_n2_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.005191092146462184,
+          "pct_pos": 0.45454545454545453,
+          "top3": 0.7300212758260932,
+          "gates": true,
+          "p2t": 0.0564171908555716
+        },
+        "2025": {
+          "mean_mo": 0.00351600678669526,
+          "pct_pos": 0.5454545454545454,
+          "top3": 0.6875694479879139,
+          "gates": true,
+          "p2t": 0.04437407449520535
+        },
+        "2026": {
+          "mean_mo": -0.002553471243204389,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": false,
+          "p2t": 0.14393763526245953
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.005640579576400795,
+        "pct_pos": 0.4166666666666667,
+        "top3": 0.9303091541999257,
+        "gates": false,
+        "p2t": 0.1458438784708317
+      },
+      "is_min_mo": 0.005102639853347676,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n3_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.007467929093459633,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.7095221674204638,
+          "gates": true,
+          "p2t": 0.035808441691593265
+        },
+        "2025": {
+          "mean_mo": 0.00574696852833119,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.5841974148325833,
+          "gates": true,
+          "p2t": 0.027438120145682657
+        },
+        "2026": {
+          "mean_mo": 0.004808434996144514,
+          "pct_pos": 0.5,
+          "top3": 0.8253609003536438,
+          "gates": true,
+          "p2t": 0.0942830749886801
+        }
+      },
+      "holdout": {
+        "mean_mo": 0.0029596110700103595,
+        "pct_pos": 0.5,
+        "top3": 0.5907157464367028,
+        "gates": true,
+        "p2t": 0.0943118255852865
+      },
+      "is_min_mo": 0.00476057632561705,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n2_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.0062708856531451225,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.7551739793351476,
+          "gates": true,
+          "p2t": 0.05290681892200096
+        },
+        "2025": {
+          "mean_mo": 0.004159859410987388,
+          "pct_pos": 0.6363636363636364,
+          "top3": 0.641956033203296,
+          "gates": true,
+          "p2t": 0.04427932440827228
+        },
+        "2026": {
+          "mean_mo": -0.002054293357571388,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": false,
+          "p2t": 0.14441537941947874
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.0038212097799093145,
+        "pct_pos": 0.4166666666666667,
+        "top3": 0.7915519508856901,
+        "gates": false,
+        "p2t": 0.14457411710385193
+      },
+      "is_min_mo": 0.00433248711607942,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n2_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.00428367270832393,
+          "pct_pos": 0.45454545454545453,
+          "top3": 0.8265221344357659,
+          "gates": true,
+          "p2t": 0.058759143338722
+        },
+        "2025": {
+          "mean_mo": 0.007137098028287467,
+          "pct_pos": 0.6363636363636364,
+          "top3": 0.6132250139436466,
+          "gates": true,
+          "p2t": 0.06027513746944505
+        },
+        "2026": {
+          "mean_mo": 0.0045209966900781745,
+          "pct_pos": 0.625,
+          "top3": 0.7180079333905484,
+          "gates": false,
+          "p2t": 0.15303560456620108
+        }
+      },
+      "holdout": {
+        "mean_mo": 0.002008660353536418,
+        "pct_pos": 0.6666666666666666,
+        "top3": 0.5199067414190353,
+        "gates": false,
+        "p2t": 0.16013664150545748
+      },
+      "is_min_mo": 0.004270762319438112,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n2_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.007324876089986837,
+          "pct_pos": 0.6363636363636364,
+          "top3": 0.7177140562560838,
+          "gates": true,
+          "p2t": 0.057097204045790016
+        },
+        "2025": {
+          "mean_mo": 0.0051623211714648875,
+          "pct_pos": 0.6363636363636364,
+          "top3": 0.6384111543296003,
+          "gates": true,
+          "p2t": 0.044254109254144906
+        },
+        "2026": {
+          "mean_mo": 0.0011013032851997784,
+          "pct_pos": 0.5,
+          "top3": 0.8602391251601541,
+          "gates": false,
+          "p2t": 0.14441537941947874
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.0005055311668343276,
+        "pct_pos": 0.5,
+        "top3": 0.6051844100072814,
+        "gates": false,
+        "p2t": 0.1445859809857522
+      },
+      "is_min_mo": 0.004103115286114706,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n3_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.002066684592163112,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6054767690153904,
+          "gates": true,
+          "p2t": 0.00824060683885377
+        },
+        "2025": {
+          "mean_mo": 0.0010700811839797662,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6033223773313494,
+          "gates": true,
+          "p2t": 0.011291484154652507
+        },
+        "2026": {
+          "mean_mo": -5.045179006252232e-05,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": true,
+          "p2t": 0.032410744991892976
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.00048791206597058784,
+        "pct_pos": 0.4166666666666667,
+        "top3": 0.7688407634007779,
+        "gates": true,
+        "p2t": 0.032616485666872745
+      },
+      "is_min_mo": 0.0009385564216655429,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n3_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.00373496227496085,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.606325479564121,
+          "gates": true,
+          "p2t": 0.014856665420217623
+        },
+        "2025": {
+          "mean_mo": 0.0019446733434635786,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6034505904289856,
+          "gates": true,
+          "p2t": 0.02043134377761918
+        },
+        "2026": {
+          "mean_mo": -7.707088559728847e-05,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": true,
+          "p2t": 0.058872662637055435
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.0008679363296114998,
+        "pct_pos": 0.4166666666666667,
+        "top3": 0.7673665285545122,
+        "gates": true,
+        "p2t": 0.05903500762569607
+      },
+      "is_min_mo": 0.0017068179704030767,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n4_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.0015573870238281577,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6048766063861708,
+          "gates": true,
+          "p2t": 0.006178985617016299
+        },
+        "2025": {
+          "mean_mo": 0.0008045710978401566,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6035421850674659,
+          "gates": true,
+          "p2t": 0.00848134490386244
+        },
+        "2026": {
+          "mean_mo": -3.910464698822502e-05,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": true,
+          "p2t": 0.02431588993936851
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.0003663072968303667,
+        "pct_pos": 0.4166666666666667,
+        "top3": 0.7693450765652725,
+        "gates": true,
+        "p2t": 0.024496734777211725
+      },
+      "is_min_mo": 0.0007047846983955497,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n4_z_vol",
+      "sizing": "z_vol",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 0.0028186617467035628,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6052376662120862,
+          "gates": true,
+          "p2t": 0.011163163537194458
+        },
+        "2025": {
+          "mean_mo": 0.0014623226247197313,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6036376444382109,
+          "gates": true,
+          "p2t": 0.015364777625049775
+        },
+        "2026": {
+          "mean_mo": -6.30272093881945e-05,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": true,
+          "p2t": 0.04417882605254343
+        }
+      },
+      "holdout": {
+        "mean_mo": -0.0006552856497389717,
+        "pct_pos": 0.4166666666666667,
+        "top3": 0.7682490003003721,
+        "gates": true,
+        "p2t": 0.04438748342168624
+      },
+      "is_min_mo": 0.0012816259486197468,
+      "is_soft": false
+    },
+    {
+      "idea": "real_n3_unit_residual",
+      "sizing": "unit_residual",
+      "promote": false,
+      "reason": [
+        "is_soft_fail",
+        "holdout_fail",
+        "years_fail"
+      ],
+      "year_map": {
+        "2024": {
+          "mean_mo": 5.5775536811312904e-05,
+          "pct_pos": 0.6363636363636364,
+          "top3": 0.7079760768361404,
+          "gates": true,
+          "p2t": 0.00024050329999098663
+        },
+        "2025": {
+          "mean_mo": 2.9852849264044856e-05,
+          "pct_pos": 0.8181818181818182,
+          "top3": 0.5140466478495648,
+          "gates": true,
+          "p2t": 0.0006990232402850704
+        },
+        "2026": {
+          "mean_mo": 2.8775727810612106e-05,
+          "pct_pos": 0.875,
+          "top3": 0.7823976846274489,
+          "gates": true,
+          "p2t": 0.0006693524907473634
+        }
+      },
+      "holdout": {
+        "mean_mo": 1.2080557587788402e-05,
+        "pct_pos": 0.8333333333333334,
+        "top3": 0.5476821981283309,
+        "gates": true,
+        "p2t": 0.0006694068236710803
+      },
+      "is_min_mo": 9.425972037221952e-06,
+      "is_soft": false
+    }
+  ]
+}

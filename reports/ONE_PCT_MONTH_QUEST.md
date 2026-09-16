@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-16 19:05 BST Europe/London (wave: **equity-curve TSMOM + monthly-budget VT + pairs residual**).
+Session: 2026-09-16 18:14 BST Europe/London (wave: **real two-leg pairs vs Δz proxy**).
 
 ## Scoring rubric this wave (primary)
 
@@ -26,7 +26,7 @@ Session: 2026-09-16 19:05 BST Europe/London (wave: **equity-curve TSMOM + monthl
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. New structure (equity TSMOM / monthly-budget VT / pairs residual / D1 expand) — **204** candidates, **118** soft IS passers, **0** hard top3≤55% passers. Closest pairs Δz proxies reach ~1%/mo IS with high %pos but **holdout or 2026 dips just under 1%**; equity-TSMOM overlays **crush mean**. Prior real two-leg pairs (ATR/spreads) already negative — Δz proxy **not** promote-eligible. **Target not met on `approximate_non_ftmo`.**
+**Verdict:** Official locked tag **unchanged**. This wave replaced the Δz proxy with **real two-leg** fills (both legs, spreads, commission, slippage, z-exits only, nested IS). **1080** real candidates, **0** soft / **0** hard IS passers. Best REAL confirm_min_mo **0.30%** (pairs_n3 z_vol). Δz proxy on the same sleeve still prints ~1.3–1.4%/mo — **proxy was illusory (~180× amplification vs unit-notional residual)**. **Promote: NO. Stop promoting pairs on proxy.** Target not met on `approximate_non_ftmo`.
 
 ## Locked candidate (unchanged — still official)
 
@@ -42,6 +42,53 @@ Verified this wave (`RF=0.08`, `PORT_VOL_TARGET=0.0025`, weights oos_sharpe; **G
 | 2026 YTD | +20.0%+ | **2.30%** | 88% | 87% | PASS | ~6% |
 | holdout_365d | +21.5%+ | **1.52%** | 75% | 81% | PASS | ~7% |
 | roll12_m6 | +16.4%+ | **1.13%** | 67% | 80% | PASS | ~4% |
+
+
+## Wave: real two-leg pairs vs Δz proxy (this)
+
+Scripts/helpers:
+- `scripts/quest_pairs_real_two_leg_wf.py`
+- `src/mt5_swing/portfolio/pairs_residual.py` — `backtest_two_leg_spread`, `diagnose_proxy_vs_residual`
+- Prior ATR/independent-leg basket (`pairs_two_leg_basket.py`) diagnosed as **bug+edge-death**: ATR stops fought z-exits; legs sized independently (hedge broken). Fixed path uses z-exit only + beta hedge lots.
+
+### Nested IS (no HO/2026 peek)
+
+1. Fit OLS beta on **2024 only**
+2. Optimize knobs on 2024, validate on **2025_IS**
+3. Score = `min(2024, 2025_IS mean_mo)` with %pos / top3; freeze; confirm HO+2026 only after
+
+Knobs tried (IS-safe): entry z ∈ {1.5…2.5}, exit z ∈ {0.2,0.3,0.5}, risk_frac ≤ RF/n (≤1%), max pairs 2–4, sleeve 0.55/1.0, win 40/60, sizing `z_vol` | `unit_residual`.
+
+### Diagnosis
+
+| Mode | Sizing | 2024 mean_mo | Notes |
+|------|--------|-------------:|-------|
+| Δz proxy | z_vol map | ~1.28% | Research only — **not tradable** |
+| Real two-leg | z_vol (match proxy economics) | ~0.89% single-pair | Costs eat most of proxy edge |
+| Real two-leg | unit_residual | ~0.01% | Honest notional; amp≈**180×** shows proxy illusion |
+
+### Board
+
+| Family | N | Soft IS | Hard IS | Best IS min_mo |
+|--------|--:|--------:|--------:|---------------:|
+| real two-leg (nested) | **1080** | **0** | **0** | **0.51%** (n2 z_vol) |
+
+### Best REAL candidate (confirm — promote gate)
+
+`real_n3_z_vol` entry=2.0 exit=0.3 risk=… sleeve=1.0 (EURAUD/AUDUSD, AUDUSD/NZDUSD, GBPCAD/USDCAD; betas frozen on 2024)
+
+| Window | Mean mo | %pos | Top3 | Gates |
+|--------|--------:|-----:|-----:|:-----:|
+| 2024 | **0.75%** | 73% | 71% | PASS |
+| 2025 | **0.58%** | 73% | 58% | PASS |
+| 2026 | **0.48%** | 50% | 83% | PASS |
+| holdout_365d | **0.30%** | 50% | 59% | PASS |
+
+Proxy reference on **same** frozen sleeve (not eligible): ~1.33–1.40%/mo all windows — proves gap is fills/costs/sizing, not window luck.
+
+**Promote?** **No** — confirm_min_mo **0.30%** ≪ 1%; 2026/HO %pos fail; 0 soft IS passers. **Pairs proxy path closed.**
+
+Details: `reports/quest_pairs_real_two_leg.md`, `reports/quest_pairs_real_board.csv`, `reports/quest_pairs_real_promote.csv`, `reports/quest_pairs_proxy_diagnosis.csv`, `configs/quest_pairs_real_selected.json`.
 
 ## Wave: equity TSMOM + monthly-budget VT + pairs residual (new)
 
@@ -119,12 +166,14 @@ Details: `reports/quest_equity_tsmom_pairs_wf.md`, `reports/quest_equity_tsmom_p
 | **Pairs residual Δz + hard caps (this wave)** | IS ~1.0%+ / high %pos; HO or 2026 &lt;1%; proxy≠real fills — **rejected** |
 | **Blend lock+pairs (this wave)** | IS min &lt;1% — **rejected** |
 | **D1 yfinance expand (this wave)** | ~15y D1 for pairs; H4 still capped; locked GBPCAD preserved |
+| **Real two-leg z-exit + beta hedge (this wave)** | 1080 nested-IS cands; best confirm_min **0.30%**; proxy ~1.3% on same sleeve — **proxy illusory; stop promoting pairs** |
+| **Prior ATR two-leg (re-diagnosed)** | Negative: ATR exits fought MR + independent leg sizing broke hedge — design bug, not sole cause of death |
 
 ## Gap remaining / irreducible Yahoo limits
 
 1. **2024 mean still ~0.4%/mo** on official locked; diversifiers / overlays that lift 2024 either hurt HO %pos or cut mean below 1%.
 2. **Burstiness** — locked HO top3 ~81%; hard top3≤55% on both IS years: **zero** passers this wave (204-grid) and prior smooth 528-grid.
-3. **Pairs:** realistic two-leg negative; Δz proxy near-miss on HO/2026 — not a promote path.
+3. **Pairs:** Δz proxy **illusory** (~180× vs unit-notional); real two-leg best confirm_min **0.30%/mo** — **stop promoting pairs** until FTMO fills prove otherwise.
 4. **No dual-confirm metals**; **no index history** (US30/NAS100/SPX) in repo.
 5. **No FTMO MT5 exports** — all `approximate_non_ftmo`. Spreads/swap/sessions/Yahoo FX ≠ FTMO CFD book.
 6. **H4 Yahoo ~730d** — cannot add more H4 years via yfinance.
@@ -132,6 +181,6 @@ Details: `reports/quest_equity_tsmom_pairs_wf.md`, `reports/quest_equity_tsmom_p
 
 ## Process / tests
 
-- pytest: `tests/test_equity_tsmom_pairs.py` (+ smooth_select / month_equity / lookahead) — 19 passed.
-- `signal_lag=1`; IS grids only (`2024`, `2025_IS`); holdout confirmation.
-- RF forced to **8%**; overlay/pair caps `hi≤1` / RF/n; no leverage hike.
+- pytest: `tests/test_equity_tsmom_pairs.py` (+ two-leg / proxy diagnosis / lookahead) — see CI log this wave.
+- `signal_lag=1`; nested IS (`optimize 2024 → validate 2025_IS`); holdout/2026 confirmation only.
+- RF forced to **8%**; pair risk_frac ≤ RF/n ≤1%; no leverage hike; FTMO gates on confirm.
