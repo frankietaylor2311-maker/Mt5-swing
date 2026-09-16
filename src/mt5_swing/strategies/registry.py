@@ -15,6 +15,11 @@ from mt5_swing.strategies.stoch_reversion import StochReversion
 from mt5_swing.strategies.atr_channel import AtrChannelBreakout
 from mt5_swing.strategies.cci_reversion import CciReversion
 from mt5_swing.strategies.willr_reversion import WillrReversion
+from mt5_swing.strategies.tsmom import TsMom
+from mt5_swing.strategies.vol_breakout import VolBreakout
+from mt5_swing.strategies.carry_proxy import CarryProxy
+from mt5_swing.strategies.kalman_trend import KalmanTrend
+from mt5_swing.strategies.session_orb import SessionORB
 from mt5_swing.strategies.mean_reversion import MeanReversionRegime
 from mt5_swing.strategies.trend_ma_adx import TrendMAADX
 
@@ -32,6 +37,11 @@ _REGISTRY = {
     AtrChannelBreakout.name: AtrChannelBreakout,
     CciReversion.name: CciReversion,
     WillrReversion.name: WillrReversion,
+    TsMom.name: TsMom,
+    VolBreakout.name: VolBreakout,
+    CarryProxy.name: CarryProxy,
+    KalmanTrend.name: KalmanTrend,
+    SessionORB.name: SessionORB,
 }
 
 

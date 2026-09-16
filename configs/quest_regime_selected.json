@@ -1,0 +1,280 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "selected": {
+    "regime_sleeves": {
+      "thresh": 18.0,
+      "w_tr_hi": 0.85,
+      "w_tr_lo": 0.15
+    },
+    "corr_throttle": {
+      "look": 90,
+      "corr0": 0.45,
+      "k": 3.0,
+      "overlay": "vt0025"
+    },
+    "hotstreak": {
+      "base": "vt0025",
+      "look": 12,
+      "hot": 0.02,
+      "cool": 0.55,
+      "heat": 1.45
+    },
+    "roll_is_sharpe": {
+      "look": 120,
+      "overlay": "raw"
+    },
+    "adx_tilt": {
+      "thresh": 25,
+      "boost": 1.25
+    }
+  },
+  "risk_fraction": 0.08,
+  "mr_legs": [
+    {
+      "symbol": "USDCHF",
+      "timeframe": "H4",
+      "strategy": "bbands_reversion",
+      "params": {
+        "adx_max": 22,
+        "require_htf_align": false,
+        "require_rsi": false,
+        "rsi_high": 60,
+        "rsi_low": 35,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": false,
+      "oos_sharpe": 1.4388105975417105,
+      "weight": 0.23861184469463162
+    },
+    {
+      "symbol": "CADJPY",
+      "timeframe": "H4",
+      "strategy": "mean_reversion_regime",
+      "params": {
+        "adx_max": 25,
+        "rsi_high": 65,
+        "rsi_low": 35,
+        "session_hours": "7-20"
+      },
+      "exits": {
+        "max_hold_bars": 16
+      },
+      "vol_target": true,
+      "oos_sharpe": 1.7487450694017543,
+      "weight": 0.29001126876847155
+    },
+    {
+      "symbol": "AUDCAD",
+      "timeframe": "H4",
+      "strategy": "mean_reversion_regime",
+      "params": {
+        "adx_max": 30,
+        "rsi_high": 70,
+        "rsi_low": 30,
+        "session_hours": "7-20"
+      },
+      "exits": {
+        "atr_target_mult": 5.0,
+        "atr_stop_mult": 1.5,
+        "max_hold_bars": 24
+      },
+      "vol_target": false,
+      "oos_sharpe": 1.6442368784001269,
+      "weight": 0.2726796670390964
+    },
+    {
+      "symbol": "EURCHF",
+      "timeframe": "H4",
+      "strategy": "cci_reversion",
+      "params": {
+        "adx_max": 28,
+        "cci_high": 120,
+        "cci_low": -100,
+        "exit_level": 0,
+        "require_htf_align": false,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 1.198128556783831,
+      "oos_return": 0.0013996548738189,
+      "oos_trades": 38,
+      "weight": 0.19869721949780036
+    }
+  ],
+  "tr_legs": [
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "H4",
+      "strategy": "breakout_donchian",
+      "params": {
+        "adx_min": 15,
+        "atr_pct_min": 0.15,
+        "donchian_window": 30,
+        "session_hours": null,
+        "use_mid_exit": false
+      },
+      "exits": {
+        "atr_trail_mult": 0.0,
+        "atr_target_mult": 5.0,
+        "atr_stop_mult": 1.5,
+        "max_hold_bars": 24
+      },
+      "vol_target": true,
+      "oos_sharpe": 0.4337304658948822,
+      "weight": 0.0957595457477311
+    },
+    {
+      "symbol": "GBPJPY",
+      "timeframe": "H4",
+      "strategy": "squeeze_breakout",
+      "params": {
+        "adx_min": 18,
+        "exit_bars": 16,
+        "lookback": 40,
+        "session_hours": null,
+        "squeeze_pct": 0.2
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 1.443692549661263,
+      "oos_return": 0.0054978159361414,
+      "oos_trades": 63,
+      "weight": 0.3187402168526744
+    },
+    {
+      "symbol": "EURJPY",
+      "timeframe": "H4",
+      "strategy": "breakout_donchian",
+      "params": {
+        "adx_min": 22,
+        "atr_pct_min": 0.1,
+        "donchian_window": 20,
+        "session_hours": null,
+        "use_mid_exit": false
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 0.683149628552607,
+      "oos_return": 0.0029946810463655,
+      "oos_trades": 60,
+      "weight": 0.1508266152642905
+    },
+    {
+      "symbol": "GBPCAD",
+      "timeframe": "H4",
+      "strategy": "atr_channel_breakout",
+      "params": {
+        "adx_min": 12,
+        "atr_mult": 1.5,
+        "exit_to_mid": false,
+        "max_hold": 24,
+        "require_htf_align": false,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 1.968797900708801,
+      "oos_return": 0.0056836012218552,
+      "oos_trades": 97,
+      "weight": 0.43467362213530397
+    }
+  ],
+  "locked_legs": [
+    {
+      "symbol": "USDCHF",
+      "timeframe": "H4",
+      "strategy": "bbands_reversion",
+      "params": {
+        "adx_max": 22,
+        "require_htf_align": false,
+        "require_rsi": false,
+        "rsi_high": 60,
+        "rsi_low": 35,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": false,
+      "oos_sharpe": 1.4388105975417105,
+      "weight": 0.18525255323923606
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "H4",
+      "strategy": "breakout_donchian",
+      "params": {
+        "adx_min": 15,
+        "atr_pct_min": 0.15,
+        "donchian_window": 30,
+        "session_hours": null,
+        "use_mid_exit": false
+      },
+      "exits": {
+        "atr_trail_mult": 0.0,
+        "atr_target_mult": 5.0,
+        "atr_stop_mult": 1.5,
+        "max_hold_bars": 24
+      },
+      "vol_target": true,
+      "oos_sharpe": 0.4337304658948822,
+      "weight": 0.05584451237845502
+    },
+    {
+      "symbol": "CADJPY",
+      "timeframe": "H4",
+      "strategy": "mean_reversion_regime",
+      "params": {
+        "adx_max": 25,
+        "rsi_high": 65,
+        "rsi_low": 35,
+        "session_hours": "7-20"
+      },
+      "exits": {
+        "max_hold_bars": 16
+      },
+      "vol_target": true,
+      "oos_sharpe": 1.7487450694017543,
+      "weight": 0.22515784191797253
+    },
+    {
+      "symbol": "AUDCAD",
+      "timeframe": "H4",
+      "strategy": "mean_reversion_regime",
+      "params": {
+        "adx_max": 30,
+        "rsi_high": 70,
+        "rsi_low": 30,
+        "session_hours": "7-20"
+      },
+      "exits": {
+        "atr_target_mult": 5.0,
+        "atr_stop_mult": 1.5,
+        "max_hold_bars": 24
+      },
+      "vol_target": false,
+      "oos_sharpe": 1.6442368784001269,
+      "weight": 0.21170199911938348
+    },
+    {
+      "symbol": "GBPCAD",
+      "timeframe": "D1",
+      "strategy": "bbands_reversion",
+      "params": {
+        "adx_max": 35,
+        "max_hold": 20,
+        "require_htf_align": false,
+        "require_rsi": false,
+        "rsi_high": 60,
+        "rsi_low": 35,
+        "session_hours": null
+      },
+      "exits": {},
+      "vol_target": true,
+      "oos_sharpe": 2.501228768336857,
+      "oos_return": 0.0083587388896402,
+      "oos_trades": 40,
+      "weight": 0.32204309334495285
+    }
+  ]
+}

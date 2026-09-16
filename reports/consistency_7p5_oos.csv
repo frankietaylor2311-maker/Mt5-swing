@@ -1,0 +1,10 @@
+period,span,label,return_pct,peak_to_trough_dd_pct,static_loss_pct,daily_loss_pct,gates,sharpe,n_trades,notes
+2024,2024-01-01 → 2024-12-31,research_WF_overlap,2.67,5.63,,,PASS,,,full calendar year; inside research/WF (params fit pre-holdout) — not virgin OOS
+2025,2025-01-01 → 2025-12-31,mixed_research_then_holdout,11.73,2.87,,,PASS,,,H1 overlaps research/WF; H2 largely holdout; independent window +250-bar warmup
+2026_YTD,2026-01-01 → ~2026-09-16,pure_holdout,14.56,3.48,,,PASS,,,partial year; entirely within official holdout window
+holdout_365d,last 365 calendar days of H4 history,pure_holdout,2.18,4.76,,,PASS,,,official confirmation window; independent run with 250-bar warmup — preferred consistency number (NOT the earlier +16.8% no-warmup figure)
+2024H1,2024-01-01 → 2024-06-30,research_WF_overlap,0.09,,,,,,,half-year slice
+2024H2,2024-07-01 → 2024-12-31,research_WF_overlap,5.97,,,,,,,half-year slice
+2025H1,2025-01-01 → 2025-06-30,research_WF_overlap,6.65,,,,,,,half-year slice; still largely pre-holdout / WF
+2025H2,2025-07-01 → 2025-12-31,mixed_to_holdout,5.38,,,,,,,half-year slice; transitions into official holdout
+holdout_365d_monthly,holdout 365d monthly returns,pure_holdout,,,,,,,,mean=+0.17% median=+0.06% stdev=0.99% pct_positive=62% best=+2.17%(2026-08) worst=-1.59%(2026-01) top3_share_of_gains≈76% → somewhat bursty

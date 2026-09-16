@@ -1,0 +1,77 @@
+data_source: approximate_non_ftmo
+basket_tag: fx5_h4_rf8
+risk:
+  risk_fraction: 0.08
+weights: oos_sharpe
+candidates:
+- symbol: GBPCAD
+  timeframe: H4
+  strategy: atr_channel_breakout
+  params:
+    adx_min: 12
+    atr_mult: 1.5
+    exit_to_mid: false
+    max_hold: 24
+    require_htf_align: false
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.968797900708801
+  oos_return: 0.0056836012218552
+  weight: 0.23880765637623222
+- symbol: CADJPY
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 25
+    rsi_high: 65
+    rsi_low: 35
+    session_hours: 7-20
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.7487450694017543
+  oos_return: 0.0033288030116773
+  weight: 0.21211608945386237
+- symbol: AUDCAD
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 30
+    rsi_high: 70
+    rsi_low: 30
+    session_hours: 7-20
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.6442368784001269
+  oos_return: 0.0015795137208723
+  weight: 0.19943964554043012
+- symbol: GBPJPY
+  timeframe: H4
+  strategy: squeeze_breakout
+  params:
+    adx_min: 18
+    exit_bars: 16
+    lookback: 40
+    session_hours: null
+    squeeze_pct: 0.2
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.443692549661263
+  oos_return: 0.0054978159361414
+  weight: 0.17511438537612833
+- symbol: USDCHF
+  timeframe: H4
+  strategy: bbands_reversion
+  params:
+    adx_max: 22
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.4388105975417105
+  oos_return: 0.0020822582035555
+  weight: 0.17452222325334693
+disclaimer: "Yahoo\u2260FTMO; holdout never used for selection"

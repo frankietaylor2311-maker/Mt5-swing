@@ -175,4 +175,7 @@ def apply_feature_pipeline(
     # Lagged close for strategies that must not peek same-bar close vs channels
     out["signal_close"] = lag(close, signal_lag) if signal_lag else close.copy()
     out.attrs["signal_lag"] = signal_lag
+    for k, v in getattr(df, "attrs", {}).items():
+        if k not in out.attrs:
+            out.attrs[k] = v
     return out

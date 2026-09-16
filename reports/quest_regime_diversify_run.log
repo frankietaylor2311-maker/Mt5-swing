@@ -1,0 +1,104 @@
+data_source=approximate_non_ftmo RF=0.08 warmup=250
+Building 2024 curves...
+  trades MR=61 TR=196 LOCK=130
+
+=== Idea A tune 2024 ===
+  A mo=0.49% pos=45% top3=72% gates=True p2t=3.2% | adx>=18.0|wh=0.7|wl=0.15 sc=0.044
+  A mo=0.48% pos=45% top3=71% gates=True p2t=3.0% | adx>=18.0|wh=0.7|wl=0.3 sc=0.042
+  A mo=0.66% pos=55% top3=69% gates=True p2t=4.0% | adx>=18.0|wh=0.85|wl=0.15 sc=0.062
+  A mo=0.65% pos=64% top3=68% gates=True p2t=3.8% | adx>=18.0|wh=0.85|wl=0.3 sc=0.061
+  A mo=0.44% pos=45% top3=78% gates=True p2t=2.8% | adx>=22.0|wh=0.7|wl=0.15 sc=0.035
+  A mo=0.44% pos=45% top3=75% gates=True p2t=2.4% | adx>=22.0|wh=0.7|wl=0.3 sc=0.036
+  A mo=0.59% pos=55% top3=76% gates=True p2t=2.8% | adx>=22.0|wh=0.85|wl=0.15 sc=0.051
+  A mo=0.59% pos=55% top3=74% gates=True p2t=2.4% | adx>=22.0|wh=0.85|wl=0.3 sc=0.052
+  A mo=0.14% pos=45% top3=86% gates=True p2t=5.0% | adx>=25.0|wh=0.7|wl=0.15 sc=0.001
+  A mo=0.22% pos=45% top3=84% gates=True p2t=3.8% | adx>=25.0|wh=0.7|wl=0.3 sc=0.010
+  A mo=0.21% pos=55% top3=82% gates=True p2t=5.3% | adx>=25.0|wh=0.85|wl=0.15 sc=0.010
+  A mo=0.29% pos=55% top3=86% gates=True p2t=4.2% | adx>=25.0|wh=0.85|wl=0.3 sc=0.016
+SELECTED A {'thresh': 18.0, 'w_tr_hi': 0.85, 'w_tr_lo': 0.15} 2024 mo=0.66%
+
+=== Idea B tune 2024 ===
+  B mo=0.16% pos=64% top3=70% gates=True | look=40|c0=0.25|k=1.5|raw sc=0.011
+  B mo=0.42% pos=55% top3=72% gates=True | look=40|c0=0.25|k=1.5|vt0025 sc=0.036
+  B mo=0.15% pos=64% top3=71% gates=True | look=40|c0=0.25|k=3.0|raw sc=0.009
+  B mo=0.40% pos=55% top3=73% gates=True | look=40|c0=0.25|k=3.0|vt0025 sc=0.034
+  B mo=0.18% pos=73% top3=68% gates=True | look=40|c0=0.45|k=1.5|raw sc=0.014
+  B mo=0.43% pos=55% top3=72% gates=True | look=40|c0=0.45|k=1.5|vt0025 sc=0.037
+  B mo=0.18% pos=73% top3=69% gates=True | look=40|c0=0.45|k=3.0|raw sc=0.013
+  B mo=0.42% pos=55% top3=73% gates=True | look=40|c0=0.45|k=3.0|vt0025 sc=0.036
+  B mo=0.17% pos=64% top3=70% gates=True | look=60|c0=0.25|k=1.5|raw sc=0.012
+  B mo=0.43% pos=55% top3=73% gates=True | look=60|c0=0.25|k=1.5|vt0025 sc=0.037
+  B mo=0.15% pos=64% top3=71% gates=True | look=60|c0=0.25|k=3.0|raw sc=0.010
+  B mo=0.41% pos=55% top3=74% gates=True | look=60|c0=0.25|k=3.0|vt0025 sc=0.034
+  B mo=0.18% pos=73% top3=67% gates=True | look=60|c0=0.45|k=1.5|raw sc=0.015
+  B mo=0.45% pos=55% top3=72% gates=True | look=60|c0=0.45|k=1.5|vt0025 sc=0.039
+  B mo=0.18% pos=73% top3=68% gates=True | look=60|c0=0.45|k=3.0|raw sc=0.014
+  B mo=0.44% pos=55% top3=73% gates=True | look=60|c0=0.45|k=3.0|vt0025 sc=0.037
+  B mo=0.16% pos=64% top3=69% gates=True | look=90|c0=0.25|k=1.5|raw sc=0.012
+  B mo=0.43% pos=55% top3=75% gates=True | look=90|c0=0.25|k=1.5|vt0025 sc=0.036
+  B mo=0.14% pos=64% top3=70% gates=True | look=90|c0=0.25|k=3.0|raw sc=0.010
+  B mo=0.40% pos=55% top3=75% gates=True | look=90|c0=0.25|k=3.0|vt0025 sc=0.033
+  B mo=0.19% pos=73% top3=65% gates=True | look=90|c0=0.45|k=1.5|raw sc=0.016
+  B mo=0.47% pos=55% top3=73% gates=True | look=90|c0=0.45|k=1.5|vt0025 sc=0.040
+  B mo=0.19% pos=73% top3=65% gates=True | look=90|c0=0.45|k=3.0|raw sc=0.016
+  B mo=0.47% pos=55% top3=73% gates=True | look=90|c0=0.45|k=3.0|vt0025 sc=0.041
+SELECTED B {'look': 90, 'corr0': 0.45, 'k': 3.0, 'overlay': 'vt0025'} 2024 mo=0.47%
+
+=== Idea C tune 2024 ===
+  C best-so-far mo=0.18% | raw|look=12|hot=0.02|cool=0.55 sc=0.014
+  C best-so-far mo=0.51% | vt0025|look=12|hot=0.02|cool=0.55 sc=0.045
+SELECTED C {'base': 'vt0025', 'look': 12, 'hot': 0.02, 'cool': 0.55, 'heat': 1.45} 2024 mo=0.51%
+
+=== Idea D tune 2024 ===
+  D mo=0.02% pos=55% gates=True | look=60|raw sc=-0.506
+  D mo=0.84% pos=64% gates=False | look=60|vt0025 sc=-1000000000.000
+  D mo=-0.13% pos=55% gates=False | look=90|raw sc=-1000000000.000
+  D mo=0.36% pos=55% gates=False | look=90|vt0025 sc=-1000000000.000
+  D mo=0.24% pos=64% gates=True | look=120|raw sc=-0.483
+  D mo=0.30% pos=45% gates=False | look=120|vt0025 sc=-1000000000.000
+SELECTED D {'look': 120, 'overlay': 'raw'} 2024 mo=0.24%
+
+=== Full window evaluation ===
+
+-- 2024 --
+  BL mo= 0.42% pos= 55% top3= 74% gates=PASS p2t=7.4% trades=130
+  A  mo= 0.66% pos= 55% top3= 69% gates=PASS p2t=4.0% trades=257
+  B  mo= 0.47% pos= 55% top3= 73% gates=PASS p2t=7.2% trades=130
+  C  mo= 0.51% pos= 64% top3= 72% gates=PASS p2t=8.0% trades=130
+  D  mo= 0.24% pos= 64% top3= 75% gates=PASS p2t=8.7% trades=130
+
+-- 2025 --
+  BL mo= 1.63% pos= 73% top3= 69% gates=PASS p2t=3.9% trades=74
+  A  mo= 0.03% pos= 64% top3= 69% gates=PASS p2t=6.7% trades=258
+  B  mo= 1.52% pos= 73% top3= 66% gates=PASS p2t=3.8% trades=74
+  C  mo= 1.63% pos= 73% top3= 68% gates=PASS p2t=3.9% trades=74
+  D  mo= 1.39% pos= 64% top3= 75% gates=PASS p2t=7.8% trades=74
+
+-- 2026 --
+  BL mo= 2.30% pos= 88% top3= 87% gates=PASS p2t=6.4% trades=122
+  A  mo= 0.32% pos= 75% top3= 90% gates=PASS p2t=4.8% trades=149
+  B  mo= 2.30% pos= 88% top3= 86% gates=PASS p2t=6.3% trades=122
+  C  mo= 2.26% pos= 88% top3= 86% gates=PASS p2t=6.3% trades=122
+  D  mo= 0.01% pos= 38% top3=100% gates=PASS p2t=6.6% trades=122
+
+-- holdout_365d --
+  BL mo= 1.52% pos= 75% top3= 81% gates=PASS p2t=6.8% trades=146
+  A  mo=-0.04% pos= 58% top3= 77% gates=PASS p2t=4.7% trades=143
+  B  mo= 1.52% pos= 75% top3= 79% gates=PASS p2t=6.5% trades=146
+  C  mo= 1.56% pos= 75% top3= 78% gates=PASS p2t=6.5% trades=146
+  D  mo=-0.26% pos= 25% top3=100% gates=PASS p2t=8.6% trades=146
+
+-- roll12_end --
+  BL mo= 1.52% pos= 75% top3= 81% gates=PASS p2t=6.8% trades=146
+  A  mo=-0.04% pos= 58% top3= 77% gates=PASS p2t=4.7% trades=143
+  B  mo= 1.52% pos= 75% top3= 79% gates=PASS p2t=6.5% trades=146
+  C  mo= 1.56% pos= 75% top3= 78% gates=PASS p2t=6.5% trades=146
+  D  mo=-0.26% pos= 25% top3=100% gates=PASS p2t=8.6% trades=146
+
+-- roll12_m6 --
+  BL mo= 1.13% pos= 67% top3= 80% gates=PASS p2t=3.9% trades=79
+  A  mo= 0.17% pos= 75% top3= 68% gates=PASS p2t=4.8% trades=215
+  B  mo= 1.02% pos= 67% top3= 78% gates=PASS p2t=3.9% trades=79
+  C  mo= 1.09% pos= 67% top3= 79% gates=PASS p2t=3.9% trades=79
+  D  mo= 0.53% pos= 50% top3= 96% gates=PASS p2t=7.2% trades=79
+Wrote reports/quest_regime_diversify.md

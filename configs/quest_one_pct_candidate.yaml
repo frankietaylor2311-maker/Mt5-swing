@@ -1,0 +1,95 @@
+data_source: approximate_non_ftmo
+challenge: FTMO_2-Step
+basket_tag: fx4plus_gbpcad_d1_voltarget_0025
+risk:
+  risk_fraction: 0.08
+  max_lot: 50
+  atr_stop_mult: 2.0
+  atr_target_mult: 3.0
+port_vol_target: 0.0025
+port_vol_lookback: 60
+port_vol_clip_lo: 0.25
+port_vol_clip_hi: 3.0
+weights: oos_sharpe
+methodology: >
+  A priori FX4 preferred legs + leftover top OOS-Sharpe unused symbol (GBPCAD D1 bbands).
+  Causal portfolio vol-target overlay: scale next-bar combined returns by
+  target/trailing_vol (lookback 60), clips [0.25, 3]. Overlay target 0.0025 chosen
+  on 2024 research window (best mean monthly among {0.002,0.0025,0.003,0.0035,0.004}
+  with p2t buffer); holdout never used for selection. signal_lag=1. Yahoo≠FTMO.
+disclaimer: Yahoo FX ≠ FTMO MT5. No go-live without ftmo_mt5_export. approximate_non_ftmo.
+candidates:
+- symbol: USDCHF
+  timeframe: H4
+  strategy: bbands_reversion
+  params:
+    adx_max: 22
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  exits: {}
+  vol_target: false
+  oos_sharpe: 1.4388105975417105
+  weight: 0.2732512220477973
+- symbol: GBPUSD
+  timeframe: H4
+  strategy: breakout_donchian
+  params:
+    adx_min: 15
+    atr_pct_min: 0.15
+    donchian_window: 30
+    session_hours: null
+    use_mid_exit: false
+  exits:
+    atr_trail_mult: 0.0
+    atr_target_mult: 5.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 24
+  vol_target: true
+  oos_sharpe: 0.4337304658948822
+  weight: 0.08237177294053205
+- symbol: CADJPY
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 25
+    rsi_high: 65
+    rsi_low: 35
+    session_hours: 7-20
+  exits:
+    max_hold_bars: 16
+  vol_target: true
+  oos_sharpe: 1.7487450694017543
+  weight: 0.33211232116340933
+- symbol: AUDCAD
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 30
+    rsi_high: 70
+    rsi_low: 30
+    session_hours: 7-20
+  exits:
+    atr_target_mult: 5.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 24
+  vol_target: false
+  oos_sharpe: 1.6442368784001269
+  weight: 0.3122646838482613
+- symbol: GBPCAD
+  timeframe: D1
+  strategy: bbands_reversion
+  params:
+    adx_max: 35
+    max_hold: 20
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 2.501228768336857
+  weight: 0.26487843601133804

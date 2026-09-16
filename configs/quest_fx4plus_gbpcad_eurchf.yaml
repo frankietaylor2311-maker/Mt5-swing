@@ -1,0 +1,109 @@
+data_source: approximate_non_ftmo
+basket_tag: fx4plus_gbpcad_eurchf
+risk:
+  risk_fraction: 0.08
+weights: oos_sharpe
+candidates:
+- symbol: USDCHF
+  timeframe: H4
+  strategy: bbands_reversion
+  params:
+    adx_max: 22
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  exits: {}
+  vol_target: false
+  oos_return: 0.0020822582035555
+  oos_sharpe: 1.4388105975417105
+  oos_trades: 26
+  holdout_return: 0.03760195093868979
+  weight: 0.16049412190213835
+- symbol: GBPUSD
+  timeframe: H4
+  strategy: breakout_donchian
+  params:
+    adx_min: 15
+    atr_pct_min: 0.15
+    donchian_window: 30
+    session_hours: null
+    use_mid_exit: false
+  exits:
+    atr_trail_mult: 0.0
+    atr_target_mult: 5.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 24
+  vol_target: true
+  oos_return: 0.0018690579365797
+  oos_sharpe: 0.4337304658948822
+  oos_trades: 104
+  holdout_return: 0.0712978831991109
+  weight: 0.04838106585045951
+- symbol: CADJPY
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 25
+    rsi_high: 65
+    rsi_low: 35
+    session_hours: 7-20
+  exits:
+    max_hold_bars: 16
+  vol_target: true
+  oos_return: 0.0033288030116773
+  oos_sharpe: 1.7487450694017543
+  oos_trades: 23
+  holdout_return: 0.0790877901939524
+  weight: 0.195066192050474
+- symbol: AUDCAD
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 30
+    rsi_high: 70
+    rsi_low: 30
+    session_hours: 7-20
+  exits:
+    atr_target_mult: 5.0
+    atr_stop_mult: 1.5
+    max_hold_bars: 24
+  vol_target: false
+  oos_return: 0.0015795137208723
+  oos_sharpe: 1.6442368784001269
+  oos_trades: 20
+  holdout_return: 0.004649887393640029
+  weight: 0.18340868106532787
+- symbol: GBPCAD
+  timeframe: D1
+  strategy: bbands_reversion
+  params:
+    adx_max: 35
+    max_hold: 20
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 2.501228768336857
+  oos_return: 0.0083587388896402
+  weight: 0.2790030289855115
+- symbol: EURCHF
+  timeframe: H4
+  strategy: cci_reversion
+  params:
+    adx_max: 28
+    cci_high: 120
+    cci_low: -100
+    exit_level: 0
+    require_htf_align: false
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.198128556783831
+  oos_return: 0.0013996548738189
+  weight: 0.13364691014608876
+disclaimer: "Yahoo\u2260FTMO; extra leg = leftover top OOS Sharpe unused symbol"

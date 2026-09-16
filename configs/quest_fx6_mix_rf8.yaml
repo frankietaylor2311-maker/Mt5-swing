@@ -1,0 +1,92 @@
+data_source: approximate_non_ftmo
+basket_tag: fx6_mix_rf8
+risk:
+  risk_fraction: 0.08
+weights: oos_sharpe
+candidates:
+- symbol: GBPCAD
+  timeframe: D1
+  strategy: bbands_reversion
+  params:
+    adx_max: 35
+    max_hold: 20
+    require_htf_align: false
+    require_rsi: false
+    rsi_high: 60
+    rsi_low: 35
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 2.501228768336857
+  oos_return: 0.0083587388896402
+  weight: 0.22975248292041006
+- symbol: EURJPY
+  timeframe: D1
+  strategy: ema_pullback
+  params:
+    adx_threshold: 15
+    rsi_pullback_high: 55
+    rsi_pullback_low: 45
+    session_hours: null
+    use_macd_confirm: false
+  exits: {}
+  vol_target: true
+  oos_sharpe: 2.0049359052828186
+  oos_return: 0.0040715793159334
+  weight: 0.18416508244517774
+- symbol: CADJPY
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 25
+    rsi_high: 65
+    rsi_low: 35
+    session_hours: 7-20
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.7487450694017543
+  oos_return: 0.0033288030116773
+  weight: 0.1606324566453122
+- symbol: AUDCAD
+  timeframe: H4
+  strategy: mean_reversion_regime
+  params:
+    adx_max: 30
+    rsi_high: 70
+    rsi_low: 30
+    session_hours: 7-20
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.6442368784001269
+  oos_return: 0.0015795137208723
+  weight: 0.1510327684152308
+- symbol: EURUSD
+  timeframe: D1
+  strategy: cci_reversion
+  params:
+    adx_max: 35
+    cci_high: 120
+    cci_low: -120
+    exit_level: 0
+    require_htf_align: false
+    session_hours: null
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.5437842792644962
+  oos_return: 0.0057960917912799
+  weight: 0.14180561000438066
+- symbol: GBPJPY
+  timeframe: H4
+  strategy: squeeze_breakout
+  params:
+    adx_min: 18
+    exit_bars: 16
+    lookback: 40
+    session_hours: null
+    squeeze_pct: 0.2
+  exits: {}
+  vol_target: true
+  oos_sharpe: 1.443692549661263
+  oos_return: 0.0054978159361414
+  weight: 0.13261159956948865
+disclaimer: "Yahoo\u2260FTMO; holdout never used for selection"

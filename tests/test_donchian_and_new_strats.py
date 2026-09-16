@@ -191,3 +191,41 @@ def test_willr_reversion_smoke_lookahead():
     sig_b = strat.generate_signals(feat2)
     n = len(sig_a) - 6 - 40
     assert (sig_a.iloc[:n].values == sig_b.iloc[:n].values).all()
+
+
+def test_quest_strategies_smoke_and_lookahead():
+    from mt5_swing.strategies.tsmom import TsMom
+    from mt5_swing.strategies.vol_breakout import VolBreakout
+    from mt5_swing.strategies.carry_proxy import CarryProxy
+    from mt5_swing.strategies.kalman_trend import KalmanTrend
+    from mt5_swing.strategies.session_orb import SessionORB
+
+    df = generate_sample_ohlc(n_bars=700, seed=99)
+    df.attrs["symbol"] = "AUDJPY"
+    cfg = BacktestConfig(symbol="AUDJPY", initial_equity=100_000, use_atr_exits=True)
+    for strat in (
+        TsMom(lookback=48, adx_min=0),
+        VolBreakout(atr_pct_min=0.4, adx_min=0),
+        CarryProxy(fast=36, slow=96, symbol="AUDJPY"),
+        KalmanTrend(adx_min=0, vel_thresh=0.0),
+        SessionORB(adx_min=0, atr_pct_min=0.0),
+    ):
+        res = run_backtest(df, strat, cfg)
+        assert len(res.equity) == len(df)
+        assert isinstance(res.metrics.gates_pass, bool)
+
+    feat = apply_feature_pipeline(df, signal_lag=1)
+    sig_a = TsMom(lookback=24).generate_signals(feat)
+    bad = df.copy()
+    bad.iloc[-6:, bad.columns.get_loc("close")] *= 5
+    bad.iloc[-6:, bad.columns.get_loc("high")] *= 5
+    feat2 = apply_feature_pipeline(bad, signal_lag=1)
+    sig_b = TsMom(lookback=24).generate_signals(feat2)
+    cutoff = -6 - 30
+    assert (sig_a.iloc[:cutoff].values == sig_b.iloc[:cutoff].values).all()
+
+
+def test_registry_includes_quest_strats():
+    from mt5_swing.strategies.registry import list_strategies
+    for name in ("tsmom", "vol_breakout", "carry_proxy", "kalman_trend", "session_orb"):
+        assert name in list_strategies()

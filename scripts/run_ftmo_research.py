@@ -92,6 +92,11 @@ ATR_EXIT_STRATS = {
     "squeeze_breakout",
     "macd_trend",
     "atr_channel_breakout",
+    "tsmom",
+    "vol_breakout",
+    "carry_proxy",
+    "kalman_trend",
+    "session_orb",
 }
 # Mean-reversion / BB already have mid exits — ATR stops often cut winners early.
 
@@ -231,6 +236,46 @@ GRIDS = {
         "require_htf_align": [False, True],
         "max_hold": [0, 20],
         "session_hours": [None],
+    },
+    "tsmom": {
+        "lookback": [24, 48, 72, 96],
+        "adx_min": [0, 12, 18],
+        "atr_pct_min": [0.0, 0.3],
+        "max_hold": [0, 24],
+        "session_hours": [None],
+    },
+    "vol_breakout": {
+        "atr_pct_min": [0.45, 0.55, 0.65],
+        "channel": [15, 20, 30],
+        "adx_min": [10, 18],
+        "exit_bars": [8, 16],
+        "use_mid_exit": [True, False],
+        "session_hours": [None],
+    },
+    "carry_proxy": {
+        "fast": [36, 48, 72],
+        "slow": [96, 120, 160],
+        "adx_min": [10, 16],
+        "bias_mode": ["auto", "neutral"],
+        "require_adx": [True],
+        "max_hold": [0, 48],
+        "session_hours": [None],
+    },
+    "kalman_trend": {
+        "process_var": [1e-5, 1e-4],
+        "measure_var": [1e-3, 1e-2],
+        "vel_thresh": [0.0, 1.0, 2.0],
+        "adx_min": [10, 18],
+        "max_hold": [0, 24],
+        "session_hours": [None],
+    },
+    "session_orb": {
+        "or_hour_utc": [7, 8],
+        "session_end_utc": [16, 20],
+        "adx_min": [8, 14],
+        "atr_pct_min": [0.15, 0.3],
+        "buffer_atr": [0.05, 0.15],
+        "max_hold": [4, 8],
     },
 }
 

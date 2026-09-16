@@ -21,4 +21,3 @@
 - GBPUSD H4 breakout_donchian: OOS=0.19% hold=7.13% w=0.082
 - CADJPY H4 mean_reversion_regime: OOS=0.33% hold=7.91% w=0.332
 - AUDCAD H4 mean_reversion_regime: OOS=0.16% hold=0.46% w=0.312
-
