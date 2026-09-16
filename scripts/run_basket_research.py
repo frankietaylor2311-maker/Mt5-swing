@@ -75,7 +75,7 @@ def main() -> None:
     if not hold_curves:
         print("No holdout curves")
         return
-    eq = pd.concat(hold_curves, axis=1).sort_index().ffill().dropna(how="all")
+    eq = pd.concat(hold_curves, axis=1, sort=True).sort_index().ffill().dropna(how="all")
     norms = eq / eq.iloc[0]
     initial = float(cfg.get("backtest", {}).get("initial_equity", 100_000))
     port = norms.mean(axis=1) * initial

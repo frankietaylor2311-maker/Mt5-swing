@@ -81,6 +81,23 @@ def bt_cfg(cfg: dict, symbol: str) -> BacktestConfig:
     )
 
 
+ATR_EXIT_STRATS = {
+    "trend_ma_adx",
+    "breakout_donchian",
+    "ema_pullback",
+    "hybrid_regime",
+    "keltner_breakout",
+}
+# Mean-reversion / BB already have mid exits — ATR stops often cut winners early.
+
+def bt_cfg_for(cfg: dict, symbol: str, strat_name: str):
+    """Backtest config with ATR exits only for trend/breakout-style strategies."""
+    b = bt_cfg(cfg, symbol)
+    use = strat_name in ATR_EXIT_STRATS
+    b.use_atr_exits = use and bool(cfg.get("risk", {}).get("use_atr_exits", True))
+    return b
+
+
 def wf_bars_for(tf: str, n: int) -> tuple[int, int, int]:
     if tf.upper() == "D1":
         # ~2y train / ~4m test on daily
@@ -142,6 +159,12 @@ GRIDS = {
         "adx_chop": [16, 20],
         "rsi_low": [30, 35],
         "rsi_high": [65, 70],
+        "session_hours": [None],
+    },
+    "keltner_breakout": {
+        "atr_mult": [1.25, 1.5, 2.0],
+        "adx_min": [12, 18],
+        "exit_to_mid": [True, False],
         "session_hours": [None],
     },
     "bbands_reversion": {
@@ -213,6 +236,10 @@ def main() -> None:
                     atr_target_mult=float(risk.get("atr_target_mult", 3.0)),
                     no_same_bar_exit=bool(risk.get("no_same_bar_exit", True)),
                 )
+                # Override ATR exits by strategy family
+                wf_cfg.use_atr_exits = strat_name in ATR_EXIT_STRATS and bool(
+                    risk.get("use_atr_exits", True)
+                )
                 try:
                     base_wf = run_walk_forward(research, base, wf_cfg)
                 except ValueError as e:
@@ -229,7 +256,7 @@ def main() -> None:
                     strat_name,
                     grid,
                     max_trials=20,
-                    bt_config=bt_cfg(cfg, symbol),
+                    bt_config=bt_cfg_for(cfg, symbol, strat_name),
                     min_trades=MIN_IS_TRADES,
                 )
                 # Normalize empty session string back to None
@@ -258,7 +285,7 @@ def main() -> None:
                 # Holdout confirmation ONLY (no param change)
                 hold_m = None
                 if len(holdout) >= 50:
-                    hold_res = run_backtest(holdout, refined, bt_cfg(cfg, symbol))
+                    hold_res = run_backtest(holdout, refined, bt_cfg_for(cfg, symbol, strat_name))
                     hold_m = hold_res.metrics.as_dict()
 
                 oos = ref_wf.aggregate_oos

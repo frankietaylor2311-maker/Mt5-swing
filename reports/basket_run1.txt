@@ -1,0 +1,21 @@
+/workspace/Mt5-swing/scripts/run_basket_research.py:78: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  eq = pd.concat(hold_curves, axis=1).sort_index().ffill().dropna(how="all")
+# Basket holdout (confirmation only)
+
+Members chosen by **OOS research** rank (≥15 trades, profitable, gates). Holdout never used for selection. Per-leg risk = risk_fraction / n_legs.
+
+- data_source: approximate_non_ftmo (unless FTMO exports present)
+- legs: 4
+- holdout basket return: -0.18%
+- static loss: 0.43%
+- max daily loss: 0.22%
+- gates: PASS
+- sharpe: -0.32
+
+## Legs
+
+- GBPUSD H4 hybrid_regime: OOS=0.23% n=27 holdout_leg=-1.50% gates=True
+- GBPUSD D1 trend_ma_adx: OOS=0.18% n=33 holdout_leg=0.18% gates=True
+- GBPUSD H4 trend_ma_adx: OOS=0.16% n=71 holdout_leg=-1.81% gates=True
+- EURUSD D1 bbands_reversion: OOS=0.15% n=30 holdout_leg=-0.54% gates=True
+

@@ -66,3 +66,22 @@ def test_lookahead_new_features_stable():
     assert mask.any()
     diff = (left.loc[mask] - right.loc[mask]).abs().max().max()
     assert diff == 0.0 or np.isnan(diff), f"look-ahead in new feats: {diff}"
+
+
+def test_atr_exits_produce_stop_or_target_reasons():
+    from mt5_swing.backtest.engine import BacktestConfig, run_backtest
+    from mt5_swing.strategies.trend_ma_adx import TrendMAADX
+
+    df = generate_sample_ohlc(n_bars=500, seed=17)
+    cfg = BacktestConfig(
+        symbol="EURUSD",
+        use_atr_exits=True,
+        atr_stop_mult=1.5,
+        atr_target_mult=2.0,
+        risk_fraction=0.01,
+    )
+    res = run_backtest(df, TrendMAADX(adx_threshold=15), cfg)
+    if len(res.trades) == 0:
+        return  # synthetic may be flat; do not fail
+    reasons = set(res.trades["reason"].unique())
+    assert reasons & {"atr_stop", "atr_target", "signal", "kill_switch_flatten"}

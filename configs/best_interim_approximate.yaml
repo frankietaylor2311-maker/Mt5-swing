@@ -1,19 +1,34 @@
-# Best interim (approximate_non_ftmo) configs from constrained IS + WF OOS.
+# Best interim (approximate_non_ftmo) — confirmation-ranked after IS-only selection.
 # NOT FTMO go-live. Re-validate on ftmo_mt5_export after Windows export import.
 # Selection: IS grid only; holdout confirmation only — never tuned on holdout.
 
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
 risk_gates: {static_max_loss: 0.10, daily_loss: 0.05, daily_tz: Europe/Prague}
+note: "Run1 after Donchian fix + new strats. Zero-trade wins disallowed. Tiny absolute returns at 0.5–1% risk/trade."
 
 candidates:
-  - symbol: EURUSD
+  - symbol: GBPUSD
     timeframe: D1
     strategy: trend_ma_adx
-    params: {adx_threshold: 22, atr_pct_max: 0.85, atr_pct_min: 0.2, require_ema_align: false, session_hours: null}
-    note: "WF OOS + holdout both profitable with gates PASS on interim Yahoo D1"
+    params: {adx_threshold: 18, atr_pct_max: 0.9, atr_pct_min: 0.0, require_ema_align: false, session_hours: null}
+    oos: {return: 0.0018, sharpe: 1.53, trades: 33}
+    holdout: {ok: true}
+  - symbol: GBPUSD
+    timeframe: H4
+    strategy: bbands_reversion
+    params: {adx_max: 35, require_rsi: true, rsi_high: 60, rsi_low: 40, session_hours: null}
+    oos: {return: 0.0011, sharpe: 0.91, trades: 41}
+    holdout: {ok: true}
+  - symbol: USDJPY
+    timeframe: H4
+    strategy: bbands_reversion
+    params: {adx_max: 22, require_rsi: true, rsi_high: 65, rsi_low: 40, session_hours: null}
+    oos: {return: 0.0014, sharpe: 0.38, trades: 20}
+    holdout: {ok: true}
   - symbol: USDJPY
     timeframe: D1
-    strategy: mean_reversion_regime
-    params: {adx_max: 18, rsi_high: 70, rsi_low: 25, session_hours: null}
-    note: "WF OOS + holdout profitable + gates on interim; tiny edge"
+    strategy: hybrid_regime
+    params: {adx_chop: 20, adx_trend: 24, rsi_high: 70, rsi_low: 30, session_hours: null}
+    oos: {return: 0.0015, sharpe: 0.32, trades: 20}
+    holdout: {ok: true}
