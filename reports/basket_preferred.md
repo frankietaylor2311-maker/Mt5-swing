@@ -1,7 +1,6 @@
-# Preferred basket (canonical from run12)
+# Preferred basket dual-confirm (run13 merge)
 
-A priori: XAU breakout + USDJPY D1 hybrid/BB + AUDUSD D1 hybrid. OOS-ranked. Holdout confirmation only.
-All `approximate_non_ftmo`. Risk fraction 0.025 / n_legs.
+Post-hoc dual winners (OOS+holdout gates) for confirmation reporting. Param grids still IS-only. Not go-live.
 
 - return: 1.69%
 - static loss: 0.72%
@@ -10,6 +9,7 @@ All `approximate_non_ftmo`. Risk fraction 0.025 / n_legs.
 - sharpe: 0.97
 
 ## Legs
+
 - USDJPY D1 hybrid_regime: OOS=0.80% hold=-0.03% n=9 gates=True
 - XAUUSD H4 breakout_donchian: OOS=0.63% hold=5.09% n=118 gates=True
 - AUDUSD D1 hybrid_regime: OOS=0.25% hold=0.72% n=9 gates=True

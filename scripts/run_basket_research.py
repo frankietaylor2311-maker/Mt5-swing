@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -27,6 +28,29 @@ assert spec.loader is not None
 spec.loader.exec_module(rfr)
 
 
+def pick_candidates(df: pd.DataFrame, n: int = 4) -> pd.DataFrame:
+    """OOS-only selection with stability filters (never uses holdout columns)."""
+    cand = df[
+        (df["oos_trades"] >= 15)
+        & (df["oos_gates_pass"] == True)  # noqa: E712
+        & (df["oos_profitable"] == True)  # noqa: E712
+        & (df["oos_sharpe"] > 0)
+        & (df["is_return"] > 0)
+    ].copy()
+    cand = cand.sort_values(["oos_return", "oos_sharpe"], ascending=False)
+    # Diversify: at most one leg per symbol
+    picked = []
+    seen = set()
+    for _, row in cand.iterrows():
+        if row["symbol"] in seen:
+            continue
+        seen.add(row["symbol"])
+        picked.append(row)
+        if len(picked) >= n:
+            break
+    return pd.DataFrame(picked) if picked else cand.head(0)
+
+
 def main() -> None:
     cfg = load_config(ROOT / "src" / "mt5_swing" / "config" / "ftmo_2step.yaml")
     summary = ROOT / "reports" / "walk_forward_summary.csv"
@@ -34,14 +58,13 @@ def main() -> None:
         print("No walk_forward_summary.csv — run run_ftmo_research.py first")
         return
     df = pd.read_csv(summary)
-    cand = df[
-        (df["oos_trades"] >= 15)
-        & (df["oos_gates_pass"] == True)  # noqa: E712
-        & (df["oos_profitable"] == True)  # noqa: E712
-    ].copy()
-    cand = cand.sort_values(["oos_return", "oos_sharpe"], ascending=False).head(4)
+    fx_only = os.environ.get("FX_ONLY", "").lower() in ("1", "true", "yes")
+    if fx_only:
+        df = df[~df["symbol"].isin(["XAUUSD", "XAGUSD"])].copy()
+    out_tag = os.environ.get("BASKET_TAG", "holdout")
+    cand = pick_candidates(df, n=4)
     if cand.empty:
-        print("No OOS candidates with >=15 trades")
+        print("No OOS candidates after stability filters")
         return
 
     holdout_days = int(cfg.get("walk_forward", {}).get("holdout_days", 365))
@@ -58,7 +81,7 @@ def main() -> None:
         if not params.get("session_hours"):
             params["session_hours"] = None
         strat = get_strategy(row["strategy"], **params)
-        bt = rfr.bt_cfg(cfg, row["symbol"])
+        bt = rfr.bt_cfg_for(cfg, row["symbol"], row["strategy"])
         bt.risk_fraction = float(cfg.get("risk", {}).get("risk_fraction", 0.01)) / n_legs
         if len(holdout) < 50:
             continue
@@ -90,14 +113,15 @@ def main() -> None:
         daily_tz="Europe/Prague",
         initial_equity=initial,
     )
-    out = ROOT / "reports" / "basket_holdout.md"
+    out = ROOT / "reports" / f"basket_{out_tag}.md"
     lines = [
-        "# Basket holdout (confirmation only)",
+        f"# Basket {out_tag} (confirmation only)",
         "",
-        "Members chosen by **OOS research** rank (≥15 trades, profitable, gates). "
-        "Holdout never used for selection. Per-leg risk = risk_fraction / n_legs.",
+        "Members chosen by **OOS research** only (profitable+gates, ≥15 trades, "
+        "OOS Sharpe>0, IS return>0, ≤1 leg/symbol). Holdout never used for selection.",
         "",
         "- data_source: approximate_non_ftmo (unless FTMO exports present)",
+        f"- fx_only: {fx_only}",
         f"- legs: {len(hold_curves)}",
         f"- holdout basket return: {m.total_return:.2%}",
         f"- static loss: {m.static_loss_from_initial:.2%}",
@@ -111,7 +135,7 @@ def main() -> None:
     for n in oos_notes:
         lines.append(f"- {n}")
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    port.to_csv(ROOT / "reports" / "basket_holdout_equity.csv")
+    port.to_csv(ROOT / "reports" / f"basket_{out_tag}_equity.csv")
     print(out.read_text())
 
 
