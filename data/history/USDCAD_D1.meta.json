@@ -1,0 +1,7 @@
+{
+  "symbol": "USDCAD",
+  "timeframe": "D1",
+  "data_source": "approximate_non_ftmo",
+  "source_detail": "yfinance USDCAD=X",
+  "rows": 5981
+}

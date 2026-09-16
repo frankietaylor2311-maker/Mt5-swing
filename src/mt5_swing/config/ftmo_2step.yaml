@@ -28,6 +28,8 @@ research_symbols:
   - GBPUSD
   - USDJPY
   - XAUUSD
+  - AUDUSD
+  - USDCAD
   # Optional: US100 when FTMO exports available
 
 timeframes:
@@ -46,7 +48,7 @@ risk:
   daily_loss_mode: ftmo_initial
   daily_tz: Europe/Prague
   flatten_on_breach: true
-  risk_fraction: 0.02
+  risk_fraction: 0.025
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   use_atr_exits: true

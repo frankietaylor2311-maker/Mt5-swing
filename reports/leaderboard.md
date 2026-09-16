@@ -5,15 +5,15 @@ Params selected on IS only; holdout never used for tuning. Zero-trade rows are n
 
 | Rank | Symbol | TF | Strategy | OOS ret | OOS Sh | OOS n | Holdout | Source |
 |---:|---|---|---|---:|---:|---:|:---:|---|
-| 1 | USDJPY | D1 | hybrid_regime | 0.79% | 0.97 | 35 | YES | `approximate_non_ftmo` |
-| 2 | USDJPY | D1 | bbands_reversion | 0.28% | 0.67 | 18 | YES | `approximate_non_ftmo` |
-| 3 | XAUUSD | D1 | hybrid_regime | 0.19% | -0.02 | 207 | YES | `approximate_non_ftmo` |
-| 4 | XAUUSD | H4 | breakout_donchian | 0.16% | 0.41 | 52 | YES | `approximate_non_ftmo` |
-| 5 | XAUUSD | H4 | hybrid_regime | -0.46% | -0.94 | 46 | YES | `approximate_non_ftmo` |
-| 6 | XAUUSD | D1 | breakout_donchian | 0.19% | 0.07 | 119 | YES | `approximate_non_ftmo` |
-| 7 | USDJPY | D1 | breakout_donchian | 0.41% | 0.61 | 17 | NO | `approximate_non_ftmo` |
-| 8 | USDJPY | H4 | hybrid_regime | 0.28% | 0.56 | 89 | NO | `approximate_non_ftmo` |
-| 9 | USDJPY | H4 | breakout_donchian | -0.12% | 0.14 | 87 | NO | `approximate_non_ftmo` |
-| 10 | XAUUSD | H4 | bbands_reversion | -0.33% | 0.12 | 12 | NO | `approximate_non_ftmo` |
-| 11 | USDJPY | H4 | bbands_reversion | 0.00% | 0.00 | 0 | NO | `approximate_non_ftmo` |
-| 12 | XAUUSD | D1 | bbands_reversion | 0.00% | 0.00 | 0 | NO | `approximate_non_ftmo` |
+| 1 | USDJPY | D1 | hybrid_regime | 0.80% | 0.95 | 35 | YES | `approximate_non_ftmo` |
+| 2 | XAUUSD | H4 | breakout_donchian | 0.63% | 0.51 | 60 | YES | `approximate_non_ftmo` |
+| 3 | USDJPY | D1 | bbands_reversion | 0.24% | 0.66 | 18 | YES | `approximate_non_ftmo` |
+| 4 | USDJPY | D1 | mean_reversion_regime | 0.23% | -0.20 | 12 | YES | `approximate_non_ftmo` |
+| 5 | GBPUSD | H4 | breakout_donchian | 0.19% | 0.43 | 104 | YES | `approximate_non_ftmo` |
+| 6 | XAUUSD | D1 | hybrid_regime | 0.17% | -0.17 | 214 | YES | `approximate_non_ftmo` |
+| 7 | USDJPY | H4 | mean_reversion_regime | -0.06% | -0.24 | 28 | YES | `approximate_non_ftmo` |
+| 8 | GBPUSD | D1 | bbands_reversion | -0.17% | -0.10 | 23 | YES | `approximate_non_ftmo` |
+| 9 | GBPUSD | H4 | mean_reversion_regime | -0.20% | -0.00 | 22 | YES | `approximate_non_ftmo` |
+| 10 | GBPUSD | D1 | mean_reversion_regime | -0.41% | 0.37 | 15 | YES | `approximate_non_ftmo` |
+| 11 | XAUUSD | H4 | hybrid_regime | -0.65% | -0.57 | 54 | YES | `approximate_non_ftmo` |
+| 12 | XAUUSD | D1 | mean_reversion_regime | -0.66% | -0.76 | 12 | YES | `approximate_non_ftmo` |

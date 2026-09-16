@@ -1,15 +1,15 @@
-# Preferred basket (run10)
+# Preferred basket (run11 @ risk_fraction=0.025)
 
 A priori: profitable XAU breakout + USDJPY D1 hybrid/BB. OOS-ranked. Holdout confirmation only.
-XAUUSD Yahoo GC=F = approximate_non_ftmo — not FTMO CFD.
+XAUUSD Yahoo = approximate_non_ftmo.
 
-- return: 1.74%
-- static loss: 0.69%
+- return: 1.99%
+- static loss: 0.77%
 - daily loss: 0.53%
 - gates: PASS
-- sharpe: 0.99
+- sharpe: 1.06
 
 ## Legs
-- USDJPY D1 hybrid_regime: OOS=0.79% hold=0.03% n=9 gates=True
-- USDJPY D1 bbands_reversion: OOS=0.28% hold=3.46% n=4 gates=True
-- XAUUSD H4 breakout_donchian: OOS=0.16% hold=9.54% n=101 gates=True
+- USDJPY D1 hybrid_regime: OOS=0.80% hold=0.24% n=9 gates=True
+- XAUUSD H4 breakout_donchian: OOS=0.63% hold=6.40% n=118 gates=True
+- USDJPY D1 bbands_reversion: OOS=0.24% hold=3.73% n=4 gates=True

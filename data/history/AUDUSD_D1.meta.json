@@ -1,0 +1,7 @@
+{
+  "symbol": "AUDUSD",
+  "timeframe": "D1",
+  "data_source": "approximate_non_ftmo",
+  "source_detail": "yfinance AUDUSD=X",
+  "rows": 5290
+}
