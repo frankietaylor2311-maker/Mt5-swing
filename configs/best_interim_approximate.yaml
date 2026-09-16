@@ -1,18 +1,21 @@
 data_source: approximate_non_ftmo
 challenge: FTMO_2-Step
-basket_tag: fx3_usdjpy_heavy
+basket_tag: fx3_one_per_symbol
 risk:
   risk_fraction: 0.02
   atr_stop_mult: 2.0
   atr_target_mult: 3.0
   atr_trail_mult: 0.0
   vol_target: false
+methodology: "Equal-weight on overlapping holdout dates only (dropna any) \u2014 fixes\
+  \ H4/D1 calendar bias."
 sensitivity:
-  atr_trail_mult_1.5_return: 0.019686263622844535
-  atr_trail_mult_1.5_sharpe: 2.2270841951725444
-disclaimer: "Yahoo FX \u2260 FTMO MT5. Risk 2% chosen inside pre-declared 1\u2013\
-  2% stress band (not max-holdout search). Trail=0 primary; trail=1.5 is sensitivity\
-  \ only. No go-live without ftmo_mt5_export."
+  trail_1.5_return: -0.039698748659177774
+  usdjpy_heavy_d1_return: 0.014118225816343921
+  with_xau_return: 0.017644251796870902
+disclaimer: "Yahoo FX/gold \u2260 FTMO MT5. Risk 2% inside pre-declared 1\u20132%\
+  \ band. Basket members = dual-confirm \u22641/symbol by OOS rank. No go-live without\
+  \ ftmo_mt5_export."
 candidates:
 - symbol: USDJPY
   timeframe: D1
@@ -38,16 +41,15 @@ candidates:
   oos_return: 0.0025010862068843
   oos_trades: 96
   holdout_return: 0.0154763276018408
-- symbol: USDJPY
-  timeframe: D1
-  strategy: bbands_reversion
+- symbol: GBPUSD
+  timeframe: H4
+  strategy: breakout_donchian
   params:
-    adx_max: 22
-    require_htf_align: false
-    require_rsi: false
-    rsi_high: 60
-    rsi_low: 35
+    adx_min: 15
+    atr_pct_min: 0.15
+    donchian_window: 30
     session_hours: null
-  oos_return: 0.0024030345050451
-  oos_trades: 18
-  holdout_return: 0.0524335895174639
+    use_mid_exit: false
+  oos_return: 0.0018690579365797
+  oos_trades: 104
+  holdout_return: 0.0326176264108935

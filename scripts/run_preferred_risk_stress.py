@@ -83,7 +83,11 @@ def main() -> None:
             )
         if not hold_curves:
             continue
-        eq = pd.concat(hold_curves, axis=1, sort=True).sort_index().ffill().dropna(how="all")
+        eq = pd.concat(hold_curves, axis=1, sort=True).sort_index().ffill()
+        # Require all legs present (mixed TF calendars otherwise bias early H4-only rows)
+        eq = eq.dropna(how="any")
+        if eq.empty:
+            continue
         port = (eq / eq.iloc[0]).mean(axis=1) * initial
         m = compute_metrics(
             port,

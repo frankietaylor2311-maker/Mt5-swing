@@ -182,9 +182,10 @@ GRIDS = {
         "session_hours": [None],
     },
     "macd_trend": {
-        "adx_min": [12, 18],
+        "adx_min": [12, 18, 22],
         "require_htf_align": [False, True],
-        "exit_on_cross": [True, False],
+        "exit_on_cross": [True],
+        "hold_while_hist": [True, False],
         "max_hold": [0, 24],
         "session_hours": [None],
     },

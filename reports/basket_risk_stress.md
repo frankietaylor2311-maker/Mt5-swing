@@ -4,17 +4,18 @@
 - data_source: approximate_non_ftmo
 - fx_only: True
 - legs: 3
-- atr_trail_mult: 1.5
+- atr_trail_mult: 0.0
 - Note: params from IS grids; holdout never used to choose risk.
 
 | Risk/trade | Basket ret | Static loss | Daily loss | Gates | Sharpe |
 |---:|---:|---:|---:|:---:|---:|
-| 1.0% | 1.04% | 0.42% | 0.13% | PASS | 2.16 |
-| 1.5% | 1.58% | 0.63% | 0.20% | PASS | 2.17 |
-| 2.0% | 1.97% | 0.70% | 0.23% | PASS | 2.23 |
+| 1.0% | 0.80% | 0.74% | 0.25% | PASS | 0.50 |
+| 1.5% | 1.21% | 1.10% | 0.37% | PASS | 0.51 |
+| 2.0% | 1.50% | 1.32% | 0.48% | PASS | 0.52 |
 
 ## Legs (params IS-selected)
 
 - USDJPY D1 hybrid_regime: OOS=0.80% hold=1.83%
 - AUDUSD D1 hybrid_regime: OOS=0.25% hold=1.55%
-- USDJPY D1 bbands_reversion: OOS=0.24% hold=5.24%
+- GBPUSD H4 breakout_donchian: OOS=0.19% hold=3.26%
+

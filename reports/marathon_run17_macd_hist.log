@@ -10,3 +10,8 @@ AUDUSD_H4 macd_trend: IS-grid best={'adx_min': 22, 'exit_on_cross': True, 'hold_
 AUDUSD_D1 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': True, 'max_hold': 0, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 USDCAD_H4 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
 USDCAD_D1 macd_trend: IS-grid best={'adx_min': 18, 'exit_on_cross': True, 'hold_while_hist': False, 'max_hold': 24, 'require_htf_align': True, 'session_hours': None} OOS ret=0.00% n=0 gates=True holdout_ok=False source=approximate_non_ftmo
+Wrote /workspace/Mt5-swing/reports/leaderboard.csv
+Wrote /workspace/Mt5-swing/reports/leaderboard.md
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.csv
+Wrote /workspace/Mt5-swing/reports/walk_forward_summary.md
+NOTE: all results approximate_non_ftmo until FTMO MT5 exports are imported.
