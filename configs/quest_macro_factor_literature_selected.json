@@ -1,0 +1,309 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "promote": false,
+  "board": [
+    {
+      "idea": "baseline_locked_vt",
+      "gate": "none",
+      "score": -Infinity,
+      "min_mean_mo": 0.0036258021099605316,
+      "max_top3": 0.7786993598526668,
+      "min_pct_pos": 0.5454545454545454,
+      "soft_pass": false,
+      "hard_pass": false,
+      "promote": false,
+      "reason": "soft_mean_fail",
+      "year_stats": {
+        "2024": {
+          "mean_mo": 0.0036258021099605316,
+          "pct_pos": 0.5454545454545454,
+          "top3": 0.7786993598526668,
+          "gates": true,
+          "p2t": 0.07584616497214891
+        },
+        "2025": {
+          "mean_mo": 0.0183343496270316,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6830404625524803,
+          "gates": true,
+          "p2t": 0.04214240019249782
+        },
+        "2026": {
+          "mean_mo": 0.02427474807049551,
+          "pct_pos": 0.75,
+          "top3": 0.8753273082055687,
+          "gates": true,
+          "p2t": 0.07053391983818023
+        },
+        "2025_IS": {
+          "mean_mo": 0.02686363515297345,
+          "pct_pos": 0.75,
+          "top3": 0.6906154183860915,
+          "gates": true,
+          "p2t": 0.04214240019249782
+        },
+        "holdout_365d": {
+          "mean_mo": 0.015384847094426696,
+          "pct_pos": 0.6666666666666666,
+          "top3": 0.8363451205035242,
+          "gates": true,
+          "p2t": 0.07293322796231183
+        }
+      }
+    },
+    {
+      "idea": "fred_carry_d1",
+      "gate": "none",
+      "score": -Infinity,
+      "min_mean_mo": -0.0009276252209951541,
+      "max_top3": 0.9769138449293842,
+      "min_pct_pos": 0.5,
+      "soft_pass": false,
+      "hard_pass": false,
+      "promote": false,
+      "reason": "soft_mean_fail",
+      "year_stats": {
+        "2024": {
+          "mean_mo": 0.004806450124239253,
+          "pct_pos": 0.6363636363636364,
+          "top3": 0.7932843248094928,
+          "gates": true,
+          "p2t": 0.04222833113349021
+        },
+        "2025": {
+          "mean_mo": 1.3945538313938934e-05,
+          "pct_pos": 0.5454545454545454,
+          "top3": 0.8773357036197805,
+          "gates": true,
+          "p2t": 0.04437391656360683
+        },
+        "2026": {
+          "mean_mo": 0.0026236836698287636,
+          "pct_pos": 0.5,
+          "top3": 0.8602284686777054,
+          "gates": true,
+          "p2t": 0.02976274261830677
+        },
+        "2025_IS": {
+          "mean_mo": -0.0009276252209951541,
+          "pct_pos": 0.5,
+          "top3": 0.9769138449293842,
+          "gates": true,
+          "p2t": 0.04437391656360683
+        },
+        "holdout_365d": {
+          "mean_mo": 0.0006497922725302585,
+          "pct_pos": 0.5,
+          "top3": 0.7102587686471404,
+          "gates": true,
+          "p2t": 0.029874224655027624
+        }
+      }
+    },
+    {
+      "idea": "locked+vix_gate",
+      "gate": "vix",
+      "score": -Infinity,
+      "min_mean_mo": -0.0018557216011876423,
+      "max_top3": 0.9242186935462657,
+      "min_pct_pos": 0.45454545454545453,
+      "soft_pass": false,
+      "hard_pass": false,
+      "promote": false,
+      "reason": "soft_mean_fail",
+      "year_stats": {
+        "2024": {
+          "mean_mo": -0.0018557216011876423,
+          "pct_pos": 0.45454545454545453,
+          "top3": 0.9242186935462657,
+          "gates": true,
+          "p2t": 0.07584616497215024
+        },
+        "2025": {
+          "mean_mo": 0.01737980818464978,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.7220400517819854,
+          "gates": true,
+          "p2t": 0.037436340485641845
+        },
+        "2026": {
+          "mean_mo": 0.02427880307711716,
+          "pct_pos": 0.625,
+          "top3": 0.8824350509694124,
+          "gates": true,
+          "p2t": 0.058576313232943156
+        },
+        "2025_IS": {
+          "mean_mo": 0.025513705854930097,
+          "pct_pos": 0.75,
+          "top3": 0.7199293845440681,
+          "gates": true,
+          "p2t": 0.031023482574627084
+        },
+        "holdout_365d": {
+          "mean_mo": 0.015517415172452162,
+          "pct_pos": 0.5833333333333334,
+          "top3": 0.8389456841433062,
+          "gates": true,
+          "p2t": 0.06748822523573869
+        }
+      }
+    },
+    {
+      "idea": "locked+gpr_gate",
+      "gate": "gpr",
+      "score": -Infinity,
+      "min_mean_mo": 0.004149766626137772,
+      "max_top3": 0.7752323355393788,
+      "min_pct_pos": 0.5454545454545454,
+      "soft_pass": false,
+      "hard_pass": false,
+      "promote": false,
+      "reason": "soft_mean_fail",
+      "year_stats": {
+        "2024": {
+          "mean_mo": 0.004149766626137772,
+          "pct_pos": 0.5454545454545454,
+          "top3": 0.7752323355393788,
+          "gates": true,
+          "p2t": 0.07584616497215124
+        },
+        "2025": {
+          "mean_mo": 0.01438969750018509,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.7149222352342081,
+          "gates": true,
+          "p2t": 0.04214240019249785
+        },
+        "2026": {
+          "mean_mo": 0.025493099538608344,
+          "pct_pos": 0.75,
+          "top3": 0.8833063312935238,
+          "gates": true,
+          "p2t": 0.048307117871668394
+        },
+        "2025_IS": {
+          "mean_mo": 0.021439738478559567,
+          "pct_pos": 0.75,
+          "top3": 0.7108364873493672,
+          "gates": true,
+          "p2t": 0.04214240019249785
+        },
+        "holdout_365d": {
+          "mean_mo": 0.017524812437844095,
+          "pct_pos": 0.6666666666666666,
+          "top3": 0.8185509538786375,
+          "gates": true,
+          "p2t": 0.05354787671212901
+        }
+      }
+    },
+    {
+      "idea": "locked+vix_gpr",
+      "gate": "vix_gpr",
+      "score": -Infinity,
+      "min_mean_mo": -0.0018849301468372665,
+      "max_top3": 0.8508663301431814,
+      "min_pct_pos": 0.5454545454545454,
+      "soft_pass": false,
+      "hard_pass": false,
+      "promote": false,
+      "reason": "soft_mean_fail",
+      "year_stats": {
+        "2024": {
+          "mean_mo": -0.0018849301468372665,
+          "pct_pos": 0.5454545454545454,
+          "top3": 0.8508663301431814,
+          "gates": true,
+          "p2t": 0.07584616497215163
+        },
+        "2025": {
+          "mean_mo": 0.013168996216940142,
+          "pct_pos": 0.7272727272727273,
+          "top3": 0.6959069437109436,
+          "gates": true,
+          "p2t": 0.03743634048564181
+        },
+        "2026": {
+          "mean_mo": 0.02479876147807203,
+          "pct_pos": 0.625,
+          "top3": 0.8917481594372095,
+          "gates": true,
+          "p2t": 0.041937871553112155
+        },
+        "2025_IS": {
+          "mean_mo": 0.019723839399329396,
+          "pct_pos": 0.75,
+          "top3": 0.6908808432090925,
+          "gates": true,
+          "p2t": 0.03102348257462734
+        },
+        "holdout_365d": {
+          "mean_mo": 0.017502589378264006,
+          "pct_pos": 0.5833333333333334,
+          "top3": 0.8212342646649677,
+          "gates": true,
+          "p2t": 0.050175339655128055
+        }
+      }
+    },
+    {
+      "idea": "fred_carry+vix_gpr",
+      "gate": "vix_gpr",
+      "score": -Infinity,
+      "min_mean_mo": 0.0013850814385458349,
+      "max_top3": 1.0,
+      "min_pct_pos": 0.375,
+      "soft_pass": false,
+      "hard_pass": false,
+      "promote": false,
+      "reason": "soft_mean_fail",
+      "year_stats": {
+        "2024": {
+          "mean_mo": 0.003097933842544925,
+          "pct_pos": 0.5454545454545454,
+          "top3": 0.7951112071118315,
+          "gates": true,
+          "p2t": 0.04419158367173463
+        },
+        "2025": {
+          "mean_mo": 0.0014961943341701422,
+          "pct_pos": 0.45454545454545453,
+          "top3": 0.9205910557475184,
+          "gates": true,
+          "p2t": 0.02527242913447309
+        },
+        "2026": {
+          "mean_mo": 0.0012330323325664694,
+          "pct_pos": 0.5,
+          "top3": 0.9706665908402846,
+          "gates": true,
+          "p2t": 0.029762742618306835
+        },
+        "2025_IS": {
+          "mean_mo": 0.0013850814385458349,
+          "pct_pos": 0.375,
+          "top3": 1.0,
+          "gates": true,
+          "p2t": 0.02527242913447309
+        },
+        "holdout_365d": {
+          "mean_mo": -0.0011615331275397118,
+          "pct_pos": 0.5,
+          "top3": 0.8480752585263811,
+          "gates": true,
+          "p2t": 0.042733359910311214
+        }
+      }
+    }
+  ],
+  "literature": [
+    "Lustig, Roussanov, Verdelhan (2011) RFS \u2014 currency risk factors / carry",
+    "Menkhoff et al. (2012) JF \u2014 carry & global FX volatility",
+    "Menkhoff et al. (2012) JFE \u2014 currency momentum",
+    "Dahlquist & Hasseltoft (2020) JFE \u2014 economic momentum (needs multi-country CPI/IP)",
+    "Caldara & Iacoviello (2022) AER \u2014 GPR index",
+    "Liu & Zhang (2024) JBF \u2014 geopolitical risk and currency returns"
+  ]
+}

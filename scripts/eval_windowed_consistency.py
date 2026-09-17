@@ -95,7 +95,7 @@ def run_leg_equity(ohlc: pd.DataFrame, leg: dict, bt: BacktestConfig) -> pd.Seri
     if not params.get("session_hours"):
         params["session_hours"] = None
     # carry_proxy: inject symbol for auto bias
-    if leg["strategy"] == "carry_proxy" and "symbol" not in params:
+    if leg["strategy"] in {"carry_proxy", "fred_carry"} and "symbol" not in params:
         params["symbol"] = leg["symbol"]
     strat = get_strategy(leg["strategy"], **params)
     res = run_backtest(ohlc, strat, bt)
