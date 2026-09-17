@@ -1194,3 +1194,76 @@ def apply_rolling_weekly_mean_cool(
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     scale_s = scale.shift(1).fillna(1.0)
     return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_upside_ratio_cool(
+    port: pd.Series,
+    *,
+    lookback_days: int = 42,
+    ratio_thresh: float = 1.25,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal rolling upside/downside vol-ratio cool — soft-cap after right-tail runs.
+
+    Distinct from ``apply_trailing_downside_vol_scale`` (scales by downside vol vs a
+    *target*), ``apply_rolling_burst_cool`` (single fat |day| vs own history),
+    ``apply_rolling_return_pctile_cool`` (trail *return level* percentile), and
+    ``apply_trailing_gain_concentration_dampen`` (month-return HHI / top-K share).
+
+    Resamples equity to daily (UTC-normalized). Over each rolling window of
+    ``lookback_days`` (min_periods ≈ lookback//3, ≥10), computes:
+
+    - upside_rms = sqrt(mean(r[r>0]^2)) or 0 if none
+    - downside_rms = sqrt(mean(r[r<0]^2)) or eps
+    - ratio = upside_rms / max(downside_rms, eps)
+
+    If the *lag-1* ratio ≥ ``ratio_thresh`` → scale = ``cool_scale``, else 1.0.
+    Scale is mapped back onto native bars (timezone-safe) and clipped to [lo, 1]
+    — never leverage (hi=1). Day t uses the trail through t-1 only (no look-ahead).
+    Targets bursty / right-tail-heavy equity return distributions that inflate
+    top-month concentration without waiting for a completed calendar month.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r_native = eq.pct_change().fillna(0.0)
+    eq_work = eq.copy()
+    if getattr(eq_work.index, "tz", None) is not None:
+        eq_work.index = eq_work.index.tz_convert("UTC").tz_localize(None)
+    eq_d = eq_work.resample("1D").last().dropna()
+    if len(eq_d) < 5:
+        return eq
+    r_d = eq_d.pct_change().fillna(0.0)
+    lb = max(5, int(lookback_days))
+    min_p = max(10, lb // 3)
+    eps = 1e-12
+
+    def _up_down_ratio(arr: np.ndarray) -> float:
+        pos = arr[arr > 0.0]
+        neg = arr[arr < 0.0]
+        ups = float(np.sqrt(np.mean(pos ** 2))) if len(pos) else 0.0
+        dns = float(np.sqrt(np.mean(neg ** 2))) if len(neg) else 0.0
+        return ups / max(dns, eps)
+
+    ratio = r_d.rolling(lb, min_periods=min_p).apply(_up_down_ratio, raw=True)
+    # ratio at day t includes r_t; lag so day t uses trail through t-1 only
+    ratio_lag = ratio.shift(1)
+    scale_d = pd.Series(1.0, index=r_d.index)
+    hot = ratio_lag >= float(ratio_thresh)
+    hot = hot.fillna(False)
+    scale_d = scale_d.where(~hot, float(cool_scale))
+    scale_d = scale_d.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_d.index = pd.DatetimeIndex(scale_d.index).normalize()
+    if getattr(eq.index, "tz", None) is not None:
+        day_keys = eq.index.tz_convert("UTC").tz_localize(None).normalize()
+    else:
+        day_keys = pd.DatetimeIndex(eq.index).normalize()
+    scale_bars = (
+        pd.Series(day_keys, index=eq.index, dtype="datetime64[ns]")
+        .map(scale_d)
+        .ffill()
+        .fillna(1.0)
+    )
+    scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
+    return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
