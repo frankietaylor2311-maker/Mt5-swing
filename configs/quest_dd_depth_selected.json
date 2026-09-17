@@ -1,0 +1,96 @@
+{
+  "wave": "causal_rolling_dd_depth_percentile_cool",
+  "data_source": "approximate_non_ftmo",
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "promote": false,
+  "board_n": 32,
+  "soft_n": 4,
+  "hard_n": 0,
+  "promote_n": 0,
+  "best_soft": {
+    "idea": "wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+dddepth_pb63_hb126_p0.15_c0.65",
+    "family": "frozen_wrebal_mtd_dddepth",
+    "soft_pass": true,
+    "hard_pass": false,
+    "promote": false,
+    "score": 0.010199215334111326,
+    "min_is_mo": 0.011967328542427658,
+    "max_is_top3": 0.6384056604158166,
+    "min_is_pct_pos": 0.75,
+    "mo_2024": 0.011967328542427658,
+    "mo_2025_IS": 0.015166467463682026,
+    "pos_2024": 0.8181818181818182,
+    "pos_2025_IS": 0.75,
+    "top3_2024": 0.44389815739603367,
+    "top3_2025_IS": 0.6384056604158166,
+    "mo_2025": 0.009482050016772624,
+    "mo_2026": 0.023906172771937045,
+    "pos_2025": 0.7272727272727273,
+    "pos_2026": 0.75,
+    "top3_2025": 0.5956726615509516,
+    "top3_2026": 0.8131340278092715,
+    "mo_holdout": 0.014292003357432173,
+    "pos_holdout": 0.6666666666666666,
+    "top3_holdout": 0.6750852834423806,
+    "gates_holdout": true,
+    "note": "holdout_fail"
+  },
+  "best_any": {
+    "idea": "wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+dddepth_pb63_hb126_p0.15_c0.65",
+    "family": "frozen_wrebal_mtd_dddepth",
+    "soft_pass": true,
+    "hard_pass": false,
+    "promote": false,
+    "score": 0.010199215334111326,
+    "min_is_mo": 0.011967328542427658,
+    "max_is_top3": 0.6384056604158166,
+    "min_is_pct_pos": 0.75,
+    "mo_2024": 0.011967328542427658,
+    "mo_2025_IS": 0.015166467463682026,
+    "pos_2024": 0.8181818181818182,
+    "pos_2025_IS": 0.75,
+    "top3_2024": 0.44389815739603367,
+    "top3_2025_IS": 0.6384056604158166,
+    "mo_2025": 0.009482050016772624,
+    "mo_2026": 0.023906172771937045,
+    "pos_2025": 0.7272727272727273,
+    "pos_2026": 0.75,
+    "top3_2025": 0.5956726615509516,
+    "top3_2026": 0.8131340278092715,
+    "mo_holdout": 0.014292003357432173,
+    "pos_holdout": 0.6666666666666666,
+    "top3_holdout": 0.6750852834423806,
+    "gates_holdout": true,
+    "note": "holdout_fail"
+  },
+  "frozen_wrebal": [
+    0.328198,
+    0.029051,
+    0.2413,
+    0.177605,
+    0.223846
+  ],
+  "dddepth_grid": {
+    "peak_bars": [
+      42,
+      63,
+      126
+    ],
+    "hist_bars": [
+      126,
+      252
+    ],
+    "pctiles": [
+      0.15,
+      0.2,
+      0.25
+    ],
+    "cool_scales": [
+      0.35,
+      0.5,
+      0.65
+    ],
+    "lo": 0.25,
+    "rule": "lag-1 DD depth <= lag-1 rolling LOW pctile \u2192 cool"
+  }
+}

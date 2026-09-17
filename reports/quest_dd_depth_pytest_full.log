@@ -1,0 +1,17 @@
+.........................................                                [100%]
+=============================== warnings summary ===============================
+tests/test_month_equity_overlays.py::test_mtd_gain_clip_caps_after_tau_and_never_leverages
+tests/test_month_equity_overlays.py::test_mtd_gain_clip_is_causal_no_future_peek
+tests/test_month_equity_overlays.py::test_mtd_gain_clip_is_causal_no_future_peek
+  /workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+    months = idx.tz_convert("UTC").to_period("M")
+
+tests/test_month_equity_overlays.py::test_mtd_loss_halt_never_leverages
+tests/test_month_equity_overlays.py::test_mtd_loss_halt_is_causal_no_future_peek
+tests/test_month_equity_overlays.py::test_mtd_loss_halt_is_causal_no_future_peek
+tests/test_month_equity_overlays.py::test_mtd_loss_halt_flattens_after_large_intra_month_drop
+  /workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:335: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+    months = idx.tz_convert("UTC").to_period("M")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+41 passed, 7 warnings in 0.19s

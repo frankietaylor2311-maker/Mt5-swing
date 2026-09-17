@@ -887,3 +887,54 @@ def apply_rolling_return_pctile_cool(
     scale = scale.where(~rich, float(cool_scale))
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_dd_depth_cool(
+    port: pd.Series,
+    *,
+    peak_bars: int = 63,
+    hist_bars: int = 252,
+    pctile: float = 0.20,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal rolling drawdown-depth percentile cool — cut when DD is unusually shallow.
+
+    Drawdown depth = 1 - eq / rolling_peak (0 at peak, positive when underwater).
+    Uses a rolling peak over ``peak_bars`` (prefer over expanding). Compares lag-1
+    DD depth to the lag-1 rolling ``pctile`` of past DD depths over ``hist_bars``.
+    When lag-1 DD depth is at/below that LOW percentile (unusually shallow /
+    near flat-to-peak complacency vs own history) → scale = ``cool_scale``, else 1.0.
+
+    Distinct from:
+    - ``apply_peak_proximity_cool``: fixed eps band near rolling high (absolute
+      proximity), not a percentile of own DD-depth history.
+    - ``apply_rolling_return_pctile_cool``: cools on rich *trailing return*, not
+      on shallow drawdown depth relative to history.
+
+    Decision at bar t uses ONLY lag-1 equity/peak/stats so bar t cannot see bar t
+    close. Clipped to [lo, 1] — never leverage (hi=1).
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    pb = max(5, int(peak_bars))
+    hb = max(pb + 5, int(hist_bars))
+    if len(port) < max(20, pb + 10):
+        return port.astype(float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    peak = eq.rolling(pb, min_periods=max(5, pb // 2)).max()
+    dd_depth = 1.0 - eq / peak.replace(0, np.nan)
+    # Depth should be >=0 when peak is valid; clip tiny negatives from float noise
+    dd_depth = dd_depth.clip(lower=0.0)
+    q = float(pctile)
+    q = min(max(q, 0.01), 0.50)  # low-percentile band only
+    thr = dd_depth.rolling(hb, min_periods=max(20, hb // 4)).quantile(q)
+    dd_lag = dd_depth.shift(1)
+    thr_lag = thr.shift(1)
+    scale = pd.Series(1.0, index=eq.index)
+    shallow = dd_lag <= thr_lag
+    shallow = shallow.fillna(False)
+    scale = scale.where(~shallow, float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])

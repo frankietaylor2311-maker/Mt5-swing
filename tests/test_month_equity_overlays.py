@@ -721,3 +721,62 @@ def test_ret_pctile_cool_triggers_on_rich_trail():
     pos = r_raw.iloc[late] > 1e-15
     assert pos.any()
     assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()
+
+
+def test_dd_depth_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_rolling_dd_depth_cool
+
+    rng = np.random.default_rng(17)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_dd_depth_cool(
+        eq, peak_bars=42, hist_bars=126, pctile=0.20, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_dd_depth_cool_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_rolling_dd_depth_cool
+
+    rng = np.random.default_rng(55)
+    rets = rng.normal(0.0002, 0.01, 220)
+    eq = _eq_from_returns(rets)
+    kw = dict(peak_bars=42, hist_bars=84, pctile=0.20, cool_scale=0.4, lo=0.25)
+    out1 = apply_rolling_dd_depth_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.6
+    out2 = apply_rolling_dd_depth_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_dd_depth_cool_triggers_on_shallow_dd():
+    from mt5_swing.portfolio.overlays import apply_rolling_dd_depth_cool
+
+    # Volatile underwater history, then a long climb/flat near peak → shallow DD
+    rng = np.random.default_rng(9)
+    deep = rng.normal(-0.002, 0.015, 160)  # noisy / often underwater
+    near_peak = np.concatenate(
+        [
+            np.full(50, 0.004),  # climb back to high
+            np.full(40, 0.0003),  # stay near peak (shallow DD)
+        ]
+    )
+    rets = np.concatenate([deep, near_peak])
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_dd_depth_cool(
+        eq, peak_bars=42, hist_bars=126, pctile=0.25, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    late = slice(200, 240)
+    pos = r_raw.iloc[late] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()
+    # Early bars before hist forms stay uncooled
+    assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
