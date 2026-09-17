@@ -780,3 +780,110 @@ def test_dd_depth_cool_triggers_on_shallow_dd():
     assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()
     # Early bars before hist forms stay uncooled
     assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
+
+
+def test_mtd_pace_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_mtd_pace_cool
+
+    rng = np.random.default_rng(21)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_mtd_pace_cool(
+        eq, monthly_target=0.01, pace_mult=1.2, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_mtd_pace_cool_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_mtd_pace_cool
+
+    rng = np.random.default_rng(77)
+    rets = rng.normal(0.0005, 0.01, 220)
+    eq = _eq_from_returns(rets)
+    kw = dict(monthly_target=0.01, pace_mult=1.1, cool_scale=0.4, lo=0.25)
+    out1 = apply_mtd_pace_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.5
+    out2 = apply_mtd_pace_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_mtd_pace_cool_triggers_when_ahead_of_pace():
+    from mt5_swing.portfolio.overlays import apply_mtd_pace_cool
+
+    # Strong early-month gains then continue — should cool mid-month
+    rets = np.concatenate(
+        [
+            np.full(5, 0.0001),
+            np.full(8, 0.012),  # burst early
+            np.full(15, 0.002),  # continue while ahead of pace
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_mtd_pace_cool(
+        eq, monthly_target=0.01, pace_mult=1.0, cool_scale=0.4, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    late = slice(12, 25)
+    pos = r_raw.iloc[late] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()
+
+
+def test_burst_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_rolling_burst_cool
+
+    rng = np.random.default_rng(33)
+    rets = rng.normal(0.0005, 0.01, 300)
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_burst_cool(
+        eq, hist_bars=84, pctile=0.9, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_burst_cool_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_rolling_burst_cool
+
+    rng = np.random.default_rng(44)
+    rets = rng.normal(0.0002, 0.012, 200)
+    eq = _eq_from_returns(rets)
+    kw = dict(hist_bars=63, pctile=0.85, cool_scale=0.4, lo=0.25)
+    out1 = apply_rolling_burst_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.5
+    out2 = apply_rolling_burst_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_burst_cool_triggers_on_fat_day():
+    from mt5_swing.portfolio.overlays import apply_rolling_burst_cool
+
+    mild = np.full(120, 0.0003)
+    mild[60] = 0.04  # one fat day in history
+    late_burst = np.concatenate([mild, np.full(30, 0.0003), [0.05], np.full(20, 0.002)])
+    eq = _eq_from_returns(late_burst)
+    out = apply_rolling_burst_cool(
+        eq, hist_bars=80, pctile=0.9, cool_scale=0.35, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # bar after the 0.05 burst should be cooled
+    # find index of 0.05
+    idx = int(np.argmax(np.abs(late_burst)))
+    # scale applies on NEXT bar after lag-1 sees burst
+    if idx + 1 < len(r_raw) and r_raw.iloc[idx + 1] > 1e-15:
+        assert r_out.iloc[idx + 1] < r_raw.iloc[idx + 1] - 1e-15

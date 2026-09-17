@@ -1,0 +1,648 @@
+data_source=approximate_non_ftmo RF=0.08 VT=0.0025 tag_locked=fx4plus_gbpcad_d1_voltarget_0025
+end=2026-09-16 00:00:00+00:00 holdout_start=2025-09-16 00:00:00+00:00 IS=['2024', '2025_IS'] CONF=['2025', '2026', 'holdout_365d']
+  legs ready 2024: [1596, 1596, 1597, 1602, 262]
+  legs ready 2025_IS: [1125, 1125, 1125, 1129, 182]
+  legs ready 2025: [1591, 1590, 1591, 1596, 257]
+  legs ready 2026: [1121, 1121, 1120, 1122, 184]
+  legs ready holdout_365d: [1587, 1586, 1586, 1589, 259]
+baseline 2024 mo=0.42% pos=55% top3=74%
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.008_pm1.25_c0.35 soft=True 2024=0.98% HO=1.65%/75% top3HO=64% note=year_clear_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.008_pm1.25_c0.5 soft=True 2024=0.85% HO=1.62%/75% top3HO=67% note=year_clear_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.008_pm1.25_c0.65 soft=True 2024=0.72% HO=1.59%/75% top3HO=71% note=holdout_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.01_pm1.25_c0.35 soft=False 2024=0.92% HO=1.66%/75% top3HO=64% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.01_pm1.25_c0.5 soft=False 2024=0.81% HO=1.62%/75% top3HO=68% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.01_pm1.25_c0.65 soft=False 2024=0.69% HO=1.59%/75% top3HO=71% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.012_pm1.25_c0.35 soft=False 2024=0.91% HO=1.65%/75% top3HO=62% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.012_pm1.25_c0.5 soft=False 2024=0.80% HO=1.62%/75% top3HO=65% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+pace: lock+pace_mt0.012_pm1.25_c0.65 soft=False 2024=0.69% HO=1.59%/75% top3HO=70% note=is_fail
+burst: lock+burst_hb126_p0.85_c0.35 soft=False 2024=0.58% HO=0.59%/67% top3HO=77% note=is_fail
+burst: lock+burst_hb126_p0.85_c0.5 soft=False 2024=0.54% HO=0.80%/67% top3HO=80% note=is_fail
+burst: lock+burst_hb126_p0.85_c0.65 soft=False 2024=0.51% HO=1.02%/67% top3HO=82% note=is_fail
+burst: lock+burst_hb126_p0.9_c0.35 soft=True 2024=0.73% HO=0.65%/67% top3HO=77% note=holdout_fail
+burst: lock+burst_hb126_p0.9_c0.5 soft=True 2024=0.66% HO=0.85%/67% top3HO=80% note=holdout_fail
+burst: lock+burst_hb126_p0.9_c0.65 soft=True 2024=0.59% HO=1.05%/67% top3HO=82% note=holdout_fail
+burst: lock+burst_hb126_p0.95_c0.35 soft=False 2024=0.65% HO=0.52%/75% top3HO=81% note=is_fail
+burst: lock+burst_hb126_p0.95_c0.5 soft=False 2024=0.60% HO=0.75%/67% top3HO=83% note=is_fail
+burst: lock+burst_hb126_p0.95_c0.65 soft=False 2024=0.54% HO=0.98%/67% top3HO=84% note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+wrebal+mtd: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen soft=True 2024=1.18% HO=1.69%/67% note=holdout_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:297: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = idx.tz_convert("UTC").to_period("M")
+wrebal+mtd: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.65_frozen soft=True 2024=1.03% HO=1.70%/67% note=holdout_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+wrebal+pace: wrebal_0.328_0.029_0.241_0.178_0.224+pace_mt0.01_pm1.5_c0.5_frozen soft=True note=soft_is_hard_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+wrebal+pace: wrebal_0.328_0.029_0.241_0.178_0.224+pace_mt0.012_pm1.25_c0.5_frozen soft=True note=soft_is_hard_fail
+wrebal+burst: wrebal_0.328_0.029_0.241_0.178_0.224+burst_hb126_p0.85_c0.35_frozen soft=False note=is_fail
+wrebal+burst: wrebal_0.328_0.029_0.241_0.178_0.224+burst_hb126_p0.85_c0.5_frozen soft=False note=is_fail
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+wrebal+mtd+pace: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+pace_mt0.008_pm1.0_c0.65 soft=True note=year_clear_fail HO_pos=75% top3=64%
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:971: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  months = utc_idx.to_period("M")
+/workspace/Mt5-swing/src/mt5_swing/portfolio/overlays.py:974: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+wrebal+mtd+pace: wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.65_frozen+pace_mt0.008_pm1.25_c0.65 soft=True note=holdout_fail HO_pos=67% top3=67%
+blend a=0.40 vs wrebal_0.328_0.029_0.241_0.178_0.224+pace_mt0.01_pm1.5_c0.5_frozen: soft=True 2024=0.72% HO=1.68%/75% note=holdout_fail
+blend a=0.55 vs wrebal_0.328_0.029_0.241_0.178_0.224+pace_mt0.01_pm1.5_c0.5_frozen: soft=True 2024=0.83% HO=1.74%/75% note=holdout_fail
+blend a=0.40 vs wrebal_0.328_0.029_0.241_0.178_0.224+pace_mt0.012_pm1.25_c0.5_frozen: soft=True 2024=0.72% HO=1.68%/75% note=holdout_fail
+blend a=0.55 vs wrebal_0.328_0.029_0.241_0.178_0.224+pace_mt0.012_pm1.25_c0.5_frozen: soft=True 2024=0.83% HO=1.74%/75% note=holdout_fail
+blend a=0.40 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+pace_mt0.008_pm1.0_c0.65: soft=True 2024=0.73% HO=1.63%/67% note=holdout_fail
+blend a=0.55 vs wrebal_0.328_0.029_0.241_0.178_0.224+mtd_t0.015_a0.5_frozen+pace_mt0.008_pm1.0_c0.65: soft=True 2024=0.85% HO=1.66%/67% note=holdout_fail
+BOARD n=34 soft=7 hard=0 promote=0
+Wrote /workspace/Mt5-swing/reports/quest_mtd_pace_burst_board.csv
+Wrote /workspace/Mt5-swing/reports/quest_mtd_pace_burst_consistency.md
+Wrote /workspace/Mt5-swing/configs/quest_mtd_pace_burst_selected.json

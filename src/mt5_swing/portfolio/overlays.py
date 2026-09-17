@@ -938,3 +938,99 @@ def apply_rolling_dd_depth_cool(
     scale = scale.where(~shallow, float(cool_scale))
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_mtd_pace_cool(
+    port: pd.Series,
+    *,
+    monthly_target: float = 0.01,
+    pace_mult: float = 1.25,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal MTD *pace* cool — cut when ahead of calendar-month schedule.
+
+    Distinct from ``apply_mtd_gain_clip`` (fixed absolute ``tau``). Here the
+    threshold at bar t is dynamic:
+
+        pace_thr = (day_of_month_lag / days_in_month) * monthly_target * pace_mult
+
+    Day-of-month and days-in-month use the calendar of bar t (known at open);
+    MTD uses equity through bar t-1 only (same month-start / month-change rules
+    as MTD gain-clip). When lag-1 MTD > pace_thr → scale = ``cool_scale``, else
+    1.0. Clipped to [lo, 1] — never leverage (hi=1). Soft-caps early-month
+    bursts that drive top-3 concentration without a hard absolute gain wall.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        utc_idx = idx.tz_convert("UTC")
+        months = utc_idx.to_period("M")
+        days = pd.Index(utc_idx.day)
+        # days_in_month via period end day
+        dim = pd.Index(utc_idx.to_period("M").to_timestamp(how="end").day)
+    else:
+        months = idx.to_period("M")
+        days = pd.Index(idx.day)
+        dim = pd.Index(idx.to_period("M").to_timestamp(how="end").day)
+    mo_start = eq.groupby(months).transform("first")
+    eq_lag = eq.shift(1)
+    mtd_lag = (eq_lag / mo_start.replace(0, np.nan) - 1.0).fillna(0.0)
+    mo_change = pd.Series(months, index=eq.index) != pd.Series(months, index=eq.index).shift(1)
+    mtd_lag = mtd_lag.where(~mo_change.fillna(True), 0.0)
+    # Day fraction uses prior calendar day within month when available; on
+    # month-change bar day_frac is ~0 so pace_thr~0 and cool won't fire (mtd=0).
+    day_lag = pd.Series(days, index=eq.index, dtype=float).shift(1)
+    dim_s = pd.Series(dim, index=eq.index, dtype=float)
+    day_lag = day_lag.where(~mo_change.fillna(True), 0.0)
+    frac = (day_lag / dim_s.replace(0, np.nan)).clip(lower=0.0, upper=1.0).fillna(0.0)
+    pace_thr = frac * float(monthly_target) * float(pace_mult)
+    scale = pd.Series(1.0, index=eq.index)
+    ahead = mtd_lag > pace_thr
+    # Avoid cool on near-zero early days (frac tiny → thr tiny → any tick fires)
+    ahead = ahead & (frac >= 0.1)
+    ahead = ahead.fillna(False)
+    scale = scale.where(~ahead, float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_burst_cool(
+    port: pd.Series,
+    *,
+    hist_bars: int = 126,
+    pctile: float = 0.90,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal single-bar |return| high-percentile cool — cut after burst bars.
+
+    Distinct from ``apply_rolling_return_pctile_cool`` (multi-bar trail return)
+    and ``apply_runup_throttle`` (fixed absolute trail threshold). Compares
+    lag-1 absolute daily return to the lag-1 rolling ``pctile`` of |r| over
+    ``hist_bars``. When lag-1 |r| is rich vs own history → scale = ``cool_scale``.
+    Decision at bar t uses ONLY lag-1 return/stats. Clipped to [lo, 1] — never
+    leverage (hi=1). Targets fat single days that inflate top-month concentration.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    hb = max(20, int(hist_bars))
+    if len(port) < max(30, hb // 2):
+        return port.astype(float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    abs_r = r.abs()
+    q = float(pctile)
+    q = min(max(q, 0.70), 0.99)
+    thr = abs_r.rolling(hb, min_periods=max(20, hb // 4)).quantile(q)
+    abs_lag = abs_r.shift(1)
+    thr_lag = thr.shift(1)
+    scale = pd.Series(1.0, index=eq.index)
+    burst = abs_lag >= thr_lag
+    burst = burst.fillna(False)
+    scale = scale.where(~burst, float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
