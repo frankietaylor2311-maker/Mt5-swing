@@ -1267,3 +1267,66 @@ def apply_rolling_upside_ratio_cool(
     )
     scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
     return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_skew_cool(
+    port: pd.Series,
+    *,
+    lookback_days: int = 42,
+    skew_thresh: float = 1.0,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal rolling skew cool — soft-cap after right-skewed equity return runs.
+
+    Distinct from ``apply_rolling_upside_ratio_cool`` (upside/downside RMS ratio),
+    ``apply_rolling_return_pctile_cool`` (trail return *level* percentile),
+    ``apply_rolling_burst_cool`` (single fat |day| vs own history),
+    ``apply_rolling_weekly_mean_cool`` / ``apply_trailing_month_mean_cool``
+    (mean return richness), and ``apply_trailing_downside_vol_scale`` (downside
+    vol vs a *target*).
+
+    Resamples equity to daily (UTC-normalized). Over each rolling window of
+    ``lookback_days`` (min_periods ≈ lookback//3, ≥10), computes sample/Fisher
+    skew of daily pct changes (pandas rolling.skew). If the *lag-1* skew ≥
+    ``skew_thresh`` → scale = ``cool_scale``, else 1.0. Scale is mapped back
+    onto native bars (timezone-safe) and clipped to [lo, 1] — never leverage
+    (hi=1). Day t uses the trail through t-1 only (no look-ahead). Targets
+    asymmetrically right-tailed equity return distributions that inflate
+    top-month concentration without waiting for a completed calendar month.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r_native = eq.pct_change().fillna(0.0)
+    eq_work = eq.copy()
+    if getattr(eq_work.index, "tz", None) is not None:
+        eq_work.index = eq_work.index.tz_convert("UTC").tz_localize(None)
+    eq_d = eq_work.resample("1D").last().dropna()
+    if len(eq_d) < 5:
+        return eq
+    r_d = eq_d.pct_change().fillna(0.0)
+    lb = max(5, int(lookback_days))
+    min_p = max(10, lb // 3)
+    # Fisher/sample skew of daily returns; NaN until min_periods met
+    skew = r_d.rolling(lb, min_periods=min_p).skew()
+    # skew at day t includes r_t; lag so day t uses trail through t-1 only
+    skew_lag = skew.shift(1)
+    scale_d = pd.Series(1.0, index=r_d.index)
+    hot = skew_lag >= float(skew_thresh)
+    hot = hot.fillna(False)
+    scale_d = scale_d.where(~hot, float(cool_scale))
+    scale_d = scale_d.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_d.index = pd.DatetimeIndex(scale_d.index).normalize()
+    if getattr(eq.index, "tz", None) is not None:
+        day_keys = eq.index.tz_convert("UTC").tz_localize(None).normalize()
+    else:
+        day_keys = pd.DatetimeIndex(eq.index).normalize()
+    scale_bars = (
+        pd.Series(day_keys, index=eq.index, dtype="datetime64[ns]")
+        .map(scale_d)
+        .ffill()
+        .fillna(1.0)
+    )
+    scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
+    return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])

@@ -1124,3 +1124,61 @@ def test_rolling_upside_ratio_cool_triggers_when_upside_heavy():
     pos = r_raw.iloc[mild_sl] > 1e-15
     assert pos.any()
     assert (r_out.iloc[mild_sl][pos] < r_raw.iloc[mild_sl][pos] - 1e-15).any()
+
+
+def test_rolling_skew_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_rolling_skew_cool
+
+    rng = np.random.default_rng(41)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_skew_cool(
+        eq, lookback_days=42, skew_thresh=1.0, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_rolling_skew_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_rolling_skew_cool
+
+    rng = np.random.default_rng(77)
+    rets = rng.normal(0.0005, 0.01, 280)
+    eq = _eq_from_returns(rets)
+    kw = dict(lookback_days=21, skew_thresh=0.75, cool_scale=0.4, lo=0.25)
+    out1 = apply_rolling_skew_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.5
+    out2 = apply_rolling_skew_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_rolling_skew_cool_triggers_when_right_skewed():
+    from mt5_swing.portfolio.overlays import apply_rolling_skew_cool
+
+    # Classic positive skew: many small downs + rare fat ups, then mild positive
+    # days that should cool because lag-1 rolling Fisher skew is high.
+    fat = []
+    for i in range(80):
+        fat.append(0.04 if (i % 8 == 0) else -0.002)
+    mild = np.full(30, 0.001)
+    rets = np.concatenate([np.asarray(fat, dtype=float), mild])
+    eq = _eq_from_returns(rets, start="2024-01-01")
+    out = apply_rolling_skew_cool(
+        eq, lookback_days=42, skew_thresh=0.5, cool_scale=0.4, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Early bars: insufficient lookback / no lag-1 hot skew → uncooled
+    early = slice(2, 8)
+    assert np.allclose(r_out.iloc[early], r_raw.iloc[early], atol=1e-12)
+    # Mild stretch after fat window should cool on positive bars
+    mild_sl = slice(85, 95)
+    pos = r_raw.iloc[mild_sl] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[mild_sl][pos] < r_raw.iloc[mild_sl][pos] - 1e-15).any()
