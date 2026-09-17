@@ -556,3 +556,55 @@ def test_rolling_hitrate_cool_triggers_when_hitrate_high():
     assert (r_out.iloc[mid][pos] < r_raw.iloc[mid][pos] - 1e-15).any()
     # Early bars (before lookback+lag) stay uncooled
     assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
+
+
+def test_consecutive_win_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_consecutive_win_cool
+
+    rng = np.random.default_rng(31)
+    rets = rng.normal(0.0003, 0.01, 180)
+    eq = _eq_from_returns(rets)
+    out = apply_consecutive_win_cool(eq, streak_n=4, cool_scale=0.35, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_consecutive_win_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_consecutive_win_cool
+
+    rng = np.random.default_rng(33)
+    rets = rng.normal(0.0002, 0.01, 160)
+    eq = _eq_from_returns(rets)
+    out1 = apply_consecutive_win_cool(eq, streak_n=3, cool_scale=0.4, lo=0.25)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.6
+    out2 = apply_consecutive_win_cool(eq2, streak_n=3, cool_scale=0.4, lo=0.25)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_consecutive_win_cool_triggers_after_n_up_days():
+    from mt5_swing.portfolio.overlays import apply_consecutive_win_cool
+
+    # 5 down, then 4 up, then more ups — after 3rd consecutive up day, next day cools
+    rets = np.concatenate(
+        [
+            np.full(5, -0.01),
+            np.full(4, 0.015),
+            np.full(10, 0.01),
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_consecutive_win_cool(eq, streak_n=3, cool_scale=0.35, lo=0.25)
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Day indices 5,6,7,8 are ups. Streak through day 7 (3 ups: 5,6,7) → day 8 cools.
+    # Index 9 is next up after 4 ups — streak_lag at day 9 = 4 (>=3) → cool
+    assert r_out.iloc[9] < r_raw.iloc[9] - 1e-15
+    # Early downs / first ups before streak>=3 should be uncooled
+    assert abs(r_out.iloc[3] - r_raw.iloc[3]) < 1e-12
+    assert abs(r_out.iloc[6] - r_raw.iloc[6]) < 1e-12  # only 2 ups lagged so far
