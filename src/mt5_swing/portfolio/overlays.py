@@ -809,3 +809,40 @@ def apply_consecutive_win_cool(
     )
     scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
     return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
+
+
+def apply_peak_proximity_cool(
+    port: pd.Series,
+    *,
+    lookback_bars: int = 42,
+    eps: float = 0.01,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal peak-proximity cool — cut size when lag-1 equity is near the N-bar high.
+
+    Distinct from ``apply_runup_throttle`` (trailing return over N bars) and from
+    win-streak / hit-rate / loss-streak / rolling Sharpe cools. Computes a rolling
+    max over ``lookback_bars``, then uses ONLY lag-1 equity and lag-1 peak so bar t
+    cannot see bar t's close. Proximity = eq_lag / peak_lag - 1 (0 = at peak;
+    negative = underwater). When proximity >= -eps (within eps of the high),
+    scale = ``cool_scale``, else 1.0. Clipped to [lo, 1] — never leverage (hi=1).
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    lb = max(5, int(lookback_bars))
+    if len(port) < max(10, lb + 2):
+        return port.astype(float) if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    peak = eq.rolling(lb, min_periods=max(5, lb // 2)).max()
+    peak_lag = peak.shift(1)
+    eq_lag = eq.shift(1)
+    proximity = eq_lag / peak_lag.replace(0, np.nan) - 1.0
+    scale = pd.Series(1.0, index=eq.index)
+    near = proximity >= -float(eps)
+    # NaN proximity (warmup) stays 1.0
+    near = near.fillna(False)
+    scale = scale.where(~near, float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])

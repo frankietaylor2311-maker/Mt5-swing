@@ -1,0 +1,92 @@
+{
+  "wave": "causal_peak_proximity_cool",
+  "data_source": "approximate_non_ftmo",
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "promote": false,
+  "board_n": 41,
+  "soft_n": 5,
+  "hard_n": 0,
+  "promote_n": 0,
+  "best_soft": {
+    "idea": "wrebal_0.328_0.029_0.241_0.178_0.224+peakprox_lb63_e0.01_c0.35_frozen",
+    "family": "frozen_wrebal_peakprox",
+    "soft_pass": true,
+    "hard_pass": false,
+    "promote": false,
+    "score": 0.01118298381446754,
+    "min_is_mo": 0.012686969196055952,
+    "max_is_top3": 0.6251992690794206,
+    "min_is_pct_pos": 0.8181818181818182,
+    "mo_2024": 0.012686969196055952,
+    "mo_2025_IS": 0.012832498031672995,
+    "pos_2024": 0.8181818181818182,
+    "pos_2025_IS": 0.875,
+    "top3_2024": 0.4868485212436823,
+    "top3_2025_IS": 0.6251992690794206,
+    "mo_2025": 0.00895630494508986,
+    "mo_2026": 0.01736513094094827,
+    "pos_2025": 0.8181818181818182,
+    "pos_2026": 0.75,
+    "top3_2025": 0.6365939890854715,
+    "top3_2026": 0.793738641194316,
+    "mo_holdout": 0.01451681221808554,
+    "pos_holdout": 0.75,
+    "top3_holdout": 0.5976968034488223,
+    "gates_holdout": true,
+    "note": "year_clear_fail"
+  },
+  "best_any": {
+    "idea": "wrebal_0.328_0.029_0.241_0.178_0.224+peakprox_lb63_e0.01_c0.35_frozen",
+    "family": "frozen_wrebal_peakprox",
+    "soft_pass": true,
+    "hard_pass": false,
+    "promote": false,
+    "score": 0.01118298381446754,
+    "min_is_mo": 0.012686969196055952,
+    "max_is_top3": 0.6251992690794206,
+    "min_is_pct_pos": 0.8181818181818182,
+    "mo_2024": 0.012686969196055952,
+    "mo_2025_IS": 0.012832498031672995,
+    "pos_2024": 0.8181818181818182,
+    "pos_2025_IS": 0.875,
+    "top3_2024": 0.4868485212436823,
+    "top3_2025_IS": 0.6251992690794206,
+    "mo_2025": 0.00895630494508986,
+    "mo_2026": 0.01736513094094827,
+    "pos_2025": 0.8181818181818182,
+    "pos_2026": 0.75,
+    "top3_2025": 0.6365939890854715,
+    "top3_2026": 0.793738641194316,
+    "mo_holdout": 0.01451681221808554,
+    "pos_holdout": 0.75,
+    "top3_holdout": 0.5976968034488223,
+    "gates_holdout": true,
+    "note": "year_clear_fail"
+  },
+  "frozen_wrebal": [
+    0.328198,
+    0.029051,
+    0.2413,
+    0.177605,
+    0.223846
+  ],
+  "peakprox_grid": {
+    "lookbacks": [
+      21,
+      42,
+      63
+    ],
+    "epss": [
+      0.005,
+      0.01,
+      0.02
+    ],
+    "cool_scales": [
+      0.35,
+      0.5,
+      0.65
+    ],
+    "lo": 0.25,
+    "rule": "lag-1 equity within eps of rolling N-bar high \u2192 cool"
+  }
+}

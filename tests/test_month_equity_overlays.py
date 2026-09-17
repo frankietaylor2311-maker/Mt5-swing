@@ -608,3 +608,60 @@ def test_consecutive_win_cool_triggers_after_n_up_days():
     # Early downs / first ups before streak>=3 should be uncooled
     assert abs(r_out.iloc[3] - r_raw.iloc[3]) < 1e-12
     assert abs(r_out.iloc[6] - r_raw.iloc[6]) < 1e-12  # only 2 ups lagged so far
+
+
+def test_peak_proximity_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_peak_proximity_cool
+
+    rng = np.random.default_rng(41)
+    rets = rng.normal(0.0003, 0.01, 180)
+    eq = _eq_from_returns(rets)
+    out = apply_peak_proximity_cool(
+        eq, lookback_bars=42, eps=0.01, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_peak_proximity_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_peak_proximity_cool
+
+    rng = np.random.default_rng(43)
+    rets = rng.normal(0.0002, 0.01, 160)
+    eq = _eq_from_returns(rets)
+    kw = dict(lookback_bars=42, eps=0.01, cool_scale=0.4, lo=0.25)
+    out1 = apply_peak_proximity_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.6
+    out2 = apply_peak_proximity_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_peak_proximity_cool_triggers_near_peak():
+    from mt5_swing.portfolio.overlays import apply_peak_proximity_cool
+
+    # Long climb to high then stay near peak → later bars cool
+    rets = np.concatenate(
+        [
+            np.full(50, 0.005),  # climb to high
+            np.full(30, 0.0005),  # stay near peak (small ups)
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_peak_proximity_cool(
+        eq, lookback_bars=21, eps=0.02, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Mid/late series near peak should cool positive bars
+    mid = slice(55, 75)
+    pos = r_raw.iloc[mid] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[mid][pos] < r_raw.iloc[mid][pos] - 1e-15).any()
+    # Early climb bars (before rolling peak forms + lag) stay uncooled
+    assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
