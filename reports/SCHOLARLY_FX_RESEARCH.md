@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-17). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-17, combo wave). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -93,8 +93,11 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `src/mt5_swing/strategies/carry_rank.py` | Cross-sectional carry |
 | `src/mt5_swing/strategies/fx_momentum.py` | Currency momentum + dollar factor |
 | `src/mt5_swing/strategies/gpr_regime.py` | GPR/VIX scale + USD tilt |
+| `src/mt5_swing/strategies/scholarly_combo.py` | EW carry+mom+dollar TSMOM; cool carry in high VIX/GPR; USD tilt on GPR |
 | `scripts/scholarly_fx_stats_report.py` | Means, t-stats, bootstrap, year windows, gates |
-| `reports/scholarly_fx_stats_v1.md` | Empirical board (regenerated) |
+| `scripts/scholarly_fx_combo_wave.py` | Combo board: OLS+Newey–West, top3, FTMO gates, GPR event study |
+| `reports/scholarly_fx_stats_v1.md` | Empirical board (v1 factors) |
+| `reports/scholarly_fx_combo_wave.md` | Combo wave board (this) |
 
 ---
 
@@ -114,4 +117,42 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 1. Add simple transaction-cost / spread haircut on Yahoo D1.
 2. Optional true FX-vol proxy (realized G10 vol) beside VIX.
 3. Wire EPU/TPU CSV when downloaded.
-4. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
+4. Country-GPR / macro-news NLP panel (not price overlays).
+5. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
+
+---
+
+## 8. Combo wave results (2026-09-17 BST) — carry × mom × dollar TSMOM × GPR/VIX
+
+**Design (fixed priors, no HO tuning):** equal-weight 1/3 sleeves; Menkhoff-style **carry cool=0.35** when `max(z_VIX,z_GPR)≥1`; Caldara–Iacoviello **USD tilt≤0.15** on elevated GPR z; `signal_lag=1`; FRED rates +1m; VIX +1d; GPR daily +1d for regime/events.
+
+### Full-sample (≈180 months)
+
+| Factor | mean_mo | t OLS | t NW | %pos |
+|--------|--------:|------:|-----:|-----:|
+| carry_rank | −0.001% | −0.02 | −0.02 | 51% |
+| fx_momentum | −0.064% | −0.90 | −0.92 | 46% |
+| dollar_tsmom (weight map) | +0.012% | 0.09 | 0.11 | 50% |
+| combo_ew_raw | −0.016% | −0.30 | −0.34 | 51% |
+| **scholarly_combo** | **+0.028%** | 0.36 | 0.38 | 52% |
+
+### Consistency windows (`scholarly_combo`)
+
+| Window | mean_mo | %pos | top3 | gates | clears ≥1%/70%/top3≤55%? |
+|--------|--------:|-----:|-----:|:-----:|:------------------------:|
+| 2024 | 0.40% | 73% | 57% | PASS | **no** (mean & top3) |
+| 2025 | 0.10% | 64% | 84% | PASS | **no** |
+| 2026 | 0.36% | 62% | 84% | PASS | **no** |
+| holdout_365d | 0.29% | 67% | 74% | PASS | **no** |
+
+**Joint clear / promote:** **NO.** Closest window is 2024 (0.40%/73%) — still ~2.5× below the 1%/mo mean bar. Regime conditioning nudges full-sample mean slightly positive vs raw EW blend but does **not** approach prop-firm consistency.
+
+### GPR top-decile event study (optional)
+
+206 thinned events (top-decile lagged daily GPR, ≥5d apart). At h=+5, USD basket − risk FX ≈ **+0.15%**; at h=+10 ≈ **+0.06%** — mild safe-haven USD edge, economically small vs 1%/mo.
+
+### Honest gap vs goal
+
+Literature multi-factor + uncertainty gates are the right *prior*, but on Yahoo D1 they deliver **basis-point** monthly means, not percent. Missing for a fair FTMO test: broker CSVs, spreads/swap, country-level GPR / macro news NLP, true FX-vol (not only VIX).
+
+Artifacts: `reports/scholarly_fx_combo_wave.md`, `scholarly_fx_combo_*.csv`, `scholarly_fx_gpr_event_study.csv`, `scholarly_fx_combo_meta.json`.

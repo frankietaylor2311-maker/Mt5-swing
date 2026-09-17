@@ -3,6 +3,65 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only selection. Holdout never for selection.
 
+Session: 2026-09-17 07:35 BST — **Scholarly combo wave**: carry + FX momentum + dollar TSMOM with lagged GPR/VIX regime conditioning (cool carry in high vol/GPR; USD tilt on GPR spikes). Math/stats board with OLS + Newey–West t-stats, %pos, top3, FTMO gates; optional GPR top-decile event study. **NOT** technical overlays.
+
+## Idea vs tuning (this wave)
+
+| Item | Class |
+|------|-------|
+| EW combo carry / mom / dollar TSMOM | **idea** (Lustig / Menkhoff / Asness-style multi-factor) |
+| Carry cool on high VIX∪GPR z | **idea** (Menkhoff 2012 JF) |
+| USD tilt on high GPR z | **idea** (Caldara–Iacoviello 2022) |
+| Newey–West monthly t-stats + top3 + year/HO gates | **stats discipline** |
+| Equity-curve / technical overlays | **rejected / stopped** |
+
+## Scoring rubric (unchanged)
+
+1. High **% positive months** (≥70–75%)
+2. Lower **top-3 gain concentration** (≲50–55%; soft≤70%)
+3. Mean monthly **~1%** on **each** of 2024, 2025, 2026, holdout
+4. Prefer smoother mean over bursty
+5. **No RF hike**; literature cool/tilt only (hi≤1)
+6. Promote only if IS soft + HO confirm + years each clear — **no HO tuning**
+
+## Target vs result
+
+| Criterion | Target | This wave (`scholarly_combo`) | Met? |
+|-----------|--------|-------------------------------|:----:|
+| Mean mo multi-window | ≥1% each | 2024 **0.40%**; 2025 **0.10%**; 2026 **0.36%**; HO **0.29%** | **No** |
+| %pos | ≥70% | 2024 73%; others 62–67% | **No** |
+| Top3 | ≲55% | 57–84% | **No** |
+| Gates | PASS | All combo windows PASS | **Yes** |
+| Promote | — | joint clear=0; any-window 1% bar=0 | **NO** |
+
+**Verdict:** Locked tag **`fx4plus_gbpcad_d1_voltarget_0025` unchanged**. Combo + regime is the honest literature prior and slightly beats raw EW full-sample mean (0.028% vs −0.016%/mo) but **nowhere near** 1%/mo consistency. **Never claim 1%/mo — not earned.** See `reports/SCHOLARLY_FX_RESEARCH.md` §8 and `reports/scholarly_fx_combo_wave.md`.
+
+### Wave board (scholarly combo)
+
+| Idea | 2024 mo/%pos/top3 | 2025 | 2026 | HO | clears | promote |
+|------|------------------:|-----:|-----:|---:|:------:|:-------:|
+| carry_rank | 0.15/64/59 | 0.13/64/63 | 0.13/62/80 | 0.31/75/53 | no | no |
+| fx_momentum | −0.17/45/70 | 0.44/91/51 | 0.34/62/76 | 0.38/75/50 | no | no |
+| dollar_tsmom | 0.80/64/75 | −0.39/45/93 | 0.01/38/100 | 0.33/58/78 | no | no |
+| combo_ew_raw | 0.26/82/76 | 0.06/55/79 | 0.16/62/89 | 0.34/75/59 | no | no |
+| **scholarly_combo** | **0.40/73/57** | **0.10/64/84** | **0.36/62/84** | **0.30/67/74** | no | **no** |
+
+**Finding:** Best single window is combo 2024 (0.40%/73% pos) — still fails mean and top3. GPR event study shows mild USD>risk FX after top-decile GPR (+0.15% at h=+5). Unlock still: **FTMO MT5 CSVs**, true FX-vol, country-GPR / news NLP — not more overlays.
+
+## Locked candidate (unchanged — still official)
+
+**Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
+**Config:** `configs/quest_one_pct_candidate.yaml`
+
+---
+
+## Prior session history (preserved)
+
+# One-percent per month quest — status
+
+**Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
+**Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only selection. Holdout never for selection.
+
 Session: 2026-09-17 07:35 BST — **PIVOT: literature-backed macro / geopolitics / statistical factors**. Frankie steered: STOP overlay-knob number hunt on locked fx4plus. Mid-wave technical strats (mtf_confirm_pullback / range_expansion_breakout / session_inventory_mr) **aborted unregistered**.
 
 ## Idea vs tuning (this wave)

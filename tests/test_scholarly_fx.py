@@ -213,3 +213,109 @@ def test_gpr_stub_interface():
     assert not stub.available
     with pytest.raises(RuntimeError):
         stub.series()
+
+
+def test_scholarly_combo_weights_cool_carry_and_causal():
+    from mt5_swing.strategies.scholarly_combo import (
+        ScholarlyComboConfig,
+        build_combo_weights,
+        combo_portfolio_returns,
+        sleeve_returns_bundle,
+    )
+
+    idx = pd.date_range("2019-01-01", periods=520, freq="B", tz="UTC")
+    rng = np.random.default_rng(7)
+    rates_idx = pd.date_range("2018-01-01", periods=40, freq="MS", tz="UTC")
+    rates = pd.DataFrame(
+        {
+            "USD": 1.0,
+            "AUD": np.linspace(2.0, 4.0, 40),
+            "JPY": np.linspace(0.0, 0.2, 40),
+            "EUR": np.linspace(0.5, 1.0, 40),
+            "GBP": np.linspace(1.0, 1.5, 40),
+            "CAD": np.linspace(0.8, 1.2, 40),
+            "CHF": np.linspace(0.0, 0.3, 40),
+            "NZD": np.linspace(1.5, 2.5, 40),
+        },
+        index=rates_idx,
+    )
+    pret = pd.DataFrame(
+        rng.normal(0, 0.004, size=(len(idx), 7)),
+        index=idx,
+        columns=["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDJPY", "USDCAD", "USDCHF"],
+    )
+    gpr = pd.Series(100.0, index=idx, name="GPR")
+    gpr.iloc[400:] = 400.0
+    vix = pd.Series(15.0, index=idx, name="VIX")
+    vix.iloc[400:] = 45.0
+    cfg = ScholarlyComboConfig(
+        signal_lag=1,
+        z_window=60,
+        min_periods=30,
+        z_high=1.0,
+        carry_cool=0.35,
+        usd_tilt=0.15,
+    )
+    w = build_combo_weights(rates, pret, gpr, vix, cfg=cfg)
+    assert not w.empty
+    assert set(["EURUSD", "USDJPY"]).issubset(set(w.columns))
+    # Stress window: gross exposure should not explode above ~1
+    late_gross = float(w.iloc[450:500].abs().sum(axis=1).mean())
+    assert late_gross <= 1.05
+    r = combo_portfolio_returns(rates, pret, gpr, vix, cfg=cfg)
+    assert len(r) == len(pret)
+    # Causality: last return change does not affect earlier combo returns
+    pret2 = pret.copy()
+    pret2.iloc[-1] = 0.0
+    r2 = combo_portfolio_returns(rates, pret2, gpr, vix, cfg=cfg)
+    assert np.allclose(r.iloc[:-1].values, r2.iloc[:-1].values, equal_nan=True)
+    bundle = sleeve_returns_bundle(rates, pret, gpr, vix, cfg=cfg)
+    assert "scholarly_combo" in bundle and "carry_rank" in bundle
+    assert "dollar_tsmom" in bundle
+
+
+def test_newey_west_tstat_basic():
+    # Import from wave script helpers via inline copy of pure functions
+    from pathlib import Path
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "scripts" / "scholarly_fx_combo_wave.py"
+    spec = importlib.util.spec_from_file_location("combo_wave", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    rng = np.random.default_rng(0)
+    x = rng.normal(0.01, 0.02, size=120)
+    t_ols = mod.ols_tstat(x)
+    t_nw, L = mod.newey_west_tstat(x)
+    assert L >= 0
+    assert np.isfinite(t_ols) and np.isfinite(t_nw)
+    # Strongly positive mean → both t > 0
+    assert t_ols > 0 and t_nw > 0
+    # Zero series → t ~ 0
+    z = np.zeros(50)
+    tz, _ = mod.newey_west_tstat(z)
+    assert abs(tz) < 1e-8
+
+
+def test_gpr_event_study_runs():
+    from pathlib import Path
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "scripts" / "scholarly_fx_combo_wave.py"
+    spec = importlib.util.spec_from_file_location("combo_wave", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    idx = pd.date_range("2020-01-01", periods=400, freq="B", tz="UTC")
+    rng = np.random.default_rng(5)
+    pret = pd.DataFrame(
+        rng.normal(0, 0.005, size=(400, 6)),
+        index=idx,
+        columns=["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDJPY", "USDCHF"],
+    )
+    gpr = pd.Series(rng.normal(100, 10, 400), index=idx)
+    gpr.iloc[50] = 300
+    gpr.iloc[150] = 320
+    gpr.iloc[250] = 310
+    df = mod.gpr_event_study(pret, gpr, pre=3, post=5)
+    assert "usd_minus_risk" in df.columns
+    assert len(df) == 3 + 5 + 1

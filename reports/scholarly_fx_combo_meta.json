@@ -1,0 +1,54 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "signal_lag": 1,
+  "gpr_status": "OK monthly n=500 lag=1m",
+  "gpr_daily_status": "OK daily n=15232 lag=1d",
+  "event_note": "n_events=206 thr\u2248176.35 (top-decile lagged GPR, \u22655d separation)",
+  "any_window_clears_1pct": false,
+  "joint_years_holdout_clear": false,
+  "promote": false,
+  "combo_snapshot": [
+    {
+      "window": "year_2024",
+      "mean_mo": 0.004026911989250718,
+      "pct_pos": 0.7272727272727273,
+      "top3": 0.5706292743313008,
+      "gates": true,
+      "clears": false
+    },
+    {
+      "window": "year_2025",
+      "mean_mo": 0.000973477703734137,
+      "pct_pos": 0.6363636363636364,
+      "top3": 0.8357705325523737,
+      "gates": true,
+      "clears": false
+    },
+    {
+      "window": "year_2026",
+      "mean_mo": 0.0035779549745321715,
+      "pct_pos": 0.625,
+      "top3": 0.8366679486799952,
+      "gates": true,
+      "clears": false
+    },
+    {
+      "window": "holdout_365d",
+      "mean_mo": 0.0029474414217775338,
+      "pct_pos": 0.6666666666666666,
+      "top3": 0.7402389847982549,
+      "gates": true,
+      "clears": false
+    }
+  ],
+  "cfg": {
+    "w_carry": 0.3333333333333333,
+    "w_mom": 0.3333333333333333,
+    "w_dollar": 0.3333333333333333,
+    "carry_cool": 0.35,
+    "z_high": 1.0,
+    "usd_tilt": 0.15,
+    "mom_formation": 63,
+    "mom_skip": 21
+  }
+}
