@@ -3,7 +3,7 @@
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
-Session: 2026-09-17 02:52 BST (wave: **causal peak-proximity cool** on locked sleeve ± frozen HO-robust wrebal / MTD).
+Session: 2026-09-17 03:48 BST (wave: **causal rolling DD-depth percentile cool** on locked sleeve ± frozen HO-robust wrebal / MTD).
 
 ## Scoring rubric this wave (primary)
 
@@ -26,7 +26,7 @@ Session: 2026-09-17 02:52 BST (wave: **causal peak-proximity cool** on locked sl
 | Gates | PASS | All listed windows **PASS** | **Yes** |
 | Multi-window, warmup, fixed params | required | Independent windows + 250-bar warmup; params frozen | **Yes** |
 
-**Verdict:** Official locked tag **unchanged**. Peak-proximity cool wave: board **n=41**, soft=**5**, hard=**0**, promote=**0**. Best soft `wrebal+peakprox_lb63_e0.01_c0.35` (HO 1.45%/75%/60%; year_clear_fail on full-2025 ~0.90%). Peakprox alone on locked leaves 2024 ~0.21–0.63%. **Promote: NO.** Still blocked on FTMO CSVs.
+**Verdict:** Official locked tag **unchanged**. DD-depth cool wave: board **n=32**, soft=**4**, hard=**0**, promote=**0**. Best soft `wrebal+mtd+dddepth_pb63_hb126_p0.15_c0.65` (2024 1.20%/82%/44%; HO 1.43%/67%/68% holdout_fail). Prior peakprox/ret-pctile also no promote. **Promote: NO.** Still blocked on FTMO CSVs.
 
 ## Locked candidate (unchanged — still official)
 
