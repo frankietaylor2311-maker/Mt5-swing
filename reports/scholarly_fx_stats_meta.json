@@ -1,0 +1,15 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "signal_lag": 1,
+  "gpr_status": "OK monthly n=500 lag=1m [1985-02-01 \u2192 2026-09-01]",
+  "n_fred": 11,
+  "pairs": [
+    "EURUSD",
+    "GBPUSD",
+    "AUDUSD",
+    "NZDUSD",
+    "USDJPY",
+    "USDCAD",
+    "USDCHF"
+  ]
+}

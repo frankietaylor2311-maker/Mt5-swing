@@ -28,6 +28,7 @@ mt5 = [
 ]
 data = [
     "yfinance>=0.2.40",
+    "openpyxl>=3.1",
 ]
 
 [project.scripts]

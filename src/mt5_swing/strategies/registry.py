@@ -18,8 +18,12 @@ from mt5_swing.strategies.willr_reversion import WillrReversion
 from mt5_swing.strategies.tsmom import TsMom
 from mt5_swing.strategies.vol_breakout import VolBreakout
 from mt5_swing.strategies.carry_proxy import CarryProxy
+from mt5_swing.strategies.carry_rank import CarryRankPairSignal
+from mt5_swing.strategies.fx_momentum import FxMomentumPairSignal
+from mt5_swing.strategies.gpr_regime import GprRegimePairSignal
 from mt5_swing.strategies.kalman_trend import KalmanTrend
 from mt5_swing.strategies.session_orb import SessionORB
+from mt5_swing.strategies.fred_carry import FredCarry
 from mt5_swing.strategies.mean_reversion import MeanReversionRegime
 from mt5_swing.strategies.trend_ma_adx import TrendMAADX
 
@@ -40,8 +44,12 @@ _REGISTRY = {
     TsMom.name: TsMom,
     VolBreakout.name: VolBreakout,
     CarryProxy.name: CarryProxy,
+    CarryRankPairSignal.name: CarryRankPairSignal,
+    FxMomentumPairSignal.name: FxMomentumPairSignal,
+    GprRegimePairSignal.name: GprRegimePairSignal,
     KalmanTrend.name: KalmanTrend,
     SessionORB.name: SessionORB,
+    FredCarry.name: FredCarry,
 }
 
 

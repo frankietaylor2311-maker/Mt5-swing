@@ -1,0 +1,263 @@
+"""Uncertainty / geopolitical-risk loaders: VIX (yfinance) + Caldara–Iacoviello GPR.
+
+GPR source: https://www.matteoiacoviello.com/gpr.htm (Excel monthly/daily).
+We cache cleaned CSVs under ``data/macro/``. If the public download is blocked,
+``load_gpr`` raises with stub instructions; ``GprIndex`` still accepts a local CSV.
+
+Publication lag (conservative defaults for research PIT):
+- VIX: lag 1 trading day (close known next session).
+- Monthly GPR: lag 1 calendar month (index for month t published early t+1).
+- Daily GPR: lag 1 calendar day (updates are weekly; extra lag is safer).
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Literal
+from urllib.error import URLError, HTTPError
+from urllib.request import urlretrieve
+
+import pandas as pd
+
+GPR_PAGE = "https://www.matteoiacoviello.com/gpr.htm"
+GPR_MONTHLY_XLS = "https://www.matteoiacoviello.com/gpr_files/data_gpr_export.xls"
+GPR_DAILY_XLS = "https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls"
+
+# Trade-policy / economic-policy uncertainty (optional stub series ids)
+TPU_NOTES = (
+    "Baker–Bloom–Davis EPU / TPU: https://www.policyuncertainty.com/ — "
+    "download CSV manually into data/macro/epu_tpu.csv with columns date,EPU,TPU "
+    "if automated fetch is blocked."
+)
+
+
+def macro_dir() -> Path:
+    return Path(__file__).resolve().parents[3] / "data" / "macro"
+
+
+def _ensure_macro() -> Path:
+    d = macro_dir()
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+# ---------------------------------------------------------------------------
+# VIX
+# ---------------------------------------------------------------------------
+
+def download_vix(*, force: bool = False) -> Path:
+    """Download ^VIX close history via yfinance → ``data/macro/vix_yahoo.csv``."""
+    path = _ensure_macro() / "vix_yahoo.csv"
+    if path.exists() and not force and path.stat().st_size > 50:
+        return path
+    import yfinance as yf
+
+    raw = yf.Ticker("^VIX").history(period="max", auto_adjust=True)
+    if raw is None or raw.empty:
+        raise RuntimeError("Empty VIX download from yfinance")
+    out = raw[["Close"]].rename(columns={"Close": "close"}).copy()
+    idx = pd.to_datetime(out.index)
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert("UTC")
+    else:
+        idx = idx.tz_localize("UTC")
+    out.index = idx
+    out.index.name = "date"
+    out.to_csv(path)
+    return path
+
+
+def load_vix(
+    *,
+    download: bool = True,
+    pub_lag_days: int = 1,
+    force: bool = False,
+) -> pd.Series:
+    """VIX close with optional publication lag (default 1 day)."""
+    path = macro_dir() / "vix_yahoo.csv"
+    if download or not path.exists():
+        download_vix(force=force)
+    df = pd.read_csv(path, index_col=0, parse_dates=True)
+    s = pd.to_numeric(df.iloc[:, 0], errors="coerce")
+    s.index = pd.to_datetime(s.index, utc=True)
+    s = s.sort_index().dropna()
+    s.name = "VIX"
+    if pub_lag_days > 0:
+        s.index = s.index + pd.Timedelta(days=int(pub_lag_days))
+        s = s[~s.index.duplicated(keep="last")].sort_index()
+    s.attrs["source"] = "yfinance_^VIX"
+    s.attrs["pub_lag_days"] = int(pub_lag_days)
+    return s
+
+
+# ---------------------------------------------------------------------------
+# Caldara–Iacoviello GPR
+# ---------------------------------------------------------------------------
+
+def _xls_to_monthly_csv(xls_path: Path, csv_path: Path) -> Path:
+    df = pd.read_excel(xls_path, sheet_name=0)
+    keep = [c for c in ("month", "GPR", "GPRT", "GPRA", "GPRH") if c in df.columns]
+    out = df[keep].dropna(subset=["month"]).copy()
+    out["month"] = pd.to_datetime(out["month"], utc=True)
+    out = out.sort_values("month")
+    out.to_csv(csv_path, index=False)
+    return csv_path
+
+
+def _xls_to_daily_csv(xls_path: Path, csv_path: Path) -> Path:
+    df = pd.read_excel(xls_path, sheet_name=0)
+    need = [c for c in ("DAY", "GPRD", "GPRD_ACT", "GPRD_THREAT", "GPRD_MA30", "GPRD_MA7") if c in df.columns]
+    out = df[need].copy()
+    out["DAY"] = pd.to_numeric(out["DAY"], errors="coerce")
+    out = out.dropna(subset=["DAY"])
+    out["date"] = pd.to_datetime(out["DAY"].astype(int).astype(str), format="%Y%m%d", utc=True)
+    out = out.rename(columns={"GPRD": "GPR"})
+    cols = ["date", "GPR"] + [c for c in ("GPRD_ACT", "GPRD_THREAT", "GPRD_MA30", "GPRD_MA7") if c in out.columns]
+    out = out[cols].sort_values("date")
+    out.to_csv(csv_path, index=False)
+    return csv_path
+
+
+def download_gpr(
+    *,
+    freq: Literal["M", "D"] = "M",
+    force: bool = False,
+) -> Path:
+    """Download GPR Excel from Iacoviello site and cache a cleaned CSV.
+
+    Raises ``RuntimeError`` with manual instructions if the HTTP fetch fails.
+    """
+    d = _ensure_macro()
+    csv_name = "gpr_monthly.csv" if freq.upper().startswith("M") else "gpr_daily.csv"
+    xls_name = "gpr_monthly.xls" if freq.upper().startswith("M") else "gpr_daily.xls"
+    csv_path = d / csv_name
+    xls_path = d / xls_name
+    if csv_path.exists() and not force and csv_path.stat().st_size > 50:
+        return csv_path
+    url = GPR_MONTHLY_XLS if freq.upper().startswith("M") else GPR_DAILY_XLS
+    try:
+        if force or not xls_path.exists() or xls_path.stat().st_size < 1000:
+            urlretrieve(url, xls_path)
+    except (URLError, HTTPError, OSError) as exc:
+        raise RuntimeError(
+            f"GPR download blocked/failed ({exc}).\n"
+            f"1. Open {GPR_PAGE}\n"
+            f"2. Download monthly Excel (data_gpr_export*.xls) or daily recent Excel\n"
+            f"3. Save as {xls_path} then re-run, OR place a cleaned CSV at {csv_path}\n"
+            f"   with columns month|date,GPR[,GPRT,GPRA]."
+        ) from exc
+    if freq.upper().startswith("M"):
+        return _xls_to_monthly_csv(xls_path, csv_path)
+    return _xls_to_daily_csv(xls_path, csv_path)
+
+
+def load_gpr(
+    *,
+    freq: Literal["M", "D"] = "M",
+    column: str = "GPR",
+    download: bool = True,
+    pub_lag_months: int = 1,
+    pub_lag_days: int = 1,
+    force: bool = False,
+) -> pd.Series:
+    """Load Caldara–Iacoviello GPR with publication lag.
+
+    If CSV/XLS missing and download fails, raises with stub instructions.
+    """
+    csv_path = macro_dir() / ("gpr_monthly.csv" if freq.upper().startswith("M") else "gpr_daily.csv")
+    if download or not csv_path.exists():
+        try:
+            download_gpr(freq=freq, force=force)
+        except RuntimeError:
+            if not csv_path.exists():
+                raise
+    df = pd.read_csv(csv_path)
+    if freq.upper().startswith("M"):
+        date_col = "month" if "month" in df.columns else df.columns[0]
+        idx = pd.to_datetime(df[date_col], utc=True)
+        if column not in df.columns:
+            raise KeyError(f"GPR column '{column}' not in {list(df.columns)}")
+        s = pd.Series(pd.to_numeric(df[column], errors="coerce").values, index=idx, name=column)
+        s = s.dropna().sort_index()
+        if pub_lag_months > 0:
+            s.index = s.index + pd.DateOffset(months=int(pub_lag_months))
+            s = s[~s.index.duplicated(keep="last")].sort_index()
+        s.attrs["pub_lag_months"] = int(pub_lag_months)
+    else:
+        date_col = "date" if "date" in df.columns else df.columns[0]
+        idx = pd.to_datetime(df[date_col], utc=True)
+        col = column if column in df.columns else "GPR"
+        s = pd.Series(pd.to_numeric(df[col], errors="coerce").values, index=idx, name=col)
+        s = s.dropna().sort_index()
+        if pub_lag_days > 0:
+            s.index = s.index + pd.Timedelta(days=int(pub_lag_days))
+            s = s[~s.index.duplicated(keep="last")].sort_index()
+        s.attrs["pub_lag_days"] = int(pub_lag_days)
+    s.attrs["source"] = "caldara_iacoviello_gpr"
+    s.attrs["citation"] = "Caldara & Iacoviello (2022), Measuring Geopolitical Risk, AER"
+    s.attrs["url"] = GPR_PAGE
+    return s
+
+
+class GprIndex:
+    """Thin stub/interface when live download is unavailable.
+
+    Usage::
+
+        gpr = GprIndex.from_csv(path)  # or GprIndex.stub()
+        s = gpr.series(pub_lag_months=1)
+    """
+
+    def __init__(self, series: pd.Series | None = None, *, note: str = ""):
+        self._series = series
+        self.note = note or (
+            "Stub: place Caldara–Iacoviello GPR CSV at data/macro/gpr_monthly.csv "
+            f"or download from {GPR_PAGE}"
+        )
+
+    @classmethod
+    def stub(cls) -> "GprIndex":
+        return cls(None)
+
+    @classmethod
+    def from_csv(cls, path: str | Path, column: str = "GPR") -> "GprIndex":
+        df = pd.read_csv(path)
+        date_col = "month" if "month" in df.columns else ("date" if "date" in df.columns else df.columns[0])
+        idx = pd.to_datetime(df[date_col], utc=True)
+        s = pd.Series(pd.to_numeric(df[column], errors="coerce").values, index=idx, name=column)
+        return cls(s.dropna().sort_index(), note=f"loaded from {path}")
+
+    @classmethod
+    def try_load(cls, **kwargs) -> "GprIndex":
+        try:
+            return cls(load_gpr(**kwargs), note="live/cached GPR")
+        except Exception as exc:  # noqa: BLE001 — intentional stub fallback
+            return cls(None, note=f"stub after load failure: {exc}")
+
+    @property
+    def available(self) -> bool:
+        return self._series is not None and len(self._series) > 0
+
+    def series(self, *, pub_lag_months: int = 0, pub_lag_days: int = 0) -> pd.Series:
+        if not self.available:
+            raise RuntimeError(self.note)
+        s = self._series.copy()
+        if pub_lag_months > 0:
+            s.index = s.index + pd.DateOffset(months=int(pub_lag_months))
+        if pub_lag_days > 0:
+            s.index = s.index + pd.Timedelta(days=int(pub_lag_days))
+        return s[~s.index.duplicated(keep="last")].sort_index()
+
+
+def load_epu_tpu_stub() -> pd.DataFrame:
+    """Load local EPU/TPU if present; else empty frame with instructions in attrs."""
+    path = macro_dir() / "epu_tpu.csv"
+    if not path.exists():
+        empty = pd.DataFrame(columns=["EPU", "TPU"])
+        empty.attrs["instructions"] = TPU_NOTES
+        empty.attrs["available"] = False
+        return empty
+    df = pd.read_csv(path, index_col=0, parse_dates=True)
+    df.index = pd.to_datetime(df.index, utc=True)
+    df.attrs["available"] = True
+    return df.sort_index()

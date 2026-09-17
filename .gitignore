@@ -83,3 +83,8 @@ data/downloaded/
 !data/sample/**
 !reports/
 !reports/**
+
+# Macro research dumps: keep CSV, ignore bulky Excel originals
+data/macro/*.xls
+data/macro/*.xlsx
+data/macro/*.dta

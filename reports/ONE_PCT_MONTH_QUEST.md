@@ -1,6 +1,97 @@
 # One-percent per month quest — status
 
 **Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
+**Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only selection. Holdout never for selection.
+
+Session: 2026-09-17 07:35 BST — **PIVOT: literature-backed macro / geopolitics / statistical factors**. Frankie steered: STOP overlay-knob number hunt on locked fx4plus. Mid-wave technical strats (mtf_confirm_pullback / range_expansion_breakout / session_inventory_mr) **aborted unregistered**.
+
+## Idea vs tuning (this wave)
+
+| Item | Class |
+|------|-------|
+| FRED rate-diff carry (`fred_carry`) | **idea** (Lustig–Verdelhan / Menkhoff) |
+| VIX risk gate on basket | **idea** (Menkhoff 2012 JF global vol) |
+| GPR risk gate on basket | **idea** (Caldara–Iacoviello 2022; Liu–Zhang 2024) |
+| VIX+GPR stack | **idea** (fixed a-priori z thresholds — not a cool grid) |
+| Equity-curve cool/throttle overlays | **rejected / stopped** |
+| Technical indicator new-strats mid-wave | **aborted** |
+
+## Scoring rubric (unchanged)
+
+1. High **% positive months** (≥70–75%)
+2. Lower **top-3 gain concentration** (≲50–55%; soft≤70%)
+3. Mean monthly **~1%** on **each** of 2024, 2025, 2026, holdout
+4. Prefer smoother mean over bursty
+5. **No RF hike** (8%); literature gates hi≤1
+6. Promote only if IS soft + HO confirm + years each clear
+
+## Target vs result
+
+| Criterion | Target | This wave | Met? |
+|-----------|--------|-----------|:----:|
+| Mean mo multi-window | ≥1% each | Best literature ideas fail IS soft / 2024 | **No** |
+| %pos | ≥70% | fred_carry / gates below bar | **No** |
+| Top3 | ≲55% | Still bursty on locked±gates | **No** |
+| Gates | PASS | All evaluated windows PASS | **Yes** |
+| Promote | — | board n=6 soft=0 hard=0 promote=0 | **NO** |
+
+**Verdict:** Locked tag **`fx4plus_gbpcad_d1_voltarget_0025` unchanged**. Macro line established with datasets + loaders + `fred_carry` + VIX/GPR gates. No promote. See `reports/MACRO_FACTOR_LITERATURE.md` and `reports/quest_macro_factor_literature.md`.
+
+### Wave board (macro literature)
+
+| Idea | 2024 mo/%pos | 2025 | 2026 | HO | soft | promote |
+|------|-------------:|-----:|-----:|---:|:----:|:-------:|
+| baseline_locked_vt | 0.36/55 | 1.83/73 | 2.43/75 | 1.54/67 | no | no |
+| fred_carry_d1 | 0.48/64 | 0.00/55 | 0.26/50 | 0.06/50 | no | no |
+| locked+vix_gate | -0.19/45 | 1.74/73 | 2.43/62 | 1.55/58 | no | no |
+| locked+gpr_gate | 0.41/55 | 1.44/73 | 2.55/75 | 1.75/67 | no | no |
+| locked+vix_gpr | -0.19/55 | 1.32/73 | 2.48/62 | 1.75/58 | no | no |
+| fred_carry+vix_gpr | 0.31/55 | 0.15/45 | 0.12/50 | -0.12/50 | no | no |
+
+**Finding:** Aggregate GPR gate nudges HO mean (1.54→1.75%) but does not repair 2024 consistency. FRED carry alone is weak on Yahoo D1 under FTMO sizing (needs country-GPR cross-section + Dahlquist macro panel next). VIX gate hurts 2024. Unlock: country GPR + multi-country CPI/IP + FTMO CSVs.
+
+## Locked candidate (unchanged — still official)
+
+**Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
+**Config:** `configs/quest_one_pct_candidate.yaml`
+
+---
+
+## Prior session history (preserved)
+
+# One-percent per month quest — status
+
+**Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
+**Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
+
+Session: 2026-09-17 07:25 BST — **NEW research line: literature-backed FX quant (scholarly)**. Technical **overlay hunt deprecated** as primary path.
+
+## Ethos update (keep-alive)
+
+| Line | Status |
+|------|--------|
+| **Scholarly FX** (carry / momentum / dollar / GPR–VIX) | **ACTIVE** — see `reports/SCHOLARLY_FX_RESEARCH.md`, `scripts/scholarly_fx_stats_report.py` |
+| Technical consistency overlays on locked sleeve (cool/surplus/pace/wrebal stacks) | **Deprecated** — do not spend waves inventing new equity-curve overlays |
+| Locked tag `fx4plus_gbpcad_d1_voltarget_0025` | Unchanged until a scholarly (or FTMO-CSV) candidate clears promote rules |
+
+**Why:** Overlay waves repeatedly soft-pass IS then fail holdout top3 / year consistency. Literature factors are the honest prior; 1%/mo remains a hard prop-firm bar the papers do **not** guarantee.
+
+**This wave deliverables:** FRED+VIX+GPR loaders (PIT lags), `carry_rank` / `fx_momentum` / `gpr_regime`, stats board with t-stats/bootstrap/year windows, pytest, commit.
+
+## Locked candidate (unchanged — still official)
+
+**Tag:** `fx4plus_gbpcad_d1_voltarget_0025`  
+**Config:** `configs/quest_one_pct_candidate.yaml`
+
+Promote rules unchanged: holdout confirmation only; no HO tuning; scholarly params are fixed literature priors.
+
+---
+
+## Prior session history (preserved)
+
+# One-percent per month quest — status
+
+**Data:** `approximate_non_ftmo` (Yahoo via yfinance). **No `data/ftmo/` exports — never golive.**
 **Gates:** FTMO 2-Step static max loss 10%, daily 5% (Europe/Prague). `signal_lag=1`. IS-only grids. Holdout never for selection.
 
 Session: 2026-09-17 06:21 BST (wave: **causal rolling upside/downside vol-ratio cool** on locked sleeve ± frozen HO-robust wrebal / MTD). Prior 05:49 weekly mean cool; 05:23 trailing month-mean cool; 04:54 month-end surplus — no promote.

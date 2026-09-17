@@ -11,3 +11,7 @@ __all__ = [
     "pip_size",
     "pip_value_per_lot",
 ]
+
+# Scholarly FX macro loaders (import submodule paths):
+#   mt5_swing.data.fred_rates
+#   mt5_swing.data.macro_uncertainty
