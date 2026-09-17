@@ -319,3 +319,68 @@ def test_gpr_event_study_runs():
     df = mod.gpr_event_study(pret, gpr, pre=3, post=5)
     assert "usd_minus_risk" in df.columns
     assert len(df) == 3 + 5 + 1
+
+
+def test_country_gpr_loader_and_sort_causal():
+    from mt5_swing.data.macro_uncertainty import load_country_gpr, CURRENCY_USD_PAIR
+    from mt5_swing.strategies.country_gpr_fx import (
+        CountryGprFxConfig,
+        country_gpr_sort_returns,
+        foreign_vs_usd_returns,
+        local_projection_panel,
+        prepare_country_gpr_signal,
+    )
+
+    if not (MACRO / "gpr_country_monthly.csv").exists():
+        pytest.skip("country GPR CSV missing")
+    cg = load_country_gpr(download=False, pub_lag_months=1)
+    assert "EUR" in cg.columns and "JPY" in cg.columns
+    assert "NZD" not in cg.columns  # documented gap
+    assert cg.attrs.get("pub_lag_months") == 1
+    assert set(CURRENCY_USD_PAIR) >= {"EUR", "JPY", "AUD"}
+
+    idx = pd.date_range("2015-01-01", periods=800, freq="B", tz="UTC")
+    rng = np.random.default_rng(9)
+    pret = pd.DataFrame(
+        rng.normal(0, 0.005, size=(len(idx), 6)),
+        index=idx,
+        columns=["EURUSD", "GBPUSD", "AUDUSD", "USDJPY", "USDCAD", "USDCHF"],
+    )
+    # Inject: high JPY GPR months should coincide with JPY weakness later — synthetic
+    cfg = CountryGprFxConfig(signal_lag=1, z_window=36, min_periods=18, n_long=2, n_short=2)
+    # Use real country GPR aligned into synthetic window
+    cg2 = cg.loc["2014-01-01":"2020-12-01"]
+    if cg2.dropna(how="all").shape[0] < 40:
+        pytest.skip("insufficient country GPR overlap")
+    port = country_gpr_sort_returns(cg2, pret, cfg=cfg)
+    assert len(port) == len(pret)
+    pret2 = pret.copy()
+    pret2.iloc[-1] = 0.0
+    port2 = country_gpr_sort_returns(cg2, pret2, cfg=cfg)
+    assert np.allclose(port.iloc[:-1].values, port2.iloc[:-1].values, equal_nan=True)
+
+    fx = foreign_vs_usd_returns(pret)
+    assert "JPY" in fx.columns
+    # USDJPY up → JPY down → foreign return negative
+    assert np.allclose(fx["JPY"], -pret["USDJPY"])
+
+    lp = local_projection_panel(cg2, pret, cfg=cfg)
+    assert "beta" in lp.columns
+    assert (lp["scope"] == "pooled").any()
+
+
+def test_fred_extended_coverage_documents_sparse():
+    from mt5_swing.data.fred_rates import (
+        FRED_IMMEDIATE_MISSING,
+        FRED_IMMEDIATE_MONTHLY_EXTENDED,
+        rate_panel_coverage,
+    )
+
+    assert "SEK" in FRED_IMMEDIATE_MONTHLY_EXTENDED
+    assert "SGD" in FRED_IMMEDIATE_MISSING
+    if not (MACRO / "fred_IRSTCI01SEM156N.csv").exists():
+        pytest.skip("extended FRED cache missing")
+    cov = rate_panel_coverage(download=False, extended=True)
+    sek = cov[cov.currency == "SEK"].iloc[0]
+    assert bool(sek["sparse_or_stale"])
+    assert cov[cov.status == "fred_404"].shape[0] >= 1

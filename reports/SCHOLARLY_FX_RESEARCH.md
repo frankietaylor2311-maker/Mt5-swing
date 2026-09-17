@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-17, combo wave). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-17, country-GPR wave after combo). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -35,8 +35,11 @@
 ### 1.5 Geopolitical risk (GPR)
 
 - **Claim:** News-based geopolitical risk rises around wars / major tensions; elevated GPR is associated with risk-off asset moves, including safe-haven USD / CHF / JPY demand in many episodes.
-- **Key refs:** Caldara & Iacoviello (2022), “Measuring Geopolitical Risk,” *American Economic Review*; data: https://www.matteoiacoviello.com/gpr.htm
-- **What we implement:** `strategies/gpr_regime.py` — lag monthly GPR (+ VIX), z-score vs trailing year, cool gross exposure when stressed; optional USD tilt.
+- **Country claim:** High *home-country* GPR (GPRC_*) is associated with subsequent depreciation of that currency vs USD (local-projection / sort evidence in this repo).
+- **Key refs:** Caldara & Iacoviello (2022), “Measuring Geopolitical Risk,” *American Economic Review*; data: https://www.matteoiacoviello.com/gpr.htm (country indexes on same monthly export).
+- **What we implement:**
+  - `strategies/gpr_regime.py` — lag monthly/daily aggregate GPR (+ VIX), cool gross exposure; optional USD tilt.
+  - `strategies/country_gpr_fx.py` + `scripts/scholarly_fx_country_gpr_wave.py` — country GPR → FX: lagged long-low/short-high sort + LP β at h=1,3,6 months (`pub_lag=1m`, `signal_lag=1`).
 
 ### 1.6 TPU / economic-policy uncertainty
 
@@ -69,6 +72,8 @@
 | Overnight (USD/EUR/GBP) | FRED DFF / ECBDFR / IUDSOIA | **1 day** |
 | VIX | Yahoo `^VIX` | **1 day** |
 | GPR monthly / daily | Iacoviello Excel → `data/macro/gpr_*.csv` | **1 month** / **1 day** |
+| Country GPR (GPRC_*) | Same monthly Excel → `gpr_country_monthly.csv` | **1 month** (+ strategy `signal_lag`) |
+| OECD immediate rates (extended) | FRED `IRSTCI01*` G10 + SEK/NOK/DKK/MXN/… | **1 month** (see coverage CSV) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 
 If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (instructions in `macro_uncertainty.download_gpr`).
@@ -96,8 +101,12 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `src/mt5_swing/strategies/scholarly_combo.py` | EW carry+mom+dollar TSMOM; cool carry in high VIX/GPR; USD tilt on GPR |
 | `scripts/scholarly_fx_stats_report.py` | Means, t-stats, bootstrap, year windows, gates |
 | `scripts/scholarly_fx_combo_wave.py` | Combo board: OLS+Newey–West, top3, FTMO gates, GPR event study |
+| `src/mt5_swing/strategies/country_gpr_fx.py` | Country GPR sort + local projections |
+| `scripts/scholarly_fx_country_gpr_wave.py` | Country-GPR FX board + FRED coverage |
 | `reports/scholarly_fx_stats_v1.md` | Empirical board (v1 factors) |
-| `reports/scholarly_fx_combo_wave.md` | Combo wave board (this) |
+| `reports/scholarly_fx_combo_wave.md` | Combo wave board |
+| `reports/scholarly_fx_country_gpr_wave.md` | Country-GPR wave board (this) |
+| `reports/scholarly_fx_fred_rate_coverage.csv` | Extended OECD rate sparsity/missing |
 
 ---
 
@@ -117,8 +126,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 1. Add simple transaction-cost / spread haircut on Yahoo D1.
 2. Optional true FX-vol proxy (realized G10 vol) beside VIX.
 3. Wire EPU/TPU CSV when downloaded.
-4. Country-GPR / macro-news NLP panel (not price overlays).
+4. Macro-news NLP panel (country GPR is now wired; NLP still missing).
 5. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
+6. Optional: AI-GPR bilateral / role decompositions (initiator vs spillover) if useful beyond GPRC_*.
 
 ---
 
@@ -156,3 +166,45 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 Literature multi-factor + uncertainty gates are the right *prior*, but on Yahoo D1 they deliver **basis-point** monthly means, not percent. Missing for a fair FTMO test: broker CSVs, spreads/swap, country-level GPR / macro news NLP, true FX-vol (not only VIX).
 
 Artifacts: `reports/scholarly_fx_combo_wave.md`, `scholarly_fx_combo_*.csv`, `scholarly_fx_gpr_event_study.csv`, `scholarly_fx_combo_meta.json`.
+
+---
+
+## 9. Country-GPR wave results (2026-09-17 BST)
+
+**Design (fixed priors, no HO tuning):** map Caldara–Iacoviello `GPRC_*` → FX currencies (EUR = EW of DEU/FRA/ITA/ESP/NLD/BEL); 1m publication lag + 1m signal lag; trailing 60m z-score; long 2 lowest / short 2 highest home-GPR currencies vs USD. Local projections: cum. h-month FX return on lagged home GPR z.
+
+### Lagged sort (full sample)
+
+| mean_mo | t OLS | t NW | %pos | clears 1%/mo bar? |
+|--------:|------:|-----:|-----:|:-----------------:|
+| +0.034% | 0.55 | 0.64 | 48% | **NO** |
+
+Year/holdout windows: FTMO 10%/5% gates PASS, but means are basis points and %pos ≪ 70%. Joint clear: **NO**.
+
+### Local projections (pooled) — sign test
+
+| h (months) | β (% per σ) | t | sign supports depreciation? |
+|-----------:|------------:|--:|:---------------------------:|
+| 1 | −0.067 | −1.12 | yes (weak) |
+| 3 | −0.250 | −2.47 | **yes** |
+| 6 | −0.579 | −4.28 | **yes** |
+
+Per-currency: EUR/CAD/CHF/AUD mostly negative at h=6; **JPY** mixed/near-zero (safe-haven confounding). Economically small vs 1%/mo; statistically the pooled LP sign matches the prior at h≥3.
+
+### FRED OECD carry expansion
+
+- Extended panel: **26** `IRSTCI01*` series cached (G10 + SEK/NOK/DKK/MXN/KRW/PLN/CZK/HUF/ILS/ZAR/TRY/INR/BRL/CLP/ISK/CNY/RUB/IDR).
+- **Sparse/stale:** SEK ends 2020-10 (discontinued on FRED); CHF last 2024-03; NZD last 2024-12; EUR/DKK/CNY/RUB lag several months.
+- **Missing (404):** SGD, HKD, THB, PHP, MYR, TWD.
+- Artifact: `reports/scholarly_fx_fred_rate_coverage.csv`.
+
+### Honest gaps
+
+| Gap | Status |
+|-----|--------|
+| News NLP | **Not wired** |
+| FTMO MT5 CSVs | **Not present** (`approximate_non_ftmo` Yahoo only) |
+| `GPRC_NZL` | **Absent** in 44-country file |
+| 1%/mo claim | **Not earned** |
+
+Artifacts: `reports/scholarly_fx_country_gpr_wave.md`, `scholarly_fx_country_gpr_*.csv`, `scholarly_fx_country_gpr_meta.json`.

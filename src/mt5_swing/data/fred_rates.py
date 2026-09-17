@@ -20,6 +20,7 @@ import pandas as pd
 
 # Currency → FRED series (OECD Immediate rates monthly, % p.a.)
 # USD also has DFF daily; we prefer IRSTCI01USM156N for panel alignment.
+# Core G10 (default carry panel — Yahoo D1 majors available)
 FRED_IMMEDIATE_MONTHLY: dict[str, str] = {
     "USD": "IRSTCI01USM156N",
     "EUR": "IRSTCI01EZM156N",
@@ -29,6 +30,39 @@ FRED_IMMEDIATE_MONTHLY: dict[str, str] = {
     "CAD": "IRSTCI01CAM156N",
     "CHF": "IRSTCI01CHM156N",
     "NZD": "IRSTCI01NZM156N",
+}
+
+# Extended OECD / EM immediate-rate series (research panel; many lack Yahoo pairs here)
+FRED_IMMEDIATE_MONTHLY_EXTENDED: dict[str, str] = {
+    **FRED_IMMEDIATE_MONTHLY,
+    "SEK": "IRSTCI01SEM156N",
+    "NOK": "IRSTCI01NOM156N",
+    "DKK": "IRSTCI01DKM156N",
+    "MXN": "IRSTCI01MXM156N",
+    "KRW": "IRSTCI01KRM156N",
+    "PLN": "IRSTCI01PLM156N",
+    "CZK": "IRSTCI01CZM156N",
+    "HUF": "IRSTCI01HUM156N",
+    "ILS": "IRSTCI01ILM156N",
+    "ZAR": "IRSTCI01ZAM156N",
+    "TRY": "IRSTCI01TRM156N",
+    "INR": "IRSTCI01INM156N",
+    "BRL": "IRSTCI01BRM156N",
+    "CLP": "IRSTCI01CLM156N",
+    "ISK": "IRSTCI01ISM156N",
+    "CNY": "IRSTCI01CNM156N",
+    "RUB": "IRSTCI01RUM156N",
+    "IDR": "IRSTCI01IDM156N",
+}
+
+# Documented missing IRSTCI01* codes (404 on FRED as of 2026-09)
+FRED_IMMEDIATE_MISSING: dict[str, str] = {
+    "SGD": "IRSTCI01SGM156N",
+    "HKD": "IRSTCI01HKM156N",
+    "THB": "IRSTCI01THM156N",
+    "PHP": "IRSTCI01PHM156N",
+    "MYR": "IRSTCI01MYM156N",
+    "TWD": "IRSTCI01TWM156N",
 }
 
 # Optional daily overnight overlays (research / higher frequency)
@@ -113,20 +147,25 @@ def load_currency_rates(
     freq: str = "M",
     pub_lag_months: int = 1,
     download: bool = True,
+    extended: bool = False,
 ) -> pd.DataFrame:
     """Panel of short rates (% p.a.) with publication lag applied.
 
     Parameters
     ----------
     currencies
-        ISO currency codes (default: G10 majors we have FX history for).
+        ISO currency codes (default: G10 majors we have FX history for,
+        or the extended OECD/EM panel when ``extended=True``).
     freq
         ``M`` = month-end panel from OECD immediate rates;
         ``D`` = daily overnight where available (sparse currencies dropped).
     pub_lag_months
         Months to delay monthly rate availability (default 1).
+    extended
+        If True and ``currencies`` is None, load ``FRED_IMMEDIATE_MONTHLY_EXTENDED``.
     """
-    curs = [c.upper() for c in (currencies or FRED_IMMEDIATE_MONTHLY.keys())]
+    mapping = FRED_IMMEDIATE_MONTHLY_EXTENDED if extended else FRED_IMMEDIATE_MONTHLY
+    curs = [c.upper() for c in (currencies or mapping.keys())]
     if freq.upper().startswith("D"):
         cols = {}
         for c in curs:
@@ -145,7 +184,7 @@ def load_currency_rates(
 
     cols = {}
     for c in curs:
-        sid = FRED_IMMEDIATE_MONTHLY.get(c)
+        sid = FRED_IMMEDIATE_MONTHLY_EXTENDED.get(c) or FRED_IMMEDIATE_MONTHLY.get(c)
         if not sid:
             raise KeyError(f"No FRED monthly immediate-rate mapping for {c}")
         s = load_fred_series(sid, download=download)
@@ -173,9 +212,99 @@ def rate_differentials_vs_usd(rates: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def download_default_rate_panel(*, force: bool = False) -> dict[str, Path]:
-    """Ensure default FRED CSVs exist under ``data/macro/``."""
+def download_default_rate_panel(*, force: bool = False, extended: bool = False) -> dict[str, Path]:
+    """Ensure default (or extended OECD) FRED CSVs exist under ``data/macro/``."""
     paths: dict[str, Path] = {}
-    for sid in set(FRED_IMMEDIATE_MONTHLY.values()) | set(FRED_OVERNIGHT_DAILY.values()):
+    monthly = FRED_IMMEDIATE_MONTHLY_EXTENDED if extended else FRED_IMMEDIATE_MONTHLY
+    for sid in set(monthly.values()) | set(FRED_OVERNIGHT_DAILY.values()):
         paths[sid] = download_fred_series(sid, force=force)
     return paths
+
+
+def rate_panel_coverage(
+    currencies: Iterable[str] | None = None,
+    *,
+    extended: bool = True,
+    download: bool = False,
+    asof: str | None = None,
+) -> pd.DataFrame:
+    """Document start/end dates and staleness for FRED immediate-rate series.
+
+    Flags series whose last observation is older than ``asof`` (default: today UTC)
+    by more than 4 months as ``sparse_or_stale``.
+    """
+    mapping = FRED_IMMEDIATE_MONTHLY_EXTENDED if extended else FRED_IMMEDIATE_MONTHLY
+    curs = [c.upper() for c in (currencies or mapping.keys())]
+    asof_ts = (pd.Timestamp(asof, tz='UTC') if asof else pd.Timestamp.now('UTC')).tz_convert(None)
+    rows = []
+    for c in curs:
+        sid = mapping.get(c)
+        if not sid:
+            rows.append(
+                {
+                    "currency": c,
+                    "series_id": None,
+                    "status": "unmapped",
+                    "n_obs": 0,
+                    "start": None,
+                    "end": None,
+                    "months_since_end": None,
+                    "sparse_or_stale": True,
+                    "note": "no IRSTCI mapping",
+                }
+            )
+            continue
+        try:
+            s = load_fred_series(sid, download=download)
+        except Exception as exc:  # noqa: BLE001
+            rows.append(
+                {
+                    "currency": c,
+                    "series_id": sid,
+                    "status": "load_fail",
+                    "n_obs": 0,
+                    "start": None,
+                    "end": None,
+                    "months_since_end": None,
+                    "sparse_or_stale": True,
+                    "note": str(exc)[:120],
+                }
+            )
+            continue
+        end = s.index.max()
+        end_naive = end.tz_convert(None) if getattr(end, "tz", None) else end
+        months_lag = (asof_ts.to_period("M") - pd.Timestamp(end_naive).to_period("M")).n
+        stale = months_lag > 4
+        note = ""
+        if c in ("SEK",) and stale:
+            note = "OECD series ends ~2020 on FRED — treat as discontinued for live carry"
+        elif c in ("CHF", "NZD") and months_lag > 2:
+            note = "tail lags OECD release / FRED update"
+        rows.append(
+            {
+                "currency": c,
+                "series_id": sid,
+                "status": "ok",
+                "n_obs": int(s.notna().sum()),
+                "start": str(s.index.min().date()),
+                "end": str(s.index.max().date()),
+                "months_since_end": int(months_lag),
+                "sparse_or_stale": bool(stale),
+                "note": note,
+            }
+        )
+    for c, sid in FRED_IMMEDIATE_MISSING.items():
+        rows.append(
+            {
+                "currency": c,
+                "series_id": sid,
+                "status": "fred_404",
+                "n_obs": 0,
+                "start": None,
+                "end": None,
+                "months_since_end": None,
+                "sparse_or_stale": True,
+                "note": "IRSTCI01* not on FRED (404)",
+            }
+        )
+    return pd.DataFrame(rows).sort_values("currency").reset_index(drop=True)

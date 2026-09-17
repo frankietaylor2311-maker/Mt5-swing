@@ -1,0 +1,2 @@
+factor,n_months,mean_mo,tstat_ols,tstat_nw,nw_lags,pct_pos_mo,top3,ann_sharpe_daily,hypothesis,currencies,missing_nzld
+country_gpr_sort,180,0.00034167387564536586,0.5450264111616716,0.6402418062402598,4,0.48333333333333334,0.1620744565941671,0.1275917730770973,long_low_home_GPR_short_high (high GPR → depreciate),"['AUD', 'CAD', 'CHF', 'GBP', 'JPY', 'EUR']",True

@@ -101,6 +101,14 @@ def _xls_to_monthly_csv(xls_path: Path, csv_path: Path) -> Path:
     out["month"] = pd.to_datetime(out["month"], utc=True)
     out = out.sort_values("month")
     out.to_csv(csv_path, index=False)
+    # Side-cache country-specific GPRC_* columns (Caldara–Iacoviello country index)
+    gprc = [c for c in df.columns if str(c).startswith("GPRC_")]
+    if gprc and "month" in df.columns:
+        cpath = csv_path.parent / "gpr_country_monthly.csv"
+        cout = df[["month"] + gprc].copy()
+        cout["month"] = pd.to_datetime(cout["month"], utc=True)
+        cout = cout.dropna(subset=gprc, how="all").sort_values("month")
+        cout.to_csv(cpath, index=False)
     return csv_path
 
 
@@ -247,6 +255,120 @@ class GprIndex:
         if pub_lag_days > 0:
             s.index = s.index + pd.Timedelta(days=int(pub_lag_days))
         return s[~s.index.duplicated(keep="last")].sort_index()
+
+
+
+# ---------------------------------------------------------------------------
+# Country-specific GPR (Caldara–Iacoviello GPRC_*)
+# ---------------------------------------------------------------------------
+
+# ISO3 country code in GPRC_* → ISO currency for FX majors we trade
+# EUR uses equal-weight of core EZ countries (no single "EUR" column).
+GPRC_TO_CURRENCY: dict[str, str] = {
+    "AUS": "AUD",
+    "CAN": "CAD",
+    "CHE": "CHF",
+    "GBR": "GBP",
+    "JPN": "JPY",
+    "USA": "USD",
+    "NZL": "NZD",  # not in standard 44-country set — documented gap
+}
+
+# Euro-area constituents available in the country file (equal-weight proxy for EUR)
+EUR_GPRC_ISO3: tuple[str, ...] = ("DEU", "FRA", "ITA", "ESP", "NLD", "BEL")
+
+# Currency → Yahoo/FTMO USD-major pair and sign: +1 means pair return = foreign vs USD
+CURRENCY_USD_PAIR: dict[str, tuple[str, int]] = {
+    "EUR": ("EURUSD", +1),
+    "GBP": ("GBPUSD", +1),
+    "AUD": ("AUDUSD", +1),
+    "NZD": ("NZDUSD", +1),
+    "JPY": ("USDJPY", -1),  # pair up = JPY down; foreign return = -pair
+    "CAD": ("USDCAD", -1),
+    "CHF": ("USDCHF", -1),
+}
+
+
+def country_gpr_csv_path() -> Path:
+    return macro_dir() / "gpr_country_monthly.csv"
+
+
+def ensure_country_gpr_csv(*, force: bool = False) -> Path:
+    """Ensure ``gpr_country_monthly.csv`` exists (from monthly XLS or re-download)."""
+    path = country_gpr_csv_path()
+    if path.exists() and not force and path.stat().st_size > 50:
+        return path
+    # Prefer local monthly XLS / CSV conversion
+    xls = macro_dir() / "gpr_monthly.xls"
+    monthly_csv = macro_dir() / "gpr_monthly.csv"
+    if xls.exists():
+        _xls_to_monthly_csv(xls, monthly_csv)
+        if path.exists():
+            return path
+    download_gpr(freq="M", force=force)
+    if not path.exists():
+        raise RuntimeError(
+            f"Country GPR CSV missing at {path}. Place Caldara–Iacoviello monthly "
+            f"Excel (with GPRC_* columns) at {xls} or download from {GPR_PAGE}."
+        )
+    return path
+
+
+def load_country_gpr(
+    *,
+    download: bool = True,
+    pub_lag_months: int = 1,
+    force: bool = False,
+    currencies: list[str] | None = None,
+) -> pd.DataFrame:
+    """Monthly country GPR mapped to FX currencies (article-share units).
+
+    Columns are ISO currencies (AUD, CAD, …, EUR aggregate, USD). Values are the
+    Caldara–Iacoviello country index (share of GPR articles mentioning the country).
+    EUR = equal-weight mean of ``EUR_GPRC_ISO3``. Publication lag shifts the
+    availability index forward by ``pub_lag_months`` (default 1).
+
+    Notes
+    -----
+    - No ``GPRC_NZL`` in the standard 44-country file → NZD omitted (gap).
+    - Indices reflect a *US newspaper perspective* on risks involving that country.
+    """
+    if download or force or not country_gpr_csv_path().exists():
+        ensure_country_gpr_csv(force=force)
+    df = pd.read_csv(country_gpr_csv_path())
+    date_col = "month" if "month" in df.columns else df.columns[0]
+    idx = pd.to_datetime(df[date_col], utc=True)
+    raw = df.copy()
+    raw.index = idx
+    cols: dict[str, pd.Series] = {}
+    for iso3, ccy in GPRC_TO_CURRENCY.items():
+        col = f"GPRC_{iso3}"
+        if col not in raw.columns:
+            continue
+        cols[ccy] = pd.to_numeric(raw[col], errors="coerce")
+    # EUR aggregate
+    ez = []
+    for iso3 in EUR_GPRC_ISO3:
+        col = f"GPRC_{iso3}"
+        if col in raw.columns:
+            ez.append(pd.to_numeric(raw[col], errors="coerce"))
+    if ez:
+        cols["EUR"] = pd.concat(ez, axis=1).mean(axis=1)
+    panel = pd.DataFrame(cols).sort_index()
+    panel = panel.dropna(how="all")
+    if pub_lag_months > 0:
+        panel.index = panel.index + pd.DateOffset(months=int(pub_lag_months))
+        panel = panel[~panel.index.duplicated(keep="last")].sort_index()
+    if currencies is not None:
+        keep = [c.upper() for c in currencies if c.upper() in panel.columns]
+        panel = panel[keep]
+    panel.attrs["source"] = "caldara_iacoviello_gpr_country"
+    panel.attrs["citation"] = "Caldara & Iacoviello (2022), Measuring Geopolitical Risk, AER"
+    panel.attrs["url"] = GPR_PAGE
+    panel.attrs["pub_lag_months"] = int(pub_lag_months)
+    panel.attrs["eur_constituents"] = list(EUR_GPRC_ISO3)
+    panel.attrs["missing_currencies"] = ["NZD"]  # no GPRC_NZL
+    return panel
 
 
 def load_epu_tpu_stub() -> pd.DataFrame:

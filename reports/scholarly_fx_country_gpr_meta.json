@@ -1,0 +1,56 @@
+{
+  "data_source": "approximate_non_ftmo",
+  "signal_lag": 1,
+  "pub_lag_months": 1,
+  "any_window_clears_1pct": false,
+  "joint_years_holdout_clear": false,
+  "promote": false,
+  "lp_pooled": {
+    "h1": {
+      "beta": -0.0006711354456505164,
+      "tstat": -1.1174406828840282,
+      "sign_ok": true,
+      "n": 1080
+    },
+    "h3": {
+      "beta": -0.002501566465363991,
+      "tstat": -2.4705655823800874,
+      "sign_ok": true,
+      "n": 1068
+    },
+    "h6": {
+      "beta": -0.0057908252943196575,
+      "tstat": -4.281014922300516,
+      "sign_ok": true,
+      "n": 1050
+    }
+  },
+  "summary": {
+    "factor": "country_gpr_sort",
+    "n_months": 180,
+    "mean_mo": 0.00034167387564536586,
+    "tstat_ols": 0.5450264111616716,
+    "tstat_nw": 0.6402418062402598,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.48333333333333334,
+    "top3": 0.1620744565941671,
+    "ann_sharpe_daily": 0.1275917730770973,
+    "hypothesis": "long_low_home_GPR_short_high (high GPR \u2192 depreciate)",
+    "currencies": [
+      "AUD",
+      "CAD",
+      "CHF",
+      "GBP",
+      "JPY",
+      "EUR"
+    ],
+    "missing_nzld": true
+  },
+  "fred_stale_count": 13,
+  "gaps": [
+    "news_nlp",
+    "ftmo_csvs",
+    "GPRC_NZL",
+    "SEK_fred_discontinued"
+  ]
+}
