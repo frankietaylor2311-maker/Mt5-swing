@@ -1009,3 +1009,62 @@ def test_trailing_month_mean_cool_triggers_when_trailing_mean_rich():
     pos = r_raw.iloc[apr] > 1e-15
     assert pos.any()
     assert (r_out.iloc[apr][pos] < r_raw.iloc[apr][pos] - 1e-15).any()
+
+
+def test_rolling_weekly_mean_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_rolling_weekly_mean_cool
+
+    rng = np.random.default_rng(41)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_weekly_mean_cool(
+        eq, lookback=6, mean_thresh=0.002, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_rolling_weekly_mean_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_rolling_weekly_mean_cool
+
+    rng = np.random.default_rng(77)
+    rets = rng.normal(0.0005, 0.01, 280)
+    eq = _eq_from_returns(rets)
+    kw = dict(lookback=4, mean_thresh=0.003, cool_scale=0.4, lo=0.25)
+    out1 = apply_rolling_weekly_mean_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.5
+    out2 = apply_rolling_weekly_mean_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_rolling_weekly_mean_cool_triggers_when_trailing_mean_rich():
+    from mt5_swing.portfolio.overlays import apply_rolling_weekly_mean_cool
+
+    # Six rich completed weeks (~+3.5%/wk via +0.005/day), then a mild week
+    # that should cool because lag-1 trailing mean of last 6 weeks is rich.
+    rets = np.concatenate(
+        [
+            np.full(7 * 6, 0.0050),  # 6 rich weeks
+            np.full(7, 0.0003),  # mild week — should be cooled
+        ]
+    )
+    eq = _eq_from_returns(rets, start="2024-01-01")
+    out = apply_rolling_weekly_mean_cool(
+        eq, lookback=6, mean_thresh=0.01, cool_scale=0.4, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Early first week has no completed lookback → uncooled
+    early = slice(2, 6)
+    assert np.allclose(r_out.iloc[early], r_raw.iloc[early], atol=1e-12)
+    # Mid mild week (after 6*7=42 bars) should cool on positive bars
+    mild = slice(44, 48)
+    pos = r_raw.iloc[mild] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[mild][pos] < r_raw.iloc[mild][pos] - 1e-15).any()

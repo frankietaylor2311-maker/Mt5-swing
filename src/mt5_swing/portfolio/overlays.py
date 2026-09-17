@@ -1137,3 +1137,60 @@ def apply_trailing_month_mean_cool(
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     scale_s = scale.shift(1).fillna(1.0)
     return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_weekly_mean_cool(
+    port: pd.Series,
+    *,
+    lookback: int = 6,
+    mean_thresh: float = 0.003,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal rolling weekly mean cool — soft-cap after rich completed-week runs.
+
+    Distinct from ``apply_trailing_month_mean_cool`` (completed *calendar months*),
+    ``apply_prior_month_win_throttle`` (binary last-month win),
+    ``apply_equity_curve_target`` (targets trailing monthly VOL), and MTD / pace /
+    surplus / burst overlays (intra-month).
+
+    For bars in calendar week W, inspect the last ``lookback`` *fully completed*
+    weeks strictly before W. Compute the mean of those completed week returns.
+    If that lag-1 trailing mean ≥ ``mean_thresh``, scale = ``cool_scale``, else
+    1.0. Scale is clipped to [lo, 1] (never leverage) and ``shift(1)`` before
+    multiplying returns so the decision at t uses only information through t-1
+    / completed weeks (no look-ahead).
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert("UTC").tz_localize(None)
+    per = idx.to_period("W")
+    periods = list(dict.fromkeys(per))  # ordered unique
+    wk_ret: dict = {}
+    for p in periods:
+        chunk = eq.loc[per == p]
+        if len(chunk) < 2:
+            wk_ret[p] = 0.0
+        else:
+            wk_ret[p] = float(chunk.iloc[-1] / chunk.iloc[0] - 1.0)
+    p_index = {p: i for i, p in enumerate(periods)}
+    lb = max(1, int(lookback))
+    mean_vals = []
+    for p in per:
+        i = p_index[p]
+        start = max(0, i - lb)
+        window = periods[start:i]
+        if not window:
+            mean_vals.append(0.0)
+        else:
+            mean_vals.append(float(np.mean([wk_ret[q] for q in window])))
+    mean_on_bars = pd.Series(mean_vals, index=eq.index, dtype=float)
+    scale = pd.Series(1.0, index=eq.index)
+    scale = scale.where(~(mean_on_bars >= float(mean_thresh)), float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_s = scale.shift(1).fillna(1.0)
+    return (1.0 + r * scale_s).cumprod() * float(eq.iloc[0])
