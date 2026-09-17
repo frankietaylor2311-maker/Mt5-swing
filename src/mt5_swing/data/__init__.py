@@ -15,3 +15,4 @@ __all__ = [
 # Scholarly FX macro loaders (import submodule paths):
 #   mt5_swing.data.fred_rates
 #   mt5_swing.data.macro_uncertainty
+#   mt5_swing.data.news_events

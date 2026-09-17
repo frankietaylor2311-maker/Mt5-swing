@@ -384,3 +384,116 @@ def test_fred_extended_coverage_documents_sparse():
     sek = cov[cov.currency == "SEK"].iloc[0]
     assert bool(sek["sparse_or_stale"])
     assert cov[cov.status == "fred_404"].shape[0] >= 1
+
+
+def test_news_intensity_interface_and_gpr_proxy():
+    from mt5_swing.data.news_events import (
+        GprSpikeProxyFeed,
+        StubNewsFeed,
+        control_dates,
+        high_intensity_event_dates,
+        resolve_news_intensity,
+    )
+
+    stub = StubNewsFeed()
+    assert not stub.meta.available
+    with pytest.raises(RuntimeError):
+        stub.fetch()
+
+    if not (MACRO / "gpr_daily.csv").exists():
+        pytest.skip("gpr_daily.csv missing")
+    proxy = GprSpikeProxyFeed(pub_lag_days=1)
+    s = proxy.fetch(force=False)
+    assert proxy.meta.available
+    assert proxy.meta.source == "gpr_spike_proxy"
+    assert len(s) > 1000
+    assert s.attrs.get("pub_lag_days") == 1
+
+    resolved = resolve_news_intensity(prefer_gdelt=True, try_rss=False, force=False)
+    assert resolved.meta.available
+    assert resolved.series.notna().sum() > 100
+    assert resolved.meta.source in {"gpr_spike_proxy", "gdelt_doc"}
+
+    idx = pd.date_range("2020-01-01", periods=400, freq="B", tz="UTC")
+    rng = np.random.default_rng(11)
+    intensity = pd.Series(rng.normal(100, 10, 400), index=idx)
+    intensity.iloc[50] = 400
+    intensity.iloc[120] = 410
+    intensity.iloc[250] = 390
+    events, _meta = high_intensity_event_dates(intensity, idx, decile=0.95, min_gap_days=5, extra_lag=1)
+    assert len(events) >= 1
+    ctrls = control_dates(idx, events, n=len(events), seed=0, exclude_window=5)
+    assert len(ctrls) == len(events)
+    assert len(set(ctrls).intersection(set(events))) == 0
+
+
+def test_news_event_study_and_lagged_rule_causal():
+    from mt5_swing.strategies.news_event_fx import (
+        NewsEventStudyConfig,
+        evaluate_signal_gate,
+        lagged_usd_event_strategy_returns,
+        run_news_event_study,
+        usd_basket_returns,
+        usd_vs_ccy_returns,
+    )
+
+    idx = pd.date_range("2019-01-01", periods=600, freq="B", tz="UTC")
+    rng = np.random.default_rng(12)
+    pret = pd.DataFrame(
+        {
+            "EURUSD": rng.normal(0, 0.005, 600),
+            "GBPUSD": rng.normal(0, 0.005, 600),
+            "AUDUSD": rng.normal(0, 0.005, 600),
+            "USDJPY": rng.normal(0, 0.005, 600),
+        },
+        index=idx,
+    )
+    intensity = pd.Series(100.0, index=idx)
+    spike_locs = [80, 200, 350, 480]
+    for loc in spike_locs:
+        intensity.iloc[loc] = 500.0
+        pret.iloc[loc + 2 : loc + 7, pret.columns.get_loc("EURUSD")] = -0.004
+        pret.iloc[loc + 2 : loc + 7, pret.columns.get_loc("GBPUSD")] = -0.004
+        pret.iloc[loc + 2 : loc + 7, pret.columns.get_loc("AUDUSD")] = -0.003
+        pret.iloc[loc + 2 : loc + 7, pret.columns.get_loc("USDJPY")] = 0.004
+
+    usd = usd_vs_ccy_returns(pret)
+    assert set(usd.columns) == {"EUR", "GBP", "JPY", "AUD"}
+    assert np.allclose(usd["EUR"], -pret["EURUSD"])
+    assert np.allclose(usd["JPY"], pret["USDJPY"])
+    basket = usd_basket_returns(pret)
+    assert basket.name == "usd_basket"
+
+    cfg = NewsEventStudyConfig(
+        pre=3,
+        post=8,
+        decile=0.95,
+        min_gap_days=5,
+        extra_lag=1,
+        signal_horizon=5,
+        min_edge=0.0,
+        min_t=0.5,
+        hold_days=5,
+        signal_lag=1,
+        cost_bps_per_side=1.5,
+    )
+    study = run_news_event_study(pret, intensity, cfg=cfg)
+    assert study["meta"]["n_events"] >= 3
+    assert "USD_BASKET" in study["summaries"]
+    gate = evaluate_signal_gate(study["summaries"]["USD_BASKET"], cfg=cfg)
+    assert "trade" in gate and "diff" in gate
+
+    port = lagged_usd_event_strategy_returns(pret, intensity, cfg=cfg, force_trade=True)
+    assert port.attrs.get("trade_enabled") is True
+    pret2 = pret.copy()
+    pret2.iloc[-1] = 0.0
+    port2 = lagged_usd_event_strategy_returns(pret2, intensity, cfg=cfg, force_trade=True)
+    assert np.allclose(port.iloc[:-1].values, port2.iloc[:-1].values, equal_nan=True)
+
+    noise = pd.Series(rng.normal(100, 5, 600), index=idx)
+    cfg_strict = NewsEventStudyConfig(
+        signal_horizon=5, min_edge=0.05, min_t=5.0, hold_days=5, signal_lag=1, decile=0.9
+    )
+    port0 = lagged_usd_event_strategy_returns(pret, noise, cfg=cfg_strict, force_trade=None)
+    if not port0.attrs.get("trade_enabled", True):
+        assert float(np.nanmax(np.abs(port0.values))) == 0.0

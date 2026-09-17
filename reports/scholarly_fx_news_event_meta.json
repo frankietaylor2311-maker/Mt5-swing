@@ -1,0 +1,62 @@
+{
+  "intensity_source": "gpr_spike_proxy",
+  "intensity_note": "Proxy: Caldara\u2013Iacoviello daily GPR (newspaper article share). Not live NLP of Reuters/Yahoo headlines; multi-year coverage. Limitation: intensity \u2260 signed sentiment / entity NLP.",
+  "intensity_n": 15232,
+  "paid_nlp_needed": true,
+  "attempted": [
+    {
+      "source": "gdelt_doc",
+      "available": true,
+      "n_obs": 82,
+      "note": "cached CSV gdelt_conflict_timeline.csv (DOC TimelineVol; ~recent window only)"
+    },
+    {
+      "source": "gdelt_doc",
+      "available": true,
+      "n_obs": 82,
+      "note": "cached CSV gdelt_conflict_timeline.csv (DOC TimelineVol; ~recent window only) \u2014 only n=82 days; too short for multi-year study \u2192 GPR proxy"
+    },
+    {
+      "source": "yahoo_rss",
+      "available": true,
+      "n_obs": 13,
+      "note": "RSS headline counts from https://finance.yahoo.com/rss/headline?s=EURUSD=X (recent feed items only)"
+    },
+    {
+      "source": "reuters_rss",
+      "available": false,
+      "n_obs": 0,
+      "note": "RSS fetch failed (HTTPError: HTTP Error 404: Not Found)"
+    },
+    {
+      "source": "gpr_spike_proxy",
+      "available": true,
+      "n_obs": 15232,
+      "note": "Proxy: Caldara\u2013Iacoviello daily GPR (newspaper article share). Not live NLP of Reuters/Yahoo headlines; multi-year coverage. Limitation: intensity \u2260 signed sentiment / entity NLP."
+    }
+  ],
+  "n_events": 206,
+  "n_controls": 206,
+  "threshold": 176.34970703125003,
+  "signal": {
+    "trade": false,
+    "reason": "no reliable USD edge vs control at fixed prior gate",
+    "diff": 0.0006037765420446765,
+    "tstat": 0.547081977403857,
+    "horizon": 5,
+    "event_cum_mean": 0.0006674660406676138,
+    "control_cum_mean": 6.36894986229373e-05
+  },
+  "trade_enabled": false,
+  "cfg": {
+    "decile": 0.9,
+    "hold_days": 5,
+    "signal_lag": 1,
+    "cost_bps_per_side": 1.5,
+    "signal_horizon": 5,
+    "min_t": 1.0
+  },
+  "data_source": "approximate_non_ftmo",
+  "joint_clear": false,
+  "claim_1pct_mo": false
+}

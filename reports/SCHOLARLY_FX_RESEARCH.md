@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-17, country-GPR wave after combo). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-17, news/event wave after country-GPR). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -41,6 +41,15 @@
   - `strategies/gpr_regime.py` — lag monthly/daily aggregate GPR (+ VIX), cool gross exposure; optional USD tilt.
   - `strategies/country_gpr_fx.py` + `scripts/scholarly_fx_country_gpr_wave.py` — country GPR → FX: lagged long-low/short-high sort + LP β at h=1,3,6 months (`pub_lag=1m`, `signal_lag=1`).
 
+
+### 1.7 News / event intensity (GDELT / RSS / GPR proxy)
+
+- **Claim:** Spikes in conflict/geopolitics news intensity coincide with risk-off FX (safe-haven USD) in many episodes; event studies around news shocks are a standard macro-finance design.
+- **Free feeds tried:** GDELT DOC 2.0 `TimelineVol` (no key; ~3-month reliable window; frequent HTTP 429); Yahoo/Reuters **RSS** headline counts (ethical public feeds — recent items only, not a multi-year panel).
+- **Fallback:** Caldara–Iacoviello **daily GPR spikes** as news-based intensity *proxy* (same newspaper-count foundation). Limitation: not signed entity/sentiment NLP.
+- **What we implement:** `data/news_events.py` (feed interface + resolver) + `strategies/news_event_fx.py` (event vs control study; optional lagged long-USD rule if gate clears).
+- **Paid NLP:** Needed for multi-year multilingual sentiment/entity panels (RavenPack / Refinitiv / Bloomberg / keyed GDELT Cloud). Free stack is insufficient for that claim.
+
 ### 1.6 TPU / economic-policy uncertainty
 
 - **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks.
@@ -74,6 +83,7 @@
 | GPR monthly / daily | Iacoviello Excel → `data/macro/gpr_*.csv` | **1 month** / **1 day** |
 | Country GPR (GPRC_*) | Same monthly Excel → `gpr_country_monthly.csv` | **1 month** (+ strategy `signal_lag`) |
 | OECD immediate rates (extended) | FRED `IRSTCI01*` G10 + SEK/NOK/DKK/MXN/… | **1 month** (see coverage CSV) |
+| News intensity (GDELT/RSS/GPR proxy) | GDELT DOC / RSS / `gpr_daily.csv` | **1 day** (+ strategy `extra_lag`/`signal_lag`) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 
 If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (instructions in `macro_uncertainty.download_gpr`).
@@ -126,7 +136,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 1. Add simple transaction-cost / spread haircut on Yahoo D1.
 2. Optional true FX-vol proxy (realized G10 vol) beside VIX.
 3. Wire EPU/TPU CSV when downloaded.
-4. Macro-news NLP panel (country GPR is now wired; NLP still missing).
+4. Macro-news NLP panel — **intensity layer wired** (GDELT interface + GPR proxy event study); signed NLP still needs paid API.
 5. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
 6. Optional: AI-GPR bilateral / role decompositions (initiator vs spillover) if useful beyond GPRC_*.
 
@@ -202,9 +212,46 @@ Per-currency: EUR/CAD/CHF/AUD mostly negative at h=6; **JPY** mixed/near-zero (s
 
 | Gap | Status |
 |-----|--------|
-| News NLP | **Not wired** |
+| News NLP | **Intensity layer wired** (GDELT/RSS interface + GPR proxy); signed NLP **not** wired |
 | FTMO MT5 CSVs | **Not present** (`approximate_non_ftmo` Yahoo only) |
 | `GPRC_NZL` | **Absent** in 44-country file |
 | 1%/mo claim | **Not earned** |
 
 Artifacts: `reports/scholarly_fx_country_gpr_wave.md`, `scholarly_fx_country_gpr_*.csv`, `scholarly_fx_country_gpr_meta.json`.
+
+---
+
+## 10. News/event wave results (2026-09-17 BST)
+
+**Design (fixed priors, no HO tuning):** prefer GDELT DOC TimelineVol for conflict volume; Yahoo RSS counts tried ethically; **multi-year study uses GPR daily spike proxy** (GDELT n=82 days only; Reuters RSS 404). Top-decile lagged intensity events vs random controls; USD vs EUR/GBP/JPY/AUD; lagged long-USD hold only if event−control at h=+5 clears `diff>0` & `t≥1`. Costs 1.5 bps/side. **Do not claim 1%/mo.**
+
+### Feeds
+
+| source | usable for multi-year? | n |
+|--------|:---------------------:|--:|
+| GDELT DOC TimelineVol | no (short + flaky 429) | 82 |
+| Yahoo EURUSD RSS counts | no (recent only) | 13 |
+| Reuters world RSS | no (404) | 0 |
+| **GPR daily spike proxy** | **yes (proxy)** | 15232 |
+
+### Event vs control (206 events / 206 controls)
+
+| series | h=+5 event | control | diff | t |
+|--------|----------:|--------:|-----:|--:|
+| EUR | +0.05% | +0.07% | −0.02% | −0.18 |
+| GBP | +0.09% | +0.01% | +0.08% | 0.57 |
+| JPY | +0.15% | −0.03% | +0.18% | 1.64 |
+| AUD | −0.05% | +0.01% | −0.06% | −0.37 |
+| **USD_BASKET** | **+0.07%** | **+0.01%** | **+0.06%** | **0.55** |
+
+JPY shows the only mild USD-long edge vs controls; basket gate **fails** (t=0.55 < 1).
+
+### Trading rule
+
+Gate **NO** → gated strategy flat. Forced diagnostic (not for promotion): full-sample mean_mo ≈ +0.06%, %pos ≈ 30%; 2024 ≈ +0.37%/55%; holdout_365d ≈ −0.19%. FTMO 10%/5% PASS on flat/forced paths; **never** clears 1%/70%/top3. Joint clear: **NO**.
+
+### Paid NLP?
+
+**Yes.** Free GDELT/RSS cannot support a multi-year signed NLP panel. GPR is intensity proxy only. Paid options: RavenPack, Refinitiv News Analytics, Bloomberg, or keyed GDELT Cloud history.
+
+Artifacts: `reports/scholarly_fx_news_event_wave.md`, `scholarly_fx_news_event_*.csv`, `scholarly_fx_news_event_meta.json`, cached `data/macro/gdelt_conflict_timeline.csv` + `yahoo_fx_rss_counts.csv`.
