@@ -494,3 +494,65 @@ def test_rolling_sharpe_cool_triggers_when_sharpe_high():
     assert (r_out.iloc[mid][pos] < r_raw.iloc[mid][pos] - 1e-15).any()
     # Early bars (before lookback+lag) stay uncooled
     assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
+
+
+def test_rolling_hitrate_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_rolling_hitrate_cool
+
+    rng = np.random.default_rng(21)
+    rets = rng.normal(0.0004, 0.01, 200)
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_hitrate_cool(
+        eq, lookback_days=42, high_thresh=0.65, low_thresh=0.35, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_rolling_hitrate_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_rolling_hitrate_cool
+
+    rng = np.random.default_rng(23)
+    rets = rng.normal(0.0002, 0.01, 180)
+    eq = _eq_from_returns(rets)
+    kw = dict(lookback_days=42, high_thresh=0.65, low_thresh=0.35, cool_scale=0.4, lo=0.25)
+    out1 = apply_rolling_hitrate_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.55
+    out2 = apply_rolling_hitrate_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_rolling_hitrate_cool_triggers_when_hitrate_high():
+    from mt5_swing.portfolio.overlays import apply_rolling_hitrate_cool
+
+    # Strong uptrend of many positive days → high hit-rate → later bars cooled
+    rets = np.concatenate(
+        [
+            np.full(60, 0.008),  # hot win streak
+            np.full(40, 0.003),  # still positive; should see cool from high hit-rate
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_hitrate_cool(
+        eq,
+        lookback_days=21,
+        high_thresh=0.55,
+        low_thresh=0.30,
+        cool_scale=0.5,
+        lo=0.25,
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # After enough lookback for hit-rate to form + 1-day lag, mid/late series cools
+    mid = slice(50, 90)
+    pos = r_raw.iloc[mid] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[mid][pos] < r_raw.iloc[mid][pos] - 1e-15).any()
+    # Early bars (before lookback+lag) stay uncooled
+    assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12

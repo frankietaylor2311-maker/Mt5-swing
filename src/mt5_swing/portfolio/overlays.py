@@ -687,3 +687,68 @@ def apply_rolling_sharpe_cool(
     )
     scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
     return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_hitrate_cool(
+    port: pd.Series,
+    *,
+    lookback_days: int = 42,
+    high_thresh: float = 0.65,
+    low_thresh: float = 0.35,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal rolling hit-rate cool — cut size on hot win-streaks and cold streaks.
+
+    Resamples equity to daily closes, computes daily returns, then a trailing
+    **hit-rate** ``mean(r_d > 0)`` over ``lookback_days`` (min_periods ≈
+    lookback/3, floored at 10). The hit-rate series is lagged one calendar day
+    before the cool decision, so day t uses hit-rate through t-1 only
+    (no look-ahead).
+
+    Scale rules (cool only, never leverage):
+      - if lagged hit-rate > ``high_thresh`` → ``cool_scale`` (cap hot streaks)
+      - if lagged hit-rate < ``low_thresh`` → ``cool_scale`` (cut cold streaks)
+      - else → 1.0
+    Scale is clipped to ``[lo, 1.0]`` and mapped onto the native bar index with
+    the same UTC-normalize timezone path as ``apply_rolling_sharpe_cool``.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r_native = eq.pct_change().fillna(0.0)
+    eq_work = eq.copy()
+    if getattr(eq_work.index, "tz", None) is not None:
+        eq_work.index = eq_work.index.tz_convert("UTC").tz_localize(None)
+    eq_d = eq_work.resample("1D").last().dropna()
+    if len(eq_d) < 5:
+        return eq
+    r_d = eq_d.pct_change().fillna(0.0)
+    lb = max(5, int(lookback_days))
+    min_p = max(10, lb // 3)
+    wins = (r_d > 0.0).astype(float)
+    hitrate = wins.rolling(lb, min_periods=min_p).mean()
+    hitrate_lag = hitrate.shift(1)
+    scale_d = pd.Series(1.0, index=r_d.index)
+    hi = float(high_thresh)
+    lo_th = float(low_thresh)
+    cs = float(cool_scale)
+    hot = hitrate_lag > hi
+    cold = hitrate_lag < lo_th
+    scale_d = scale_d.where(~(hot | cold), cs)
+    # NaN lag (warmup) stays 1.0
+    scale_d = scale_d.where(hitrate_lag.notna(), 1.0)
+    scale_d = scale_d.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    scale_d.index = pd.DatetimeIndex(scale_d.index).normalize()
+    if getattr(eq.index, "tz", None) is not None:
+        day_keys = eq.index.tz_convert("UTC").tz_localize(None).normalize()
+    else:
+        day_keys = pd.DatetimeIndex(eq.index).normalize()
+    scale_bars = (
+        pd.Series(day_keys, index=eq.index, dtype="datetime64[ns]")
+        .map(scale_d)
+        .ffill()
+        .fillna(1.0)
+    )
+    scale_bars = scale_bars.clip(lower=float(lo), upper=1.0)
+    return (1.0 + r_native * scale_bars).cumprod() * float(eq.iloc[0])
