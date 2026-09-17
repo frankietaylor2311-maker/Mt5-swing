@@ -947,3 +947,65 @@ def test_month_end_surplus_cool_triggers_late_when_surplus():
     pos = r_raw.iloc[late] > 1e-15
     assert pos.any()
     assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()
+
+
+def test_trailing_month_mean_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_trailing_month_mean_cool
+
+    rng = np.random.default_rng(41)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_trailing_month_mean_cool(
+        eq, lookback=4, mean_thresh=0.01, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_trailing_month_mean_cool_causal_mutate_future():
+    from mt5_swing.portfolio.overlays import apply_trailing_month_mean_cool
+
+    rng = np.random.default_rng(77)
+    rets = rng.normal(0.0005, 0.01, 280)
+    eq = _eq_from_returns(rets)
+    kw = dict(lookback=3, mean_thresh=0.012, cool_scale=0.4, lo=0.25)
+    out1 = apply_trailing_month_mean_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.5
+    out2 = apply_trailing_month_mean_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_trailing_month_mean_cool_triggers_when_trailing_mean_rich():
+    from mt5_swing.portfolio.overlays import apply_trailing_month_mean_cool
+
+    # Three rich completed months (~+3%/mo), then a mild April that should cool
+    # because lag-1 trailing mean of last 3 months is well above thresh.
+    rets = np.concatenate(
+        [
+            np.full(31, 0.0010),  # Jan ~+3.1%
+            np.full(29, 0.0010),  # Feb ~+2.9%
+            np.full(31, 0.0010),  # Mar ~+3.1%
+            np.full(30, 0.0003),  # Apr mild — should be cooled
+        ]
+    )
+    eq = _eq_from_returns(rets, start="2024-01-01")
+    out = apply_trailing_month_mean_cool(
+        eq, lookback=3, mean_thresh=0.015, cool_scale=0.4, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Early Jan has no completed lookback → uncooled
+    early = slice(2, 15)
+    assert np.allclose(r_out.iloc[early], r_raw.iloc[early], atol=1e-12)
+    # Mid-April (after scale lag settles) should cool on positive bars
+    # Jan31+Feb29+Mar31 = 91; April starts at index 91
+    apr = slice(95, 115)
+    pos = r_raw.iloc[apr] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[apr][pos] < r_raw.iloc[apr][pos] - 1e-15).any()
