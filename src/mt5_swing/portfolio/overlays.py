@@ -1034,3 +1034,50 @@ def apply_rolling_burst_cool(
     scale = scale.where(~burst, float(cool_scale))
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_month_end_surplus_cool(
+    port: pd.Series,
+    *,
+    start_day: int = 20,
+    surplus: float = 0.008,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal month-end MTD-surplus cool — cut late-month when already ahead.
+
+    Distinct from ``apply_mtd_pace_cool`` (continuous day_frac×target×pace_mult)
+    and ``apply_mtd_gain_clip`` (fixed absolute tau all month). Only fires on
+    calendar days ``day_of_month >= start_day`` when lag-1 MTD >= ``surplus``.
+
+    At bar t, MTD is computed from month-start equity through bar t-1 only
+    (same month-start / month-change rules as MTD gain-clip / pace cool).
+    Day-of-month for bar t is known at open (calendar info, not look-ahead).
+    When both conditions hold → scale = ``cool_scale``, else 1.0. Clipped to
+    [lo, 1] — never leverage (hi=1). Soft-caps late-month surplus that drives
+    top-month concentration without a continuous pace schedule.
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    idx = eq.index
+    if getattr(idx, "tz", None) is not None:
+        utc_idx = idx.tz_convert("UTC")
+        months = utc_idx.to_period("M")
+        days = pd.Index(utc_idx.day)
+    else:
+        months = idx.to_period("M")
+        days = pd.Index(idx.day)
+    mo_start = eq.groupby(months).transform("first")
+    eq_lag = eq.shift(1)
+    mtd_lag = (eq_lag / mo_start.replace(0, np.nan) - 1.0).fillna(0.0)
+    mo_change = pd.Series(months, index=eq.index) != pd.Series(months, index=eq.index).shift(1)
+    mtd_lag = mtd_lag.where(~mo_change.fillna(True), 0.0)
+    day_of_month = pd.Series(days, index=eq.index, dtype=float)
+    scale = pd.Series(1.0, index=eq.index)
+    late_surplus = (day_of_month >= float(start_day)) & (mtd_lag >= float(surplus))
+    late_surplus = late_surplus.fillna(False)
+    scale = scale.where(~late_surplus, float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])

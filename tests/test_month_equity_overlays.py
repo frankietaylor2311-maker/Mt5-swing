@@ -887,3 +887,63 @@ def test_burst_cool_triggers_on_fat_day():
     # scale applies on NEXT bar after lag-1 sees burst
     if idx + 1 < len(r_raw) and r_raw.iloc[idx + 1] > 1e-15:
         assert r_out.iloc[idx + 1] < r_raw.iloc[idx + 1] - 1e-15
+
+
+def test_month_end_surplus_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_month_end_surplus_cool
+
+    rng = np.random.default_rng(29)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_month_end_surplus_cool(
+        eq, start_day=20, surplus=0.008, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_month_end_surplus_cool_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_month_end_surplus_cool
+
+    rng = np.random.default_rng(88)
+    rets = rng.normal(0.0005, 0.01, 220)
+    eq = _eq_from_returns(rets)
+    kw = dict(start_day=18, surplus=0.005, cool_scale=0.4, lo=0.25)
+    out1 = apply_month_end_surplus_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 1.5
+    out2 = apply_month_end_surplus_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_month_end_surplus_cool_triggers_late_when_surplus():
+    from mt5_swing.portfolio.overlays import apply_month_end_surplus_cool
+
+    # Strong early-month gains so MTD is well above surplus by day 20+
+    # January has 31 days starting 2024-01-01
+    rets = np.concatenate(
+        [
+            np.full(10, 0.005),  # early surplus build
+            np.full(10, 0.001),  # days 11-20 still growing
+            np.full(11, 0.002),  # late month — should cool when start_day=20
+        ]
+    )
+    eq = _eq_from_returns(rets, start="2024-01-01")
+    out = apply_month_end_surplus_cool(
+        eq, start_day=20, surplus=0.008, cool_scale=0.4, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    # Early month (before start_day) should remain uncooled even with surplus
+    early = slice(3, 12)
+    assert np.allclose(r_out.iloc[early], r_raw.iloc[early], atol=1e-12)
+    # Late month bars (day>=20) with lag-1 MTD >= surplus should cool
+    late = slice(20, 28)
+    pos = r_raw.iloc[late] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()
