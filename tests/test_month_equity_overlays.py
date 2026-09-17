@@ -665,3 +665,59 @@ def test_peak_proximity_cool_triggers_near_peak():
     assert (r_out.iloc[mid][pos] < r_raw.iloc[mid][pos] - 1e-15).any()
     # Early climb bars (before rolling peak forms + lag) stay uncooled
     assert abs(r_out.iloc[5] - r_raw.iloc[5]) < 1e-12
+
+
+
+def test_ret_pctile_cool_never_leverages():
+    from mt5_swing.portfolio.overlays import apply_rolling_return_pctile_cool
+
+    rng = np.random.default_rng(11)
+    rets = rng.normal(0.001, 0.008, 400)
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_return_pctile_cool(
+        eq, trail_bars=21, hist_bars=126, pctile=0.8, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    mask = r_raw > 0
+    assert (r_out[mask] <= r_raw[mask] + 1e-12).all()
+
+
+def test_ret_pctile_cool_is_causal_no_future_peek():
+    from mt5_swing.portfolio.overlays import apply_rolling_return_pctile_cool
+
+    rng = np.random.default_rng(44)
+    rets = rng.normal(0.0002, 0.01, 200)
+    eq = _eq_from_returns(rets)
+    kw = dict(trail_bars=21, hist_bars=84, pctile=0.85, cool_scale=0.4, lo=0.25)
+    out1 = apply_rolling_return_pctile_cool(eq, **kw)
+    eq2 = eq.copy()
+    eq2.iloc[-1] = eq2.iloc[-1] * 0.6
+    out2 = apply_rolling_return_pctile_cool(eq2, **kw)
+    assert np.allclose(
+        out1.iloc[:-1].pct_change().fillna(0),
+        out2.iloc[:-1].pct_change().fillna(0),
+    )
+
+
+def test_ret_pctile_cool_triggers_on_rich_trail():
+    from mt5_swing.portfolio.overlays import apply_rolling_return_pctile_cool
+
+    # Mild history then a strong burst so trail sits in high percentile
+    rets = np.concatenate(
+        [
+            np.full(180, 0.0002),
+            np.full(40, 0.008),
+            np.full(20, 0.001),
+        ]
+    )
+    eq = _eq_from_returns(rets)
+    out = apply_rolling_return_pctile_cool(
+        eq, trail_bars=21, hist_bars=126, pctile=0.8, cool_scale=0.5, lo=0.25
+    )
+    r_raw = eq.pct_change().fillna(0)
+    r_out = out.pct_change().fillna(0)
+    late = slice(200, 230)
+    pos = r_raw.iloc[late] > 1e-15
+    assert pos.any()
+    assert (r_out.iloc[late][pos] < r_raw.iloc[late][pos] - 1e-15).any()

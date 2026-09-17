@@ -846,3 +846,44 @@ def apply_peak_proximity_cool(
     scale = scale.where(~near, float(cool_scale))
     scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
     return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
+
+
+def apply_rolling_return_pctile_cool(
+    port: pd.Series,
+    *,
+    trail_bars: int = 42,
+    hist_bars: int = 252,
+    pctile: float = 0.85,
+    cool_scale: float = 0.5,
+    lo: float = 0.25,
+) -> pd.Series:
+    """Causal rolling-return percentile cool — cut size when lag-1 trail ret is rich.
+
+    Distinct from ``apply_runup_throttle`` (fixed absolute threshold) and
+    ``apply_peak_proximity_cool`` (near rolling high). Trailing return over
+    ``trail_bars`` is compared to the rolling ``pctile`` of that same trail-return
+    series over ``hist_bars``. Decision at bar t uses ONLY lag-1 trail ret and
+    lag-1 percentile threshold so bar t cannot see bar t's close. When lag-1
+    trail >= lag-1 threshold → scale = ``cool_scale``, else 1.0. Clipped to
+    [lo, 1] — never leverage (hi=1).
+    """
+    if port is None or len(port) < 10:
+        return port if port is not None else pd.Series(dtype=float)
+    tb = max(5, int(trail_bars))
+    hb = max(tb + 5, int(hist_bars))
+    if len(port) < max(20, tb + 10):
+        return port.astype(float)
+    eq = port.astype(float)
+    r = eq.pct_change().fillna(0.0)
+    trail = eq / eq.shift(tb) - 1.0
+    q = float(pctile)
+    q = min(max(q, 0.5), 0.99)
+    thr = trail.rolling(hb, min_periods=max(20, hb // 4)).quantile(q)
+    trail_lag = trail.shift(1)
+    thr_lag = thr.shift(1)
+    scale = pd.Series(1.0, index=eq.index)
+    rich = trail_lag >= thr_lag
+    rich = rich.fillna(False)
+    scale = scale.where(~rich, float(cool_scale))
+    scale = scale.clip(lower=float(lo), upper=1.0).fillna(1.0)
+    return (1.0 + r * scale).cumprod() * float(eq.iloc[0])
