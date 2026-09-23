@@ -1,0 +1,25 @@
+factor,currency,series_id,n_obs,start,end,pub_lag_months,status,note
+cpi_yoy,AUD,AUSCPIALLQINMEI,907,1949-08-01,2025-02-01,1,ok,
+cpi_yoy,CAD,CANCPIALLMINMEI,1323,1915-02-01,2025-04-01,1,ok,
+cpi_yoy,CHF,CHECPIALLMINMEI,832,1956-02-01,2025-05-01,1,ok,
+cpi_yoy,EUR,CP0000EZ19M086NEST,344,1998-01-01,2026-08-01,1,ok,
+cpi_yoy,GBP,GBRCPIALLMINMEI,831,1956-02-01,2025-04-01,1,ok,
+cpi_yoy,JPY,JPNCPIALLMINMEI,786,1956-02-01,2021-07-01,1,ok,
+cpi_yoy,NZD,NZLCPIALLQINMEI,1249,1915-05-01,2025-02-01,1,ok,
+cpi_yoy,USD,CPIAUCSL,943,1948-02-01,2026-09-01,1,ok,
+ip_yoy,AUD,,0,,,2,missing,unmapped_or_unavailable_on_fred
+ip_yoy,CAD,CANPROINDMISMEI,746,1962-03-01,2024-04-01,2,ok,
+ip_yoy,CHF,,0,,,2,missing,unmapped_or_unavailable_on_fred
+ip_yoy,EUR,EA19PRMNTO01IXOBSAM,514,1981-03-01,2023-12-01,2,ok,EA19 series ends ~2023-10 on FRED — sparse tail
+ip_yoy,GBP,GBRPROINDMISMEI,903,1949-03-01,2024-05-01,2,ok,
+ip_yoy,JPY,JPNPROINDMISMEI,819,1956-03-01,2024-05-01,2,ok,
+ip_yoy,NZD,,0,,,2,missing,unmapped_or_unavailable_on_fred
+ip_yoy,USD,INDPRO,1279,1920-03-01,2026-09-01,2,ok,
+unemployment,AUD,LRHUTTTTAUM156S,582,1978-03-01,2026-08-01,1,ok,
+unemployment,CAD,LRHUTTTTCAM156S,860,1955-02-01,2026-09-01,1,ok,
+unemployment,CHF,LMUNRRTTCHM156S,648,1970-02-01,2024-01-01,1,ok,LMUNRRTTCHM156S registered UR (not LRHUTTTT*)
+unemployment,EUR,LRHUTTTTEZM156S,391,1990-08-01,2023-02-01,1,ok,EA UR ends ~2023-01 on FRED — sparse tail
+unemployment,GBP,LRHUTTTTGBM156S,521,1983-02-01,2026-06-01,1,ok,
+unemployment,JPY,LRHUTTTTJPM156S,859,1955-02-01,2026-08-01,1,ok,
+unemployment,NZD,,0,,,1,missing,unmapped_or_unavailable_on_fred
+unemployment,USD,LRHUTTTTUSM156S,849,1955-02-01,2025-10-01,1,ok,

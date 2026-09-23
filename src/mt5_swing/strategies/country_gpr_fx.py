@@ -37,6 +37,9 @@ class CountryGprFxConfig:
     min_periods: int = 24
     lp_horizons: tuple[int, ...] = (1, 3, 6)  # months
     use_zscore: bool = True
+    # Safe-haven JPY confounds home-GPR→depreciation; default exclude from sort/LP pool.
+    exclude_currencies: tuple[str, ...] = ("USD", "JPY")
+    nw_lags: int | None = None  # None → Newey–West automatic bandwidth
 
 
 def foreign_vs_usd_returns(pair_ret: pd.DataFrame) -> pd.DataFrame:
@@ -170,12 +173,17 @@ def country_gpr_sort_returns(
     pair_ret: pd.DataFrame,
     *,
     cfg: CountryGprFxConfig | None = None,
+    exclude: tuple[str, ...] | None = None,
 ) -> pd.Series:
-    """End-to-end lagged sort: high home GPR → short that FX vs USD."""
+    """End-to-end lagged sort: high home GPR → short that FX vs USD.
+
+    Default excludes USD and JPY (safe-haven confound). Pass ``exclude`` to override.
+    """
     cfg = cfg or CountryGprFxConfig()
+    excl = exclude if exclude is not None else tuple(getattr(cfg, "exclude_currencies", ("USD", "JPY")))
     sig = prepare_country_gpr_signal(country_gpr, cfg=cfg)
     # Align signal month index to month-end for weight application
-    ccy_w = country_gpr_sort_weights(sig, cfg=cfg)
+    ccy_w = country_gpr_sort_weights(sig, cfg=cfg, exclude=excl)
     if ccy_w.empty:
         return pd.Series(dtype=float, name="country_gpr_sort")
     # Use month-end timestamps for expand
@@ -191,59 +199,101 @@ def country_gpr_sort_returns(
     return portfolio_returns_from_pair_weights(daily_w, pair_ret)
 
 
-def local_projection_beta(
-    gpr_signal: pd.Series,
-    fx_monthly: pd.Series,
-    *,
-    horizon: int = 1,
-) -> dict:
-    """Simple LP: cumret_{t→t+h} = a + b * GPR_signal_t + e.
+def newey_west_lag_length(n: int) -> int:
+    """Newey–West automatic bandwidth: floor(4 (T/100)^{2/9})."""
+    if n < 4:
+        return 0
+    return int(np.floor(4.0 * (n / 100.0) ** (2.0 / 9.0)))
 
-    Returns dict with beta, tstat, n, r2. Uses OLS with iid SE (honest small-sample).
-    """
-    g = gpr_signal.copy()
-    r = fx_monthly.copy()
-    g.index = _align_month_start(pd.DatetimeIndex(g.index))
-    r.index = _align_month_start(pd.DatetimeIndex(r.index))
-    # cumulative h-month return from t+1 .. t+h (forward, after signal at t)
-    fwd = pd.Series(index=r.index, dtype=float)
-    for i in range(len(r) - horizon):
-        fwd.iloc[i] = float(r.iloc[i + 1 : i + 1 + horizon].sum())
-    df = pd.concat([g.rename("x"), fwd.rename("y")], axis=1).dropna()
-    if len(df) < 24:
+
+def ols_newey_west_tstat(
+    x: np.ndarray,
+    y: np.ndarray,
+    *,
+    lags: int | None = None,
+) -> dict:
+    """OLS y = a + b x with iid and Newey–West HAC t-stats for b."""
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    mask = np.isfinite(x) & np.isfinite(y)
+    x, y = x[mask], y[mask]
+    n = len(y)
+    if n < 24:
         return {
-            "horizon": horizon,
             "beta": float("nan"),
-            "tstat": float("nan"),
-            "n": int(len(df)),
+            "alpha": float("nan"),
+            "tstat_ols": float("nan"),
+            "tstat_nw": float("nan"),
+            "nw_lags": 0,
+            "n": int(n),
             "r2": float("nan"),
             "mean_y": float("nan"),
         }
-    x = df["x"].to_numpy(dtype=float)
-    y = df["y"].to_numpy(dtype=float)
-    x1 = np.column_stack([np.ones(len(x)), x])
+    x1 = np.column_stack([np.ones(n), x])
     coef, _, _, _ = np.linalg.lstsq(x1, y, rcond=None)
-    yhat = x1 @ coef
-    resid = y - yhat
+    resid = y - x1 @ coef
     ss_res = float(np.dot(resid, resid))
     ss_tot = float(np.dot(y - y.mean(), y - y.mean()))
     r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
     # iid SE
-    n, k = len(y), 2
-    sigma2 = ss_res / max(n - k, 1)
+    sigma2 = ss_res / max(n - 2, 1)
     xtx_inv = np.linalg.inv(x1.T @ x1)
-    se_b = float(np.sqrt(sigma2 * xtx_inv[1, 1]))
-    tstat = float(coef[1] / se_b) if se_b > 0 else float("nan")
+    se_ols = float(np.sqrt(max(sigma2 * xtx_inv[1, 1], 0.0)))
+    t_ols = float(coef[1] / se_ols) if se_ols > 0 else float("nan")
+    # Newey–West HAC for score u_t * x_t
+    L = newey_west_lag_length(n) if lags is None else int(lags)
+    u = resid
+    # moment matrix S for [1, x] regressors
+    scores = x1 * u[:, None]
+    S = (scores.T @ scores) / n
+    for j in range(1, L + 1):
+        w = 1.0 - j / (L + 1.0)
+        Gamma = (scores[j:].T @ scores[:-j]) / n
+        S = S + w * (Gamma + Gamma.T)
+    cov = xtx_inv @ S @ xtx_inv * n  # sandwich; xtx_inv = (X'X)^{-1}, scale carefully
+    # Standard HAC: (X'X)^{-1} * (n S) * (X'X)^{-1} with S = average of scores outer
+    # Our S already /n, so Var = xtx_inv @ (S*n) @ xtx_inv? 
+    # Classical: V = (X'X/n)^{-1} S (X'X/n)^{-1} / n = (X'X)^{-1} (n S) (X'X)^{-1}
+    cov = xtx_inv @ (S * n) @ xtx_inv
+    se_nw = float(np.sqrt(max(cov[1, 1], 0.0)))
+    t_nw = float(coef[1] / se_nw) if se_nw > 0 else float("nan")
     return {
-        "horizon": int(horizon),
         "beta": float(coef[1]),
         "alpha": float(coef[0]),
-        "tstat": tstat,
+        "tstat_ols": t_ols,
+        "tstat_nw": t_nw,
+        "nw_lags": int(L),
         "n": int(n),
         "r2": float(r2),
         "mean_y": float(y.mean()),
     }
 
+
+
+def local_projection_beta(
+    gpr_signal: pd.Series,
+    fx_monthly: pd.Series,
+    *,
+    horizon: int = 1,
+    nw_lags: int | None = None,
+) -> dict:
+    """LP: cumret_{t→t+h} = a + b * GPR_signal_t + e.
+
+    Reports OLS and Newey–West HAC t-stats. Sign: beta < 0 ⇒ high home GPR → depreciation.
+    """
+    g = gpr_signal.copy()
+    r = fx_monthly.copy()
+    g.index = _align_month_start(pd.DatetimeIndex(g.index))
+    r.index = _align_month_start(pd.DatetimeIndex(r.index))
+    fwd = pd.Series(index=r.index, dtype=float)
+    for i in range(len(r) - horizon):
+        fwd.iloc[i] = float(r.iloc[i + 1 : i + 1 + horizon].sum())
+    df = pd.concat([g.rename("x"), fwd.rename("y")], axis=1).dropna()
+    out = ols_newey_west_tstat(df["x"].to_numpy(), df["y"].to_numpy(), lags=nw_lags)
+    out["horizon"] = int(horizon)
+    # back-compat key
+    out["tstat"] = out["tstat_nw"]
+    return out
 
 def local_projection_panel(
     country_gpr: pd.DataFrame,
@@ -259,12 +309,13 @@ def local_projection_panel(
     sig = prepare_country_gpr_signal(country_gpr, cfg=cfg)
     fx_m = monthly_fx_returns(pair_ret)
     rows = []
-    common = [c for c in sig.columns if c in fx_m.columns and c != "USD"]
+    excl = {x.upper() for x in getattr(cfg, "exclude_currencies", ("USD", "JPY"))}
+    common = [c for c in sig.columns if c in fx_m.columns and c.upper() not in excl]
     for h in cfg.lp_horizons:
         # per currency
         betas = []
         for ccy in common:
-            res = local_projection_beta(sig[ccy], fx_m[ccy], horizon=h)
+            res = local_projection_beta(sig[ccy], fx_m[ccy], horizon=h, nw_lags=getattr(cfg, "nw_lags", None))
             res["currency"] = ccy
             res["scope"] = "currency"
             rows.append(res)
@@ -287,26 +338,21 @@ def local_projection_panel(
             x = np.concatenate(xs)
             y = np.concatenate(ys)
             if len(x) >= 24:
-                x1 = np.column_stack([np.ones(len(x)), x])
-                coef, _, _, _ = np.linalg.lstsq(x1, y, rcond=None)
-                resid = y - x1 @ coef
-                n, k = len(y), 2
-                sigma2 = float(np.dot(resid, resid) / max(n - k, 1))
-                se_b = float(np.sqrt(sigma2 * np.linalg.inv(x1.T @ x1)[1, 1]))
+                res_p = ols_newey_west_tstat(x, y, lags=getattr(cfg, "nw_lags", None))
                 rows.append(
                     {
                         "horizon": h,
                         "currency": "POOLED",
                         "scope": "pooled",
-                        "beta": float(coef[1]),
-                        "alpha": float(coef[0]),
-                        "tstat": float(coef[1] / se_b) if se_b > 0 else float("nan"),
-                        "n": int(n),
-                        "r2": float(
-                            1.0
-                            - np.dot(resid, resid) / max(np.dot(y - y.mean(), y - y.mean()), 1e-18)
-                        ),
-                        "mean_y": float(y.mean()),
+                        "beta": res_p["beta"],
+                        "alpha": res_p["alpha"],
+                        "tstat": res_p["tstat_nw"],
+                        "tstat_ols": res_p["tstat_ols"],
+                        "tstat_nw": res_p["tstat_nw"],
+                        "nw_lags": res_p["nw_lags"],
+                        "n": res_p["n"],
+                        "r2": res_p["r2"],
+                        "mean_y": res_p["mean_y"],
                     }
                 )
     return pd.DataFrame(rows)

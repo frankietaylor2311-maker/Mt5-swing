@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_months": 1,
+  "pub_lags": {
+    "cpi": 1,
+    "ip": 2,
+    "ur": 1
+  },
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "macro_cpi",
+    "macro_ip",
+    "macro_ur",
+    "macro_diff_ew"
+  ],
+  "cpi_cols": [
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD",
+    "CHF",
+    "AUD",
+    "NZD"
+  ],
+  "ip_cols": [
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD"
+  ],
+  "ur_cols": [
+    "EUR",
+    "GBP",
+    "JPY",
+    "AUD",
+    "CAD",
+    "CHF"
+  ],
+  "promote": false,
+  "refs": [
+    "Dahlquist & Hasseltoft \u2014 macro differentials and currency risk premia",
+    "PPP / inflation differential: high relative inflation \u2192 short foreign",
+    "Activity (IP): high relative growth \u2192 long foreign",
+    "Labour slack (UR): high relative unemployment \u2192 short foreign"
+  ]
+}

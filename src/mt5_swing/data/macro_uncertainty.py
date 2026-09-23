@@ -372,8 +372,20 @@ def load_country_gpr(
 
 
 def load_epu_tpu_stub() -> pd.DataFrame:
-    """Load local EPU/TPU if present; else empty frame with instructions in attrs."""
+    """Backward-compatible stub: prefer live FRED EPU, else local CSV, else empty."""
     path = macro_dir() / "epu_tpu.csv"
+    try:
+        panel = load_epu_panel(download=True, pub_lag_months=0)
+        out = panel.rename(columns={"US_EPU": "EPU"})
+        if "GEPU" in out.columns:
+            out["TPU"] = out["GEPU"]  # placeholder col; true TPU is separate
+        else:
+            out["TPU"] = pd.NA
+        out.attrs["available"] = True
+        out.attrs["note"] = "FRED USEPUINDXM/GEPUCURRENT; TPU column is GEPU placeholder"
+        return out[["EPU", "TPU"]].sort_index()
+    except Exception:
+        pass
     if not path.exists():
         empty = pd.DataFrame(columns=["EPU", "TPU"])
         empty.attrs["instructions"] = TPU_NOTES
@@ -383,3 +395,119 @@ def load_epu_tpu_stub() -> pd.DataFrame:
     df.index = pd.to_datetime(df.index, utc=True)
     df.attrs["available"] = True
     return df.sort_index()
+
+
+# ---------------------------------------------------------------------------
+# Baker–Bloom–Davis EPU (free FRED + optional policyuncertainty.com workbook)
+# ---------------------------------------------------------------------------
+
+EPU_PAGE = "https://www.policyuncertainty.com/"
+EPU_ALL_COUNTRY_XLSX = "https://www.policyuncertainty.com/media/All_Country_Data.xlsx"
+# FRED mirrors (no API key)
+FRED_US_EPU = "USEPUINDXM"
+FRED_GEPU = "GEPUCURRENT"
+
+
+def download_epu_fred(*, force: bool = False) -> dict[str, Path]:
+    """Download US EPU + Global EPU from FRED into ``data/macro/``."""
+    from mt5_swing.data.fred_rates import download_fred_series
+
+    out = {
+        "US_EPU": download_fred_series(FRED_US_EPU, force=force),
+        "GEPU": download_fred_series(FRED_GEPU, force=force),
+    }
+    return out
+
+
+def download_epu_all_country_xlsx(*, force: bool = False) -> Path | None:
+    """Try policyuncertainty.com All_Country_Data.xlsx (may be blocked).
+
+    Returns path on success, None if download fails (FRED GEPU remains available).
+    """
+    path = _ensure_macro() / "epu_all_country.xlsx"
+    if path.exists() and not force and path.stat().st_size > 1000:
+        return path
+    try:
+        urlretrieve(EPU_ALL_COUNTRY_XLSX, path)
+        if path.stat().st_size < 1000:
+            path.unlink(missing_ok=True)
+            return None
+        return path
+    except (URLError, HTTPError, OSError):
+        return None
+
+
+def load_epu(
+    *,
+    series: str = "US",
+    download: bool = True,
+    pub_lag_months: int = 1,
+    force: bool = False,
+) -> pd.Series:
+    """Load Baker–Bloom–Davis EPU with publication lag.
+
+    Parameters
+    ----------
+    series
+        ``US`` → FRED USEPUINDXM; ``GEPU`` / ``GLOBAL`` → FRED GEPUCURRENT.
+    pub_lag_months
+        Default 1 (monthly index for month t first usable early t+1).
+    """
+    from mt5_swing.data.fred_rates import load_fred_series
+
+    key = series.upper().strip()
+    if key in {"US", "USEPU", "USEPUINDXM", "EPU"}:
+        sid = FRED_US_EPU
+        name = "US_EPU"
+    elif key in {"GEPU", "GLOBAL", "GEPUCURRENT", "WORLD"}:
+        sid = FRED_GEPU
+        name = "GEPU"
+    else:
+        raise KeyError(f"Unknown EPU series '{series}' (use US or GEPU)")
+    if download or force:
+        download_epu_fred(force=force)
+    s = load_fred_series(sid, download=False)
+    s = s.dropna().sort_index()
+    s.name = name
+    if pub_lag_months > 0:
+        s.index = s.index + pd.DateOffset(months=int(pub_lag_months))
+        s = s[~s.index.duplicated(keep="last")].sort_index()
+    s.attrs["source"] = f"fred_{sid}"
+    s.attrs["citation"] = "Baker, Bloom & Davis (2016), Measuring Economic Policy Uncertainty, QJE"
+    s.attrs["url"] = EPU_PAGE
+    s.attrs["pub_lag_months"] = int(pub_lag_months)
+    return s
+
+
+def load_epu_panel(
+    *,
+    download: bool = True,
+    pub_lag_months: int = 1,
+    force: bool = False,
+) -> pd.DataFrame:
+    """US EPU + GEPU columns with shared publication lag. Also tries xlsx cache."""
+    if download or force:
+        download_epu_fred(force=force)
+        download_epu_all_country_xlsx(force=force)
+    us = load_epu(series="US", download=False, pub_lag_months=pub_lag_months)
+    ge = load_epu(series="GEPU", download=False, pub_lag_months=pub_lag_months)
+    df = pd.concat([us.rename("US_EPU"), ge.rename("GEPU")], axis=1).sort_index()
+    # Optional country workbook → cache a convenience CSV if readable
+    xlsx = macro_dir() / "epu_all_country.xlsx"
+    csv_path = macro_dir() / "epu_all_country.csv"
+    if xlsx.exists() and (force or not csv_path.exists()):
+        try:
+            raw = pd.read_excel(xlsx, sheet_name=0)
+            if {"Year", "Month"}.issubset(raw.columns):
+                raw["date"] = pd.to_datetime(
+                    dict(year=raw["Year"], month=raw["Month"], day=1), utc=True
+                )
+                raw = raw.drop(columns=["Year", "Month"]).set_index("date").sort_index()
+                raw.to_csv(csv_path)
+        except Exception:  # noqa: BLE001
+            pass
+    df.attrs["available"] = True
+    df.attrs["pub_lag_months"] = int(pub_lag_months)
+    df.attrs["citation"] = "Baker, Bloom & Davis (2016); Davis (2016) GEPU"
+    df.attrs["xlsx_cached"] = bool(xlsx.exists())
+    return df

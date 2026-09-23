@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_days": 1,
+  "signal_lag": 1,
+  "formation_days": 63,
+  "skip_days": 21,
+  "cost_bps_per_side": 1.5,
+  "country_map": {
+    "AUD": "copper",
+    "CAD": "oil",
+    "NZD": "basket"
+  },
+  "basket_source": "DBC",
+  "commodity_columns": [
+    "oil",
+    "copper",
+    "gold",
+    "etf",
+    "basket"
+  ],
+  "download_ok": true,
+  "download_err": null,
+  "hyp_support_lp": {
+    "h1": {
+      "beta": -0.01118932658539981,
+      "tstat": -1.5106983564502874,
+      "sign_ok": false,
+      "n": 540
+    },
+    "h3": {
+      "beta": -0.01951201383185288,
+      "tstat": -1.666751069254295,
+      "sign_ok": false,
+      "n": 534
+    }
+  },
+  "promote": false,
+  "refs": [
+    "Chen, Rogoff & Rossi (2010), Can Exchange Rates Forecast Commodity Prices?, QJE",
+    "Cashin, C\u00e9spedes & Sahay \u2014 commodity currencies",
+    "Amano & van Norden \u2014 oil and the Canadian dollar"
+  ]
+}

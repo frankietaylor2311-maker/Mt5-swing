@@ -1,7 +1,7 @@
 """GPR / VIX regime filter — scale FX exposure; optional safe-haven USD tilt.
 
 Literature hook: Caldara–Iacoviello geopolitical risk; FX vol / uncertainty
-compresses carry and momentum (Menkhoff et al.). High VIX / high GPR regimes
+compresses carry and momentum (Menkhoff et al.). High VIX / high GPR / high EPU regimes
 are associated with USD strength (safe-haven) and carry crashes.
 
 Rules (research priors, lagged only — no HO tuning):
@@ -45,6 +45,7 @@ class GprRegimeConfig:
     signal_lag: int = 1
     use_gpr: bool = True
     use_vix: bool = True
+    use_epu: bool = True
     usd_tilt: float = 0.15  # max additive tilt toward USD in high-stress
     min_periods: int = 60
 
@@ -73,8 +74,13 @@ def regime_z(
     index: pd.DatetimeIndex,
     *,
     cfg: GprRegimeConfig,
+    epu: pd.Series | None = None,
 ) -> pd.Series:
-    """Combined stress z = max(z_gpr, z_vix) on index (then signal_lag)."""
+    """Combined stress z = max(z_gpr, z_vix, z_epu) on index (then signal_lag).
+
+    Baker–Bloom–Davis EPU enters as an additional uncertainty state variable
+    with a fixed a-priori threshold (same z_high as GPR/VIX) — not grid-searched.
+    """
     zs = []
     if cfg.use_gpr and gpr is not None and len(gpr):
         g = align_macro_to_index(gpr, index)
@@ -82,6 +88,9 @@ def regime_z(
     if cfg.use_vix and vix is not None and len(vix):
         v = align_macro_to_index(vix, index)
         zs.append(_zscore(v, cfg.z_window, cfg.min_periods))
+    if getattr(cfg, "use_epu", False) and epu is not None and len(epu):
+        e = align_macro_to_index(epu, index)
+        zs.append(_zscore(e, cfg.z_window, cfg.min_periods))
     if not zs:
         return pd.Series(0.0, index=index, name="regime_z")
     z = zs[0]
@@ -130,10 +139,11 @@ def apply_regime_to_weights(
     vix: pd.Series | None,
     *,
     cfg: GprRegimeConfig | None = None,
+    epu: pd.Series | None = None,
 ) -> pd.DataFrame:
     """Scale base_weights by risk_scale and add optional USD tilt."""
     cfg = cfg or GprRegimeConfig()
-    z = regime_z(gpr, vix, base_weights.index, cfg=cfg)
+    z = regime_z(gpr, vix, base_weights.index, cfg=cfg, epu=epu)
     scale = risk_scale_from_z(z, cfg=cfg)
     scaled = base_weights.mul(scale, axis=0)
     if cfg.usd_tilt > 0:
@@ -151,10 +161,11 @@ def apply_regime_to_returns(
     vix: pd.Series | None,
     *,
     cfg: GprRegimeConfig | None = None,
+    epu: pd.Series | None = None,
 ) -> pd.Series:
     """Scale a single portfolio return series by lagged regime risk_scale."""
     cfg = cfg or GprRegimeConfig()
-    z = regime_z(gpr, vix, port_ret.index, cfg=cfg)
+    z = regime_z(gpr, vix, port_ret.index, cfg=cfg, epu=epu)
     scale = risk_scale_from_z(z, cfg=cfg)
     out = port_ret * scale.shift(1).fillna(1.0)
     out.name = (port_ret.name or "port") + "_gpr_regime"

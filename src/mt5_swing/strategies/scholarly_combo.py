@@ -68,6 +68,7 @@ class ScholarlyComboConfig:
     # Use max(z_gpr, z_vix) for carry cool; USD tilt keyed on GPR z only when available
     use_gpr: bool = True
     use_vix: bool = True
+    use_epu: bool = True  # Baker–Bloom–Davis EPU in carry cool (fixed prior)
 
 
 def _dollar_tsmom_pair_weights(
@@ -109,8 +110,9 @@ def carry_cool_scale(
     index: pd.DatetimeIndex,
     *,
     cfg: ScholarlyComboConfig,
+    epu: pd.Series | None = None,
 ) -> pd.Series:
-    """Lagged risk scale in [carry_cool, 1] from max(z_gpr, z_vix)."""
+    """Lagged risk scale in [carry_cool, 1] from max(z_gpr, z_vix, z_epu)."""
     gcfg = GprRegimeConfig(
         z_window=cfg.z_window,
         z_high=cfg.z_high,
@@ -119,10 +121,11 @@ def carry_cool_scale(
         signal_lag=cfg.signal_lag,
         use_gpr=cfg.use_gpr,
         use_vix=cfg.use_vix,
+        use_epu=getattr(cfg, "use_epu", True),
         usd_tilt=0.0,
         min_periods=cfg.min_periods,
     )
-    z = regime_z(gpr, vix, index, cfg=gcfg)
+    z = regime_z(gpr, vix, index, cfg=gcfg, epu=epu)
     return risk_scale_from_z(z, cfg=gcfg)
 
 
@@ -156,6 +159,7 @@ def build_combo_weights(
     vix: pd.Series | None,
     *,
     cfg: ScholarlyComboConfig | None = None,
+    epu: pd.Series | None = None,
 ) -> pd.DataFrame:
     """Daily pair weights: EW blend with carry cool + GPR USD tilt."""
     cfg = cfg or ScholarlyComboConfig()
@@ -197,7 +201,7 @@ def build_combo_weights(
     dol_d = dol_d.reindex(columns=all_cols, fill_value=0.0).reindex(idx).fillna(0.0)
 
     # Cool carry in high VIX / high GPR states (literature)
-    cool = carry_cool_scale(gpr, vix, idx, cfg=cfg)
+    cool = carry_cool_scale(gpr, vix, idx, cfg=cfg, epu=epu)
     # Extra one-bar lag so scale known before return realization (matches gpr_regime)
     cool_lag = cool.shift(1).fillna(1.0)
     carry_scaled = carry_d.mul(cool_lag, axis=0)
@@ -242,10 +246,11 @@ def combo_portfolio_returns(
     vix: pd.Series | None,
     *,
     cfg: ScholarlyComboConfig | None = None,
+    epu: pd.Series | None = None,
 ) -> pd.Series:
     """Daily portfolio returns from scholarly combo weights."""
     cfg = cfg or ScholarlyComboConfig()
-    w = build_combo_weights(rates, pair_ret, gpr, vix, cfg=cfg)
+    w = build_combo_weights(rates, pair_ret, gpr, vix, cfg=cfg, epu=epu)
     common = [c for c in w.columns if c in pair_ret.columns]
     r = portfolio_returns_from_weights(w[common], pair_ret[common])
     r.name = "scholarly_combo"
@@ -259,6 +264,7 @@ def sleeve_returns_bundle(
     vix: pd.Series | None,
     *,
     cfg: ScholarlyComboConfig | None = None,
+    epu: pd.Series | None = None,
 ) -> dict[str, pd.Series]:
     """Individual sleeves + combo + variants for the stats board."""
     cfg = cfg or ScholarlyComboConfig()
@@ -298,10 +304,10 @@ def sleeve_returns_bundle(
         "combo_ew_raw"
     )
 
-    combo = combo_portfolio_returns(rates, pair_ret, gpr, vix, cfg=cfg)
+    combo = combo_portfolio_returns(rates, pair_ret, gpr, vix, cfg=cfg, epu=epu)
 
     # Carry alone with cool (no mom/dollar)
-    cool = carry_cool_scale(gpr, vix, idx, cfg=cfg).shift(1).fillna(1.0)
+    cool = carry_cool_scale(gpr, vix, idx, cfg=cfg, epu=epu).shift(1).fillna(1.0)
     carry_cooled = (carry_r * cool).rename("carry_cooled")
 
     return {
