@@ -1,0 +1,7 @@
+2024           ret=   4.43% mean_mo= 0.35% pos=  55% top3=  78% gates=PASS p2t=7.50% (research/WF overlap)
+2025           ret=  33.17% mean_mo= 2.44% pos=  73% top3=  60% gates=PASS p2t=5.23% (mixed research→holdout)
+2026           ret=  20.63% mean_mo= 2.37% pos=  75% top3=  87% gates=PASS p2t=6.99% (pure holdout)
+holdout_365d   ret=  21.31% mean_mo= 1.51% pos=  67% top3=  83% gates=PASS p2t=7.14% (pure holdout)
+roll12_end     ret=  21.31% mean_mo= 1.51% pos=  67% top3=  83% gates=PASS p2t=7.14% (pure holdout)
+roll12_m6      ret=  21.75% mean_mo= 1.54% pos=  67% top3=  63% gates=PASS p2t=6.22% (mixed)
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_cap_util.md
