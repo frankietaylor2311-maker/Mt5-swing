@@ -1,0 +1,259 @@
+{
+  "ok": true,
+  "section": 41,
+  "path": "oecd_mei_employment_lfemtttt",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 3,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "yoy_periods": 12,
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_emp_xs",
+    "low_emp_xs",
+    "high_emp_z_xs",
+    "emp_chg_xs",
+    "us_emp_stress_fx",
+    "us_emp_haven_usd",
+    "emp_ew"
+  ],
+  "primary": "high_emp_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI LFEMTTTT employment persons levels (monthly + quarterly \u2192 monthly ffill after pub_lag=3); XS on YoY % of levels; also 5y z / \u039412 of YoY boarded; high-emp primary (labour strength \u2192 appreciate); n_long=n_short=2 full G10 foreign",
+  "eur_mapping": "LFEMTTTTDEQ647S Germany proxy (EZ Q647S stale 2022-10; FR/IT/ES Q647S alts)",
+  "coverage_g10": "full G10 mapped (USD/JPY/CAD/AUD monthly M647S; EUR/GBP/NZD/CHF quarterly Q647S)",
+  "series_map": {
+    "USD": "LFEMTTTTUSM647S",
+    "EUR": "LFEMTTTTDEQ647S",
+    "GBP": "LFEMTTTTGBQ647S",
+    "JPY": "LFEMTTTTJPM647S",
+    "CAD": "LFEMTTTTCAM647S",
+    "AUD": "LFEMTTTTAUM647S",
+    "NZD": "LFEMTTTTNZQ647S",
+    "CHF": "LFEMTTTTCHQ647S"
+  },
+  "score_basis": "yoy_pct_of_levels",
+  "distinct_from": [
+    "macro_diff_CPI_IP_UR",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "gpr_country",
+    "AI_GPR",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "fiscal_28",
+    "debt_gdp_29",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "money_growth_33",
+    "reserves_34",
+    "house_price_35",
+    "equity_diff",
+    "retail_sales_sartmismei_stale"
+  ],
+  "citations": [
+    "Dahlquist\u2013Hasseltoft-style macro\u2013FX differentials applied to labour / employment growth",
+    "Labour-market strength \u2192 subsequent FX appreciation prior",
+    "Honesty: low emp / labour-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "LFEMTTTTUSM647S",
+      "freq": "M",
+      "n_obs": 849,
+      "start": "1955-04-01",
+      "end": "2025-12-01",
+      "last": 163645000.0,
+      "note": "OECD MEI employment persons LFEMTTTTUSM647S (monthly)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "LFEMTTTTJPM647S",
+      "freq": "M",
+      "n_obs": 859,
+      "start": "1955-04-01",
+      "end": "2026-10-01",
+      "last": 68310000.0,
+      "note": "OECD MEI employment persons LFEMTTTTJPM647S (monthly)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "LFEMTTTTCAM647S",
+      "freq": "M",
+      "n_obs": 860,
+      "start": "1955-04-01",
+      "end": "2026-11-01",
+      "last": 21173100.0,
+      "note": "OECD MEI employment persons LFEMTTTTCAM647S (monthly)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "LFEMTTTTAUM647S",
+      "freq": "M",
+      "n_obs": 626,
+      "start": "1967-05-01",
+      "end": "2026-10-01",
+      "last": 14807240.0,
+      "note": "OECD MEI employment persons LFEMTTTTAUM647S (monthly)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "LFEMTTTTDEQ647S",
+      "freq": "Q",
+      "n_obs": 772,
+      "start": "1962-04-01",
+      "end": "2026-07-01",
+      "last": 42401840.0,
+      "note": "Germany proxy via LFEMTTTTDEQ647S (Q) (LFEMTTTTEZQ647S EZ ends 2022-10; FR/IT/ES Q647S alts)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "LFEMTTTTGBQ647S",
+      "freq": "Q",
+      "n_obs": 664,
+      "start": "1971-04-01",
+      "end": "2026-07-01",
+      "last": 34469000.0,
+      "note": "OECD MEI employment persons LFEMTTTTGBQ647S (quarterly)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "LFEMTTTTNZQ647S",
+      "freq": "Q",
+      "n_obs": 487,
+      "start": "1986-01-01",
+      "end": "2026-07-01",
+      "last": 2905000.0,
+      "note": "OECD MEI employment persons LFEMTTTTNZQ647S (quarterly)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "LFEMTTTTCHQ647S",
+      "freq": "Q",
+      "n_obs": 337,
+      "start": "1998-07-01",
+      "end": "2026-07-01",
+      "last": 4917086.0,
+      "note": "OECD MEI employment persons LFEMTTTTCHQ647S (quarterly)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "yoy_m657s_mostly_404_or_stale": [
+      "LFEMTTTTUSM657S",
+      "LFEMTTTTGBM657S",
+      "LFEMTTTTJPM657S",
+      "LFEMTTTCAM657S",
+      "LFEMTTTTAUM657S",
+      "LFEMTTTTNZM657S",
+      "LFEMTTTTCHM657S",
+      "LFEMTTTEZM657S",
+      "LFEMTTTTDEM657S"
+    ],
+    "yoy_q657s_stale_~2023_10": [
+      "LFEMTTTTUSQ657S",
+      "LFEMTTTTGBQ657S",
+      "LFEMTTTTJPQ657S",
+      "LFEMTTTTCAQ657S",
+      "LFEMTTTTAUQ657S",
+      "LFEMTTTTNZQ657S",
+      "LFEMTTTTCHQ657S",
+      "LFEMTTTTDEQ657S",
+      "LFEMTTTTEZQ657S"
+    ],
+    "eur_ez_persons_stale_2022": [
+      "LFEMTTTTEZQ647S"
+    ],
+    "eur_germany_proxy_primary": [
+      "LFEMTTTTDEQ647S"
+    ],
+    "eur_fr_it_es_alts": [
+      "LFEMTTTTFRQ647S",
+      "LFEMTTTTITQ647S",
+      "LFEMTTTTESQ647S"
+    ],
+    "m159n_levels_mostly_404": [
+      "LFEMTTTTUSM159N",
+      "LFEMTTTTGBM159N",
+      "LFEMTTTTJPM159N",
+      "LFEMTTTCAM159N",
+      "LFEMTTTTAUM159N",
+      "LFEMTTTTNZM159N",
+      "LFEMTTTTCHM159N",
+      "LFEMTTTEZM159N",
+      "LFEMTTTTDEM159N"
+    ],
+    "us_national_alts_not_primary": [
+      "PAYEMS",
+      "CE16OV"
+    ],
+    "employment_rate_lrem_not_primary": [
+      "LREM64TTUSM156S",
+      "LREM64TTJPM156S",
+      "LREM64TTCAM156S",
+      "LREM64TTAUM156S",
+      "LREM64TTGBQ156N",
+      "LREM64TTDEQ156N",
+      "LREM64TTNZQ156N",
+      "LREM64TTCHQ156N"
+    ],
+    "retail_sales_sartmismei_stale_skipped": [
+      "SARTMISMEI"
+    ]
+  },
+  "soft_best": {
+    "factor": "low_emp_xs",
+    "n_months": 180,
+    "mean_mo": 0.0006182555966846526,
+    "tstat_ols": 0.9826754095029115,
+    "tstat_nw": 1.0606764457039146,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5166666666666667,
+    "top3": 0.10198584651058003,
+    "ann_sharpe_daily": 0.2568142915765684
+  },
+  "primary_sweep": {
+    "strategy": "high_emp_xs",
+    "scale": 0.5211341921240091,
+    "binding": "static",
+    "is_total_return": -0.08265543793108276,
+    "is_static_loss": 0.09999999991940495,
+    "is_max_daily_dd": 0.006832167373618431,
+    "is_gates_pass": true,
+    "oos_total_return": 0.009742228274859821,
+    "oos_static_loss": 0.0006460896047686401,
+    "oos_max_daily_dd": 0.0016889748336137564,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00046121574126577853,
+    "mean_mo_oos": 0.0006966874771143402,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0003753411233351871,
+    "scaled_full_pct_pos": 0.4777777777777778,
+    "scaled_ho_mean_mo": 0.0006966874771143402,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}
