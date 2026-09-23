@@ -1,0 +1,155 @@
+{
+  "ok": true,
+  "section": 45,
+  "path": "country_gpr_bilateral_rel_to_us",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 1,
+  "signal_lag": 0,
+  "z_window": 60,
+  "min_periods": 24,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "low_rel_gpr_xs",
+    "high_rel_gpr_xs",
+    "low_rel_gpr_lvl_xs",
+    "rel_gpr_chg_xs",
+    "us_gpr_stress_fx",
+    "us_gpr_haven_usd",
+    "gpr_bilat_ew"
+  ],
+  "primary": "low_rel_gpr_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 1,
+  "hard_nw_pos": 1,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "missing_currencies": [
+    "NZD"
+  ],
+  "foreign_panel": [
+    "AUD",
+    "CAD",
+    "CHF",
+    "GBP",
+    "JPY",
+    "EUR"
+  ],
+  "signal_lag_a_priori_note": "signal_lag months=0 (modern XS \u00a743-style); PIT via pub_lag=1m + 1d weight lag",
+  "distinct_from": [
+    "country_gpr_absolute_sort_lp_9",
+    "aggregate_gpr_regime_8",
+    "ai_gpr_threats_acts_oil_25",
+    "epu_tpu_18",
+    "wui_40",
+    "building_permits_43",
+    "acm_tp_44"
+  ],
+  "citations": [
+    "Caldara & Iacoviello, Measuring Geopolitical Risk, AER 2022",
+    "Liu & Zhang / Caldara\u2013Iacoviello country GPRC_* differentials vs USD",
+    "Relative (home\u2212US) GPR as bilateral risk premium state variable"
+  ],
+  "coverage": [
+    {
+      "currency": "EUR",
+      "n_obs": 500,
+      "start": "1985-02-01",
+      "end": "2026-09-01",
+      "mapped": true,
+      "note": ""
+    },
+    {
+      "currency": "GBP",
+      "n_obs": 500,
+      "start": "1985-02-01",
+      "end": "2026-09-01",
+      "mapped": true,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "n_obs": 500,
+      "start": "1985-02-01",
+      "end": "2026-09-01",
+      "mapped": true,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "n_obs": 500,
+      "start": "1985-02-01",
+      "end": "2026-09-01",
+      "mapped": true,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "n_obs": 500,
+      "start": "1985-02-01",
+      "end": "2026-09-01",
+      "mapped": true,
+      "note": ""
+    },
+    {
+      "currency": "CHF",
+      "n_obs": 500,
+      "start": "1985-02-01",
+      "end": "2026-09-01",
+      "mapped": true,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "mapped": false,
+      "note": "no GPRC_NZL"
+    }
+  ],
+  "soft_best": {
+    "factor": "us_gpr_haven_usd",
+    "n_months": 180,
+    "mean_mo": 0.0007555742952534324,
+    "tstat_ols": 2.0830834632740647,
+    "tstat_nw": 2.3077079475083075,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.2111111111111111,
+    "top3": 0.24752871695389528,
+    "ann_sharpe_daily": 0.5373791911228473
+  },
+  "primary_sweep": {
+    "strategy": "low_rel_gpr_xs",
+    "scale": 1.7705168994389038,
+    "binding": "static",
+    "is_total_return": 0.25345736022405174,
+    "is_static_loss": 0.09999999984136884,
+    "is_max_daily_dd": 0.03103244306037057,
+    "is_gates_pass": true,
+    "oos_total_return": -0.0018463813368665427,
+    "oos_static_loss": 0.02006015233340033,
+    "oos_max_daily_dd": 0.008920573967636446,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.0014372196581064114,
+    "mean_mo_oos": -0.0002617240736697742,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0013379952605142495,
+    "scaled_full_pct_pos": 0.5055555555555555,
+    "scaled_ho_mean_mo": -0.0002617240736697742,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "primary_pos_is": true
+}

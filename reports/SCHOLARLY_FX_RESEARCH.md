@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, ACM term-premium THREEFYTP10 §44 after building-permits §43 / industrial-production §42 / employment §41 / WUI §40 / OECD BCI §39 / CCI §38 / CLI §37; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01). + OECD BCI balances (`BSCICP02*M460S`; EUR=`BSCICP02EZM460S`; CHF live; AUD/CAD/NZD/JPY unmapped; `BSCICP03*M665S` amplitude stale ~2023-11..2024-01; NAPM/ISM 404). + Ahir–Bloom–Furceri country WUI (`WUIUSA`/`WUIDEU`/`WUIGBR`/`WUIJPN`/`WUICAN`/`WUIAUS`/`WUINZL`/`WUICHE`; EUR=Germany proxy; full G10 live ~2026-04; quarterly→monthly after pub_lag=4). + OECD MEI employment persons LFEMTTTT (`LFEMTTTTUSM647S`/`JPM647S`/`CAM647S`/`AUM647S` monthly; `LFEMTTTTDEQ647S` EUR Germany proxy — EZ Q647S stale 2022-10; `GBQ647S`/`NZQ647S`/`CHQ647S` quarterly; M657S/Q657S YoY stale/404 — not primary; YoY of levels; pub_lag=3). + OECD MEI industrial production YoY (`USAPRINTO01GYSAM`/`GBR`/`JPN`/`CAN` monthly; EUR=`FRAPRINTO01GYSAM` France proxy — EA19/DEU GYSAM stale; AUD/NZD/CHF=`*PRMNTO01GYSAQ` manufacturing quarterly — industry PRINTO01 404; PROINDMISMEI stale ~2024-03; pub_lag=2). + OECD MEI building permits YoY (`CAN`/`AUS`/`NZL`/`DEU ODCNPI03GYSAM`; EUR=Germany — EA19 stale 2023-08; USD=`PERMIT` levels→YoY — `USAODCNPI03GYSAM` 404; GBP/JPY/CHF unmapped; ODCNPI02 starts 404; ACM `THREEFYTP10` live fallback not used; pub_lag=2). + NY Fed ACM term premium (`THREEFYTP10` / `THREEFYTP5`; `ACMTP10` 404; pub_lag=1d).
+**Status:** Active (2026-09-23 BST, country-GPR bilateral rel-to-US §45 after ACM term-premium §44 / building-permits §43 / industrial-production §42 / employment §41 / WUI §40 / OECD BCI §39 / CCI §38 / CLI §37; FX IV/RR + news-sentiment still blocked; OECD retail SARTM* stale — skipped). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01). + OECD BCI balances (`BSCICP02*M460S`; EUR=`BSCICP02EZM460S`; CHF live; AUD/CAD/NZD/JPY unmapped; `BSCICP03*M665S` amplitude stale ~2023-11..2024-01; NAPM/ISM 404). + Ahir–Bloom–Furceri country WUI (`WUIUSA`/`WUIDEU`/`WUIGBR`/`WUIJPN`/`WUICAN`/`WUIAUS`/`WUINZL`/`WUICHE`; EUR=Germany proxy; full G10 live ~2026-04; quarterly→monthly after pub_lag=4). + OECD MEI employment persons LFEMTTTT (`LFEMTTTTUSM647S`/`JPM647S`/`CAM647S`/`AUM647S` monthly; `LFEMTTTTDEQ647S` EUR Germany proxy — EZ Q647S stale 2022-10; `GBQ647S`/`NZQ647S`/`CHQ647S` quarterly; M657S/Q657S YoY stale/404 — not primary; YoY of levels; pub_lag=3). + OECD MEI industrial production YoY (`USAPRINTO01GYSAM`/`GBR`/`JPN`/`CAN` monthly; EUR=`FRAPRINTO01GYSAM` France proxy — EA19/DEU GYSAM stale; AUD/NZD/CHF=`*PRMNTO01GYSAQ` manufacturing quarterly — industry PRINTO01 404; PROINDMISMEI stale ~2024-03; pub_lag=2). + OECD MEI building permits YoY (`CAN`/`AUS`/`NZL`/`DEU ODCNPI03GYSAM`; EUR=Germany — EA19 stale 2023-08; USD=`PERMIT` levels→YoY — `USAODCNPI03GYSAM` 404; GBP/JPY/CHF unmapped; ODCNPI02 starts 404; ACM `THREEFYTP10` live fallback not used; pub_lag=2). + NY Fed ACM term premium (`THREEFYTP10` / `THREEFYTP5`; `ACMTP10` 404; pub_lag=1d). + Country-GPR bilateral rel-to-US (`gpr_country_monthly.csv` GPRC_*; EUR=EW DEU/FRA/ITA/ESP/NLD/BEL; NZD gap no GPRC_NZL; pub_lag=1m).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -215,6 +215,14 @@
 - **Free data:** FRED `THREEFYTP10` (ACM 10y TP, ~1990–present live) + companion `THREEFYTP5` (5y). `ACMTP10` / `ACMTP05` **404** — skipped.
 - **What we implement (wave §44):** `data/fred_acm_term_premium.py` + `strategies/acm_term_premium_fx.py` + `scripts/scholarly_fx_acm_tp_wave.py` — legs `acm_tp_usd` (primary), `acm_tp_chg_usd`, `acm_tp_lvl_usd`, `acm_tp_stress_fx` (honesty), `carry_acm_tp_cool`, `carry_acm_tp_loose`, `acm_tp_ew`, optional `acm_tp5_usd`. PIT daily `pub_lag=1d` + `signal_lag=1d`. **Distinct** from yield-curve slope §16, real-rate/TIPS §23, funding-liq §20, IG OAS §36. **Not** overlaid on the locked sleeve.
 
+### 1.37 Country-GPR bilateral (relative-to-US)
+
+- **Claim:** Currencies with *low relative* geopolitical risk (home country GPR − US GPR) subsequently appreciate vs high-rel-GPR peers (Liu–Zhang / Caldara–Iacoviello bilateral refinement of country GPRC_*).
+- **Key refs:** Caldara & Iacoviello (2022) AER country indexes; relative (home−US) differential as bilateral risk-premium state variable.
+- **Free data:** Caldara–Iacoviello `gpr_country_monthly.csv` GPRC_* (live ~2026-08). EUR = EW of DEU/FRA/ITA/ESP/NLD/BEL. **NZD gap** (no `GPRC_NZL`).
+- **What we implement (wave §45):** `data/country_gpr_bilateral.py` + `strategies/country_gpr_bilateral_fx.py` + `scripts/scholarly_fx_country_gpr_bilateral_wave.py` — legs `low_rel_gpr_xs` (primary), `high_rel_gpr_xs`, `low_rel_gpr_lvl_xs`, `rel_gpr_chg_xs`, `us_gpr_stress_fx`, `us_gpr_haven_usd`, `gpr_bilat_ew`. PIT `pub_lag=1m` + 1d weight lag; `signal_lag` months=0 a priori (modern XS). **Distinct** from absolute country-GPR §9, aggregate GPR §8, AI-GPR §25. **Not** overlaid on the locked sleeve.
+
+
 ### 1.2 Momentum
 
 - **Claim:** Currencies with strong past excess returns continue to outperform over intermediate horizons (cross-sectional momentum); related to time-series momentum in FX.
@@ -243,6 +251,7 @@
 - **What we implement:**
   - `strategies/gpr_regime.py` — lag monthly/daily aggregate GPR (+ VIX), cool gross exposure; optional USD tilt.
   - `strategies/country_gpr_fx.py` + `scripts/scholarly_fx_country_gpr_wave.py` — country GPR → FX: lagged long-low/short-high sort + LP β at h=1,3,6 months (`pub_lag=1m`, `signal_lag=1`).
+  - **Bilateral refinement (wave §45):** `data/country_gpr_bilateral.py` + `strategies/country_gpr_bilateral_fx.py` + `scripts/scholarly_fx_country_gpr_bilateral_wave.py` — *relative-to-US* score = home − US GPR (levels / 60m z / Δ12); primary `low_rel_gpr_xs`; US stress/haven tilts; NZD gap. Distinct from absolute §9 / aggregate §8 / AI-GPR §25.
 
 
 ### 1.7 News / event intensity (GDELT / RSS / GPR proxy)
@@ -443,7 +452,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19i. **Done (2026-09-23):** OECD CLI leading-indicator FX wave — promote=NO (see §37).
 19j. **Done (2026-09-23):** OECD CCI / consumer-confidence FX wave — promote=NO (see §38).
 19k. **Done (2026-09-23):** OECD MEI employment-growth LFEMTTTT FX wave — promote=NO (see §41).
-20. Next scholarly candidates (not sleeve coolers): **FTMO MT5 CSV re-score** when exports arrive (all boards still `approximate_non_ftmo`); or free **OECD retail-sales** if any live SARTM/series found (SARTMISMEI confirmed stale); or **country-GPR bilateral** refinement; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel. (ACM term-premium §44 / Building-permits §43 / Industrial-production §42 / Employment §41 / WUI §40 / BCI §39 / CCI §38 / CLI §37 done.)
+20. Next scholarly candidates (not sleeve coolers): **FTMO MT5 CSV re-score** when exports arrive (all boards still `approximate_non_ftmo`; `data/ftmo/` empty except README); OECD retail-sales still **stale** (G10 SARTM* ~2024-01..03 — only US RSXFS/RRSFS + CA RETAILIMSA live, not enough for XS — skipped); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel. (Country-GPR bilateral §45 / ACM term-premium §44 / Building-permits §43 / Industrial-production §42 / Employment §41 / WUI §40 / BCI §39 / CCI §38 / CLI §37 done.)
 
 ---
 
@@ -2109,7 +2118,46 @@ Sweep **run**. Primary `acm_tp_usd` scale≈**3.727** bind=**daily**; scaled HO 
 
 Locked `fx4plus_gbpcad_d1_voltarget_0025` **untouched PASS**.
 
-**Next structure (if promote=0):** Done as §44 (ACM THREEFYTP10). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: **FTMO MT5 CSV re-score** when exports arrive (all boards `approximate_non_ftmo`); or country-GPR bilateral refinement; or live OECD retail-sales if any free series found (SARTMISMEI confirmed stale).
+**Next structure (if promote=0):** Done as §45 (country-GPR bilateral rel-to-US). FX IV/RR + news-sentiment still **blocked**. OECD retail still stale (skipped). Next: **FTMO MT5 CSV re-score** when exports arrive (all boards `approximate_non_ftmo`).
 
 Artifacts: `reports/scholarly_fx_acm_tp_wave.md`, `scholarly_fx_acm_tp_*.csv`, `scholarly_fx_acm_tp_meta.json`, `quest_scholarly_fx_acm_tp.md`.
+
+## 45. Country-GPR bilateral (relative-to-US) FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** Caldara–Iacoviello country GPRC_* panel → score = home − US GPR. Primary `low_rel_gpr_xs`: long low (home−US) trailing z / short high (`n_long=n_short=2` on EUR/GBP/JPY/CAD/AUD/CHF; **NZD absent** — no `GPRC_NZL`). Companions: `high_rel_gpr_xs` (honesty), `low_rel_gpr_lvl_xs` (raw levels), `rel_gpr_chg_xs` (−Δ12 of rel levels), `us_gpr_stress_fx` / `us_gpr_haven_usd` (US GPR z ≥ 1.0), `gpr_bilat_ew` (EW of primary + chg + stress). PIT pub_lag=1m (same as §9) + 1d weight lag; **signal_lag months=0** a priori (modern XS §43-style — pub_lag already PIT); z_window=60, min_periods=24, usd_tilt=0.5; costs 1.5 bps/side. Carry cool skipped (no rate-panel dependency). EUR = EW of DEU/FRA/ITA/ESP/NLD/BEL.
+
+**What is new vs §9 / §8 / §25:** Absolute home-GPRC sort+LP (§9) has no multi-leg board / no FTMO risk sweep; aggregate GPR regime (§8) is global; AI-GPR (§25) is threats/acts/oil daily roles. This wave is *bilateral relative-to-US* differentials + US geopolitics tilts with modern board + risk sweep.
+
+**Data tag:** `approximate_non_ftmo` (no FTMO CSVs under `data/ftmo/`). Country panel live through ~2026-08 (500 months after pub_lag).
+
+### Full-sample factor summary
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| low_rel_gpr_xs | +0.076% | +1.26 | +1.25 | 51% | 13% | +0.29 |
+| high_rel_gpr_xs | −0.108% | −1.79 | −1.72 | 46% | 11% | −0.39 |
+| low_rel_gpr_lvl_xs | +0.024% | +0.40 | +0.41 | 51% | 12% | +0.07 |
+| rel_gpr_chg_xs | +0.054% | +0.91 | +0.89 | 50% | 11% | +0.20 |
+| us_gpr_stress_fx | −0.079% | −2.20 | −2.41 | 15% | 44% | −0.57 |
+| us_gpr_haven_usd | +0.076% | +2.08 | +2.31 | 21% | 25% | +0.54 |
+| gpr_bilat_ew | +0.017% | +0.49 | +0.52 | 50% | 13% | +0.11 |
+
+### Consistency windows (primary `low_rel_gpr_xs`)
+
+| Window | mean_mo | %pos | gates | 1% bar |
+|--------|--------:|-----:|:-----:|:------:|
+| 2024 | −0.02% | 45% | PASS | no |
+| 2025 | −0.06% | 45% | PASS | no |
+| 2026 | −0.03% | 50% | PASS | no |
+| holdout_365d | −0.01% | 50% | PASS | no |
+
+**Board:** n=7 soft_nw_pos=**1** hard_nw_pos=**1** promote=**0**.
+
+Sweep **run**. Primary `low_rel_gpr_xs` scale≈**1.771** bind=**static**; scaled HO mean≈−0.03%/mo %pos 50% — clears: **NO**. Soft/hard-best = `us_gpr_haven_usd` (~+7.6 bp/mo, NW t≈**+2.31** — hard |t|≥2.0 gate; elevated US GPR → long USD). Honesty: `us_gpr_stress_fx` wrong-signed (NW t≈−2.41) supports haven over stress for US GPR spikes on this sample.
+
+Locked `fx4plus_gbpcad_d1_voltarget_0025` **untouched PASS**.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. OECD retail still **stale** (skipped). Next free candidate: **FTMO MT5 CSV re-score** when exports arrive (`data/ftmo/` empty except README) — *not* another locked-sleeve cooler.
+
+Artifacts: `reports/scholarly_fx_cgpr_bilat_wave.md`, `scholarly_fx_cgpr_bilat_*.csv`, `scholarly_fx_cgpr_bilat_meta.json`, `quest_scholarly_fx_cgpr_bilat.md`, `quest_locked_verify_cgpr_bilat.md`.
 
