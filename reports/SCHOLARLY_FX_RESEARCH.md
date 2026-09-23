@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, AI-GPR bilateral roles after ToT §24; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, BNP crash-skew §26 after AI-GPR §25; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -66,6 +66,15 @@
 - **Claim:** Geopolitical *threats* and *acts*, and oil-region GPR roles, associate with risk-off / safe-haven USD (and often CHF/JPY) and commodity-currency pressure — a finer decomposition than aggregate GPR or country-GPRC_* sorts.
 - **Key refs:** Caldara & Iacoviello (2022), *AER*; AI-GPR / oil-region role indices (Iacoviello GPR page).
 - **What we implement (wave §25):** `data/ai_gpr.py` + `strategies/ai_gpr_fx.py` + `scripts/scholarly_fx_ai_gpr_wave.py` — legs `ai_threats_usd` (primary), `ai_acts_usd`, `ai_gpr_usd`, `oil_gpr_usd`, `oil_threats_usd`, `oil_me_vs_non`, `carry_ai_threats_cool` (scholarly only), `ai_ew`. PIT daily `pub_lag=1d` + `signal_lag=1d`; trailing z=252d; binary z≥1; costs 1.5 bps/side. **Distinct** from aggregate GPR regime (§8), country-GPRC sorts (§9), news events (§10), CRR/ToT. **Not** overlaid on the locked sleeve.
+
+
+
+### 1.20 Currency crash risk / return skewness (Brunnermeier–Nagel–Pedersen)
+
+- **Claim:** Currencies with more *negative* return skewness (crash risk) earn a premium on average; carry trades load on this crash risk and unwind violently in risk-off states.
+- **Key refs:** Brunnermeier, Nagel & Pedersen (2008), "Carry Trades and Currency Crashes," *RFS*. Related: Menkhoff et al. (2012a) FX-vol channel (level vol ≠ skew).
+- **Free data:** Yahoo D1 OHLC only — trailing return skewness and left-tail shortfall (mean of returns ≤5th pct). No paid FX IV/RR / risk-reversal panel.
+- **What we implement (wave §26):** `strategies/fx_crash_skew_fx.py` + `scripts/scholarly_fx_crash_skew_wave.py` — legs `crash_skew_xs` (primary 63d), `crash_skew_xs_126`, `left_tail_xs`, `mom_skew_regime`, scholarly `carry_crash_cool` (**not** on locked fx4plus), `crash_ew`. PIT `skip=1` + `signal_lag=1`; monthly XS rebalance; costs 1.5 bps/side. **Distinct** from Menkhoff FX-RV (§15), Lustig carry, AI-GPR (§25). **Not** overlaid on the locked sleeve.
 
 
 
@@ -279,7 +288,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 14. **Done (2026-09-23):** CB balance-sheet / QE differential — promote=NO (see §22).
 15. **Done (2026-09-23):** Real-rate / breakeven differentials — promote=NO (see §23).
 16. **Done (2026-09-23):** Bilateral AI-GPR role decompositions — promote=NO (see §25).
-17. Next scholarly candidates (not sleeve coolers): FX IV/RR **blocked**; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive; optional signed NLP only with free multi-year panel (no paid API).
+17. **Done (2026-09-23):** Brunnermeier–Nagel–Pedersen crash-skew / left-tail wave — promote=NO (see §26).
+18. Next scholarly candidates (not sleeve coolers): Lustig–Verdelhan **dollar-factor beta** sorts from free FX panel; FRED **fiscal-balance / govt budget** differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1137,7 +1147,48 @@ Sweep run (positive IS mean on some legs, e.g. `oil_gpr_usd` / `ai_acts_usd`). P
 
 Caldara–Iacoviello AI-GPR *role* priors are the right economic refinement beyond aggregate GPR / GPRC_* sorts and are implementable on free daily data, but binary USD tilts on elevated threats/acts/oil roles do not clear prop-firm 1%/mo + 70% hit-rate on Yahoo D1. Full-sample means are ~0 to −6 bp/mo (primary −1.2 bp; best oil leg ~+2 bp with NW t≪1.5). Soft/hard NW boards empty. Distinctness from §8–§11/§24 is by construction (role columns, not country sorts or commodity prices). No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR still **blocked** without a free panel. Next free scholarly candidates: news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive (then re-score all scholarly boards). Avoid further locked-sleeve coolers.
+**Next structure (if promote=0):** Done as §26 (BNP crash-skew). FX IV/RR + news sentiment still blocked; next free scholarly candidates if promote=0 again: Lustig–Verdelhan dollar-factor beta sorts or FRED fiscal-balance differentials — *not* another locked-sleeve cooler.
 
 Artifacts: `reports/scholarly_fx_ai_gpr_wave.md`, `scholarly_fx_ai_gpr_*.csv`, `scholarly_fx_ai_gpr_meta.json`.
+
+
+## 26. Brunnermeier–Nagel–Pedersen crash-risk / return-skewness wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** Free OHLC-only crash-risk proxies. Primary `crash_skew_xs`: monthly XS long high-crash-risk (more *negative* trailing return skewness) / short low, formation 63d, skip=1, signal_lag=1. Companion legs: `crash_skew_xs_126` (126d), `left_tail_xs` (mean of returns ≤5th pct over 63d), `mom_skew_regime` (Menkhoff-style mom within high-crash-score half), scholarly `carry_crash_cool` (cool≤1 when agg crash-skew z elevated; **not** applied to locked fx4plus), `crash_ew`. Costs 1.5 bps/side. Mapped to USD majors via `USD_PAIRS`.
+
+**What is new vs §15 / carry / §25:** Menkhoff FX-RV is *level* absolute-return vol; Lustig carry is rate differentials; AI-GPR is newspaper role indices. This wave is **return skewness / left-tail shortfall** as the BNP crash-risk characteristic — buildable without paid IV/RR.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| crash_skew_xs | -0.151% | -2.31 | -2.02 | 43% | 14% | -0.54 |
+| crash_skew_xs_126 | -0.066% | -0.99 | -1.04 | 47% | 19% | -0.22 |
+| left_tail_xs | +0.070% | +0.94 | +1.07 | 51% | 15% | +0.23 |
+| mom_skew_regime | -0.086% | -1.30 | -1.17 | 43% | 19% | -0.25 |
+| carry_crash_cool | +0.002% | +0.03 | +0.04 | 51% | 12% | -0.03 |
+| crash_ew | -0.057% | -1.37 | -1.39 | 45% | 20% | -0.32 |
+
+### Consistency windows (primary `crash_skew_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | -0.23% | 45% | 89% | PASS | no |
+| year_2025 | -0.06% | 64% | 80% | PASS | no |
+| year_2026 | +0.03% | 75% | 79% | PASS | no |
+| holdout_365d | +0.03% | 75% | 60% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on `left_tail_xs`). Primary `crash_skew_xs` scale≈0.35 bind=static; scaled IS mean still negative / ≪1%; scaled HO clears: **NO**. Leverage does not invent consistency on a negative-mean primary.
+
+**Board:** n=6 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`crash_skew_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS on all key windows (Yahoo D1 drift vs prior keepalive: 2024 ~0.36%/55%/78%; 2025 1.84%/73%/68%; 2026 2.43%/75%/88%; HO 1.54%/67%/84% — see `quest_locked_verify_crash_skew.md`).
+
+### Honest read
+
+BNP crash-risk / skewness is the right free-data structure given blocked FX IV/RR, and is cleanly distinct from Menkhoff level-vol and AI-GPR roles. On Yahoo D1 G10 the primary 63d skew HML is *wrong-signed* on this sample (full-sample ≈ −15 bp/mo, NW t ≈ −2.0) — currencies that *looked* crash-prone underperformed rather than earning a premium. Left-tail shortfall is the only soft-positive leg (~+7 bp/mo, NW t≈1.1) and still nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty for positive means. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: **Lustig–Verdelhan dollar-factor beta** sorts (rolling β of currency returns on the dollar factor from the free FX panel) or **FRED fiscal-balance / government budget differentials** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_crash_skew_wave.md`, `scholarly_fx_crash_skew_*.csv`, `scholarly_fx_crash_skew_meta.json`.
 

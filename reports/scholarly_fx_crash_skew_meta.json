@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "path": "brunnermeier_nagel_pedersen_crash_skew",
+  "section": 26,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag": 1,
+  "skip_days": 1,
+  "formation_days": 63,
+  "formation_days_long": 126,
+  "left_tail_q": 0.05,
+  "cost_bps_per_side": 1.5,
+  "cool": 0.35,
+  "factors": [
+    "crash_skew_xs",
+    "crash_skew_xs_126",
+    "left_tail_xs",
+    "mom_skew_regime",
+    "carry_crash_cool",
+    "crash_ew"
+  ],
+  "primary": "crash_skew_xs",
+  "n_factors": 6,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "board": {
+    "n": 6,
+    "soft": 0,
+    "hard": 0,
+    "promote": 0
+  },
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "risk_sweep_run": true,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "Menkhoff_FX_realized_vol",
+    "Lustig_carry_HML",
+    "AI_GPR_bilateral_roles",
+    "Hau_Rey_equity_diff",
+    "CRR_ToT_commodity"
+  ],
+  "citations": [
+    "Brunnermeier, Nagel & Pedersen (2008), Carry Trades and Currency Crashes, Review of Financial Studies"
+  ]
+}
