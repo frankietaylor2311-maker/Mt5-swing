@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "path": "terms_of_trade_commodity_currency",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_days": 1,
+  "signal_lag": 1,
+  "formation_days": 63,
+  "skip_days": 21,
+  "cost_bps_side": 1.5,
+  "tot_map": {
+    "AUD": {
+      "export": "copper",
+      "import": "oil"
+    },
+    "CAD": {
+      "export": "oil",
+      "import": "copper"
+    },
+    "NZD": {
+      "export": "basket",
+      "import": "oil"
+    },
+    "NOK": {
+      "export": "oil",
+      "import": "copper"
+    },
+    "ZAR": {
+      "export": "gold",
+      "import": "oil"
+    }
+  },
+  "crr_map": {
+    "AUD": "copper",
+    "CAD": "oil",
+    "NZD": "basket"
+  },
+  "factors": [
+    "tot_country_ts",
+    "tot_xs",
+    "tot_vs_g10",
+    "tot_ew"
+  ],
+  "primary": "tot_country_ts",
+  "n_factors": 4,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "corr_tot_ts_vs_crr_ts": 0.7113499611645856,
+  "corr_tot_vs_g10_vs_crr_xs": 0.31031535661098814,
+  "too_thin_vs_crr": false,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "what_is_new_vs_crr": "ToT = export_mom \u2212 import_mom with frozen COUNTRY_TOT_MAP (AUD copper\u2212oil, CAD oil\u2212copper, NZD basket\u2212oil); prior CRR used single commodity mom only. NOK/ZAR mapped but not traded (no USDNOK/USDZAR in Yahoo history).",
+  "distinct_from": [
+    "commodity_fx_CRR_single_commodity_mom",
+    "macro_diff_CPI_IP_UR",
+    "PPP_real_FX",
+    "real_rate_breakeven",
+    "country_GPR_sort"
+  ],
+  "citations": [
+    "Cashin, C\u00e9spedes & Sahay (2004), Commodity Currencies and the Real Exchange Rate, JDE",
+    "Chen, Rogoff & Rossi (2010), Can Exchange Rates Forecast Commodity Prices?, QJE",
+    "Amano & van Norden, Oil prices and the exchange rate (CAD)"
+  ],
+  "fallback_if_thin": "bilateral_AI_GPR_role_decompositions",
+  "coverage": [
+    {
+      "currency": "AUD",
+      "n": 6448,
+      "start": "2001-01-04",
+      "end": "2026-09-24",
+      "mean_tot": 0.00044317583733356254,
+      "export": "copper",
+      "import": "oil"
+    },
+    {
+      "currency": "CAD",
+      "n": 6448,
+      "start": "2001-01-04",
+      "end": "2026-09-24",
+      "mean_tot": -0.00044317583733356254,
+      "export": "oil",
+      "import": "copper"
+    },
+    {
+      "currency": "NZD",
+      "n": 5093,
+      "start": "2006-06-09",
+      "end": "2026-09-24",
+      "mean_tot": -0.014840900568796278,
+      "export": "basket",
+      "import": "oil"
+    }
+  ]
+}

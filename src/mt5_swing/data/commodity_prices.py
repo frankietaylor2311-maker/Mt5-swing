@@ -247,3 +247,43 @@ def commodity_for_currency(panel: pd.DataFrame, currency: str) -> pd.Series:
     s = panel[col].copy()
     s.name = f"{currency.upper()}_{col}"
     return s
+
+
+# ---------------------------------------------------------------------------
+# Terms-of-trade (ToT) country mapping — distinct from COUNTRY_COMMODITY_MAP
+# ---------------------------------------------------------------------------
+# Literature: Cashin, Céspedes & Sahay (2004) commodity currencies & ToT;
+# Chen–Rogoff–Rossi (2010) commodity prices vs FX (export side);
+# Amano & van Norden (oil–CAD).
+#
+# Frozen export vs *import* proxies from the free Yahoo panel (oil / copper /
+# gold / basket). Prior CRR wave used only the export (or single) commodity;
+# ToT = export momentum − import momentum is the refinement.
+#
+# NOK / ZAR documented for completeness; traded only when USDNOK / USDZAR
+# (or XXXUSD) appear in the FX panel — current history has AUD/CAD/NZD only.
+
+COUNTRY_TOT_MAP: dict[str, dict[str, str]] = {
+    # Australia: industrial metals exporter, net crude oil importer
+    "AUD": {"export": "copper", "import": "oil"},
+    # Canada: energy exporter; industrial metals as import / relative proxy
+    "CAD": {"export": "oil", "import": "copper"},
+    # New Zealand: softs proxy via broad basket; oil importer
+    "NZD": {"export": "basket", "import": "oil"},
+    # Norway: oil exporter (trade when NOK pair available)
+    "NOK": {"export": "oil", "import": "copper"},
+    # South Africa: gold/metals exporter; oil importer
+    "ZAR": {"export": "gold", "import": "oil"},
+}
+
+# Currencies we attempt to trade when USD pairs exist in the research panel
+TOT_TRADEABLE_CCYS: tuple[str, ...] = ("AUD", "CAD", "NZD")
+TOT_DOCUMENTED_CCYS: tuple[str, ...] = ("AUD", "CAD", "NZD", "NOK", "ZAR")
+
+
+def tot_export_import_columns(currency: str) -> tuple[str, str]:
+    """Return (export_col, import_col) for a currency from the frozen ToT map."""
+    m = COUNTRY_TOT_MAP.get(currency.upper())
+    if m is None:
+        raise KeyError(f"No ToT map for {currency}")
+    return m["export"], m["import"]

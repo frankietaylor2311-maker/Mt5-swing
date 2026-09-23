@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, real-rate / breakeven differential wave after CB-BS QE; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, ToT / commodity-currency refinement after real-rate; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -51,6 +51,14 @@
 - **Key refs:** Frankel (1979), "On the Mark," *AER*; Meese & Rogoff (1988), "Was It Real?," *JF*; Dahlquist & Hasseltoft (2013), "International Bond Risk Premia," *JIE*; Lustig, Stathopoulos & Verdelhan (2019), "Term Structure of Currency Carry Trade Risk Premia," *JF*; Hofmann, Shim & Shin (BIS) on bond risk premia / real rates and FX.
 - **Free data:** FRED `DFII10` (US 10y TIPS real), `T10YIE` (10y breakeven), `DGS10` (nominal); foreign OECD LT (`IRLTLT01*`) − CPI YoY (honest proxy — **not** true linkers).
 - **What we implement (wave §23):** `data/fred_real_rates.py` + `strategies/real_rate_fx.py` + `scripts/scholarly_fx_real_rate_wave.py` — legs `us_real_usd` (primary), `us_real_chg_usd`, `us_be_fx`, `us_be_usd`, `rr_xs`, `rr_z_xs`, `rr_chg_xs`, `rr_ew`. PIT daily `pub_lag=1d`, monthly `pub_lag=1m` + `signal_lag=1d/1m`. **Distinct** from nominal yield-curve (§16), PPP/CPI, and CB-BS (§22). **Not** overlaid on the locked sleeve.
+
+
+### 1.18 Terms-of-trade / commodity currencies (Cashin–CCS refinement)
+
+- **Claim:** Commodity-currency real exchange rates co-move with country *terms of trade* (export commodity prices relative to import prices), not only with a single export commodity. Positive ToT shocks appreciate commodity currencies vs USD.
+- **Key refs:** Cashin, Céspedes & Sahay (2004), "Commodity Currencies and the Real Exchange Rate," *JDE*; Chen, Rogoff & Rossi (2010), *QJE* (export-commodity side); Amano & van Norden (oil–CAD).
+- **What we implement (wave §24):** `COUNTRY_TOT_MAP` in `data/commodity_prices.py` + `strategies/tot_fx.py` + `scripts/scholarly_fx_tot_wave.py` — ToT change = export_mom − import_mom (AUD copper−oil, CAD oil−copper, NZD basket−oil; NOK/ZAR mapped, untraded). Legs `tot_country_ts`, `tot_xs`, `tot_vs_g10`, `tot_ew`. PIT pub_lag=1d + signal_lag=1d; calendar-date align. **Distinct** from CRR single-commodity mom (§11 / `commodity_fx.py`); corr≈0.71 / 0.31 on this sample. **Not** overlaid on the locked sleeve.
+
 
 
 ### 1.2 Momentum
@@ -254,6 +262,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 6. Optional: AI-GPR bilateral / role decompositions (initiator vs spillover) if useful beyond GPRC_*.
 7. **Done (2026-09-23):** PPP / real-FX value wave — promote=NO (see §13).
 8. **Done (2026-09-23):** Commodity CRR + macro-diff waves — promote=NO (see §11–12).
+8b. **Done (2026-09-23):** Terms-of-trade / commodity-currency refinement — promote=NO (see §24).
 9. **Done (2026-09-23):** Balassa–Samuelson / productivity wave — promote=NO (see §14).
 10. **Done (2026-09-23):** True FX realized-vol risk factor (Menkhoff) — promote=NO (see §15).
 11. **Done (2026-09-23):** Term-structure / yield-curve FX + UIP secondary — promote=NO (see §16).
@@ -261,7 +270,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 13. **Done (2026-09-23):** EPU/TPU, forward-carry, Hau–Rey equity, funding-liq, CA imbalances — promote=NO (§18–21).
 14. **Done (2026-09-23):** CB balance-sheet / QE differential — promote=NO (see §22).
 15. **Done (2026-09-23):** Real-rate / breakeven differentials — promote=NO (see §23).
-16. Next scholarly candidates (not sleeve coolers): FX IV/RR **blocked**; bilateral AI-GPR role decompositions; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
+16. Next scholarly candidates (not sleeve coolers): FX IV/RR **blocked**; bilateral AI-GPR role decompositions (after ToT §24 promote=0); news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1021,7 +1030,61 @@ Sweep run (positive IS on some legs). Primary `us_real_usd` scale≈3.32 bind=da
 
 Frankel RID / Meese–Rogoff priors are the right *economic* direction and are **distinct** from nominal curve, PPP, and CB-BS: mild positive full-sample mean on `us_real_usd` / `us_real_chg_usd` / `us_be_usd` (~+1–8 bp/mo; `us_real_chg_usd` NW t≈+2.2 is the only soft/hard hit), but %pos is sparse (~21–28%) because binary z≥1 tilts fire infrequently. Cross-sectional LT−CPI proxies (`rr_xs` family) are flat-to-negative — consistent with proxy noise vs true linkers. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED TIPS/BE panel is sufficient for the USD state claim; inventing foreign linker series would be dishonest.
 
-**Next structure (if promote=0):** **Terms-of-trade / commodity-currency terms** refinement beyond CRR (§11) using free commodity panels already on disk, **or** bilateral AI-GPR role decompositions — *not* another locked-sleeve cooler. FX IV/RR still blocked without a free panel.
+**Next structure (if promote=0):** Done as §24 (ToT). Next: **bilateral AI-GPR role decompositions** (Caldara–Iacoviello AI-GPR threats/acts / oil-region roles — not plain GPRC_* sorts) — *not* another locked-sleeve cooler. FX IV/RR still blocked without a free panel.
 
 Artifacts: `reports/scholarly_fx_real_rate_wave.md`, `scholarly_fx_real_rate_*.csv`, `scholarly_fx_real_rate_meta.json`.
+
+---
+
+## 24. Terms-of-trade / commodity-currency wave results (2026-09-23 BST) — Cashin–Céspedes–Sahay
+
+**Design (fixed priors, no HO tuning):** ToT change = export_mom − import_mom from frozen `COUNTRY_TOT_MAP` (AUD copper−oil, CAD oil−copper, NZD basket−oil; NOK/ZAR documented, not traded — no USDNOK/USDZAR on Yahoo history). Formation 63d / skip 21d; pub_lag=1d + signal_lag=1d; calendar-date align; costs 1.5 bps/side. Reuses Yahoo commodity panel on disk.
+
+**What is new vs §11 CRR:** Prior wave used *single* mapped commodity momentum (AUD→copper, CAD→oil, NZD→basket). This wave is an explicit **export vs import** differential. Distinctness: corr(`tot_country_ts`, `crr_country_ts`) ≈ **0.71**; corr(`tot_vs_g10`, `crr_xs_basket`) ≈ **0.31** — not thin; ToT path stands alone (no AI-GPR fallback this wave).
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| tot_country_ts | -0.181% | -0.92 | -1.06 | 47% | 12% | -0.29 |
+| tot_xs | -0.005% | -0.07 | -0.06 | 48% | 10% | -0.02 |
+| tot_vs_g10 | -0.052% | -0.85 | -1.07 | 35% | 15% | -0.27 |
+| tot_ew | -0.080% | -0.85 | -0.94 | 48% | 13% | -0.26 |
+| crr_country_ts_baseline | -0.037% | -0.23 | -0.30 | 38% | 11% | -0.06 |
+| crr_xs_basket_baseline | +0.001% | +0.01 | +0.01 | 38% | 20% | -0.00 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| tot_country_ts | year_2024 | -1.02% | 18% | FAIL | no |
+| tot_country_ts | year_2025 | +0.22% | 55% | PASS | no |
+| tot_country_ts | year_2026 | -0.56% | 38% | PASS | no |
+| tot_country_ts | holdout_365d | +0.05% | 42% | PASS | no |
+| tot_xs | year_2024 | -0.32% | 27% | PASS | no |
+| tot_xs | year_2025 | -0.32% | 36% | PASS | no |
+| tot_xs | year_2026 | -0.00% | 50% | PASS | no |
+| tot_xs | holdout_365d | +0.11% | 50% | PASS | no |
+| tot_vs_g10 | year_2024 | -0.39% | 27% | PASS | no |
+| tot_vs_g10 | year_2025 | +0.05% | 45% | PASS | no |
+| tot_vs_g10 | year_2026 | -0.03% | 38% | PASS | no |
+| tot_vs_g10 | holdout_365d | +0.18% | 50% | PASS | no |
+| tot_ew | year_2024 | -0.58% | 27% | PASS | no |
+| tot_ew | year_2025 | -0.02% | 64% | PASS | no |
+| tot_ew | year_2026 | -0.20% | 50% | PASS | no |
+| tot_ew | holdout_365d | +0.11% | 58% | PASS | no |
+
+### Risk sweep
+
+Skipped — no ToT leg with positive IS mean monthly. Leverage would not invent consistency.
+
+**Board:** n=4 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`tot_country_ts`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Cashin–CCS ToT priors are the right *economic* refinement of CRR and are **empirically distinct** on this free panel (corr≪1), but the export−import Yahoo futures proxy does not clear prop-firm 1%/mo + 70% hit-rate. Means are zero-to-negative (~−18 bp/mo on primary). Free futures ≠ true country export/import unit-value indices — a limitation shared with §11. Expanding to NOK/ZAR would need FX history we do not have under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** **Bilateral AI-GPR role decompositions** (Caldara–Iacoviello `ai_gpr_daily.csv` threats/acts / oil-region roles — *not* a redo of plain country-GPRC sorts, *not* a locked-sleeve cooler). FX IV/RR still blocked without a free panel.
+
+Artifacts: `reports/scholarly_fx_tot_wave.md`, `scholarly_fx_tot_*.csv`, `scholarly_fx_tot_meta.json`.
 

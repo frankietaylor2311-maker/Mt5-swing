@@ -1,0 +1,21 @@
+{
+  "source": "yfinance",
+  "data_tag": "approximate_non_ftmo",
+  "tickers": {
+    "oil": "CL=F",
+    "copper": "HG=F",
+    "gold": "GC=F"
+  },
+  "basket_source": "DBC",
+  "etf_used": "DBC",
+  "columns": [
+    "oil",
+    "copper",
+    "gold",
+    "etf",
+    "basket"
+  ],
+  "n_rows": 6554,
+  "start": "2000-08-23 04:00:00+00:00",
+  "end": "2026-09-23 04:00:00+00:00"
+}
