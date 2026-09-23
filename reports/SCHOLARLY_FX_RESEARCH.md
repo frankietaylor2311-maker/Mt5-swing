@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, EPU/TPU wave after CFTC COT; FX IV/RR free panel unavailable). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU (FRED + policyuncertainty.com).
+**Status:** Active (2026-09-23 BST, swap-/forward-aware carry wave after EPU/TPU; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU (FRED + policyuncertainty.com).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -12,7 +12,15 @@
 
 - **Claim (literature):** Currencies with high short-term interest rates tend to appreciate on average vs low-rate currencies (forward-premium puzzle / carry trade). Cross-sectional HML-FX style portfolios earn a positive premium with economically large crash risk in risk-off states.
 - **Key refs:** Lustig, Roussanov & Verdelhan (2011), *JFE* / related; Menkhoff, Sarno, Schmeling & Schrimpf (2012a), “Carry Trades and Global Foreign Exchange Volatility,” *JF*; Burnside et al. on peso problems.
-- **What we implement:** `strategies/carry_rank.py` — rank G10 by FRED immediate-rate differential vs USD (1-month publication lag), long top / short bottom, mapped to USD majors for FTMO.
+- **What we implement:** `strategies/carry_rank.py` — rank G10 by FRED immediate-rate differential vs USD (1-month publication lag), long top / short bottom, mapped to USD majors for FTMO. Forward-proxy upgrade: §1.12 / wave §19 (`IR3TIB01*` + CIP-implied FD).
+
+
+### 1.12 Swap- / forward-aware carry (CIP / money-market proxy)
+
+- **Claim:** Academic HML-FX sorts on *forward discounts* (not policy cash rates alone). Under CIP, forward discounts ≈ interest differentials at the forward tenor; Lustig–Roussanov–Verdelhan (2011) / Lustig–Verdelhan (2007) document a large carry premium with crash risk.
+- **Key refs:** Lustig, Roussanov & Verdelhan (2011), *JFE*; Lustig & Verdelhan (2007); Menkhoff et al. (2012a); Fama (1984) forward-premium puzzle.
+- **Free data reality:** True FX swap / outright forward points are vendor (Bloomberg, Refinitiv, broker). Free FRED OECD ``IR3TIB01*`` 3M money-market rates are the best G10 tenor match; ``IRSTCI01*`` immediate rates are the cash baseline; daily ON (DFF/ECBDFR/IUDSOIA) is too sparse for a G10 panel.
+- **What we implement (wave §19):** `data/fred_forward_carry.py` + `strategies/forward_carry_fx.py` + `scripts/scholarly_fx_fwd_carry_wave.py` — IR3M XS, IRSTCI XS, CIP-implied FD XS, IR3M EW, blend, 5 bps TC haircut. PIT `pub_lag=1m` + `signal_lag=1m`. **Explicit:** still rate approximation — not observed forwards; post-GFC CIP basis unmodelled.
 
 ### 1.2 Momentum
 
@@ -658,4 +666,51 @@ Positive IS means → sweep run. Best scaled IS mean (`tpu_us_usd` @ ~11.2× dai
 Country-EPU depreciation sorts and EPU-only carry cool are the right *priors* and are **distinct** from VIX/GPR: mild positive full-sample means (NW t ≈ 0.6–1.1) at **~0.01–0.04%/mo**, %pos ≪ 70% on sparse USD-tilt legs. Far from prop-firm 1%/mo + 70% hit-rate. Free policyuncertainty.com + FRED is sufficient; no paid NLP. FX IV/RR remains blocked without a vendor panel.
 
 Artifacts: `reports/scholarly_fx_epu_tpu_wave.md`, `scholarly_fx_epu_tpu_*.csv`, `scholarly_fx_epu_tpu_meta.json`.
+
+
+---
+
+## 19. Swap- / forward-aware carry wave results (2026-09-23 BST) — Lustig–Verdelhan CIP proxy
+
+**Design (fixed priors, no HO tuning):** Best free short-rate / money-market proxies for classic *forward-discount* carry.
+- Sources: FRED OECD ``IR3TIB01*`` (3M money-market — primary) + ``IRSTCI01*`` (immediate cash baseline); CIP-implied FD from exact discrete ratio at 3M tenor.
+- PIT: `pub_lag_months=1` + `signal_lag_months=1` + 1 trading-day weight lag; n_long=n_short=2.
+- Costs: 1.5 bps/side baseline; **`carry_ir3m_tc5`** = same IR3M XS with **5 bps/side** TC haircut.
+- Legs: `carry_ir3m_xs` (primary), `carry_irstci_xs`, `carry_cip_fd_xs`, `carry_ir3m_ew`, `carry_blend_xs`, `carry_ir3m_tc5`.
+- Coverage: Full G10 on FRED IR3M + IRSTCI. Spearman rank_corr(IRSTCI,IR3M)≈**0.96**; CIP-FD vs IR3M-diff≈**1.00** (rank-identical on this panel).
+- **Honesty:** Still cash / MM approximation — **not** Bloomberg FX swap or outright forward points; CIP basis not modelled.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| carry_ir3m_xs | −0.034% | −0.43 | −0.51 | 53% | 10% | −0.13 |
+| carry_irstci_xs | −0.011% | −0.14 | −0.16 | 52% | 10% | −0.07 |
+| carry_cip_fd_xs | −0.034% | −0.43 | −0.51 | 53% | 10% | −0.13 |
+| carry_ir3m_ew | −0.029% | −0.50 | −0.61 | 49% | 11% | −0.10 |
+| carry_ir3m_tc5 | −0.035% | −0.45 | −0.52 | 53% | 10% | −0.13 |
+| carry_blend_xs | −0.022% | −0.29 | −0.34 | 52% | 10% | −0.10 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| carry_ir3m_xs | holdout_365d | +0.31% | 83% | PASS | no† |
+| carry_irstci_xs | holdout_365d | +0.33% | 75% | PASS | no† |
+| carry_ir3m_ew | holdout_365d | +0.09% | 50% | PASS | no |
+| carry_blend_xs | holdout_365d | +0.32% | 75% | PASS | no† |
+
+† Holdout %pos can clear 70% with mild positive mean, but **full-sample means are negative** (NW t ≈ −0.2 to −0.6) — classic HO luck, not a promote.
+
+### Risk sweep (IS → OOS)
+
+**Skipped** — no factor with positive full-sample IS mean (no unused DD budget to invent edge). Leverage cannot invent consistency from a negative-mean carry sleeve on this Yahoo+FRED sample.
+
+**Unscaled promote:** **NO**. **Scaled primary (`carry_ir3m_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Money-market (IR3M) and CIP-implied FD sorts are the right *priors* relative to cash IRSTCI alone, and they are essentially rank-identical here (corr≈1). On this approximate_non_ftmo panel the forward-proxy carry earns **negative** full-sample means (~−0.01 to −0.03%/mo) with NW |t| ≪ 2 — IR3M does **not** improve on prior cash-rate carry toward the 1%/mo bar. TC haircut (5 bps) slightly worsens an already flat/negative sleeve. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED OECD is sufficient for this claim; inventing Bloomberg forwards would be dishonest.
+
+Artifacts: `reports/scholarly_fx_fwd_carry_wave.md`, `scholarly_fx_fwd_carry_*.csv`, `scholarly_fx_fwd_carry_meta.json`.
 

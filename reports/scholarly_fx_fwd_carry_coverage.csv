@@ -1,0 +1,9 @@
+currency,irstci_series,ir3m_series,overnight_series,irstci_n,irstci_end,irstci_months_since_end,irstci_stale,ir3m_n,ir3m_end,ir3m_months_since_end,ir3m_stale,note,approx_level
+AUD,IRSTCI01AUM156N,IR3TIB01AUM156N,,433,2026-08-01,1,False,704,2026-08-01,1,False,,money_market_ir3m
+CAD,IRSTCI01CAM156N,IR3TIB01CAM156N,,620,2026-08-01,1,False,848,2026-08-01,1,False,,money_market_ir3m
+CHF,IRSTCI01CHM156N,IR3TIB01CHM156N,,627,2024-03-01,30,True,326,2026-08-01,1,False,,money_market_ir3m
+EUR,IRSTCI01EZM156N,IR3TIB01EZM156N,ECBDFR,385,2026-01-01,8,True,385,2026-01-01,8,True,daily ON=ECBDFR (sparse; not primary),money_market_ir3m
+GBP,IRSTCI01GBM156N,IR3TIB01GBM156N,IUDSOIA,584,2026-08-01,1,False,829,2026-01-01,8,True,daily ON=IUDSOIA (sparse; not primary),money_market_ir3m
+JPY,IRSTCI01JPM156N,IR3TIB01JPM156N,,494,2026-08-01,1,False,292,2026-07-01,2,False,,money_market_ir3m
+NZD,IRSTCI01NZM156N,IR3TIB01NZM156N,,480,2024-12-01,21,True,633,2026-08-01,1,False,,money_market_ir3m
+USD,IRSTCI01USM156N,IR3TIB01USM156N,DFF,866,2026-08-01,1,False,746,2026-08-01,1,False,daily ON=DFF (sparse; not primary),money_market_ir3m

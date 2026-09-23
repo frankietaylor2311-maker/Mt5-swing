@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_months": 1,
+  "pub_lag_months": 1,
+  "n_long": 2,
+  "n_short": 2,
+  "cost_bps_side": 1.5,
+  "tc_haircut_bps": 5.0,
+  "factors": [
+    "carry_ir3m_xs",
+    "carry_irstci_xs",
+    "carry_cip_fd_xs",
+    "carry_ir3m_ew",
+    "carry_ir3m_tc5",
+    "carry_blend_xs"
+  ],
+  "primary": "carry_ir3m_xs",
+  "ir3m_cols": [
+    "AUD",
+    "CAD",
+    "CHF",
+    "EUR",
+    "GBP",
+    "JPY",
+    "NZD",
+    "USD"
+  ],
+  "irstci_cols": [
+    "AUD",
+    "CAD",
+    "CHF",
+    "EUR",
+    "GBP",
+    "JPY",
+    "NZD",
+    "USD"
+  ],
+  "rank_corr_irstci_ir3m": 0.9589198824925167,
+  "rank_corr_cip_ir3m": 1.0,
+  "approx_note": "OECD IR3M / IRSTCI rate differentials and CIP-implied FD \u2014 NOT observed FX swap or outright forward points",
+  "any_pos_is": false,
+  "is_end": "2025-09-14",
+  "holdout_start": "2025-09-15",
+  "holdout_end": "2026-09-15",
+  "promote": false,
+  "scaled_promote": false,
+  "risk_sweep_primary": null,
+  "refs": [
+    "Lustig, Roussanov & Verdelhan (2011) \u2014 Common Risk Factors in Currency Markets (HML-FX / forward discount sorts)",
+    "Lustig & Verdelhan (2007) \u2014 The Cross Section of Foreign Currency Risk Premia",
+    "Menkhoff, Sarno, Schmeling & Schrimpf (2012a) \u2014 Carry Trades and Global FX Volatility",
+    "Fama (1984) \u2014 Forward and Spot Exchange Rates (forward-premium puzzle)",
+    "OECD IR3TIB01* 3M money-market + IRSTCI01* immediate; CIP-implied FD proxy (free FRED)"
+  ]
+}
