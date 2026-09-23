@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, monetary money-growth §33 after BIS credit §32 / REER §31 / TB §30; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale).
+**Status:** Active (2026-09-23 BST, IMF/WEO reserves §34 after money-growth §33 / BIS credit §32 / REER §31; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -129,6 +129,15 @@
 - **Free data:** FRED OECD MEI `MABMM301*M657S` broad-money growth (USD/EUR-`EZ`/GBP/JPY/CAD/AUD). NZD/CHF `*657S` ends **2018-12** — unmapped on primary; NSA levels `*189N` archival only. US `M2SL` level documented alt.
 - **What we implement (wave §33):** `data/fred_money_growth.py` + `strategies/money_growth_fx.py` + `scripts/scholarly_fx_money_growth_wave.py` — legs `low_money_growth_xs` (primary), `high_money_growth_xs`, `low_money_growth_z_xs`, `money_growth_chg_xs`, `us_money_stress_fx`, `us_money_haven_usd`, `money_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag. **Distinct** from CB-BS/QE (§22), real-rate (§23), debt (§29), fiscal (§28), TB (§30), REER (§31), BIS credit (§32). **Not** overlaid on the locked sleeve.
 
+
+
+
+### 1.27 IMF IFS reserves / external-buffer differentials (Aizenman–Jeanne–Rancière)
+
+- **Claim:** External-buffer / reserve-adequacy channel: currencies with *high* relative international reserves (excl. gold) are more resilient → subsequent appreciation / lower crash risk. Honesty alternate: low-reserve / thin-buffer debtor premium.
+- **Key refs:** Aizenman–Jeanne–Rancière reserve-adequacy literature; IMF reserve / Guidotti–Greenspan framing.
+- **Free data:** FRED IMF IFS `TRESEG*M052N` (USD/EUR-Germany/`DEM`/GBP/JPY/CAD/AUD). `TRESEGEZM052N` ends **2018-04** — Germany proxy for EUR. NZD/CHF **404**. Reserves/GDP **not formed** (free GDP units heterogeneous / many 404). US `TOTRESNS`/`WRESBAL` are Fed bank reserves — documented alt, not IFS external buffer.
+- **What we implement (wave §34):** `data/fred_reserves.py` + `strategies/reserves_fx.py` + `scripts/scholarly_fx_reserves_wave.py` — legs `high_reserves_xs` (primary), `low_reserves_xs`, `high_reserves_z_xs`, `reserves_chg_xs`, `us_reserves_stress_fx`, `us_reserves_haven_usd`, `reserves_ew`. PIT `pub_lag_months=3` + `signal_lag=1m` + 1d weight lag. **Distinct** from CA (§21), CB-BS (§22), fiscal (§28), debt (§29), TB (§30), REER (§31), credit (§32), money-growth (§33). **Not** overlaid on the locked sleeve.
 
 ### 1.2 Momentum
 
@@ -347,7 +356,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19c. **Done (2026-09-23):** Monthly trade-balance FX wave — promote=NO (see §30).
 19d. **Done (2026-09-23):** BIS/FRED REER undervaluation wave — promote=NO (see §31).
 19e. **Done (2026-09-23):** BIS private credit-to-GDP / credit-gap wave — promote=NO (see §32).
-20. Next scholarly candidates (not sleeve coolers): IMF/WEO **reserves** / TRESEG* / total reserves % GDP / external-buffer differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19f. **Done (2026-09-23):** IMF IFS reserves / external-buffer FX wave — promote=NO (see §34).
+20. Next scholarly candidates (not sleeve coolers): OECD **house-price** differentials or IG OAS (`BAMLC0A0CM`) risk-appetite; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1548,6 +1558,51 @@ Sweep **run**. Primary `low_money_growth_xs` scale≈3.637 bind=daily; scaled HO
 
 Frenkel–Bilson money-growth XS is the right free-data monetary-approach structure after BIS credit (§32). On Yahoo D1 G10 the primary low-growth HML is essentially **flat** (full-sample ≈ +3.4 bp/mo, NW t ≈ 0.59, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty. NZD/CHF unmapped on primary. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** IMF/WEO **reserves** / TRESEG* / total reserves % GDP, or OECD **house-price** differentials / IG OAS risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §34 (reserves). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: OECD **house-price** differentials or IG OAS (`BAMLC0A0CM`) risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_money_growth_wave.md`, `scholarly_fx_money_growth_*.csv`, `scholarly_fx_money_growth_meta.json`.
+
+
+## 34. IMF IFS reserves / external-buffer FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED IMF IFS `TRESEG*M052N` total reserves excl. gold (log USD mn). Primary `high_reserves_xs`: XS long high relative external buffer / short low (n=2/2) on USD+EUR(DE)+GBP+JPY+CAD+AUD. Companion: `low_reserves_xs`, `high_reserves_z_xs` (5y z), `reserves_chg_xs` (Δ12 of log), `us_reserves_stress_fx` / `us_reserves_haven_usd`, `reserves_ew`. PIT `pub_lag_months=3` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs CA / TB / debt / money:** CA (§21) and TB (§30) are *flow* balances; debt (§29) is public *stock*; money-growth (§33) is monetary aggregates. This wave is the classic **external-buffer / reserve-adequacy** stock channel.
+
+**Data notes:** Prefer `TRESEG*M052N`. EUR=`TRESEGDEM052N` (Germany; `TRESEGEZM052N` ends 2018-04). NZD/CHF **404** — unmapped. Reserves/GDP **not formed** (GDP units heterogeneous / many 404). US `TOTRESNS`/`WRESBAL` = Fed bank reserves (not IFS) — documented alt only.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| high_reserves_xs | −0.038% | −0.59 | −0.58 | 48% | 12% | −0.09 |
+| low_reserves_xs | +0.036% | +0.57 | +0.56 | 52% | 13% | +0.09 |
+| high_reserves_z_xs | −0.027% | −0.43 | −0.47 | 52% | 10% | −0.11 |
+| reserves_chg_xs | +0.048% | +0.74 | +0.81 | 52% | 11% | +0.18 |
+| us_reserves_stress_fx | −0.002% | −0.08 | −0.09 | 9% | 49% | −0.02 |
+| us_reserves_haven_usd | +0.002% | +0.06 | +0.07 | 8% | 36% | +0.02 |
+| reserves_ew | +0.003% | +0.10 | +0.10 | 46% | 16% | +0.06 |
+
+### Consistency windows (primary `high_reserves_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.04% | 36% | 100% | PASS | no |
+| year_2025 | −0.32% | 27% | 100% | PASS | no |
+| year_2026 | −0.06% | 50% | 93% | PASS | no |
+| holdout_365d | −0.24% | 33% | 93% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run**. Primary `high_reserves_xs` scale≈2.333 bind=static; scaled HO mean≈−0.55%/mo %pos 33% — clears: **NO**. Soft-best-ish leg is `reserves_chg_xs` (~+4.8 bp/mo, NW t≈0.81) — below soft board (|t|≥1.5). Honesty alternate `low_reserves_xs` ~+3.6 bp/mo (NW t≈0.56).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_reserves.md`).
+
+### Honest read
+
+IMF IFS external-buffer / reserve-adequacy is the right free-data structure after money-growth (§33), and is cleanly distinct from CA/TB flows and public debt. On Yahoo D1 G10 the primary high-reserves HML is essentially **flat-to-negative** (full-sample ≈ −3.8 bp/mo, NW t ≈ −0.58, %pos 48%) — nowhere near 1%/mo + 70% hit-rate. The change and low-reserves honesty legs are only marginally positive. Soft/hard NW boards empty. NZD/CHF unmapped; reserves/GDP not formed on free data. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: OECD **house-price** differentials or IG OAS (`BAMLC0A0CM`) risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_reserves_wave.md`, `scholarly_fx_reserves_*.csv`, `scholarly_fx_reserves_meta.json`.
+

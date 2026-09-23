@@ -1,0 +1,204 @@
+{
+  "ok": true,
+  "section": 34,
+  "path": "imf_ifs_reserves_external_buffer",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 3,
+  "signal_lag_months": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "high_reserves_xs",
+    "low_reserves_xs",
+    "high_reserves_z_xs",
+    "reserves_chg_xs",
+    "us_reserves_stress_fx",
+    "us_reserves_haven_usd",
+    "reserves_ew"
+  ],
+  "primary": "high_reserves_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "IMF IFS TRESEG*M052N total reserves excl. gold (log USD mn); also 5y z / \u039412 of log boarded; high-buffer primary",
+  "eur_mapping": "TRESEGDEM052N Germany proxy (TRESEGEZM052N ends 2018-04)",
+  "nzd_chf": "unmapped on primary (TRESEG* 404 on free FRED)",
+  "reserves_gdp": "not_formed: free GDP units heterogeneous / many 404; primary is log TRESEG levels (rank \u2261 level rank)",
+  "distinct_from": [
+    "current_account_CA_GDP_21",
+    "CB_balance_sheet_QE_22",
+    "debt_gdp_GGGDTA_29",
+    "fiscal_balance_GGNLBA_28",
+    "trade_balance_30",
+    "bis_reer_RB_BIS_31",
+    "bis_credit_gap_32",
+    "money_growth_MABMM301_33",
+    "funding_liquidity",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew"
+  ],
+  "citations": [
+    "Aizenman\u2013Jeanne\u2013Ranci\u00e8re reserve-adequacy / external-buffer channel",
+    "IMF reserve literature / Guidotti\u2013Greenspan rule framing",
+    "Honesty alternate: low-reserve / thin-buffer debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "TRESEGUSM052N",
+      "n_obs": 843,
+      "start": "1951-03-01",
+      "end": "2026-11-01",
+      "last": 12.404106896657938,
+      "note": "IMF IFS reserves excl gold TRESEGUSM052N"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "TRESEGDEM052N",
+      "n_obs": 842,
+      "start": "1951-03-01",
+      "end": "2026-10-01",
+      "last": 11.541203696922961,
+      "note": "Germany proxy via TRESEGDEM052N (TRESEGEZM052N ends 2018-04 \u2014 not primary)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "TRESEGGBM052N",
+      "n_obs": 843,
+      "start": "1951-03-01",
+      "end": "2026-11-01",
+      "last": 12.039756284298642,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "TRESEGJPM052N",
+      "n_obs": 843,
+      "start": "1951-03-01",
+      "end": "2026-11-01",
+      "last": 13.895633714728671,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "TRESEGCAM052N",
+      "n_obs": 843,
+      "start": "1951-03-01",
+      "end": "2026-11-01",
+      "last": 11.737391089414793,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "TRESEGAUM052N",
+      "n_obs": 843,
+      "start": "1951-03-01",
+      "end": "2026-11-01",
+      "last": 11.026365027320365,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_treseg (404 on free FRED TRESEG*M052N)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_treseg (404 on free FRED TRESEG*M052N)"
+    }
+  ],
+  "unmapped": [
+    "NZD",
+    "CHF"
+  ],
+  "failed_or_alt": {
+    "nzd_chf_404": [
+      "TRESEGNZM052N",
+      "TRESEGNZL052N",
+      "TRESEGNZA052N",
+      "TRESEGCHM052N",
+      "TRESEGCHE052N",
+      "TRESEGSWM052N"
+    ],
+    "ez_stale_2018": [
+      "TRESEGEZM052N"
+    ],
+    "eur_secondary_fr_it_es": [
+      "TRESEGFRM052N",
+      "TRESEGITM052N",
+      "TRESEGESM052N"
+    ],
+    "reserves_gdp_mostly_404": [
+      "TRESEGUSA188N",
+      "TRESEGDEA188N",
+      "MKTGDPDEU646NWDB",
+      "MKTGDPGBR646NWDB",
+      "MKTGDPJPN646NWDB"
+    ],
+    "us_fed_bank_reserves_not_ifs": [
+      "TOTRESNS",
+      "WRESBAL"
+    ],
+    "incl_gold_alt": [
+      "TRESEGUSM194N"
+    ]
+  },
+  "soft_best": {
+    "factor": "reserves_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.0004755177544090408,
+    "tstat_ols": 0.744609490865424,
+    "tstat_nw": 0.8120682779580948,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5166666666666667,
+    "top3": 0.10961447330688433,
+    "ann_sharpe_daily": 0.1750407879801101
+  },
+  "primary_sweep": {
+    "strategy": "high_reserves_xs",
+    "scale": 2.333430226046187,
+    "binding": "static",
+    "is_total_return": -0.06473130704039531,
+    "is_static_loss": 0.09999999979303306,
+    "is_max_daily_dd": 0.02610451961599145,
+    "is_gates_pass": true,
+    "oos_total_return": -0.0672990832703978,
+    "oos_static_loss": 0.09155823741839718,
+    "oos_max_daily_dd": 0.00954627081347906,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005412680237158066,
+    "mean_mo_oos": -0.005503375363874713,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0008902776674018417,
+    "scaled_full_pct_pos": 0.4666666666666667,
+    "scaled_ho_mean_mo": -0.005503375363874713,
+    "scaled_ho_pct_pos": 0.3333333333333333,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}
