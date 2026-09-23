@@ -1,0 +1,250 @@
+{
+  "ok": true,
+  "section": 49,
+  "path": "oecd_mei_labour_prod_ulqelp01",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 3,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "labour_prod_yoy_pct_as_reported",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_lp_xs",
+    "low_lp_xs",
+    "high_lp_z_xs",
+    "lp_chg_xs",
+    "us_lp_stress_fx",
+    "us_lp_haven_usd",
+    "lp_ew"
+  ],
+  "primary": "high_lp_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI ULQELP01{ISO2}Q657S early-estimate LP YoY quarterly \u2192 monthly ffill after pub_lag=3; XS on YoY as reported; also 5y z / +\u039412 of YoY boarded; high_lp primary (productivity \u2192 appreciate); n_long=n_short=2 full G10 foreign; signal_lag=1m + 1d weight lag; STALE panel ends ~2023-07 on free FRED",
+  "eur_mapping": "ULQELP01DEQ657S Germany proxy (EZ also ~2023-07 stale; FR/IT/ES/NL alts)",
+  "coverage_g10": "full G10 mapped (USD/EUR/GBP/JPY/CAD/AUD/NZD/CHF ULQELP01*Q657S quarterly; STALE ~2023-07)",
+  "series_map": {
+    "USD": "ULQELP01USQ657S",
+    "EUR": "ULQELP01DEQ657S",
+    "GBP": "ULQELP01GBQ657S",
+    "JPY": "ULQELP01JPQ657S",
+    "CAD": "ULQELP01CAQ657S",
+    "AUD": "ULQELP01AUQ657S",
+    "NZD": "ULQELP01NZQ657S",
+    "CHF": "ULQELP01CHQ657S"
+  },
+  "score_basis": "yoy_growth_as_reported",
+  "distinct_from": [
+    "employment_41",
+    "industrial_production_42",
+    "ulc_48",
+    "balassa_samuelson_14",
+    "building_permits_43",
+    "retail_sales_46",
+    "house_price_35",
+    "bis_reer_31",
+    "money_growth_33",
+    "bis_credit_gap_32",
+    "bis_dsr_47",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "macro_diff_EW_CPI_IP_UR_blend"
+  ],
+  "citations": [
+    "Relative labour-productivity growth \u2192 FX (OECD MEI ULQELP; BS-adjacent)",
+    "Balassa\u2013Samuelson / competitiveness companion to ULC (\u00a748)",
+    "Honesty: low LP / productivity-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "ULQELP01USQ657S",
+      "freq": "Q",
+      "n_obs": 763,
+      "start": "1960-04-01",
+      "end": "2023-10-01",
+      "last": 0.936118085705194,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01USQ657S (quarterly) stale_end=2023-07-01"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "ULQELP01DEQ657S",
+      "freq": "Q",
+      "n_obs": 388,
+      "start": "1991-07-01",
+      "end": "2023-10-01",
+      "last": -0.144789518003896,
+      "note": "Germany proxy via ULQELP01DEQ657S (Q) stale_end=2023-07-01 (EZ also ~2023-07; FR/IT/ES/NL Q657S alts)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "ULQELP01GBQ657S",
+      "freq": "Q",
+      "n_obs": 628,
+      "start": "1971-07-01",
+      "end": "2023-10-01",
+      "last": 0.3876509910004509,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01GBQ657S (quarterly) stale_end=2023-04-01"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "ULQELP01JPQ657S",
+      "freq": "Q",
+      "n_obs": 520,
+      "start": "1980-07-01",
+      "end": "2023-10-01",
+      "last": -0.807117674223498,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01JPQ657S (quarterly) stale_end=2023-07-01"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "ULQELP01CAQ657S",
+      "freq": "Q",
+      "n_obs": 748,
+      "start": "1961-07-01",
+      "end": "2023-10-01",
+      "last": -0.643171912855525,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01CAQ657S (quarterly) stale_end=2023-07-01"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "ULQELP01AUQ657S",
+      "freq": "Q",
+      "n_obs": 676,
+      "start": "1967-07-01",
+      "end": "2023-10-01",
+      "last": -0.431970357300333,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01AUQ657S (quarterly) stale_end=2023-07-01"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "ULQELP01NZQ657S",
+      "freq": "Q",
+      "n_obs": 433,
+      "start": "1987-10-01",
+      "end": "2023-10-01",
+      "last": 0.341339257568365,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01NZQ657S (quarterly) stale_end=2023-04-01"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "ULQELP01CHQ657S",
+      "freq": "Q",
+      "n_obs": 340,
+      "start": "1995-07-01",
+      "end": "2023-10-01",
+      "last": 0.375459463524308,
+      "note": "OECD MEI early-estimate LP YoY ULQELP01CHQ657S (quarterly) stale_end=2023-07-01"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "iso3_ulqelp01_gysaq_country_404": [
+      "USAULQELP01GYSAQ",
+      "GBRULQELP01GYSAQ",
+      "JPNULQELP01GYSAQ",
+      "CANULQELP01GYSAQ",
+      "AUSULQELP01GYSAQ",
+      "NZLULQELP01GYSAQ",
+      "CHEULQELP01GYSAQ",
+      "DEUULQELP01GYSAQ",
+      "EA19ULQELP01GYSAQ",
+      "OECDULQELP01GYSAQ"
+    ],
+    "q657s_q661s_q659s_stale_~2023_07": [
+      "ULQELP01USQ657S",
+      "ULQELP01USQ661S",
+      "ULQELP01USQ659S",
+      "ULQELP01GBQ657S",
+      "ULQELP01JPQ657S",
+      "ULQELP01CAQ657S",
+      "ULQELP01AUQ657S",
+      "ULQELP01NZQ657S",
+      "ULQELP01CHQ657S",
+      "ULQELP01DEQ657S",
+      "ULQELP01EZQ657S"
+    ],
+    "eur_germany_proxy_primary": [
+      "ULQELP01DEQ657S"
+    ],
+    "eur_fr_it_es_nl_alts_also_stale": [
+      "ULQELP01FRQ657S",
+      "ULQELP01ITQ657S",
+      "ULQELP01ESQ657S",
+      "ULQELP01NLQ657S"
+    ],
+    "us_national_alts_live_not_primary": [
+      "OPHNFB",
+      "PRS85006092"
+    ],
+    "imf_ifs_unit_value_tot_fallback_404": [
+      "XTEXUV01USM661N",
+      "XTIMUV01USM661N",
+      "USAXRTTOT01IXOBSAM",
+      "TNTTUS",
+      "XTUVUS",
+      "KORLOCOTTORSTSAM"
+    ],
+    "oecd_pieamp_export_price_stale_2022_12": [
+      "PIEAMP01USM661N",
+      "PIEAMP01GBM661N",
+      "PIEAMP01CAM661N",
+      "PIEAMP01DEM661N",
+      "PIEAMP01CHM661N"
+    ]
+  },
+  "stale": true,
+  "stale_note": "ULQELP01*Q657S ends ~2023-04..07 on free FRED for all G10",
+  "soft_best": {
+    "factor": "low_lp_xs",
+    "n_months": 180,
+    "mean_mo": 0.00043533605994090075,
+    "tstat_ols": 0.7058077672824278,
+    "tstat_nw": 0.8159794116142338,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5166666666666667,
+    "top3": 0.09021877386547306,
+    "ann_sharpe_daily": 0.21936346992127687
+  },
+  "primary_sweep": {
+    "strategy": "high_lp_xs",
+    "scale": 0.9182464641667898,
+    "binding": "static",
+    "is_total_return": -0.09575125339925006,
+    "is_static_loss": 0.09999999988238109,
+    "is_max_daily_dd": 0.009762220255996218,
+    "is_gates_pass": true,
+    "oos_total_return": -0.023349335889979894,
+    "oos_static_loss": 0.04087779689152623,
+    "oos_max_daily_dd": 0.003831128613444744,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00041129851665397003,
+    "mean_mo_oos": -0.0018609156309613388,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.000514571012267479,
+    "scaled_full_pct_pos": 0.4722222222222222,
+    "scaled_ho_mean_mo": -0.0018609156309613388,
+    "scaled_ho_pct_pos": 0.3333333333333333,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}
