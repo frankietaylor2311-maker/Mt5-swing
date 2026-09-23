@@ -1,0 +1,15 @@
+=== scholarly FX Lustig–Verdelhan dollar-factor beta wave ===
+Verdelhan / Lustig–Roussanov–Verdelhan — rolling $β on RX dollar factor; HML high−low β; AFD-conditioned; RX TSMOM. Distinct from Lustig carry, Menkhoff FX-RV, Hau–Rey, BNP crash-skew, AI-GPR. Locked sleeve untouched.
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo n=3905
+  sweep dollar_beta_xs: scale=0.894 bind=static IS mean_mo=0.006% OOS gates=True
+  sweep dollar_beta_xs_36m: scale=0.838 bind=static IS mean_mo=-0.015% OOS gates=True
+  sweep dollar_beta_afd: scale=1.016 bind=static IS mean_mo=0.031% OOS gates=True
+  sweep dollar_rx_tsmom: scale=0.251 bind=static IS mean_mo=-0.059% OOS gates=True
+  sweep dollar_ew: scale=1.078 bind=static IS mean_mo=-0.057% OOS gates=True
+=== factor summary ===
+  dollar_beta_xs: mean_mo=+0.014% NW_t=+0.20 %pos=39%
+  dollar_beta_xs_36m: mean_mo=-0.033% NW_t=-0.51 %pos=37%
+  dollar_beta_afd: mean_mo=+0.020% NW_t=+0.27 %pos=43%
+  dollar_rx_tsmom: mean_mo=-0.232% NW_t=-1.67 %pos=38%
+  dollar_ew: mean_mo=-0.057% NW_t=-1.20 %pos=38%
+board n=5 soft=0 hard=0 promote_unscaled=False scaled_primary=False

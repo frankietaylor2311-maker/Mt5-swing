@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 6 items
+
+tests/test_dollar_beta_fx.py::test_prepare_betas_shape_and_attrs PASSED  [ 16%]
+tests/test_dollar_beta_fx.py::test_beta_at_t_ignores_t_return PASSED     [ 33%]
+tests/test_dollar_beta_fx.py::test_hml_weights_sum_approx_zero PASSED    [ 50%]
+tests/test_dollar_beta_fx.py::test_afd_sign_flip PASSED                  [ 66%]
+tests/test_dollar_beta_fx.py::test_factor_returns_finite_and_causal PASSED [ 83%]
+tests/test_dollar_beta_fx.py::test_monthly_rx_dollar_and_afd PASSED      [100%]
+
+============================== 6 passed in 0.59s ===============================

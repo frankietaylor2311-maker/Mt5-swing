@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, BNP crash-skew §26 after AI-GPR §25; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, Lustig–Verdelhan dollar-factor beta §27 after BNP crash-skew §26; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -75,6 +75,14 @@
 - **Key refs:** Brunnermeier, Nagel & Pedersen (2008), "Carry Trades and Currency Crashes," *RFS*. Related: Menkhoff et al. (2012a) FX-vol channel (level vol ≠ skew).
 - **Free data:** Yahoo D1 OHLC only — trailing return skewness and left-tail shortfall (mean of returns ≤5th pct). No paid FX IV/RR / risk-reversal panel.
 - **What we implement (wave §26):** `strategies/fx_crash_skew_fx.py` + `scripts/scholarly_fx_crash_skew_wave.py` — legs `crash_skew_xs` (primary 63d), `crash_skew_xs_126`, `left_tail_xs`, `mom_skew_regime`, scholarly `carry_crash_cool` (**not** on locked fx4plus), `crash_ew`. PIT `skip=1` + `signal_lag=1`; monthly XS rebalance; costs 1.5 bps/side. **Distinct** from Menkhoff FX-RV (§15), Lustig carry, AI-GPR (§25). **Not** overlaid on the locked sleeve.
+
+
+### 1.21 Dollar-factor beta sorts (Lustig–Verdelhan)
+
+- **Claim:** The average excess return of foreign currencies vs USD ("dollar" / RX) is a priced FX factor; currencies' rolling β on RX sorts into high-$β / low-$β portfolios with a premium that can flip with the average forward discount (AFD).
+- **Key refs:** Lustig, Roussanov & Verdelhan (2011), *RFS*; Lustig, Roussanov & Verdelhan (2014); Verdelhan dollar-factor / beta-sort follow-ons.
+- **What we implement (wave §27):** `strategies/dollar_beta_fx.py` + `scripts/scholarly_fx_dollar_beta_wave.py` — legs `dollar_beta_xs` (primary 60m monthly OLS β HML), `dollar_beta_xs_36m`, `dollar_beta_afd` (HML × sign(AFD) from FRED short rates), `dollar_rx_tsmom` (12m trailing RX sign), `dollar_ew`. PIT `skip=1m` + `signal_lag=1m`; monthly XS rebalance; costs 1.5 bps/side. **Distinct** from Lustig carry (rate sort), Menkhoff FX-RV, Hau–Rey equity-diff, BNP crash-skew (§26), AI-GPR. **Not** overlaid on the locked sleeve.
+
 
 
 
@@ -289,7 +297,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 15. **Done (2026-09-23):** Real-rate / breakeven differentials — promote=NO (see §23).
 16. **Done (2026-09-23):** Bilateral AI-GPR role decompositions — promote=NO (see §25).
 17. **Done (2026-09-23):** Brunnermeier–Nagel–Pedersen crash-skew / left-tail wave — promote=NO (see §26).
-18. Next scholarly candidates (not sleeve coolers): Lustig–Verdelhan **dollar-factor beta** sorts from free FX panel; FRED **fiscal-balance / govt budget** differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+18. **Done (2026-09-23):** Lustig–Verdelhan dollar-factor beta sorts — promote=NO (see §27).
+19. Next scholarly candidates (not sleeve coolers): FRED **fiscal-balance / government budget** differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1188,7 +1197,46 @@ Sweep **run** (positive IS mean on `left_tail_xs`). Primary `crash_skew_xs` scal
 
 BNP crash-risk / skewness is the right free-data structure given blocked FX IV/RR, and is cleanly distinct from Menkhoff level-vol and AI-GPR roles. On Yahoo D1 G10 the primary 63d skew HML is *wrong-signed* on this sample (full-sample ≈ −15 bp/mo, NW t ≈ −2.0) — currencies that *looked* crash-prone underperformed rather than earning a premium. Left-tail shortfall is the only soft-positive leg (~+7 bp/mo, NW t≈1.1) and still nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty for positive means. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: **Lustig–Verdelhan dollar-factor beta** sorts (rolling β of currency returns on the dollar factor from the free FX panel) or **FRED fiscal-balance / government budget differentials** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §27 (dollar-factor beta). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: **FRED fiscal-balance / government budget differentials** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_crash_skew_wave.md`, `scholarly_fx_crash_skew_*.csv`, `scholarly_fx_crash_skew_meta.json`.
 
+
+## 27. Lustig–Verdelhan dollar-factor beta wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** Free FX panel only. Primary `dollar_beta_xs`: monthly OLS β of each currency's return on RX (EW foreign excess return vs USD) over **60 months**, skip=1m + signal_lag=1m; monthly XS long high-$β / short low-$β (n=2/2). Companion: `dollar_beta_xs_36m`; `dollar_beta_afd` (same HML × sign(AFD) from FRED short-rate differentials); `dollar_rx_tsmom` (sign of trailing 12m RX → long/short all FX vs USD); `dollar_ew`. Costs 1.5 bps/side. β estimated on **monthly** returns (Verdelhan 60m prior), weights expanded daily.
+
+**What is new vs carry / FX-RV / equity-diff / crash-skew / AI-GPR:** Lustig carry sorts on *rates*; Menkhoff on *level* FX-RV; Hau–Rey on equity differentials; BNP on return *skew*; AI-GPR on newspaper roles. This wave sorts on **rolling dollar-factor β**.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| dollar_beta_xs | +0.014% | +0.18 | +0.20 | 39% | 15% | +0.05 |
+| dollar_beta_xs_36m | −0.033% | −0.46 | −0.51 | 37% | 14% | −0.10 |
+| dollar_beta_afd | +0.020% | +0.25 | +0.27 | 43% | 16% | +0.06 |
+| dollar_rx_tsmom | −0.232% | −1.68 | −1.67 | 38% | 12% | −0.43 |
+| dollar_ew | −0.057% | −1.33 | −1.20 | 38% | 17% | −0.34 |
+
+### Consistency windows (primary `dollar_beta_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | −0.04% | 64% | 62% | PASS | no |
+| year_2025 | −0.18% | 27% | 100% | PASS | no |
+| year_2026 | +0.10% | 62% | 79% | PASS | no |
+| holdout_365d | +0.18% | 58% | 67% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on `dollar_beta_xs` / `dollar_beta_afd`). Primary scale≈0.89 bind=static; scaled IS mean still ≪1%; scaled HO clears: **NO**. AFD-conditioned leg is the soft-best (+2 bp/mo) but NW t≈0.27 — not a soft board hit.
+
+**Board:** n=5 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`dollar_beta_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS on all key windows (Yahoo D1: 2024 0.36%/55%/78%; 2025 1.84%/73%/68%; 2026 2.43%/75%/88%; HO 1.54%/67%/84% — see `quest_locked_verify_dollar_beta.md`).
+
+### Honest read
+
+Dollar-factor β sorts are the right free-data Verdelhan structure after BNP crash-skew, and are cleanly distinct from carry / FX-RV / equity-diff / skew / AI-GPR. On Yahoo D1 G10 the primary 60m β HML is essentially **flat** (full-sample ≈ +1.4 bp/mo, NW t ≈ 0.2, %pos 39%) — nowhere near 1%/mo + 70% hit-rate. AFD conditioning helps only marginally (+2 bp/mo). Dollar RX TSMOM is wrong-signed on this sample (~−23 bp/mo). Soft/hard NW boards empty for positive means. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: **FRED fiscal-balance / government budget differentials** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_dollar_beta_wave.md`, `scholarly_fx_dollar_beta_*.csv`, `scholarly_fx_dollar_beta_meta.json`.

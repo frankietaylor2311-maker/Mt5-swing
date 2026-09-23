@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "path": "lustig_verdelhan_dollar_factor_beta",
+  "section": 27,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_months": 1,
+  "skip_months": 1,
+  "beta_window_months": 60,
+  "beta_window_months_short": 36,
+  "tsmom_lookback_months": 12,
+  "estimation": "monthly_ols_verdelhan_60m",
+  "cost_bps_per_side": 1.5,
+  "factors": [
+    "dollar_beta_xs",
+    "dollar_beta_xs_36m",
+    "dollar_beta_afd",
+    "dollar_rx_tsmom",
+    "dollar_ew"
+  ],
+  "primary": "dollar_beta_xs",
+  "n_factors": 5,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "board": {
+    "n": 5,
+    "soft": 0,
+    "hard": 0,
+    "promote": 0
+  },
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "risk_sweep_run": true,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "Lustig_carry_HML",
+    "Menkhoff_FX_realized_vol",
+    "Hau_Rey_equity_diff",
+    "BNP_crash_skew",
+    "AI_GPR_bilateral_roles"
+  ],
+  "citations": [
+    "Lustig, Roussanov & Verdelhan (2011), Common Risk Factors in Currency Markets, RFS",
+    "Lustig, Roussanov & Verdelhan (2014), Countercyclical Currency Risk Premia, JME",
+    "Verdelhan dollar-factor / beta-sort literature"
+  ]
+}
