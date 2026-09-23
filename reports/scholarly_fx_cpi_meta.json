@@ -1,0 +1,239 @@
+{
+  "ok": true,
+  "section": 52,
+  "path": "oecd_mei_cpi_inflation_yoy",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 1,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "cpi_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_cpi_xs",
+    "low_cpi_xs",
+    "high_cpi_z_xs",
+    "cpi_chg_xs",
+    "us_cpi_stress_fx",
+    "us_cpi_haven_usd",
+    "cpi_ew"
+  ],
+  "primary": "high_cpi_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED CPI/HICP index\u2192YoY (CPIAUCSL; CP0000EZ19M086NEST; GBP/JPY/CAD/CHF *CPIALLMINMEI; AUD/NZD *CPIALLQINMEI Q\u2192YoY quarterly\u2192monthly after pub_lag=1); XS on CPI YoY; also 5y z / +\u039412 of YoY boarded; high_cpi primary (Dahlquist economic-momentum \u2192 appreciate); n_long=n_short=2 full G10 foreign",
+  "eur_mapping": "CP0000EZ19M086NEST EA19 HICP (live; CPHPTT01EZM659N YoY staler \u2014 not mixed)",
+  "coverage_g10": "full G10 mapped (USD/EUR live; JPY STALE ~2021-06; GBP/CAD/CHF/AUD/NZD mild ~2025)",
+  "series_map": {
+    "USD": "CPIAUCSL",
+    "EUR": "CP0000EZ19M086NEST",
+    "GBP": "GBRCPIALLMINMEI",
+    "JPY": "JPNCPIALLMINMEI",
+    "CAD": "CANCPIALLMINMEI",
+    "AUD": "AUSCPIALLQINMEI",
+    "NZD": "NZLCPIALLQINMEI",
+    "CHF": "CHECPIALLMINMEI"
+  },
+  "score_basis": "yoy_growth_derived_from_index",
+  "distinct_from": [
+    "ppi_51",
+    "employment_41",
+    "industrial_production_42",
+    "ulc_48",
+    "labour_prod_49",
+    "cap_util_50",
+    "balassa_samuelson_14",
+    "building_permits_43",
+    "retail_sales_46",
+    "house_price_35",
+    "bis_reer_31",
+    "money_growth_33",
+    "bis_credit_gap_32",
+    "bis_dsr_47",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "ppp_real_fx"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum incl. CPI",
+    "OECD MEI / national CPI + EA19 HICP",
+    "Honesty: low CPI / PPP high-inflation short"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "CPIAUCSL",
+      "freq": "M",
+      "n_obs": 943,
+      "start": "1948-02-01",
+      "end": "2026-09-01",
+      "last": 3.7129581058388483,
+      "note": "US CPI CPIAUCSL levels \u2192 YoY % (live ~2026-08)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "CP0000EZ19M086NEST",
+      "freq": "M",
+      "n_obs": 345,
+      "start": "1998-01-01",
+      "end": "2026-09-01",
+      "last": 3.226448914558855,
+      "note": "EA19 HICP CP0000EZ19M086NEST levels \u2192 YoY % (live; CPHPTT01EZM659N YoY staler ~2023-01 \u2014 not mixed)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRCPIALLMINMEI",
+      "freq": "M",
+      "n_obs": 831,
+      "start": "1956-02-01",
+      "end": "2025-04-01",
+      "last": 3.4194528875379993,
+      "note": "OECD MEI GBRCPIALLMINMEI levels \u2192 YoY % (ends ~2025-03..04 mild stale)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNCPIALLMINMEI",
+      "freq": "M",
+      "n_obs": 786,
+      "start": "1956-02-01",
+      "end": "2021-07-01",
+      "last": -0.4004707719263312,
+      "note": "OECD MEI JPNCPIALLMINMEI levels \u2192 YoY % (STALE ends ~2021-06; CPALTT01JPM659N same end; CP0000JPM086NEST 404)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANCPIALLMINMEI",
+      "freq": "M",
+      "n_obs": 1323,
+      "start": "1915-02-01",
+      "end": "2025-04-01",
+      "last": 2.3153457692843826,
+      "note": "OECD MEI CANCPIALLMINMEI levels \u2192 YoY % (ends ~2025-03..04 mild stale)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "CHECPIALLMINMEI",
+      "freq": "M",
+      "n_obs": 832,
+      "start": "1956-02-01",
+      "end": "2025-05-01",
+      "last": 0.03426365183671898,
+      "note": "OECD MEI CHECPIALLMINMEI levels \u2192 YoY % (ends ~2025-03..04 mild stale)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "AUSCPIALLQINMEI",
+      "freq": "Q",
+      "n_obs": 907,
+      "start": "1949-08-01",
+      "end": "2025-02-01",
+      "last": 2.40176417760265,
+      "note": "OECD MEI AUSCPIALLQINMEI quarterly index \u2192 YoY % (ends ~2025-01)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "NZLCPIALLQINMEI",
+      "freq": "Q",
+      "n_obs": 1318,
+      "start": "1915-05-01",
+      "end": "2025-02-01",
+      "last": 2.525668571816797,
+      "note": "OECD MEI NZLCPIALLQINMEI quarterly index \u2192 YoY % (ends ~2025-01)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "cpaltt01_yoy_same_ends_not_mixed": [
+      "CPALTT01USM659N",
+      "CPALTT01GBM659N",
+      "CPALTT01CAM659N",
+      "CPALTT01CHM659N",
+      "CPALTT01JPM659N",
+      "CPALTT01DEM659N"
+    ],
+    "eur_hicp_yoy_staler_than_nest": [
+      "CPHPTT01EZM659N"
+    ],
+    "jpy_oecd_stale_2021_06": [
+      "JPNCPIALLMINMEI",
+      "CPALTT01JPM659N",
+      "JPNCPIALLQINMEI",
+      "CPALTT01JPQ659N",
+      "JPNCPICORMINMEI"
+    ],
+    "jpy_alts_404_or_annual_not_mixed": [
+      "CP0000JPM086NEST",
+      "CPIJPALTT01GYM",
+      "JPNCPIALLGYM",
+      "FPCPITOTLZGJPN"
+    ],
+    "aud_nzd_quarterly_primary": [
+      "AUSCPIALLQINMEI",
+      "NZLCPIALLQINMEI"
+    ],
+    "macro_diff_cpi_series_reused": [
+      "CPIAUCSL",
+      "CP0000EZ19M086NEST",
+      "GBRCPIALLMINMEI",
+      "JPNCPIALLMINMEI",
+      "CANCPIALLMINMEI",
+      "CHECPIALLMINMEI",
+      "AUSCPIALLQINMEI",
+      "NZLCPIALLQINMEI"
+    ]
+  },
+  "stale": true,
+  "stale_note": "JPY OECD MEI CPI on free FRED ends ~2021-06 (hard); GBP/CAD ~2025-03, CHF ~2025-04, AUD/NZD Q ~2025-01 (mild); USD/EUR live through mid-2026; post-end ranks ffilled frozen",
+  "soft_best": {
+    "factor": "cpi_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.000698156343896524,
+    "tstat_ols": 1.2506824010438342,
+    "tstat_nw": 1.2045578908404209,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5444444444444444,
+    "top3": 0.10549669447037982,
+    "ann_sharpe_daily": 0.22391467888690847
+  },
+  "primary_sweep": {
+    "strategy": "high_cpi_xs",
+    "scale": 1.3059357062395875,
+    "binding": "daily",
+    "is_total_return": -0.005124763831765078,
+    "is_static_loss": 0.06095549442106072,
+    "is_max_daily_dd": 0.04999999992300844,
+    "is_gates_pass": true,
+    "oos_total_return": 0.009006168538397752,
+    "oos_static_loss": 0.013039457133312827,
+    "oos_max_daily_dd": 0.004942807194345368,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.00014374209889834086,
+    "mean_mo_oos": 0.0012514771707284322,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.00018943186779699146,
+    "scaled_full_pct_pos": 0.5388888888888889,
+    "scaled_ho_mean_mo": 0.0012514771707284322,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

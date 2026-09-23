@@ -1,0 +1,34 @@
+=== scholarly FX OECD CPI / inflation YoY wave (§52) ===
+FRED CPI/HICP index→YoY (pub_lag=1) — CPI YoY XS; Dahlquist–Hasseltoft economic-momentum; JPY STALE ~2021-06; distinct from PPI §51, IP §42, retail §46, ULC/LP/CU §48–50, macro_diff EW. Locked sleeve untouched.
+CPI panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'CHF', 'AUD', 'NZD'] [1915-02-01..2026-09-01] pub_lag_m=1
+currency            fred_id freq  n_obs      start        end      last                                                                                                          note
+     USD           CPIAUCSL    M    943 1948-02-01 2026-09-01  3.712958                                                                US CPI CPIAUCSL levels → YoY % (live ~2026-08)
+     EUR CP0000EZ19M086NEST    M    345 1998-01-01 2026-09-01  3.226449           EA19 HICP CP0000EZ19M086NEST levels → YoY % (live; CPHPTT01EZM659N YoY staler ~2023-01 — not mixed)
+     GBP    GBRCPIALLMINMEI    M    831 1956-02-01 2025-04-01  3.419453                                        OECD MEI GBRCPIALLMINMEI levels → YoY % (ends ~2025-03..04 mild stale)
+     JPY    JPNCPIALLMINMEI    M    786 1956-02-01 2021-07-01 -0.400471 OECD MEI JPNCPIALLMINMEI levels → YoY % (STALE ends ~2021-06; CPALTT01JPM659N same end; CP0000JPM086NEST 404)
+     CAD    CANCPIALLMINMEI    M   1323 1915-02-01 2025-04-01  2.315346                                        OECD MEI CANCPIALLMINMEI levels → YoY % (ends ~2025-03..04 mild stale)
+     CHF    CHECPIALLMINMEI    M    832 1956-02-01 2025-05-01  0.034264                                        OECD MEI CHECPIALLMINMEI levels → YoY % (ends ~2025-03..04 mild stale)
+     AUD    AUSCPIALLQINMEI    Q    907 1949-08-01 2025-02-01  2.401764                                              OECD MEI AUSCPIALLQINMEI quarterly index → YoY % (ends ~2025-01)
+     NZD    NZLCPIALLQINMEI    Q   1318 1915-05-01 2025-02-01  2.525669                                              OECD MEI NZLCPIALLQINMEI quarterly index → YoY % (ends ~2025-01)
+Series source note: FRED CPI/HICP index→YoY (CPIAUCSL; CP0000EZ19M086NEST EA19 HICP; GBP/JPY/CAD/CHF *CPIALLMINMEI; AUD/NZD *CPIALLQINMEI Q→YoY; reuses fred_macro_diff.CPI_SERIES; JPY STALE ~2021-06; GBP/CAD/CHF/AUD/NZD mild stale ~2025-01..04; USD/EUR live)
+Score basis: yoy_growth_derived_from_index unit=cpi_yoy_pct
+Failed/alt documented: {'cpaltt01_yoy_same_ends_not_mixed': ['CPALTT01USM659N', 'CPALTT01GBM659N', 'CPALTT01CAM659N', 'CPALTT01CHM659N', 'CPALTT01JPM659N', 'CPALTT01DEM659N'], 'eur_hicp_yoy_staler_than_nest': ['CPHPTT01EZM659N'], 'jpy_oecd_stale_2021_06': ['JPNCPIALLMINMEI', 'CPALTT01JPM659N', 'JPNCPIALLQINMEI', 'CPALTT01JPQ659N', 'JPNCPICORMINMEI'], 'jpy_alts_404_or_annual_not_mixed': ['CP0000JPM086NEST', 'CPIJPALTT01GYM', 'JPNCPIALLGYM', 'FPCPITOTLZGJPN'], 'aud_nzd_quarterly_primary': ['AUSCPIALLQINMEI', 'NZLCPIALLQINMEI'], 'macro_diff_cpi_series_reused': ['CPIAUCSL', 'CP0000EZ19M086NEST', 'GBRCPIALLMINMEI', 'JPNCPIALLMINMEI', 'CANCPIALLMINMEI', 'CHECPIALLMINMEI', 'AUSCPIALLQINMEI', 'NZLCPIALLQINMEI']}
+Stale: True note=JPY OECD MEI CPI on free FRED ends ~2021-06 (hard); GBP/CAD ~2025-03, CHF ~2025-04, AUD/NZD Q ~2025-01 (mild); USD/EUR live through mid-2026; post-end ranks ffilled frozen
+US CPIAUCSL→YoY [1948-02-01..2026-09-01] n=943 series=CPIAUCSL
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_cpi_xs: scale=1.306 bind=daily IS mean_mo=0.014% OOS gates=True
+  sweep low_cpi_xs: scale=1.189 bind=static IS mean_mo=-0.027% OOS gates=True
+  sweep high_cpi_z_xs: scale=1.486 bind=static IS mean_mo=0.079% OOS gates=True
+  sweep cpi_chg_xs: scale=1.395 bind=static IS mean_mo=0.100% OOS gates=True
+  sweep us_cpi_stress_fx: scale=2.589 bind=static IS mean_mo=-0.024% OOS gates=True
+  sweep us_cpi_haven_usd: scale=5.143 bind=daily IS mean_mo=0.045% OOS gates=True
+  sweep cpi_ew: scale=2.574 bind=static IS mean_mo=0.063% OOS gates=True
+=== factor summary ===
+  high_cpi_xs: mean_mo=+0.015% NW_t=+0.27 %pos=54%
+  low_cpi_xs: mean_mo=-0.025% NW_t=-0.45 %pos=46%
+  high_cpi_z_xs: mean_mo=+0.054% NW_t=+1.10 %pos=53%
+  cpi_chg_xs: mean_mo=+0.070% NW_t=+1.20 %pos=54%
+  us_cpi_stress_fx: mean_mo=-0.009% NW_t=-0.51 %pos=6%
+  us_cpi_haven_usd: mean_mo=+0.008% NW_t=+0.49 %pos=4%
+  cpi_ew: mean_mo=+0.026% NW_t=+0.79 %pos=51%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
