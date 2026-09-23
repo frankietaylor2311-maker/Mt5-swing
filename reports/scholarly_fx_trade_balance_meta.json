@@ -1,0 +1,139 @@
+{
+  "ok": true,
+  "path": "monthly_trade_balance",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "tb_deficit_xs",
+    "tb_surplus_xs",
+    "tb_chg_xs",
+    "us_tb_gr_fx",
+    "us_tb_haven_usd",
+    "tb_ca_blend",
+    "tb_ew"
+  ],
+  "primary": "tb_deficit_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "tb_over_exports = (EXP-IMP)/EXP from OECD MEI XTEXVA/XTIMVA",
+  "us_tilt_series": "BOPGSTB",
+  "distinct_from": [
+    "current_account_CA_GDP_21",
+    "debt_gdp_29",
+    "fiscal_balance_GGNLBA_28",
+    "CB_balance_sheet_QE",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew"
+  ],
+  "citations": [
+    "Della Corte\u2013Riddiough\u2013Sarno (2016) Currency Premia and Global Imbalances",
+    "Gourinchas\u2013Rey (2007) International Financial Adjustment",
+    "Monthly goods TB as high-frequency external-balance channel vs quarterly CA"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "XTEXVA01USM667S-XTIMVA01USM667S",
+      "n_obs": 858,
+      "start": "1955-03-01",
+      "end": "2026-08-01",
+      "last": -0.4936832727219618,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "XTEXVA01DEM667S-XTIMVA01DEM667S",
+      "n_obs": 833,
+      "start": "1957-03-01",
+      "end": "2026-07-01",
+      "last": 0.1321850668827518,
+      "note": "Germany proxy via XTEXVA01DEM667S/XTIMVA01DEM667S; EZM exports/imports end ~2023-04 (documented alt)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "XTEXVA01GBM667S-XTIMVA01GBM667S",
+      "n_obs": 834,
+      "start": "1957-03-01",
+      "end": "2026-08-01",
+      "last": -0.7269725555670989,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "XTEXVA01JPM667S-XTIMVA01JPM667S",
+      "n_obs": 834,
+      "start": "1957-03-01",
+      "end": "2026-08-01",
+      "last": -0.08356814045246796,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "XTEXVA01CAM667S-XTIMVA01CAM667S",
+      "n_obs": 834,
+      "start": "1957-03-01",
+      "end": "2026-08-01",
+      "last": 0.07826053458393224,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "XTEXVA01AUM667S-XTIMVA01AUM667S",
+      "n_obs": 822,
+      "start": "1958-03-01",
+      "end": "2026-08-01",
+      "last": 0.0981746158400809,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "XTEXVA01NZM667S-XTIMVA01NZM667S",
+      "n_obs": 834,
+      "start": "1957-03-01",
+      "end": "2026-08-01",
+      "last": -0.0691725801054101,
+      "note": ""
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "XTEXVA01CHM667S-XTIMVA01CHM667S",
+      "n_obs": 834,
+      "start": "1957-03-01",
+      "end": "2026-08-01",
+      "last": 0.17296039103374863,
+      "note": ""
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "eur_ez_ends_2023": [
+      "XTEXVA01EZM667S",
+      "XTIMVA01EZM667S"
+    ],
+    "monthly_ca_404": [
+      "USAB6BLTT02STSAM"
+    ],
+    "bopb12_404": [
+      "BOPB12"
+    ]
+  }
+}

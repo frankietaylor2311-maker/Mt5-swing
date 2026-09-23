@@ -1342,6 +1342,50 @@ Sweep **run** (positive IS mean on several legs). Primary `low_debt_xs` scale≈
 
 Debt/GDP stock is the right free-data sustainability structure after fiscal-balance flow (§28), and is cleanly distinct from GGNLBA / CA / CB-BS. On Yahoo D1 G10 the primary low-debt HML is essentially **flat** (full-sample ≈ +1.9 bp/mo, NW t ≈ 0.27, %pos 53%) — nowhere near 1%/mo + 70% hit-rate. Change and haven legs are only marginally positive. Soft/hard NW boards empty for positive means. NZD/CHF missing; `GGXWDG*` mnemonic 404 (used live `GGGDTA*`). No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: monthly **trade-balance** (higher-freq vs quarterly CA) or BIS/FRED **REER** misalignment — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §30 (monthly trade-balance). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: BIS/FRED **REER** misalignment — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_debt_gdp_wave.md`, `scholarly_fx_debt_gdp_*.csv`, `scholarly_fx_debt_gdp_meta.json`.
+
+
+## 30. Monthly trade-balance FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** OECD MEI merchandise exports/imports via FRED `XTEXVA01*M667S` / `XTIMVA01*M667S`; normalised to **TB/exports = (EXP−IMP)/EXP**. Primary `tb_deficit_xs`: monthly XS long low TB (deficit) / short high surplus (n=2/2) on **full G10** (USD, EUR-DE proxy, GBP, JPY, CAD, AUD, NZD, CHF — NZD/CHF mapped unlike debt/fiscal). Companion: `tb_surplus_xs` (flow opposite), `tb_chg_xs` (YoY Δ), `us_tb_gr_fx` / `us_tb_haven_usd` (US BOPGSTB z tilts), scholarly `tb_ca_blend` (EW with CA debtor; **not** on locked fx4plus), `tb_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs CA / debt / fiscal:** Quarterly IMF BOP CA/GDP (§21) is slow; debt/GDP (§29) is stock sustainability; fiscal (§28) is budget flow. This wave is the **monthly goods trade-balance** high-frequency external-balance channel.
+
+**Data notes:** `XTEXVA01EZM667S`/`XTIMVA01EZM667S` live but end ~2023-04 — Germany DEM used as EUR proxy (continuity). `USAB6BLTT02STSAM` (monthly CA) and `BOPB12` **404** on FRED. US tilts use `BOPGSTB` (goods+services).
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| tb_deficit_xs | +0.008% | +0.13 | +0.14 | 49% | 13% | +0.06 |
+| tb_surplus_xs | −0.019% | −0.31 | −0.32 | 50% | 12% | −0.09 |
+| tb_chg_xs | −0.077% | −1.24 | −1.14 | 44% | 12% | −0.27 |
+| us_tb_gr_fx | −0.054% | −1.31 | −1.34 | 18% | 27% | −0.35 |
+| us_tb_haven_usd | +0.052% | +1.27 | +1.30 | 22% | 21% | +0.33 |
+| tb_ca_blend | +0.014% | +0.24 | +0.28 | 50% | 13% | +0.05 |
+| tb_ew | −0.040% | −1.44 | −1.44 | 49% | 12% | −0.32 |
+
+### Consistency windows (primary `tb_deficit_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.08% | 73% | 78% | PASS | no |
+| year_2025 | −0.22% | 45% | 76% | PASS | no |
+| year_2026 | −0.01% | 38% | 100% | PASS | no |
+| holdout_365d | −0.06% | 42% | 80% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on `tb_deficit_xs` / `us_tb_haven_usd` / `tb_ca_blend`). Primary `tb_deficit_xs` scale≈1.18 bind=daily; scaled IS mean ≈2 bp/mo ≪1%; scaled HO mean≈−0.08%/mo %pos 42% — clears: **NO**. Soft-best leg is `us_tb_haven_usd` (+5.2 bp/mo, NW t≈1.30) — still below soft board (|t|≥1.5).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`tb_deficit_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS on all key windows (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_trade_balance.md`).
+
+### Honest read
+
+Monthly trade-balance is the right free-data high-frequency external-balance structure after debt/GDP (§29), and is cleanly distinct from quarterly CA/GDP. On Yahoo D1 G10 the primary deficit HML is essentially **flat** (full-sample ≈ +0.8 bp/mo, NW t ≈ 0.14, %pos 49%) — nowhere near 1%/mo + 70% hit-rate. Change and GR legs are wrong-signed; the US haven tilt is the soft-best but still |NW t|<1.5. Soft/hard NW boards empty for positive means. Full G10 mapped (NZD/CHF present). No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: BIS/FRED **REER** misalignment (real effective exchange-rate deviation from trend / PPP) — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_trade_balance_wave.md`, `scholarly_fx_trade_balance_*.csv`, `scholarly_fx_trade_balance_meta.json`.
