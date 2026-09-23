@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "path": "funding_liquidity_nfci_ted",
+  "data_tag": "approximate_non_ftmo",
+  "weekly_pub_lag_days": 7,
+  "daily_pub_lag_days": 1,
+  "signal_lag": 1,
+  "z_high": 1.0,
+  "cool": 0.35,
+  "nfci_level_cut": 0.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "nfci_usd",
+    "nfci_lvl_usd",
+    "anfci_usd",
+    "nfci_chg_usd",
+    "cpff_usd",
+    "ted_usd",
+    "baa_usd",
+    "spread_usd",
+    "carry_nfci_cool",
+    "carry_nfci_loose",
+    "carry_cpff_cool",
+    "funding_ew"
+  ],
+  "primary": "nfci_usd",
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "VIX",
+    "GPR",
+    "FX_RV",
+    "EPU",
+    "TPU"
+  ],
+  "citations": [
+    "Brunnermeier, Nagel & Pedersen (2008), Carry Trades and Currency Crashes",
+    "Menkhoff, Sarno, Schmeling & Schrimpf (2012), Carry Trades and Global FX Volatility, JF",
+    "Chicago Fed NFCI / ANFCI documentation"
+  ],
+  "series": {
+    "NFCI": {
+      "n": 2906,
+      "end": "2026-09-18"
+    },
+    "TEDRATE_end": "2022-01-22",
+    "CPFF_end": "2026-09-22"
+  }
+}

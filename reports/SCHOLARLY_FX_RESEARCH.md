@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, swap-/forward-aware carry wave after EPU/TPU; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU (FRED + policyuncertainty.com).
+**Status:** Active (2026-09-23 BST, funding-liquidity / NFCI–TED wave after Hau–Rey equity-diff; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU (FRED + policyuncertainty.com).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -21,6 +21,13 @@
 - **Key refs:** Lustig, Roussanov & Verdelhan (2011), *JFE*; Lustig & Verdelhan (2007); Menkhoff et al. (2012a); Fama (1984) forward-premium puzzle.
 - **Free data reality:** True FX swap / outright forward points are vendor (Bloomberg, Refinitiv, broker). Free FRED OECD ``IR3TIB01*`` 3M money-market rates are the best G10 tenor match; ``IRSTCI01*`` immediate rates are the cash baseline; daily ON (DFF/ECBDFR/IUDSOIA) is too sparse for a G10 panel.
 - **What we implement (wave §19):** `data/fred_forward_carry.py` + `strategies/forward_carry_fx.py` + `scripts/scholarly_fx_fwd_carry_wave.py` — IR3M XS, IRSTCI XS, CIP-implied FD XS, IR3M EW, blend, 5 bps TC haircut. PIT `pub_lag=1m` + `signal_lag=1m`. **Explicit:** still rate approximation — not observed forwards; post-GFC CIP basis unmodelled.
+
+
+### 1.14 Funding liquidity / financial conditions (NFCI, TED, CP)
+
+- **Claim:** Funding-liquidity spirals and tight financial conditions coincide with carry crashes and safe-haven USD demand; intermediaries withdraw when money-market / CP spreads and NFCI tighten.
+- **Key refs:** Brunnermeier, Nagel & Pedersen (2008), "Carry Trades and Currency Crashes"; Menkhoff et al. (2012a) related FX-vol channel; Chicago Fed NFCI/ANFCI documentation.
+- **What we implement (wave §20):** `data/fred_funding_liquidity.py` + `strategies/funding_liquidity_fx.py` + `scripts/scholarly_fx_funding_liq_wave.py` — NFCI/ANFCI USD tilts (z and level>0), ΔNFCI change tilts, TED/CPFF/BAA spreads, carry×NFCI cool / loose-only gate, carry×CPFF cool. PIT weekly `pub_lag=7d`, daily `pub_lag=1d`, `signal_lag=1`. **Explicit:** distinct from VIX/GPR/FX-RV/EPU; **not** overlaid on the locked sleeve.
 
 ### 1.2 Momentum
 
@@ -760,4 +767,59 @@ No positive IS mean on any factor → sweep skipped. Scaled promote: **NO**.
 Tradable Hau–Rey legs on Yahoo equity indices earn **~0 to −7 bp/mo** full-sample (NW |t| ≲ 1.2) — far from prop-firm 1%/mo + 70% hit-rate. Indices ≠ Hau–Rey *portfolio flow* data; free Yahoo is sufficient to reject this as a standalone FTMO sleeve.
 
 Artifacts: `reports/scholarly_fx_equity_wave.md`, `scholarly_fx_equity_*.csv`, `scholarly_fx_equity_meta.json`.
+
+
+---
+
+## 20. Funding-liquidity / financial-conditions wave results (2026-09-23 BST) — BNP / NFCI–TED
+
+**Design (fixed priors, no HO tuning):** Distinct carry-crash / FX risk channel vs prior VIX (§8), GPR, Menkhoff FX-RV (§15), and EPU/TPU (§18).
+- Sources: FRED `NFCI` / `ANFCI` (+ risk/credit/leverage subindices), `TEDRATE` (ends 2022-01), `CPFF` (post-LIBOR CP−Tbill), `BAA10Y`.
+- PIT: weekly NFCI family `pub_lag_days=7` (Chicago Fed mid-week release for Friday-ending week); daily spreads `pub_lag_days=1`; `signal_lag=1` trading day. Costs 1.5 bps/side.
+- Frozen cutoffs: trailing z≥1 (match VIX/GPR/EPU); NFCI level>0 (Chicago Fed design — tighter than average); cool=0.35; usd_tilt=0.5.
+- Legs: `nfci_usd` (primary), `anfci_usd`, `nfci_lvl_usd`, `nfci_chg_usd`, `cpff_usd`, `ted_usd`, `baa_usd`, `spread_usd` (TED⊕CPFF), `carry_nfci_cool`, `carry_nfci_loose` (carry only when NFCI≤0), `carry_cpff_cool`, `funding_ew`.
+- **Explicit:** evaluating funding as a scholarly sleeve — **no cooler overlay** on locked `fx4plus_gbpcad_d1_voltarget_0025`.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| nfci_usd | +0.062% | +1.80 | +1.77 | 13% | 30% | +0.42 |
+| nfci_lvl_usd | -0.014% | -1.11 | -1.00 | 1% | 100% | -0.33 |
+| anfci_usd | +0.065% | +1.72 | +1.82 | 18% | 28% | +0.41 |
+| nfci_chg_usd | +0.073% | +2.02 | +2.03 | 20% | 27% | +0.53 |
+| cpff_usd | +0.015% | +0.41 | +0.50 | 23% | 28% | +0.11 |
+| ted_usd | +0.048% | +1.70 | +2.05 | 13% | 30% | +0.40 |
+| baa_usd | -0.022% | -0.72 | -0.81 | 11% | 36% | -0.15 |
+| spread_usd | +0.055% | +1.40 | +1.78 | 20% | 25% | +0.39 |
+| carry_nfci_cool | +0.016% | +0.25 | +0.29 | 52% | 12% | +0.01 |
+| carry_nfci_loose | -0.012% | -0.16 | -0.18 | 51% | 10% | -0.08 |
+| carry_cpff_cool | -0.021% | -0.31 | -0.34 | 54% | 12% | -0.12 |
+| funding_ew | +0.050% | +1.85 | +1.88 | 30% | 25% | +0.44 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| nfci_usd | holdout_365d | +0.00% | 0% | PASS | no |
+| nfci_chg_usd | holdout_365d | +0.14% | 25% | PASS | no |
+| carry_nfci_cool | holdout_365d | +0.27% | 83% | PASS | no† |
+| carry_nfci_loose | holdout_365d | +0.31% | 75% | PASS | no† |
+| funding_ew | holdout_365d | +0.02% | 42% | PASS | no |
+
+† Holdout %pos can clear 70% on funding-conditioned carry, but mean ≪ 1%/mo and full-sample carry cools are flat — classic HO luck, not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means on several USD-tilt legs → sweep run. Best scaled IS mean (`spread_usd` @ ~3.56× daily-bound) ≈ **+0.23%/mo** still ≪ 1%; primary `nfci_usd` scaled IS ≈ +0.20%/mo; scaled HO flat/near zero. Scaled clears: **NO**. Leverage does not invent consistency.
+
+**Unscaled promote:** **NO**. **Scaled primary (`nfci_usd`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+NFCI / ANFCI / ΔNFCI and TED USD tilts are the right *priors* and are **distinct** from VIX/GPR/FX-RV/EPU: mild positive full-sample means (NW t ≈ 1.8–2.0 on ΔNFCI and TED) at **~0.05–0.07%/mo**, but %pos is sparse (~13–20%) because binary stress episodes are infrequent. Absolute NFCI>0 gate and BAA credit tilt do not help. Funding-conditioned carry (cool / loose-only) does not lift the flat cash-rate carry sleeve toward the bar. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED NFCI+CPFF is sufficient; TED ends 2022 (LIBOR) — CPFF fills.
+
+**Next structure (if promote=0):** Global imbalances / current-account FX (Gourinchas–Rey; Della Corte–Riddiough–Sarno) on free OECD/FRED CA panels — *not* another locked-sleeve cooler.
+
+Artifacts: `reports/scholarly_fx_funding_liq_wave.md`, `scholarly_fx_funding_liq_*.csv`, `scholarly_fx_funding_liq_meta.json`.
 
