@@ -1,0 +1,103 @@
+{
+  "ok": true,
+  "section": 44,
+  "path": "acm_term_premium_usd_risk_appetite",
+  "data_tag": "approximate_non_ftmo",
+  "daily_pub_lag_days": 1,
+  "signal_lag": 1,
+  "z_window": 252,
+  "min_periods": 60,
+  "z_high": 1.0,
+  "cool": 0.35,
+  "usd_tilt": 0.5,
+  "binary_usd": true,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "acm_tp_usd",
+    "acm_tp_lvl_usd",
+    "acm_tp_stress_fx",
+    "acm_tp5_usd",
+    "acm_tp_chg_usd",
+    "carry_acm_tp_cool",
+    "carry_acm_tp_loose",
+    "acm_tp_ew"
+  ],
+  "primary": "acm_tp_usd",
+  "n_factors": 8,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "public_csv_note": "FRED fredgraph.csv THREEFYTP10 ACM 10y term premium ~1990\u2013present live",
+  "distinct_from": [
+    "yield_curve_slope_16",
+    "real_rate_tips_23",
+    "funding_liquidity_NFCI_TED_CPFF_BAA10Y_20",
+    "ig_oas_36",
+    "VIX",
+    "GPR",
+    "FX_RV",
+    "EPU_TPU",
+    "crash_skew_26",
+    "house_price_35",
+    "building_permits_43"
+  ],
+  "citations": [
+    "Adrian, Crump & Moench, Pricing the Term Structure with Linear Regressions, JF 2013",
+    "Lustig, Stathopoulos & Verdelhan, The Term Structure of Currency Carry Trade Risk Premia, AER 2019",
+    "Hofmann, Shim & Shin, Bond risk premia and the exchange rate, JME 2020",
+    "NY Fed ACM THREEFYTP10 (FRED) as Treasury term premium state variable"
+  ],
+  "series": {
+    "THREEFYTP10": {
+      "n": 9165,
+      "start": "1990-01-03",
+      "end": "2026-09-19"
+    },
+    "THREEFYTP5": {
+      "n": 9165,
+      "end": "2026-09-19"
+    }
+  },
+  "soft_best": {
+    "factor": "acm_tp_lvl_usd",
+    "n_months": 180,
+    "mean_mo": 0.000401515331992397,
+    "tstat_ols": 0.9373794291806637,
+    "tstat_nw": 1.0533500613102513,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.31666666666666665,
+    "top3": 0.17824540738709946,
+    "ann_sharpe_daily": 0.2446579773458969
+  },
+  "primary_sweep": {
+    "strategy": "acm_tp_usd",
+    "scale": 3.727418277958181,
+    "binding": "daily",
+    "is_total_return": 0.07888943280162164,
+    "is_static_loss": 0.062112884255309184,
+    "is_max_daily_dd": 0.04999999989986725,
+    "is_gates_pass": true,
+    "oos_total_return": -0.060621822125661806,
+    "oos_static_loss": 0.09980365547210196,
+    "oos_max_daily_dd": 0.02165221639552954,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.0006217739147950612,
+    "mean_mo_oos": -0.004765207687145011,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0002626418079990564,
+    "scaled_full_pct_pos": 0.2222222222222222,
+    "scaled_ho_mean_mo": -0.004765207687145011,
+    "scaled_ho_pct_pos": 0.4166666666666667,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "primary_pos_is": true
+}

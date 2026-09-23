@@ -1,0 +1,22 @@
+=== scholarly FX NY Fed ACM term premium → USD risk-appetite wave (§44) ===
+Adrian–Crump–Moench THREEFYTP10 USD-haven / carry-conditioned risk-appetite — distinct from yield-curve slope §16, real-rate/TIPS §23, funding-liq §20, IG OAS §36. Locked sleeve untouched.
+ACM_TP10 n=9165 [1990-01-03..2026-09-19] TP5 n=9165 daily_lag=1d note=FRED fredgraph.csv THREEFYTP10 ACM 10y term premium ~1990–present live
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep acm_tp_usd: scale=3.727 bind=daily IS mean_mo=0.062% OOS gates=True
+  sweep acm_tp_lvl_usd: scale=3.107 bind=daily IS mean_mo=0.156% OOS gates=True
+  sweep acm_tp_stress_fx: scale=1.379 bind=static IS mean_mo=-0.032% OOS gates=True
+  sweep acm_tp5_usd: scale=4.276 bind=static IS mean_mo=0.214% OOS gates=True
+  sweep acm_tp_chg_usd: scale=4.083 bind=daily IS mean_mo=0.037% OOS gates=True
+  sweep carry_acm_tp_cool: scale=1.235 bind=static IS mean_mo=-0.011% OOS gates=True
+  sweep carry_acm_tp_loose: scale=1.554 bind=daily IS mean_mo=-0.003% OOS gates=True
+  sweep acm_tp_ew: scale=5.224 bind=daily IS mean_mo=0.131% OOS gates=True
+=== factor summary ===
+  acm_tp_usd: mean_mo=+0.007% NW_t=+0.20 %pos=22%
+  acm_tp_lvl_usd: mean_mo=+0.040% NW_t=+1.05 %pos=32%
+  acm_tp_stress_fx: mean_mo=-0.014% NW_t=-0.39 %pos=17%
+  acm_tp5_usd: mean_mo=+0.040% NW_t=+1.12 %pos=25%
+  acm_tp_chg_usd: mean_mo=+0.008% NW_t=+0.27 %pos=39%
+  carry_acm_tp_cool: mean_mo=+0.007% NW_t=+0.13 %pos=52%
+  carry_acm_tp_loose: mean_mo=+0.008% NW_t=+0.18 %pos=33%
+  acm_tp_ew: mean_mo=+0.018% NW_t=+0.67 %pos=46%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
