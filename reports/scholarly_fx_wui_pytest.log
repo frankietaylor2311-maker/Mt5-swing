@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 10 items
+
+tests/test_wui_fx.py::test_wui_series_map_full_g10 PASSED                [ 10%]
+tests/test_wui_fx.py::test_pub_lag_shifts_known_date PASSED              [ 20%]
+tests/test_wui_fx.py::test_prepare_scores_low_wui_long_calm PASSED       [ 30%]
+tests/test_wui_fx.py::test_wui_chg_prefers_falling_uncertainty PASSED    [ 40%]
+tests/test_wui_fx.py::test_wui_no_lookahead PASSED                       [ 50%]
+tests/test_wui_fx.py::test_us_wui_z_fires_on_elevated_level PASSED       [ 60%]
+tests/test_wui_fx.py::test_loader_smoke_and_coverage PASSED              [ 70%]
+tests/test_wui_fx.py::test_low_wui_maps_to_top_score PASSED              [ 80%]
+tests/test_wui_fx.py::test_n_long_short_a_priori_full_g10 PASSED         [ 90%]
+tests/test_wui_fx.py::test_quarterly_expand_no_intra_quarter_leak PASSED [100%]
+
+============================== 10 passed in 3.04s ==============================

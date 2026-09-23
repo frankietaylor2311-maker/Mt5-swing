@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, OECD BCI §39 after CCI §38 / CLI §37 / IG OAS §36; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01). + OECD BCI balances (`BSCICP02*M460S`; EUR=`BSCICP02EZM460S`; CHF live; AUD/CAD/NZD/JPY unmapped; `BSCICP03*M665S` amplitude stale ~2023-11..2024-01; NAPM/ISM 404).
+**Status:** Active (2026-09-23 BST, WUI §40 after OECD BCI §39 / CCI §38 / CLI §37; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01). + OECD BCI balances (`BSCICP02*M460S`; EUR=`BSCICP02EZM460S`; CHF live; AUD/CAD/NZD/JPY unmapped; `BSCICP03*M665S` amplitude stale ~2023-11..2024-01; NAPM/ISM 404). + Ahir–Bloom–Furceri country WUI (`WUIUSA`/`WUIDEU`/`WUIGBR`/`WUIJPN`/`WUICAN`/`WUIAUS`/`WUINZL`/`WUICHE`; EUR=Germany proxy; full G10 live ~2026-04; quarterly→monthly after pub_lag=4).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -170,6 +170,15 @@
 - **Key refs:** Ludvigson (2004) Consumer Confidence and Consumer Spending; OECD Consumer Confidence Indicators (MEI); Dahlquist & Hasseltoft macro–FX differential framing applied to sentiment.
 - **Free data:** FRED `CSCICP02*M460S` balances (`CSCICP02GBM460S`, `CSCICP02EZM460S`, `CSCICP02JPM460S`, `CSCICP02AUM460S`); USD `USACSCICP02STSAM` (`CSCICP02USM460S` 404). Amplitude `CSCICP03*M665S` ends ~2024-01 — stale, not primary. CAD/NZD/CHF **unmapped**.
 - **What we implement (wave §38):** `data/fred_oecd_cci.py` + `strategies/oecd_cci_fx.py` + `scripts/scholarly_fx_oecd_cci_wave.py` — legs `high_cci_xs` (primary), `low_cci_xs`, `high_cci_z_xs`, `cci_chg_xs`, `us_cci_weak_fx`, `us_cci_haven_usd`, `cci_ew`. PIT monthly `pub_lag=2m` + 1d weight lag. **Distinct** from OECD CLI §37, coincident macro-diff, house-price §35, money-growth §33, IG OAS §36. **Not** overlaid on the locked sleeve.
+
+
+
+### 1.32 World Uncertainty Index (WUI) differentials → FX (Ahir–Bloom–Furceri)
+
+- **Claim:** Currencies with *low* relative country WUI (calmer policy/macro uncertainty from EIU text) subsequently appreciate vs high-WUI peers; elevated US/global WUI → USD haven / risk-off (honesty alternate: stress / USD soft).
+- **Key refs:** Ahir, Bloom & Furceri World Uncertainty Index (quarterly country series from Economist Intelligence Unit text); related uncertainty / risk-off FX literature (distinct from Baker–Bloom–Davis **EPU/TPU** newspaper counts and Caldara–Iacoviello **GPR**).
+- **Free data:** FRED `WUIUSA`, `WUIDEU` (Germany EUR proxy; `WUIFRA`/`WUIITA`/`WUIESP` alts), `WUIGBR`, `WUIJPN`, `WUICAN`, `WUIAUS`, `WUINZL`, `WUICHE` — all quarterly, live through ~2026-04.
+- **What we implement (wave §40):** `data/fred_wui.py` + `strategies/wui_fx.py` + `scripts/scholarly_fx_wui_wave.py` — legs `low_wui_xs` (primary), `high_wui_xs`, `low_wui_z_xs`, `wui_chg_xs`, `us_wui_stress_fx`, `us_wui_haven_usd`, `wui_ew`. Scores on **levels** (WUI is already an index — not YoY-first). PIT quarterly `pub_lag=4m` → monthly ffill + 1d weight lag. **Distinct** from EPU/TPU, GPR/AI-GPR, OECD CLI/CCI/BCI, IG OAS. **Not** overlaid on the locked sleeve.
 
 
 ### 1.2 Momentum
@@ -399,7 +408,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19h. **Done (2026-09-23):** ICE BofA IG OAS / credit risk-appetite FX wave — promote=NO (see §36).
 19i. **Done (2026-09-23):** OECD CLI leading-indicator FX wave — promote=NO (see §37).
 19j. **Done (2026-09-23):** OECD CCI / consumer-confidence FX wave — promote=NO (see §38).
-20. Next scholarly candidates (not sleeve coolers): manufacturing **PMI**/ISM differentials (or OECD BCI `BSCICP02*M460S` if ISM NAPM remains 404); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+20. Next scholarly candidates (not sleeve coolers): OECD MEI **employment growth** `LFEMTTTT` (labour beyond UR; retail-sales SARTMISMEI stale); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive. (WUI §40 / BCI §39 / CCI §38 / CLI §37 done.)
 
 ---
 
@@ -1863,6 +1872,49 @@ Sweep **run**. Primary `high_bci_xs` scale≈0.593 bind=daily; scaled HO mean≈
 
 OECD BCI is the right free-data *manufacturing / business-confidence* structure after CLI (§37) and CCI (§38), and is cleanly distinct from both. Live path uses `BSCICP02*M460S` balances (amplitude `BSCICP03*M665S` too stale for 2025/2026; NAPM/ISM 404). On Yahoo D1 G10 the primary high-BCI-YoY HML is mildly positive (full-sample ≈ +8.1 bp/mo, NW t ≈ 0.98, %pos 57%) with strong recent-year %pos (73–88%) but means still ≲0.5%/mo — nowhere near 1%/mo. Soft board has 3 legs (`bci_chg_xs` hard NW t≈2.34; `high_bci_z_xs` / `bci_ew` soft); none clear promote. Thin foreign panel (EUR/GBP/CHF only) documented via `n_long=n_short=1`. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: (1) OECD / national **industrial production** volume differentials beyond macro-diff IP already boarded; (2) **retail sales** / private consumption volume XS; (3) **labour-market** tightness beyond UR (vacancies / emp growth if free FRED MEI live); (4) re-score all boards when **FTMO MT5 CSVs** arrive — *not* another locked-sleeve cooler.
+**Next structure (if promote=0):** Done as §40 (World Uncertainty Index / Ahir–Bloom–Furceri). FX IV/RR + news-sentiment still **blocked**. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_oecd_bci_wave.md`, `scholarly_fx_oecd_bci_*.csv`, `scholarly_fx_oecd_bci_meta.json`.
+
+## 40. World Uncertainty Index (WUI) FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED Ahir–Bloom–Furceri country WUI (quarterly → monthly after `pub_lag_months=4`). Primary `low_wui_xs`: long low relative WUI **level** / short high (`n_long=n_short=2` full G10 foreign). Companions: `high_wui_xs` (honesty / fragile-uncertainty premium), `low_wui_z_xs` (60m z of levels), `wui_chg_xs` (−Δ12m ≈ −Δ4q of level), `us_wui_stress_fx` / `us_wui_haven_usd` (US WUI level z ≥ +1.0), `wui_ew` (EW of primary + chg + stress). PIT quarterly pub_lag=4m + 1d weight lag (no extra month signal lag); z_window=60, min_periods=24, usd_tilt=0.5; costs 1.5 bps/side. **Score basis = levels** (WUI is already an index — not YoY-first).
+
+**What is new vs EPU/TPU / GPR / OECD CLI·CCI·BCI:** EPU/TPU are Baker–Bloom–Davis newspaper counts; GPR/AI-GPR are Caldara–Iacoviello geopolitics; OECD CLI/CCI/BCI are activity/sentiment balances. This wave is *EIU-text country uncertainty* (WUI) cross-section + US WUI haven/stress tilts.
+
+**Data notes:** Prefer FTMO MT5 D1 if present — absent → `approximate_non_ftmo` (Yahoo D1). EUR = `WUIDEU` Germany proxy (`WUIFRA`/`WUIITA`/`WUIESP` alts; no clean EA aggregate). Full G10 mapped and live through PIT ~2026-08 (raw ~2026-04 + 4m lag). Retail-sales OECD SARTMISMEI probed separately and **stale** (~ends 2023–early 2024) — unsuitable; WUI chosen instead.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| low_wui_xs | −0.071% | −1.11 | −1.07 | 49% | 12% | −0.27 |
+| high_wui_xs | +0.061% | +0.96 | +0.93 | 52% | 13% | +0.24 |
+| low_wui_z_xs | +0.073% | +1.17 | +1.23 | 57% | 9% | +0.25 |
+| wui_chg_xs | +0.023% | +0.37 | +0.39 | 56% | 8% | +0.05 |
+| us_wui_stress_fx | +0.018% | +0.54 | +0.67 | 13% | 27% | +0.14 |
+| us_wui_haven_usd | −0.019% | −0.57 | −0.71 | 14% | 29% | −0.14 |
+| wui_ew | −0.010% | −0.25 | −0.25 | 51% | 11% | −0.09 |
+
+### Consistency windows (primary `low_wui_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.00% | 64% | 71% | PASS | no |
+| year_2025 | −0.24% | 18% | 100% | PASS | no |
+| year_2026 | +0.21% | 62% | 68% | PASS | no |
+| holdout_365d | +0.25% | 58% | 60% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on some companions). Primary `low_wui_xs` scale≈0.608 bind=static; IS mean_mo negative (≈ −5.5 bp); scaled HO mean≈+0.15%/mo %pos 58% — clears: **NO**. Soft-best-ish leg is `low_wui_z_xs` (~+7.3 bp/mo, NW t≈+1.23) — below soft board (|t|≥1.5). Honesty `high_wui_xs` (~+6.1 bp/mo) also below soft.
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_wui.md`).
+
+### Honest read
+
+WUI is the right free-data *country uncertainty* structure after OECD BCI (§39), and is cleanly distinct from EPU/TPU and GPR. Full G10 live through ~2026-04 (PIT ~2026-08). On Yahoo D1 G10 the primary low-WUI HML is mildly **negative** (full-sample ≈ −7.1 bp/mo, NW t ≈ −1.07, %pos 49%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty for positive means. Level-based scoring (a priori — WUI is an index) does not rescue the cross-section. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: (1) OECD MEI **employment growth** `LFEMTTTT` (labour beyond UR — retail-sales SARTMISMEI confirmed stale); (2) re-score all boards when **FTMO MT5 CSVs** arrive — *not* another locked-sleeve cooler.
+
+Artifacts: `reports/scholarly_fx_wui_wave.md`, `scholarly_fx_wui_*.csv`, `scholarly_fx_wui_meta.json`.

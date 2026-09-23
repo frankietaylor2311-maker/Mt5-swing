@@ -1,0 +1,224 @@
+{
+  "ok": true,
+  "section": 40,
+  "path": "wui_world_uncertainty_index",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 4,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "low_wui_xs",
+    "high_wui_xs",
+    "low_wui_z_xs",
+    "wui_chg_xs",
+    "us_wui_stress_fx",
+    "us_wui_haven_usd",
+    "wui_ew"
+  ],
+  "primary": "low_wui_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "Ahir\u2013Bloom\u2013Furceri country WUI index levels (quarterly \u2192 monthly ffill after pub_lag); XS on levels (not YoY-first \u2014 WUI is already an index); also 5y z / \u2212\u039412m of levels boarded; low-WUI primary (calm uncertainty \u2192 appreciate); n_long=n_short=2 full G10 foreign",
+  "eur_mapping": "WUIDEU Germany proxy (WUIFRA/WUIITA/WUIESP alts; no clean EA aggregate)",
+  "coverage_g10": "full G10 mapped (USD/EUR/GBP/JPY/CAD/AUD/NZD/CHF)",
+  "series_map": {
+    "USD": "WUIUSA",
+    "EUR": "WUIDEU",
+    "GBP": "WUIGBR",
+    "JPY": "WUIJPN",
+    "CAD": "WUICAN",
+    "AUD": "WUIAUS",
+    "NZD": "WUINZL",
+    "CHF": "WUICHE"
+  },
+  "score_basis": "levels",
+  "distinct_from": [
+    "epu_tpu",
+    "gpr_country",
+    "AI_GPR",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "ig_oas_BAMLC0A0CM_36",
+    "macro_diff_CPI_IP_UR",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "fiscal_28",
+    "debt_gdp_29",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "money_growth_33",
+    "reserves_34",
+    "house_price_35",
+    "equity_diff",
+    "crash_skew",
+    "dollar_beta",
+    "funding_liquidity"
+  ],
+  "citations": [
+    "Ahir, Bloom & Furceri \u2014 World Uncertainty Index (EIU text; FRED country series)",
+    "Uncertainty / risk-off FX: elevated US/global WUI \u2192 USD haven prior",
+    "Cross-sectional calm-currency appreciation prior (low relative WUI)"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "WUIUSA",
+      "n_obs": 892,
+      "start": "1952-05-01",
+      "end": "2026-08-01",
+      "last": 1.4068,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUIUSA (quarterly)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "WUIDEU",
+      "n_obs": 889,
+      "start": "1952-08-01",
+      "end": "2026-08-01",
+      "last": 0.5212405,
+      "note": "Germany proxy via WUIDEU (WUIFRA/WUIITA/WUIESP alts; no clean EA aggregate on FRED)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "WUIGBR",
+      "n_obs": 880,
+      "start": "1953-05-01",
+      "end": "2026-08-01",
+      "last": 1.418897,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUIGBR (quarterly)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "WUIJPN",
+      "n_obs": 886,
+      "start": "1952-11-01",
+      "end": "2026-08-01",
+      "last": 0.2843535,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUIJPN (quarterly)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "WUICAN",
+      "n_obs": 889,
+      "start": "1952-08-01",
+      "end": "2026-08-01",
+      "last": 1.902009,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUICAN (quarterly)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "WUIAUS",
+      "n_obs": 892,
+      "start": "1952-05-01",
+      "end": "2026-08-01",
+      "last": 0.0850123,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUIAUS (quarterly)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "WUINZL",
+      "n_obs": 850,
+      "start": "1955-11-01",
+      "end": "2026-08-01",
+      "last": 0.1974919,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUINZL (quarterly)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "WUICHE",
+      "n_obs": 892,
+      "start": "1952-05-01",
+      "end": "2026-08-01",
+      "last": 2.151887,
+      "note": "Ahir\u2013Bloom\u2013Furceri country WUI WUICHE (quarterly)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "eur_germany_proxy": [
+      "WUIDEU"
+    ],
+    "eur_france_alt": [
+      "WUIFRA"
+    ],
+    "eur_italy_alt": [
+      "WUIITA"
+    ],
+    "eur_spain_alt": [
+      "WUIESP"
+    ],
+    "eur_no_clean_ea_aggregate": [],
+    "usd_primary": [
+      "WUIUSA"
+    ],
+    "gbp_primary": [
+      "WUIGBR"
+    ],
+    "jpy_primary": [
+      "WUIJPN"
+    ],
+    "cad_primary": [
+      "WUICAN"
+    ],
+    "aud_primary": [
+      "WUIAUS"
+    ],
+    "nzd_primary": [
+      "WUINZL"
+    ],
+    "chf_primary": [
+      "WUICHE"
+    ]
+  },
+  "soft_best": {
+    "factor": "low_wui_z_xs",
+    "n_months": 180,
+    "mean_mo": 0.00073080758373475,
+    "tstat_ols": 1.174117518951917,
+    "tstat_nw": 1.2261927675517295,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5666666666666667,
+    "top3": 0.0921545625753498,
+    "ann_sharpe_daily": 0.2529828024839503
+  },
+  "primary_sweep": {
+    "strategy": "low_wui_xs",
+    "scale": 0.6080904183662225,
+    "binding": "static",
+    "is_total_return": -0.09256704538283977,
+    "is_static_loss": 0.09999999983445988,
+    "is_max_daily_dd": 0.021617597380508814,
+    "is_gates_pass": true,
+    "oos_total_return": 0.014548910707775198,
+    "oos_static_loss": 0.00936327052899709,
+    "oos_max_daily_dd": 0.003222098149449594,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005453230948541018,
+    "mean_mo_oos": 0.0015249393959866537,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.000428253439005152,
+    "scaled_full_pct_pos": 0.49444444444444446,
+    "scaled_ho_mean_mo": 0.0015249393959866537,
+    "scaled_ho_pct_pos": 0.5833333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

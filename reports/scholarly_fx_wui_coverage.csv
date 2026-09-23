@@ -1,0 +1,9 @@
+currency,fred_id,n_obs,start,end,last,note
+USD,WUIUSA,892,1952-05-01,2026-08-01,1.4068,Ahir–Bloom–Furceri country WUI WUIUSA (quarterly)
+EUR,WUIDEU,889,1952-08-01,2026-08-01,0.5212405,Germany proxy via WUIDEU (WUIFRA/WUIITA/WUIESP alts; no clean EA aggregate on FRED)
+GBP,WUIGBR,880,1953-05-01,2026-08-01,1.418897,Ahir–Bloom–Furceri country WUI WUIGBR (quarterly)
+JPY,WUIJPN,886,1952-11-01,2026-08-01,0.2843535,Ahir–Bloom–Furceri country WUI WUIJPN (quarterly)
+CAD,WUICAN,889,1952-08-01,2026-08-01,1.902009,Ahir–Bloom–Furceri country WUI WUICAN (quarterly)
+AUD,WUIAUS,892,1952-05-01,2026-08-01,0.0850123,Ahir–Bloom–Furceri country WUI WUIAUS (quarterly)
+NZD,WUINZL,850,1955-11-01,2026-08-01,0.1974919,Ahir–Bloom–Furceri country WUI WUINZL (quarterly)
+CHF,WUICHE,892,1952-05-01,2026-08-01,2.151887,Ahir–Bloom–Furceri country WUI WUICHE (quarterly)
