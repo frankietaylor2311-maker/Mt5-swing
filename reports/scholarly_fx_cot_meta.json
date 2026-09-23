@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_trading_days": 1,
+  "release_lag_days": 3,
+  "n_long": 2,
+  "n_short": 2,
+  "z_window_weeks": 52,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "cot_lev_net_xs",
+    "cot_lev_chg_xs",
+    "cot_lev_z_xs",
+    "cot_lev_z_mr_xs",
+    "cot_noncomm_net_xs",
+    "cot_dx_usd",
+    "cot_ew"
+  ],
+  "primary": "cot_lev_net_xs",
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true
+}

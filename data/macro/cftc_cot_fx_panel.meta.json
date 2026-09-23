@@ -1,0 +1,19 @@
+{
+  "release_lag_days": 3,
+  "tff_dataset": "gpe5-46if",
+  "legacy_dataset": "6dca-aqww",
+  "contracts": {
+    "EUR": "099741",
+    "GBP": "096742",
+    "JPY": "097741",
+    "CAD": "090741",
+    "CHF": "092741",
+    "AUD": "232741",
+    "NZD": "112741",
+    "DX": "098662"
+  },
+  "n_rows": 1936,
+  "start": "1986-01-18 00:00:00+00:00",
+  "end": "2026-09-18 00:00:00+00:00",
+  "note": "Index = known_date (report_date + release_lag_days). CFTC Tuesday snapshot, Friday release; lag=3 \u2192 Friday known."
+}

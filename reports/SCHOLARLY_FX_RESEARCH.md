@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, term-structure / yield-curve FX wave after Menkhoff FX-RV). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
+**Status:** Active (2026-09-23 BST, CFTC COT positioning wave after term-structure / yield-curve). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -73,6 +73,12 @@
 - **Key refs:** Chen & Tsang (2013); Ang & Chen; Lustig, Stathopoulos & Verdelhan (2019); Fama (1984).
 - **What we implement:** `strategies/yield_curve_fx.py` + `data/fred_yields.py` + `scripts/scholarly_fx_curve_wave.py` — OECD `IRLTLT01*` LT govt − `IRSTCI01*` immediate short = slope; differentials vs USD; PIT `pub_lag=1m` + `signal_lag=1m`. Legs: `curve_slope_xs`, `curve_lt_xs`, `curve_slope_z_xs`, `slope_x_carry`, `curve_ew`, secondary `uip_st_xs` / `uip_ir3m_xs`. Full G10 LT coverage on FRED (EUR EZ + DE bund gap-fill).
 
+### 1.11 CFTC COT / speculative positioning
+
+- **Claim:** Futures *speculative* net positions (Legacy Non-Commercial; TFF Leveraged Funds / Asset Managers) co-move with exchange rates; weekly *changes* in net speculative positions are associated with same-week FX moves (Klitgaard & Weir 2004). Classic traders also treat positioning *extremes* as mean-reversion setups. Predictive content beyond contemporaneous co-movement is mixed in the academic COT literature (Sanders / Irwin / Merrin and related).
+- **Key refs:** Klitgaard & Weir (2004), “Exchange Rate Changes and Net Positions of Speculators in the Futures Market,” *NY Fed Economic Policy Review*; Sanders, Irwin & Merrin; Briese-style COT constructions; CFTC Traders in Financial Futures (TFF) documentation.
+- **What we implement:** `data/cftc_cot.py` + `strategies/cot_positioning_fx.py` + `scripts/scholarly_fx_cot_wave.py` — free CFTC SODA TFF Futures-Only + Legacy Futures-Only for CME FX + ICE DX. PIT: Tuesday `report_date`, Friday release → `release_lag_days=3` known_date + `signal_lag=1` trading day. Legs: lev net/OI continuation, Δnet, z continuation, −z mean-reversion, Legacy NonComm, DX USD tilt, EW blend. Frozen priors — no HO tuning.
+
 ### 1.6 TPU / economic-policy uncertainty
 
 - **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks.
@@ -114,6 +120,7 @@
 | OECD 3m interest rates (UIP secondary) | FRED `IR3TIB01*` | **1 month** (+ strategy `signal_lag`) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 | Global FX realized vol (Menkhoff) | EW \|ccy ret\| from Yahoo USD majors | Trailing RV then `signal_lag=1` (no pub lag) |
+| CFTC COT (TFF / Legacy FX) | CFTC SODA `gpe5-46if` / `6dca-aqww` | **3 calendar days** (Tue→Fri) + strategy `signal_lag=1` trading day |
 
 If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (instructions in `macro_uncertainty.download_gpr`).
 
@@ -149,6 +156,10 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `src/mt5_swing/strategies/fx_realized_vol.py` | Menkhoff FX-RV level/z/innov + USD tilt + carry cool |
 | `scripts/scholarly_fx_rv_wave.py` | FX-RV factor board + FTMO risk sweep |
 | `reports/scholarly_fx_rv_wave.md` | FX-RV wave board (this) |
+| `src/mt5_swing/data/cftc_cot.py` | Free CFTC TFF/Legacy SODA FX+DX panel + release lag |
+| `src/mt5_swing/strategies/cot_positioning_fx.py` | Speculative pressure / extremes sorts + DX USD tilt |
+| `scripts/scholarly_fx_cot_wave.py` | COT wave eval + FTMO risk sweep |
+| `reports/scholarly_fx_cot_wave.md` | COT positioning wave board |
 
 ---
 
@@ -182,7 +193,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 9. **Done (2026-09-23):** Balassa–Samuelson / productivity wave — promote=NO (see §14).
 10. **Done (2026-09-23):** True FX realized-vol risk factor (Menkhoff) — promote=NO (see §15).
 11. **Done (2026-09-23):** Term-structure / yield-curve FX + UIP secondary — promote=NO (see §16).
-12. Next scholarly candidates (not sleeve coolers): free order-flow / positioning proxies if available; FX option-implied vol (if free) vs RV; transaction-cost / swap-aware carry on better forwards; bilateral AI-GPR role decompositions.
+12. **Done (2026-09-23):** CFTC COT positioning / speculative-pressure wave — promote=NO (see §17).
+13. Next scholarly candidates (not sleeve coolers): FX risk-reversal / skew or option-implied vol vs RV **if a free panel exists**; transaction-cost / swap-aware carry on better free forwards; Baker–Bloom–Davis EPU/TPU PIT CSV; bilateral AI-GPR role decompositions; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -539,3 +551,56 @@ Positive IS means on slope / z / ew → sweep run. Best scaled IS mean (`curve_s
 Relative slope is the right *prior*: mild positive full-sample means on `curve_slope_xs` / `curve_slope_z_xs` (NW t ≈ 0.7) vs flat/negative LT-level and UIP/carry legs on this Yahoo+FRED sample. Economically **~0.04%/mo** with %pos ≪ 70%. Slope×carry interaction does not help here. Far from prop-firm 1%/mo + 70% hit-rate. Simple OECD LT−ST slope ≠ full Nelson–Siegel curve factors or swap-implied forwards.
 
 Artifacts: `reports/scholarly_fx_curve_wave.md`, `scholarly_fx_curve_*.csv`, `scholarly_fx_curve_meta.json`.
+
+---
+
+## 17. CFTC COT positioning wave results (2026-09-23 BST) — speculative pressure / extremes
+
+**Design (fixed priors, no HO tuning):** free CFTC TFF Futures-Only + Legacy Futures-Only for EUR/GBP/JPY/CAD/CHF/AUD/NZD + ICE DX. Score = net speculative / open interest.
+- PIT: Tuesday snapshot, Friday release → `release_lag_days=3` (known Friday) + `signal_lag=1` trading day; n_long=n_short=2; z_window=52 weeks; costs 1.5 bps/side.
+- `cot_lev_net_xs` — long high / short low TFF leveraged-money net/OI (**continuation**, primary)
+- `cot_lev_chg_xs` — sort on weekly Δ(lev_net/OI)
+- `cot_lev_z_xs` — trailing z continuation
+- `cot_lev_z_mr_xs` — −z (**mean-reversion** at extremes)
+- `cot_noncomm_net_xs` — Legacy NonComm net/OI continuation
+- `cot_dx_usd` — DX lev net/OI → long USD when DX speculative long
+- `cot_ew` — EW of lev_net + lev_chg
+
+**Coverage:** Full G10 FX + DX on free SODA (TFF from 2006-06; Legacy deeper). No paid NLP. Option-implied vol vs RV fallback **not needed** (CFTC download succeeded).
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| cot_lev_net_xs | −0.139% | −2.34 | −2.26 | 46% | 10% | −0.55 |
+| cot_lev_chg_xs | −0.213% | −3.11 | −2.71 | 41% | 16% | −0.72 |
+| cot_lev_z_xs | −0.129% | −1.86 | −1.87 | 44% | 15% | −0.42 |
+| cot_lev_z_mr_xs | +0.078% | +1.12 | +1.16 | 54% | 13% | +0.25 |
+| cot_noncomm_net_xs | −0.187% | −2.80 | −2.68 | 41% | 14% | −0.70 |
+| cot_dx_usd | +0.148% | +0.94 | +0.86 | 53% | 14% | +0.23 |
+| cot_ew | −0.176% | −3.70 | −3.18 | 41% | 12% | −0.87 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| cot_lev_net_xs | holdout_365d | +0.27% | 83% | PASS | no† |
+| cot_lev_net_xs | year_2024 | +0.09% | 55% | PASS | no |
+| cot_lev_z_mr_xs | holdout_365d | −0.03% | 58% | PASS | no |
+| cot_dx_usd | holdout_365d | +0.44% | 50% | PASS | no |
+| cot_ew | holdout_365d | +0.01% | 42% | PASS | no |
+
+† Holdout %pos can clear 70% on primary continuation, but full-sample mean is **significantly negative** (NW t≈−2.3) — classic HO luck, not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means only on MR / DX → sweep run for all legs. Best scaled IS mean (`cot_lev_z_mr_xs` @ ~2.07× daily-bound) ≈ **+0.18%/mo** still ≪ 1%; primary continuation scaled IS negative. OOS means mixed / basis points. Scaled clears: **NO**. Leverage does not invent consistency; flipping continuation after seeing negative full-sample t would be holdout tuning — we keep the pre-specified MR leg as the honest positive channel.
+
+**Unscaled promote:** **NO**. **Scaled primary (`cot_lev_net_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+On this Yahoo+CFTC sample, **continuation** speculative-pressure sorts (level, change, z, Legacy NonComm) earn **negative** full-sample means with NW |t| ≈ 1.9–3.2 — economically a few bp/week against the crowded side. The pre-specified **mean-reversion** z-leg and DX USD tilt are mildly positive (NW t ≈ 0.9–1.2) at **~0.08–0.15%/mo**, %pos ≪ 70%. Far from prop-firm 1%/mo + 70% hit-rate. Free CFTC SODA is sufficient; no need for paid positioning vendors this wave. CME FX futures positioning ≠ OTC spot order flow.
+
+Artifacts: `reports/scholarly_fx_cot_wave.md`, `scholarly_fx_cot_*.csv`, `scholarly_fx_cot_meta.json`.
+
