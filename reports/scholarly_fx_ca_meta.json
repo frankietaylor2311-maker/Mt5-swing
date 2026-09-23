@@ -1,0 +1,116 @@
+{
+  "ok": true,
+  "path": "global_imbalances_current_account",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_quarters": 2,
+  "signal_lag_months": 1,
+  "chg_periods": 4,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "ca_debtor_xs",
+    "ca_surplus_xs",
+    "ca_chg_xs",
+    "us_ca_gr_fx",
+    "us_ca_haven_usd",
+    "ca_ew"
+  ],
+  "primary": "ca_debtor_xs",
+  "n_factors": 6,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "PPP",
+    "Balassa_Samuelson",
+    "macro_diff_CPI_IP_UR",
+    "Hau_Rey_equity"
+  ],
+  "citations": [
+    "Della Corte, Riddiough & Sarno (2016), Currency Premia and Global Imbalances, RFS",
+    "Gourinchas & Rey (2007), International Financial Adjustment, JPE"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "USAB6BLTT02STSAQ",
+      "n_obs": 778,
+      "start": "1960-07-01",
+      "end": "2025-04-01",
+      "last": -4.090209,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "EA19B6BLTT02STSAQ",
+      "n_obs": 406,
+      "start": "1991-07-01",
+      "end": "2025-04-01",
+      "last": 4.259732,
+      "note": "EA19 primary; DEU gap-fill via DEUB6BLTT02STSAQ; post-2022-10 values may be DEU proxy"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRB6BLTT02STSAQ",
+      "n_obs": 838,
+      "start": "1955-07-01",
+      "end": "2025-04-01",
+      "last": -2.891643,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNB6BLTT02STSAQ",
+      "n_obs": 346,
+      "start": "1996-07-01",
+      "end": "2025-04-01",
+      "last": 5.295956,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANB6BLTT02STSAQ",
+      "n_obs": 526,
+      "start": "1981-07-01",
+      "end": "2025-04-01",
+      "last": -0.6368964,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "AUSB6BLTT02STSAQ",
+      "n_obs": 784,
+      "start": "1960-01-01",
+      "end": "2025-04-01",
+      "last": -1.81671,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "NZLB6BLTT02STSAQ",
+      "n_obs": 451,
+      "start": "1987-10-01",
+      "end": "2025-04-01",
+      "last": -5.45787,
+      "note": ""
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "CHEB6BLTT02STSAQ",
+      "n_obs": 478,
+      "start": "1985-07-01",
+      "end": "2025-04-01",
+      "last": 4.442353,
+      "note": ""
+    }
+  ]
+}

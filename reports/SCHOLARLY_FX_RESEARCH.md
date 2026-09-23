@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, funding-liquidity / NFCI–TED wave after Hau–Rey equity-diff; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU (FRED + policyuncertainty.com).
+**Status:** Active (2026-09-23 BST, global-imbalances / current-account wave after funding-liquidity; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -28,6 +28,13 @@
 - **Claim:** Funding-liquidity spirals and tight financial conditions coincide with carry crashes and safe-haven USD demand; intermediaries withdraw when money-market / CP spreads and NFCI tighten.
 - **Key refs:** Brunnermeier, Nagel & Pedersen (2008), "Carry Trades and Currency Crashes"; Menkhoff et al. (2012a) related FX-vol channel; Chicago Fed NFCI/ANFCI documentation.
 - **What we implement (wave §20):** `data/fred_funding_liquidity.py` + `strategies/funding_liquidity_fx.py` + `scripts/scholarly_fx_funding_liq_wave.py` — NFCI/ANFCI USD tilts (z and level>0), ΔNFCI change tilts, TED/CPFF/BAA spreads, carry×NFCI cool / loose-only gate, carry×CPFF cool. PIT weekly `pub_lag=7d`, daily `pub_lag=1d`, `signal_lag=1`. **Explicit:** distinct from VIX/GPR/FX-RV/EPU; **not** overlaid on the locked sleeve.
+
+
+### 1.15 Global imbalances / current-account FX
+
+- **Claim:** External imbalances (current account / NFA) price currency risk premia and forecast dollar adjustment. Debtor (deficit) currencies earn a risk premium in Della Corte–Riddiough–Sarno; US external imbalance predicts FX adjustment in Gourinchas–Rey.
+- **Key refs:** Della Corte, Riddiough & Sarno (2016), "Currency Premia and Global Imbalances," *RFS*; Gourinchas & Rey (2007), "International Financial Adjustment," *JPE*.
+- **What we implement (wave §21):** `data/fred_current_account.py` + `strategies/current_account_fx.py` + `scripts/scholarly_fx_ca_wave.py` — IMF BOP CA/GDP % via FRED `{ISO3}B6BLTT02STSAQ`; legs `ca_debtor_xs` (primary), `ca_surplus_xs`, `ca_chg_xs`, `us_ca_gr_fx`, `us_ca_haven_usd`, `ca_ew`. PIT `pub_lag_quarters=2` (=6m) + `signal_lag=1m` + 1d weight lag. EUR: EA19 + DEU gap-fill. **Distinct** from PPP/BS/macro-diff (CPI/IP/UR) and Hau–Rey equity. **Not** overlaid on the locked sleeve.
 
 ### 1.2 Momentum
 
@@ -187,6 +194,10 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `src/mt5_swing/strategies/cot_positioning_fx.py` | Speculative pressure / extremes sorts + DX USD tilt |
 | `scripts/scholarly_fx_cot_wave.py` | COT wave eval + FTMO risk sweep |
 | `reports/scholarly_fx_cot_wave.md` | COT positioning wave board |
+| `src/mt5_swing/data/fred_current_account.py` | IMF BOP CA/GDP % panel (FRED) + PIT 2Q lag |
+| `src/mt5_swing/strategies/current_account_fx.py` | Debtor/surplus/ΔCA XS + US CA GR/haven tilts |
+| `scripts/scholarly_fx_ca_wave.py` | CA imbalances wave eval + FTMO risk sweep |
+| `reports/scholarly_fx_ca_wave.md` | Global imbalances / CA wave board |
 
 ---
 
@@ -201,6 +212,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 7. Rogoff, K. (1996). The Purchasing Power Parity Puzzle. *Journal of Economic Literature*.
 8. Chen, Y., Rogoff, K. & Rossi, B. (2010). Can Exchange Rates Forecast Commodity Prices? *QJE*.
 9. Dahlquist, M. & Hasseltoft, H. — macro differentials and currency risk premia (framing).
+10. Della Corte, P., Riddiough, S. & Sarno, L. (2016). Currency Premia and Global Imbalances. *RFS*.
+11. Gourinchas, P.-O. & Rey, H. (2007). International Financial Adjustment. *JPE*.
 10. Chen, Y. & Tsang, K. (2013). — relative yield-curve factors and exchange rates.
 11. Lustig, H., Stathopoulos, A. & Verdelhan, A. (2019). The Term Structure of Currency Carry Trade Risk Premia. *Journal of Finance*.
 12. Fama, E. (1984). Forward and Spot Exchange Rates. *Journal of Monetary Economics*. (UIP / forward premium)
@@ -819,7 +832,55 @@ Positive IS means on several USD-tilt legs → sweep run. Best scaled IS mean (`
 
 NFCI / ANFCI / ΔNFCI and TED USD tilts are the right *priors* and are **distinct** from VIX/GPR/FX-RV/EPU: mild positive full-sample means (NW t ≈ 1.8–2.0 on ΔNFCI and TED) at **~0.05–0.07%/mo**, but %pos is sparse (~13–20%) because binary stress episodes are infrequent. Absolute NFCI>0 gate and BAA credit tilt do not help. Funding-conditioned carry (cool / loose-only) does not lift the flat cash-rate carry sleeve toward the bar. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED NFCI+CPFF is sufficient; TED ends 2022 (LIBOR) — CPFF fills.
 
-**Next structure (if promote=0):** Global imbalances / current-account FX (Gourinchas–Rey; Della Corte–Riddiough–Sarno) on free OECD/FRED CA panels — *not* another locked-sleeve cooler.
+**Next structure (if promote=0):** delivered as wave §21 (CA/GDP imbalances).
 
 Artifacts: `reports/scholarly_fx_funding_liq_wave.md`, `scholarly_fx_funding_liq_*.csv`, `scholarly_fx_funding_liq_meta.json`.
+
+---
+
+## 21. Global imbalances / current-account wave results (2026-09-23 BST) — GR / DCRS
+
+**Design (fixed priors, no HO tuning):** Distinct external-adjustment / NFA–CA channel vs prior PPP (§13), Balassa–Samuelson (§14), macro-diff CPI/IP/UR (§12), and Hau–Rey equity (§19).
+- Sources: FRED IMF BOP `{ISO3}B6BLTT02STSAQ` current account / GDP (%), SA quarterly — full G10; EUR = EA19 with DEU gap-fill after ~2022-10.
+- PIT: `pub_lag_quarters=2` (conservative BOP release + revision buffer = 6 months) + `signal_lag=1` month + 1 trading-day weight lag. Costs 1.5 bps/side. n_long=n_short=2.
+- Legs: `ca_debtor_xs` (primary — Della Corte long deficit / short surplus), `ca_surplus_xs` (flow control), `ca_chg_xs` (ΔCA 4m), `us_ca_gr_fx` (Gourinchas–Rey: deep US CA z ≤ −1 → long foreign / short USD), `us_ca_haven_usd` (alternate: deep US deficit → long USD), `ca_ew` (debtor ⊕ chg ⊕ GR).
+- **Explicit:** evaluating CA as a scholarly sleeve — **no cooler overlay** on locked `fx4plus_gbpcad_d1_voltarget_0025`. Free FRED only (OECD SDMX / IMF DataMapper blocked here).
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| ca_debtor_xs | +0.020% | +0.26 | +0.33 | 52% | 11% | +0.02 |
+| ca_surplus_xs | −0.027% | −0.35 | −0.45 | 47% | 10% | −0.04 |
+| ca_chg_xs | −0.021% | −0.36 | −0.35 | 48% | 14% | −0.05 |
+| us_ca_gr_fx | −0.021% | −0.50 | −0.58 | 14% | 28% | −0.14 |
+| us_ca_haven_usd | +0.021% | +0.50 | +0.58 | 16% | 24% | +0.13 |
+| ca_ew | −0.007% | −0.20 | −0.24 | 55% | 12% | −0.06 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| ca_debtor_xs | holdout_365d | +0.30% | 75% | PASS | no† |
+| ca_debtor_xs | year_2024 | −0.02% | 64% | PASS | no |
+| ca_debtor_xs | year_2025 | +0.07% | 64% | PASS | no |
+| ca_surplus_xs | holdout_365d | −0.30% | 25% | PASS | no |
+| us_ca_haven_usd | holdout_365d | +0.01% | 58% | PASS | no |
+| ca_ew | holdout_365d | +0.13% | 58% | PASS | no |
+
+† Holdout %pos can clear 70% on the debtor XS with mild positive mean, but mean ≪ 1%/mo and full-sample NW |t| ≪ 2 — classic HO luck, not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means on debtor / haven → sweep run. Best scaled IS mean (`us_ca_haven_usd` @ ~3.3× daily-bound) ≈ **+0.07%/mo** still ≪ 1%; primary `ca_debtor_xs` scaled IS ≈ +0.005%/mo; scaled HO mean ≈ +0.39% with %pos=75% but clears=NO. Scaled clears: **NO**. Leverage does not invent consistency.
+
+**Board:** n=6 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`ca_debtor_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Della Corte debtor sorts and Gourinchas–Rey US-CA tilts are the right *priors* and are **distinct** from PPP/BS/macro-diff: mild positive full-sample mean on `ca_debtor_xs` / `us_ca_haven_usd` (~+2 bp/mo, NW t ≈ 0.3–0.6), with the surplus / GR-adjustment / ΔCA legs flat-to-negative. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED IMF BOP is sufficient; inventing NFA stock panels without free PIT data would be dishonest. EUR post-2022 uses DEU CA as EA19 gap-fill — documented limitation.
+
+**Next structure (if promote=0):** Free **order-flow / retail positioning** alternatives are mostly paid; next scholarly candidate without locked-sleeve coolers: **central-bank balance-sheet / QE differential FX** (FRED CB assets vs GDP or monetary-base differentials — e.g. WALCL / ECB assets proxies) or **real-rate / breakeven inflation differentials** where free TIPS/linker panels exist — *not* another locked-sleeve cooler.
+
+Artifacts: `reports/scholarly_fx_ca_wave.md`, `scholarly_fx_ca_*.csv`, `scholarly_fx_ca_meta.json`.
 
