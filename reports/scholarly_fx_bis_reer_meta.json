@@ -1,0 +1,140 @@
+{
+  "ok": true,
+  "path": "bis_reer_undervaluation",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "z_window": 60,
+  "z_window_alt": 36,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "reer_cheap_xs",
+    "reer_cheap_xs_36",
+    "reer_mom_xs",
+    "reer_chg_xs",
+    "us_reer_strong_usd",
+    "us_reer_meanrev_fx",
+    "reer_ew"
+  ],
+  "primary": "reer_cheap_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "trailing z of BIS real broad REER index (RB*BIS)",
+  "eur_mapping": "RBXMBIS euro-area (RBDEBIS Germany alt documented)",
+  "distinct_from": [
+    "ppp_real_fx_bilateral_CPI",
+    "trade_balance_30",
+    "debt_gdp_29",
+    "fiscal_balance_GGNLBA_28",
+    "current_account_CA_GDP_21",
+    "CB_balance_sheet_QE",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew"
+  ],
+  "citations": [
+    "Rogoff (1996) The Purchasing Power Parity Puzzle",
+    "Taylor / REER misalignment literature; BIS real broad EER",
+    "Optional REER momentum (high z \u2192 long) as contrast prior"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "RBUSBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 108.25,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "RBXMBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 102.55,
+      "note": "Euro-area broad via RBXMBIS; Germany alt RBDEBIS documented (unused as primary)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "RBGBBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 112.04,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "RBJPBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 65.04,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "RBCABIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 95.82,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "RBAUBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 115.08,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "RBNZBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 101.86,
+      "note": ""
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "RBCHBIS",
+      "n_obs": 391,
+      "start": "1994-03-01",
+      "end": "2026-09-01",
+      "last": 100.65,
+      "note": ""
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "eur_germany_alt": [
+      "RBDEBIS"
+    ],
+    "eur_ez_404": [
+      "RBEZBIS",
+      "RBEMUBIS"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, government debt/GDP §29 after twin-deficits / fiscal-balance §28; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, BIS REER §31 after trade-balance §30 / debt/GDP §29; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -103,6 +103,15 @@
 - **What we implement (wave §29):** `data/fred_debt_gdp.py` + `strategies/debt_gdp_fx.py` + `scripts/scholarly_fx_debt_gdp_wave.py` — legs `low_debt_xs` (primary), `high_debt_xs`, `debt_chg_xs`, `us_debt_twin_fx`, `us_debt_haven_usd`, scholarly `debt_fiscal_blend` (EW with fiscal surplus; **not** locked-sleeve overlay), `debt_ew`. PIT annual WEO `pub_lag_months=15` + US-Q `pub_lag=4m` + `signal_lag=1m` + 1d weight lag. **Distinct** from fiscal GGNLBA (§28), CA/GDP (§21), CB-BS, macro-diff, equity-diff, AI-GPR, ToT, dollar-beta, crash-skew. **Not** overlaid on the locked sleeve.
 
 
+
+
+
+### 1.24 BIS real broad REER undervaluation / mean-reversion
+
+- **Claim:** Official multilateral real effective exchange rates (BIS real broad EER) price FX via slow PPP / REER mean reversion: currencies with low trailing REER z (undervalued in real multilateral terms) subsequently appreciate vs those with high REER z (overvalued). Distinct from homemade bilateral CPI PPP DIY.
+- **Key refs:** Rogoff (1996), "The Purchasing Power Parity Puzzle," *JEL*; Taylor / REER misalignment literature; BIS real broad effective exchange rates. Optional secondary: REER *momentum* (high z → long) as contrast prior.
+- **Free data:** FRED `RB*BIS` monthly (USD/EUR-`RBXMBIS`/GBP/JPY/CAD/AUD/NZD/CHF). `RBEZBIS`/`RBEMUBIS` **404**; Germany `RBDEBIS` documented alt (unused — prefer euro-area `RBXMBIS`). Full G10 mapped.
+- **What we implement (wave §31):** `data/fred_bis_reer.py` + `strategies/bis_reer_fx.py` + `scripts/scholarly_fx_bis_reer_wave.py` — legs `reer_cheap_xs` (primary, 60m z), `reer_cheap_xs_36`, `reer_mom_xs` (contrast), `reer_chg_xs` (Δ12), `us_reer_strong_usd`, `us_reer_meanrev_fx`, `reer_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag. **Distinct** from `ppp_real_fx` bilateral CPI, TB (§30), debt (§29), fiscal (§28), CA, CB-BS, macro-diff. **Not** overlaid on the locked sleeve.
 
 ### 1.2 Momentum
 
@@ -318,7 +327,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 18. **Done (2026-09-23):** Lustig–Verdelhan dollar-factor beta sorts — promote=NO (see §27).
 19. **Done (2026-09-23):** FRED fiscal-balance / government-budget differentials — promote=NO (see §28).
 19b. **Done (2026-09-23):** FRED government debt/GDP differentials — promote=NO (see §29).
-20. Next scholarly candidates (not sleeve coolers): monthly **trade-balance** (higher-freq vs quarterly CA); BIS/FRED **REER** misalignment; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19c. **Done (2026-09-23):** Monthly trade-balance FX wave — promote=NO (see §30).
+19d. **Done (2026-09-23):** BIS/FRED REER undervaluation wave — promote=NO (see §31).
+20. Next scholarly candidates (not sleeve coolers): IMF/WEO **reserves** / external-buffer differentials; BIS **credit-to-GDP** / financial-cycle FX; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1386,6 +1397,50 @@ Sweep **run** (positive IS mean on `tb_deficit_xs` / `us_tb_haven_usd` / `tb_ca_
 
 Monthly trade-balance is the right free-data high-frequency external-balance structure after debt/GDP (§29), and is cleanly distinct from quarterly CA/GDP. On Yahoo D1 G10 the primary deficit HML is essentially **flat** (full-sample ≈ +0.8 bp/mo, NW t ≈ 0.14, %pos 49%) — nowhere near 1%/mo + 70% hit-rate. Change and GR legs are wrong-signed; the US haven tilt is the soft-best but still |NW t|<1.5. Soft/hard NW boards empty for positive means. Full G10 mapped (NZD/CHF present). No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: BIS/FRED **REER** misalignment (real effective exchange-rate deviation from trend / PPP) — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §31 (BIS REER). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: IMF/WEO **reserves** / external-buffer differentials or BIS **credit-to-GDP** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_trade_balance_wave.md`, `scholarly_fx_trade_balance_*.csv`, `scholarly_fx_trade_balance_meta.json`.
+
+
+## 31. BIS REER undervaluation FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED BIS real broad EER `RB*BIS` monthly index. Primary `reer_cheap_xs`: XS long low 60m trailing REER z (undervalued) / short high z (n=2/2) on **full G10** (USD, EUR=`RBXMBIS` euro-area, GBP, JPY, CAD, AUD, NZD, CHF). Companion: `reer_cheap_xs_36` (36m z board), `reer_mom_xs` (high-z momentum contrast), `reer_chg_xs` (−Δ12 REER), `us_reer_strong_usd` / `us_reer_meanrev_fx` (US RBUSBIS z tilts), `reer_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs PPP / TB / debt / fiscal:** Homemade bilateral CPI PPP (`ppp_real_fx`) is DIY real bilateral; TB (§30) is monthly goods external balance; debt/fiscal are fiscal stock/flow. This wave is the **official multilateral BIS REER** undervaluation / mean-reversion channel (Rogoff PPP puzzle / Taylor misalignment).
+
+**Data notes:** `RBXMBIS` (euro area) preferred for EUR continuity; `RBDEBIS` Germany alt documented unused. `RBEZBIS`/`RBEMUBIS` **404** on FRED. Full G10 incl. NZD/CHF mapped. Latest raw month ~2026-07 as of 2026-09-23 — consistent with fixed pub_lag=2.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| reer_cheap_xs | +0.034% | +0.51 | +0.60 | 52% | 13% | +0.15 |
+| reer_cheap_xs_36 | +0.022% | +0.34 | +0.35 | 50% | 12% | +0.11 |
+| reer_mom_xs | −0.044% | −0.65 | −0.76 | 48% | 13% | −0.18 |
+| reer_chg_xs | +0.045% | +0.70 | +0.75 | 52% | 9% | +0.20 |
+| us_reer_strong_usd | +0.022% | +0.42 | +0.46 | 27% | 17% | +0.11 |
+| us_reer_meanrev_fx | −0.023% | −0.44 | −0.49 | 23% | 19% | −0.11 |
+| reer_ew | +0.019% | +0.42 | +0.49 | 51% | 11% | +0.14 |
+
+### Consistency windows (primary `reer_cheap_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | −0.11% | 36% | 93% | PASS | no |
+| year_2025 | −0.27% | 27% | 100% | PASS | no |
+| year_2026 | +0.16% | 62% | 81% | PASS | no |
+| holdout_365d | +0.08% | 58% | 66% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on several legs). Primary `reer_cheap_xs` scale≈2.92 bind=daily; scaled IS mean ≈9 bp/mo ≪1%; scaled HO mean≈0.24%/mo %pos 58% — clears: **NO**. Soft-best-ish leg is `reer_chg_xs` (+4.5 bp/mo, NW t≈0.75) — still far below soft board (|t|≥1.5).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`reer_cheap_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS on all key windows (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_bis_reer.md`).
+
+### Honest read
+
+Official BIS multilateral REER is the right free-data undervaluation structure after TB (§30), and is cleanly distinct from homemade bilateral PPP. On Yahoo D1 G10 the primary cheap-REER HML is essentially **flat** (full-sample ≈ +3.4 bp/mo, NW t ≈ 0.60, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Momentum contrast is wrong-signed; change leg is the soft-best but |NW t|<1. Soft/hard NW boards empty for positive means. Full G10 mapped (NZD/CHF/`RBXMBIS` EUR present). No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: IMF/WEO **reserves** / external-buffer differentials or BIS **credit-to-GDP** / financial-cycle FX — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_bis_reer_wave.md`, `scholarly_fx_bis_reer_*.csv`, `scholarly_fx_bis_reer_meta.json`.
