@@ -1,0 +1,270 @@
+{
+  "ok": true,
+  "section": 42,
+  "path": "oecd_mei_industrial_production_printo01",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "ip_yoy_pct_as_reported",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_ip_xs",
+    "low_ip_xs",
+    "high_ip_z_xs",
+    "ip_chg_xs",
+    "us_ip_stress_fx",
+    "us_ip_haven_usd",
+    "ip_ew"
+  ],
+  "primary": "high_ip_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 1,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI {ISO3}PRINTO01GYSAM industry YoY monthly + AUD/NZD/CHF PRMNTO01GYSAQ manufacturing YoY quarterly \u2192 monthly ffill after pub_lag=2); XS on YoY as reported; also 5y z / \u039412 of YoY boarded; high_ip primary (growth-channel \u2192 appreciate); n_long=n_short=2 full G10 foreign",
+  "eur_mapping": "FRAPRINTO01GYSAM France proxy (EA19/DEU GYSAM stale; ITA/ESP/NLD alts)",
+  "coverage_g10": "full G10 mapped (USD/GBP/JPY/CAD/EUR monthly PRINTO01GYSAM; AUD/NZD/CHF quarterly PRMNTO01GYSAQ)",
+  "series_map": {
+    "USD": "USAPRINTO01GYSAM",
+    "EUR": "FRAPRINTO01GYSAM",
+    "GBP": "GBRPRINTO01GYSAM",
+    "JPY": "JPNPRINTO01GYSAM",
+    "CAD": "CANPRINTO01GYSAM",
+    "AUD": "AUSPRMNTO01GYSAQ",
+    "NZD": "NZLPRMNTO01GYSAQ",
+    "CHF": "CHEPRMNTO01GYSAQ"
+  },
+  "score_basis": "yoy_growth_as_reported",
+  "distinct_from": [
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "gpr_country",
+    "AI_GPR",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "fiscal_28",
+    "debt_gdp_29",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "money_growth_33",
+    "reserves_34",
+    "house_price_35",
+    "equity_diff",
+    "employment_41",
+    "commodity",
+    "ig_oas_36"
+  ],
+  "citations": [
+    "Molodtsova\u2013Papell / growth-channel: high relative IP growth \u2192 subsequent appreciation",
+    "Dahlquist\u2013Hasseltoft-style macro\u2013FX differentials applied to coincident IP",
+    "Honesty: low IP / activity-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "USAPRINTO01GYSAM",
+      "freq": "M",
+      "n_obs": 1279,
+      "start": "1920-03-01",
+      "end": "2026-09-01",
+      "last": 1.07945512002701,
+      "note": "OECD MEI industry YoY USAPRINTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "FRAPRINTO01GYSAM",
+      "freq": "M",
+      "n_obs": 834,
+      "start": "1957-03-01",
+      "end": "2026-08-01",
+      "last": -0.125470514428583,
+      "note": "France proxy via FRAPRINTO01GYSAM (M) (EA19PRINTO01GYSAM ends 2023-10; DEUPRINTO01GYSAM ends 2023-12; ITA/ESP/NLD GYSAM alts)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRPRINTO01GYSAM",
+      "freq": "M",
+      "n_obs": 930,
+      "start": "1949-03-01",
+      "end": "2026-08-01",
+      "last": -0.203045685279146,
+      "note": "OECD MEI industry YoY GBRPRINTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNPRINTO01GYSAM",
+      "freq": "M",
+      "n_obs": 846,
+      "start": "1956-03-01",
+      "end": "2026-08-01",
+      "last": 2.46305418719215,
+      "note": "OECD MEI industry YoY JPNPRINTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANPRINTO01GYSAM",
+      "freq": "M",
+      "n_obs": 774,
+      "start": "1962-03-01",
+      "end": "2026-08-01",
+      "last": 3.37376636971456,
+      "note": "OECD MEI industry YoY CANPRINTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "AUSPRMNTO01GYSAQ",
+      "freq": "Q",
+      "n_obs": 610,
+      "start": "1975-09-01",
+      "end": "2026-06-01",
+      "last": 1.1848749139316,
+      "note": "OECD MEI manufacturing YoY AUSPRMNTO01GYSAQ (quarterly; industry PRINTO01 GYSAM 404)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "NZLPRMNTO01GYSAQ",
+      "freq": "Q",
+      "n_obs": 577,
+      "start": "1978-06-01",
+      "end": "2026-06-01",
+      "last": 1.27628977170595,
+      "note": "OECD MEI manufacturing YoY NZLPRMNTO01GYSAQ (quarterly; industry PRINTO01 GYSAM 404)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "CHEPRMNTO01GYSAQ",
+      "freq": "Q",
+      "n_obs": 256,
+      "start": "2005-03-01",
+      "end": "2026-06-01",
+      "last": 5.71905473073897,
+      "note": "OECD MEI manufacturing YoY CHEPRMNTO01GYSAQ (quarterly; industry PRINTO01 GYSAM 404)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "printo01_m661s_mostly_404": [
+      "PRINTO01USM661S",
+      "PRINTO01GBM661S",
+      "PRINTO01JPM661S",
+      "PRINTO01CAM661S",
+      "PRINTO01AUM661S",
+      "PRINTO01NZM661S",
+      "PRINTO01CHM661S",
+      "PRINTO01DEM661S",
+      "PRINTO01EZM661S"
+    ],
+    "proindmismei_stale_~2024_03": [
+      "USAPROINDMISMEI",
+      "GBRPROINDMISMEI",
+      "JPNPROINDMISMEI",
+      "CANPROINDMISMEI",
+      "DEUPROINDMISMEI",
+      "FRAPROINDMISMEI",
+      "EA19PRMNTO01IXOBSAM"
+    ],
+    "printo01_annual_levels_stale_2023": [
+      "PRINTO01USA661N",
+      "PRINTO01GBA661N",
+      "PRINTO01JPA661N",
+      "PRINTO01CAA661N",
+      "PRINTO01AUA661N",
+      "PRINTO01NZA661N",
+      "PRINTO01CHA661N",
+      "PRINTO01DEA661N",
+      "PRINTO01EZA661N"
+    ],
+    "eur_ea19_gysam_stale_2023_10": [
+      "EA19PRINTO01GYSAM",
+      "EA19PRINTO01IXOBSAM"
+    ],
+    "eur_deu_gysam_stale_2023_12": [
+      "DEUPRINTO01GYSAM"
+    ],
+    "eur_france_proxy_primary": [
+      "FRAPRINTO01GYSAM"
+    ],
+    "eur_ita_esp_nld_alts": [
+      "ITAPRINTO01GYSAM",
+      "ESPPRINTO01GYSAM",
+      "NLDPRINTO01GYSAM"
+    ],
+    "aud_nzd_chf_printo01_gysam_404": [
+      "AUSPRINTO01GYSAM",
+      "NZLPRINTO01GYSAM",
+      "CHEPRINTO01GYSAM",
+      "AUSPRINTO01IXOBSAM",
+      "NZLPRINTO01IXOBSAM",
+      "CHEPRINTO01IXOBSAM"
+    ],
+    "aud_nzd_chf_manufacturing_q_primary": [
+      "AUSPRMNTO01GYSAQ",
+      "NZLPRMNTO01GYSAQ",
+      "CHEPRMNTO01GYSAQ"
+    ],
+    "us_national_alts_not_primary": [
+      "INDPRO",
+      "IPMAN"
+    ],
+    "manufacturing_monthly_alts_not_mixed": [
+      "USAPRMNTO01GYSAM",
+      "GBRPRMNTO01GYSAM",
+      "JPNPRMNTO01GYSAM",
+      "CANPRMNTO01GYSAM",
+      "FRAPRMNTO01GYSAM"
+    ]
+  },
+  "soft_best": {
+    "factor": "high_ip_xs",
+    "n_months": 180,
+    "mean_mo": 0.00100736560395639,
+    "tstat_ols": 1.8133639303123974,
+    "tstat_nw": 1.8835030708518525,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5388888888888889,
+    "top3": 0.08983693644119055,
+    "ann_sharpe_daily": 0.3651202113820443
+  },
+  "primary_sweep": {
+    "strategy": "high_ip_xs",
+    "scale": 1.9748930156297413,
+    "binding": "static",
+    "is_total_return": 0.3111369057079345,
+    "is_static_loss": 0.0999999999617903,
+    "is_max_daily_dd": 0.021993376128842647,
+    "is_gates_pass": true,
+    "oos_total_return": 0.05480811554684051,
+    "oos_static_loss": 0.0002526357103874034,
+    "oos_max_daily_dd": 0.00869173361946654,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.0017857900877027446,
+    "mean_mo_oos": 0.0031066701696209433,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0019658582532945034,
+    "scaled_full_pct_pos": 0.5388888888888889,
+    "scaled_ho_mean_mo": 0.0031066701696209433,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

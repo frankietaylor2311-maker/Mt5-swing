@@ -1,0 +1,33 @@
+=== scholarly FX Industrial-production (PRINTO01) wave (§42) ===
+OECD MEI PRINTO01GYSAM industry YoY via FRED (monthly + AUD/NZD/CHF PRMNTO01GYSAQ quarterly → monthly after pub_lag=2) — IP YoY XS; distinct from macro-diff EW, OECD CLI/CCI/BCI, employment §41, WUI, EPU/TPU, IG OAS. Locked sleeve untouched.
+IP panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'] [1920-03-01..2026-09-01] pub_lag_m=2
+currency          fred_id freq  n_obs      start        end      last                                                                                                                          note
+     USD USAPRINTO01GYSAM    M   1279 1920-03-01 2026-09-01  1.079455                                                                              OECD MEI industry YoY USAPRINTO01GYSAM (monthly)
+     EUR FRAPRINTO01GYSAM    M    834 1957-03-01 2026-08-01 -0.125471 France proxy via FRAPRINTO01GYSAM (M) (EA19PRINTO01GYSAM ends 2023-10; DEUPRINTO01GYSAM ends 2023-12; ITA/ESP/NLD GYSAM alts)
+     GBP GBRPRINTO01GYSAM    M    930 1949-03-01 2026-08-01 -0.203046                                                                              OECD MEI industry YoY GBRPRINTO01GYSAM (monthly)
+     JPY JPNPRINTO01GYSAM    M    846 1956-03-01 2026-08-01  2.463054                                                                              OECD MEI industry YoY JPNPRINTO01GYSAM (monthly)
+     CAD CANPRINTO01GYSAM    M    774 1962-03-01 2026-08-01  3.373766                                                                              OECD MEI industry YoY CANPRINTO01GYSAM (monthly)
+     AUD AUSPRMNTO01GYSAQ    Q    610 1975-09-01 2026-06-01  1.184875                                          OECD MEI manufacturing YoY AUSPRMNTO01GYSAQ (quarterly; industry PRINTO01 GYSAM 404)
+     NZD NZLPRMNTO01GYSAQ    Q    577 1978-06-01 2026-06-01  1.276290                                          OECD MEI manufacturing YoY NZLPRMNTO01GYSAQ (quarterly; industry PRINTO01 GYSAM 404)
+     CHF CHEPRMNTO01GYSAQ    Q    256 2005-03-01 2026-06-01  5.719055                                          OECD MEI manufacturing YoY CHEPRMNTO01GYSAQ (quarterly; industry PRINTO01 GYSAM 404)
+Series source note: FRED OECD MEI {ISO3}PRINTO01GYSAM industry YoY monthly (USD/GBP/JPY/CAD; EUR=FRA France proxy — EA19/DEU GYSAM stale; AUD/NZD/CHF={ISO3}PRMNTO01GYSAQ manufacturing quarterly YoY — industry PRINTO01 404; PROINDMISMEI stale ~2024-03 — not primary; INDPRO/IPMAN US alts)
+Score basis: yoy_growth_as_reported unit=ip_yoy_pct_as_reported
+Failed/alt documented: {'printo01_m661s_mostly_404': ['PRINTO01USM661S', 'PRINTO01GBM661S', 'PRINTO01JPM661S', 'PRINTO01CAM661S', 'PRINTO01AUM661S', 'PRINTO01NZM661S', 'PRINTO01CHM661S', 'PRINTO01DEM661S', 'PRINTO01EZM661S'], 'proindmismei_stale_~2024_03': ['USAPROINDMISMEI', 'GBRPROINDMISMEI', 'JPNPROINDMISMEI', 'CANPROINDMISMEI', 'DEUPROINDMISMEI', 'FRAPROINDMISMEI', 'EA19PRMNTO01IXOBSAM'], 'printo01_annual_levels_stale_2023': ['PRINTO01USA661N', 'PRINTO01GBA661N', 'PRINTO01JPA661N', 'PRINTO01CAA661N', 'PRINTO01AUA661N', 'PRINTO01NZA661N', 'PRINTO01CHA661N', 'PRINTO01DEA661N', 'PRINTO01EZA661N'], 'eur_ea19_gysam_stale_2023_10': ['EA19PRINTO01GYSAM', 'EA19PRINTO01IXOBSAM'], 'eur_deu_gysam_stale_2023_12': ['DEUPRINTO01GYSAM'], 'eur_france_proxy_primary': ['FRAPRINTO01GYSAM'], 'eur_ita_esp_nld_alts': ['ITAPRINTO01GYSAM', 'ESPPRINTO01GYSAM', 'NLDPRINTO01GYSAM'], 'aud_nzd_chf_printo01_gysam_404': ['AUSPRINTO01GYSAM', 'NZLPRINTO01GYSAM', 'CHEPRINTO01GYSAM', 'AUSPRINTO01IXOBSAM', 'NZLPRINTO01IXOBSAM', 'CHEPRINTO01IXOBSAM'], 'aud_nzd_chf_manufacturing_q_primary': ['AUSPRMNTO01GYSAQ', 'NZLPRMNTO01GYSAQ', 'CHEPRMNTO01GYSAQ'], 'us_national_alts_not_primary': ['INDPRO', 'IPMAN'], 'manufacturing_monthly_alts_not_mixed': ['USAPRMNTO01GYSAM', 'GBRPRMNTO01GYSAM', 'JPNPRMNTO01GYSAM', 'CANPRMNTO01GYSAM', 'FRAPRMNTO01GYSAM']}
+US USAPRINTO01GYSAM [1920-03-01..2026-09-01] n=1279 series=USAPRINTO01GYSAM
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_ip_xs: scale=1.975 bind=static IS mean_mo=0.179% OOS gates=True
+  sweep low_ip_xs: scale=0.541 bind=static IS mean_mo=-0.061% OOS gates=True
+  sweep high_ip_z_xs: scale=2.742 bind=daily IS mean_mo=0.241% OOS gates=True
+  sweep ip_chg_xs: scale=1.110 bind=static IS mean_mo=0.022% OOS gates=True
+  sweep us_ip_stress_fx: scale=1.855 bind=static IS mean_mo=0.010% OOS gates=True
+  sweep us_ip_haven_usd: scale=5.716 bind=static IS mean_mo=-0.035% OOS gates=True
+  sweep ip_ew: scale=1.959 bind=static IS mean_mo=0.076% OOS gates=True
+=== factor summary ===
+  high_ip_xs: mean_mo=+0.101% NW_t=+1.88 %pos=54%
+  low_ip_xs: mean_mo=-0.122% NW_t=-2.23 %pos=44%
+  high_ip_z_xs: mean_mo=+0.078% NW_t=+1.35 %pos=54%
+  ip_chg_xs: mean_mo=+0.038% NW_t=+0.60 %pos=53%
+  us_ip_stress_fx: mean_mo=+0.005% NW_t=+0.18 %pos=11%
+  us_ip_haven_usd: mean_mo=-0.006% NW_t=-0.20 %pos=8%
+  ip_ew: mean_mo=+0.048% NW_t=+1.32 %pos=57%
+board n=7 soft=1 hard=0 promote_unscaled=False scaled_primary=False
