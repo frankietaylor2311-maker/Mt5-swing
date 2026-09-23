@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_days": 1,
+  "signal_lag_days": 1,
+  "formation_days": 21,
+  "skip_days": 0,
+  "n_long": 2,
+  "n_short": 2,
+  "cost_bps_per_side": 1.5,
+  "equity_columns": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD",
+    "AUD",
+    "CHF"
+  ],
+  "tickers": {
+    "USD": "^GSPC",
+    "EUR": "^GDAXI",
+    "GBP": "^FTSE",
+    "JPY": "^N225",
+    "CAD": "^GSPTSE",
+    "AUD": "^AXJO",
+    "CHF": "^SSMI"
+  },
+  "missing": [],
+  "download_ok": true,
+  "download_err": null,
+  "factors": [
+    "eq_diff_xs",
+    "eq_diff_ts",
+    "eq_mom_xs",
+    "carry_eq_cool"
+  ],
+  "primary": "eq_diff_xs",
+  "board": {
+    "n": 4,
+    "soft": 0,
+    "hard": 0,
+    "promote": 0
+  },
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "best_scaled_is_mean_mo": null,
+  "best_scaled_strategy": null,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "citations": [
+    "Hau & Rey (2006), Exchange Rates, Equity Prices, and Capital Flows, RFS"
+  ],
+  "note_xs_identity": "For equal-weight cross-sectional rank sorts, score=(local_mom\u2212US_mom) ranks identically to local_mom (US term is common). eq_diff_xs \u2261 eq_mom_xs by construction; distinctive Hau\u2013Rey content is eq_diff_ts (sign of differential) and carry_eq_cool (US equity risk-off cool)."
+}

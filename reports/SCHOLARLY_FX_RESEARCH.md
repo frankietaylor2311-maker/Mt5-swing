@@ -87,6 +87,13 @@
 - **Key refs:** Klitgaard & Weir (2004), “Exchange Rate Changes and Net Positions of Speculators in the Futures Market,” *NY Fed Economic Policy Review*; Sanders, Irwin & Merrin; Briese-style COT constructions; CFTC Traders in Financial Futures (TFF) documentation.
 - **What we implement:** `data/cftc_cot.py` + `strategies/cot_positioning_fx.py` + `scripts/scholarly_fx_cot_wave.py` — free CFTC SODA TFF Futures-Only + Legacy Futures-Only for CME FX + ICE DX. PIT: Tuesday `report_date`, Friday release → `release_lag_days=3` known_date + `signal_lag=1` trading day. Legs: lev net/OI continuation, Δnet, z continuation, −z mean-reversion, Legacy NonComm, DX USD tilt, EW blend. Frozen priors — no HO tuning.
 
+### 1.12 Equity–FX / Hau–Rey portfolio channel
+
+- **Claim:** Relative local equity outperformance vs US tends to associate with local FX appreciation (portfolio / risk-appetite channel).
+- **Key refs:** Hau & Rey (2006), “Exchange Rates, Equity Prices, and Capital Flows,” *RFS*.
+- **What we implement:** `data/equity_indices.py` + `strategies/equity_diff_fx.py` + `scripts/scholarly_fx_equity_diff_wave.py` — Yahoo G10 equity indices; PIT `pub_lag=1d` + `signal_lag=1d`; formation=21d. Legs: `eq_diff_xs` (primary), `eq_diff_ts`, `eq_mom_xs`, `carry_eq_cool`. EW XS rank on (local−US) ≡ local-mom XS; distinctive = TS + carry cool. NZD omitted.
+
+
 ### 1.6 TPU / economic-policy uncertainty
 
 - **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks; elevated *home-country* EPU is associated with subsequent FX depreciation vs USD (risk premium), and high US EPU/TPU coincides with risk-off / safe-haven USD.
@@ -713,4 +720,44 @@ Artifacts: `reports/scholarly_fx_epu_tpu_wave.md`, `scholarly_fx_epu_tpu_*.csv`,
 Money-market (IR3M) and CIP-implied FD sorts are the right *priors* relative to cash IRSTCI alone, and they are essentially rank-identical here (corr≈1). On this approximate_non_ftmo panel the forward-proxy carry earns **negative** full-sample means (~−0.01 to −0.03%/mo) with NW |t| ≪ 2 — IR3M does **not** improve on prior cash-rate carry toward the 1%/mo bar. TC haircut (5 bps) slightly worsens an already flat/negative sleeve. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED OECD is sufficient for this claim; inventing Bloomberg forwards would be dishonest.
 
 Artifacts: `reports/scholarly_fx_fwd_carry_wave.md`, `scholarly_fx_fwd_carry_*.csv`, `scholarly_fx_fwd_carry_meta.json`.
+
+---
+
+## 19. Hau–Rey equity-differential wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):**
+- Yahoo equity: `^GSPC` US, `^GDAXI` EUR, `^FTSE` GBP, `^N225` JPY, `^GSPTSE` CAD, `^AXJO` AUD, `^SSMI` CHF. Calendar-date normalize-before-join (session-collision fix).
+- PIT: `pub_lag_days=1` + `signal_lag_days=1`; formation=21d; n_long=n_short=2; costs 1.5 bps/side.
+- Legs: `eq_diff_xs` (primary), `eq_diff_ts`, `eq_mom_xs` (control), `carry_eq_cool` (cool carry when lagged US equity mom < 0).
+- **XS identity:** EW rank on (local−US) ≡ local-mom XS — US term common across currencies.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| eq_diff_xs | −0.066% | −1.09 | −1.18 | 48% | 12% | −0.20 |
+| eq_diff_ts | −0.019% | −0.26 | −0.30 | 51% | 14% | −0.07 |
+| eq_mom_xs | −0.066% | −1.09 | −1.18 | 48% | 12% | −0.20 |
+| carry_eq_cool | −0.024% | −0.39 | −0.48 | 50% | 12% | −0.13 |
+
+### Consistency windows (primary `eq_diff_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.04% | 55% | 88% | PASS | no |
+| year_2025 | −0.08% | 45% | 91% | PASS | no |
+| year_2026 | −0.18% | 50% | 87% | PASS | no |
+| holdout_365d | −0.14% | 50% | 72% | PASS | no |
+
+### Risk sweep
+
+No positive IS mean on any factor → sweep skipped. Scaled promote: **NO**.
+
+**Board:** n=4 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Tradable Hau–Rey legs on Yahoo equity indices earn **~0 to −7 bp/mo** full-sample (NW |t| ≲ 1.2) — far from prop-firm 1%/mo + 70% hit-rate. Indices ≠ Hau–Rey *portfolio flow* data; free Yahoo is sufficient to reject this as a standalone FTMO sleeve.
+
+Artifacts: `reports/scholarly_fx_equity_wave.md`, `scholarly_fx_equity_*.csv`, `scholarly_fx_equity_meta.json`.
 

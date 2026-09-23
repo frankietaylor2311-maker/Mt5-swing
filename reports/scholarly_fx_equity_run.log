@@ -1,0 +1,13 @@
+=== scholarly FX Hau–Rey equity-differential wave ===
+equity panel: /workspace/Mt5-swing/data/macro/equity_yahoo_panel.csv
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+equity cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF'] tickers={'USD': '^GSPC', 'EUR': '^GDAXI', 'GBP': '^FTSE', 'JPY': '^N225', 'CAD': '^GSPTSE', 'AUD': '^AXJO', 'CHF': '^SSMI'}
+  skip risk sweep: no positive IS mean on any factor
+=== factor summary ===
+  eq_diff_xs: mean_mo=-0.066% NW_t=-1.18 %pos=48%
+  eq_diff_ts: mean_mo=-0.019% NW_t=-0.30 %pos=51%
+  eq_mom_xs: mean_mo=-0.066% NW_t=-1.18 %pos=48%
+  carry_eq_cool: mean_mo=-0.024% NW_t=-0.48 %pos=50%
+board n=4 soft=0 hard=0 promote=0
+promote_unscaled=False scaled_primary=False
+wrote /workspace/Mt5-swing/reports/scholarly_fx_equity_wave.md
