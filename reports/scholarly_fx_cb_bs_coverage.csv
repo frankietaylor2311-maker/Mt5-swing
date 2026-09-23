@@ -1,0 +1,4 @@
+currency,fred_id,frequency,n_obs,start,end
+USD,WALCL,weekly,2376,2003-12-24,2026-09-25
+EUR,ECBASSETSW,weekly,2635,2000-01-07,2026-09-25
+JPY,JPNASSETS,monthly,2670,1999-05-07,2026-09-25

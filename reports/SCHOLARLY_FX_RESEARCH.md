@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, global-imbalances / current-account wave after funding-liquidity; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`).
+**Status:** Active (2026-09-23 BST, CB balance-sheet / QE differential wave after CA imbalances; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -35,6 +35,14 @@
 - **Claim:** External imbalances (current account / NFA) price currency risk premia and forecast dollar adjustment. Debtor (deficit) currencies earn a risk premium in Della Corte–Riddiough–Sarno; US external imbalance predicts FX adjustment in Gourinchas–Rey.
 - **Key refs:** Della Corte, Riddiough & Sarno (2016), "Currency Premia and Global Imbalances," *RFS*; Gourinchas & Rey (2007), "International Financial Adjustment," *JPE*.
 - **What we implement (wave §21):** `data/fred_current_account.py` + `strategies/current_account_fx.py` + `scripts/scholarly_fx_ca_wave.py` — IMF BOP CA/GDP % via FRED `{ISO3}B6BLTT02STSAQ`; legs `ca_debtor_xs` (primary), `ca_surplus_xs`, `ca_chg_xs`, `us_ca_gr_fx`, `us_ca_haven_usd`, `ca_ew`. PIT `pub_lag_quarters=2` (=6m) + `signal_lag=1m` + 1d weight lag. EUR: EA19 + DEU gap-fill. **Distinct** from PPP/BS/macro-diff (CPI/IP/UR) and Hau–Rey equity. **Not** overlaid on the locked sleeve.
+
+### 1.16 Central-bank balance-sheet / QE differential FX
+
+- **Claim:** Large-scale asset purchases / QE expand the CB balance sheet, compress term premia (portfolio-balance), and depreciate the expanding CB's currency vs peers (signalling + portfolio-balance channels). Relative BS growth differentials across CBs are a natural FX state variable.
+- **Key refs:** Gagnon, Raskin, Remache & Sack (2011), "The Federal Reserve's Large-Scale Asset Purchases," *IJCB*; Neely (2015), "Unconventional Monetary Policy Effects on Exchange Rates," *JBF*; Bauer & Neely (2014), "International Channels of the Fed's Unconventional Monetary Policy," *JIMF*.
+- **Free data:** FRED `WALCL` (Fed weekly), `ECBASSETSW` (ECB weekly), `JPNASSETS` (BoJ monthly). `UKASSETS` discontinued 2014-09 — excluded from primary panel. Optional GDP: `GDP` / `EUNNGDP` / `JPNNGDP` for BS/GDP ratios (within-currency z only — units heterogeneous).
+- **What we implement (wave §22):** `data/fred_cb_balance_sheet.py` + `strategies/cb_balance_sheet_fx.py` + `scripts/scholarly_fx_cb_bs_wave.py` — legs `walcl_pb_fx` (primary Neely PB), `walcl_haven_usd`, `walcl_chg_pb_fx`, `bs_diff_pb_fx` (US−peer YoY), `bs_peer_xs` (EUR/JPY), `bs_gdp_pb_fx`, `bs_ew`. PIT weekly `pub_lag=7d`, monthly `pub_lag=1m`, GDP `pub_lag=1Q` + `signal_lag=1d`. YoY growth avoids FX conversion of level units. **Distinct** from NFCI funding (§20) and CA/GDP (§21). **Not** overlaid on the locked sleeve.
+
 
 ### 1.2 Momentum
 
@@ -198,6 +206,10 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `src/mt5_swing/strategies/current_account_fx.py` | Debtor/surplus/ΔCA XS + US CA GR/haven tilts |
 | `scripts/scholarly_fx_ca_wave.py` | CA imbalances wave eval + FTMO risk sweep |
 | `reports/scholarly_fx_ca_wave.md` | Global imbalances / CA wave board |
+| `src/mt5_swing/data/fred_cb_balance_sheet.py` | WALCL/ECBASSETSW/JPNASSETS + YoY + BS/GDP PIT |
+| `src/mt5_swing/strategies/cb_balance_sheet_fx.py` | QE PB USD/FX tilts + peer XS + BS/GDP |
+| `scripts/scholarly_fx_cb_bs_wave.py` | CB-BS / QE wave eval + FTMO risk sweep |
+| `reports/scholarly_fx_cb_bs_wave.md` | CB balance-sheet / QE wave board |
 
 ---
 
@@ -214,6 +226,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 9. Dahlquist, M. & Hasseltoft, H. — macro differentials and currency risk premia (framing).
 10. Della Corte, P., Riddiough, S. & Sarno, L. (2016). Currency Premia and Global Imbalances. *RFS*.
 11. Gourinchas, P.-O. & Rey, H. (2007). International Financial Adjustment. *JPE*.
+12. Gagnon, J., Raskin, M., Remache, J. & Sack, B. (2011). The Federal Reserve's Large-Scale Asset Purchases. *IJCB*.
+13. Neely, C. (2015). Unconventional Monetary Policy Effects on Exchange Rates. *JBF*.
+14. Bauer, M. & Neely, C. (2014). International Channels of the Fed's Unconventional Monetary Policy. *JIMF*.
 10. Chen, Y. & Tsang, K. (2013). — relative yield-curve factors and exchange rates.
 11. Lustig, H., Stathopoulos, A. & Verdelhan, A. (2019). The Term Structure of Currency Carry Trade Risk Premia. *Journal of Finance*.
 12. Fama, E. (1984). Forward and Spot Exchange Rates. *Journal of Monetary Economics*. (UIP / forward premium)
@@ -234,7 +249,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 10. **Done (2026-09-23):** True FX realized-vol risk factor (Menkhoff) — promote=NO (see §15).
 11. **Done (2026-09-23):** Term-structure / yield-curve FX + UIP secondary — promote=NO (see §16).
 12. **Done (2026-09-23):** CFTC COT positioning / speculative-pressure wave — promote=NO (see §17).
-13. Next scholarly candidates (not sleeve coolers): **EPU/TPU delivered (§18)**; FX IV/RR **blocked** (no free panel); transaction-cost / swap-aware carry on better free forwards; bilateral AI-GPR role decompositions; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
+13. **Done (2026-09-23):** EPU/TPU, forward-carry, Hau–Rey equity, funding-liq, CA imbalances — promote=NO (§18–21).
+14. **Done (2026-09-23):** CB balance-sheet / QE differential — promote=NO (see §22).
+15. Next scholarly candidates (not sleeve coolers): **real-rate / breakeven differentials** (free FRED `DFII10` / `T10YIE` + foreign LT−CPI proxies); FX IV/RR **blocked**; bilateral AI-GPR role decompositions; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -880,7 +897,59 @@ Positive IS means on debtor / haven → sweep run. Best scaled IS mean (`us_ca_h
 
 Della Corte debtor sorts and Gourinchas–Rey US-CA tilts are the right *priors* and are **distinct** from PPP/BS/macro-diff: mild positive full-sample mean on `ca_debtor_xs` / `us_ca_haven_usd` (~+2 bp/mo, NW t ≈ 0.3–0.6), with the surplus / GR-adjustment / ΔCA legs flat-to-negative. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED IMF BOP is sufficient; inventing NFA stock panels without free PIT data would be dishonest. EUR post-2022 uses DEU CA as EA19 gap-fill — documented limitation.
 
-**Next structure (if promote=0):** Free **order-flow / retail positioning** alternatives are mostly paid; next scholarly candidate without locked-sleeve coolers: **central-bank balance-sheet / QE differential FX** (FRED CB assets vs GDP or monetary-base differentials — e.g. WALCL / ECB assets proxies) or **real-rate / breakeven inflation differentials** where free TIPS/linker panels exist — *not* another locked-sleeve cooler.
+**Next structure (if promote=0):** delivered as wave §22 (CB balance-sheet / QE).
 
 Artifacts: `reports/scholarly_fx_ca_wave.md`, `scholarly_fx_ca_*.csv`, `scholarly_fx_ca_meta.json`.
+
+---
+
+## 22. Central-bank balance-sheet / QE differential wave results (2026-09-23 BST) — Neely / Gagnon
+
+**Design (fixed priors, no HO tuning):** Distinct QE / portfolio-balance channel vs funding-liquidity NFCI (§20) and CA/GDP imbalances (§21).
+- Sources: FRED `WALCL` (Fed weekly total assets), `ECBASSETSW` (ECB weekly), `JPNASSETS` (BoJ monthly); optional US `GDP` for BS/GDP. `UKASSETS` discontinued 2014-09 — excluded.
+- PIT: weekly `pub_lag_days=7`, monthly `pub_lag_months=1`, GDP `pub_lag_quarters=1` + `signal_lag=1` trading day. Costs 1.5 bps/side. YoY growth (52w / 12m) avoids FX conversion of heterogeneous level units.
+- Legs: `walcl_pb_fx` (**primary** — Neely: high Fed BS YoY → long FX / short USD), `walcl_haven_usd` (crisis alternate), `walcl_chg_pb_fx` (13w Δ), `bs_diff_pb_fx` (US−EUR/JPY YoY differential), `bs_peer_xs` (long low / short high peer YoY), `bs_gdp_pb_fx` (US BS/GDP z), `bs_ew`.
+- **Explicit:** evaluating CB-BS as a scholarly sleeve — **no cooler overlay** on locked `fx4plus_gbpcad_d1_voltarget_0025`. Free FRED only.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| walcl_pb_fx | +0.043% | +1.19 | +1.39 | 16% | 25% | +0.31 |
+| walcl_haven_usd | −0.044% | −1.23 | −1.42 | 12% | 29% | −0.31 |
+| walcl_chg_pb_fx | +0.023% | +0.65 | +0.76 | 18% | 25% | +0.17 |
+| bs_diff_pb_fx | +0.013% | +0.33 | +0.38 | 16% | 25% | +0.08 |
+| bs_peer_xs | −0.111% | −1.32 | −1.29 | 45% | 12% | −0.30 |
+| bs_gdp_pb_fx | −0.031% | −1.02 | −1.02 | 13% | 38% | −0.27 |
+| bs_ew | −0.018% | −0.48 | −0.53 | 47% | 13% | −0.12 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| walcl_pb_fx | holdout_365d | −0.01% | 42% | PASS | no |
+| walcl_pb_fx | year_2024 | +0.00% | 0% | PASS | no |
+| walcl_pb_fx | year_2025 | +0.24% | 55% | PASS | no |
+| walcl_pb_fx | year_2026 | −0.19% | 38% | PASS | no |
+| bs_peer_xs | holdout_365d | +0.18% | 50% | PASS | no |
+| bs_peer_xs | year_2025 | +0.49% | 73% | PASS | no† |
+| bs_ew | holdout_365d | +0.05% | 58% | PASS | no |
+| walcl_haven_usd | holdout_365d | +0.01% | 58% | PASS | no |
+
+† Year-2025 %pos can clear 70% on peer XS with mild mean, but full-sample mean is **negative** (NW t≈−1.3) and holdout mean ≪ 1% — classic window luck, not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means on PB legs → sweep run. Best scaled IS mean (`walcl_pb_fx` @ ~4.7× daily-bound) ≈ **+0.23%/mo** still ≪ 1%; scaled HO flat/near zero. Scaled clears: **NO**. Leverage does not invent consistency.
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`walcl_pb_fx`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Neely / Gagnon portfolio-balance priors are the right *direction* and are **distinct** from NFCI funding and CA/GDP: mild positive full-sample mean on `walcl_pb_fx` / `walcl_chg_pb_fx` / `bs_diff_pb_fx` (~+1–4 bp/mo, NW t ≈ 0.4–1.4), with haven and peer-XS / BS-GDP legs flat-to-negative. Binary z≥1 episodes are infrequent → sparse %pos (~16%). Far from prop-firm 1%/mo + 70% hit-rate. Free FRED multi-CB (Fed+ECB+BoJ) is sufficient; inventing BoE continuity after UKASSETS end-2014 would be dishonest. Multi-CB coverage was **not** too thin — real-rate fallback deferred.
+
+**Next structure (if promote=0):** **Real-rate / breakeven inflation differentials** using free FRED `DFII10` / `T10YIE` (US TIPS) plus foreign LT govt − CPI YoY proxies where available — *not* another locked-sleeve cooler. FX IV/RR still blocked without a free panel.
+
+Artifacts: `reports/scholarly_fx_cb_bs_wave.md`, `scholarly_fx_cb_bs_*.csv`, `scholarly_fx_cb_bs_meta.json`.
+
 

@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "path": "cb_balance_sheet_qe_differential",
+  "data_tag": "approximate_non_ftmo",
+  "weekly_pub_lag_days": 7,
+  "monthly_pub_lag_months": 1,
+  "gdp_pub_lag_quarters": 1,
+  "signal_lag_days": 1,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "walcl_pb_fx",
+    "walcl_haven_usd",
+    "walcl_chg_pb_fx",
+    "bs_diff_pb_fx",
+    "bs_peer_xs",
+    "bs_gdp_pb_fx",
+    "bs_ew"
+  ],
+  "primary": "walcl_pb_fx",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "funding_liquidity_NFCI_TED",
+    "current_account_CA_GDP",
+    "PPP",
+    "Balassa_Samuelson",
+    "macro_diff_CPI_IP_UR",
+    "yield_curve"
+  ],
+  "citations": [
+    "Gagnon, Raskin, Remache & Sack (2011), The Federal Reserve's Large-Scale Asset Purchases, IJCB",
+    "Neely (2015), Unconventional Monetary Policy Effects on Exchange Rates, JBF",
+    "Bauer & Neely (2014), International Channels of the Fed's Unconventional Monetary Policy, JIMF"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "WALCL",
+      "frequency": "weekly",
+      "n_obs": 2376,
+      "start": "2003-12-24",
+      "end": "2026-09-25"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "ECBASSETSW",
+      "frequency": "weekly",
+      "n_obs": 2635,
+      "start": "2000-01-07",
+      "end": "2026-09-25"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNASSETS",
+      "frequency": "monthly",
+      "n_obs": 2670,
+      "start": "1999-05-07",
+      "end": "2026-09-25"
+    }
+  ],
+  "uk_assets_note": "UKASSETS discontinued 2014-09 \u2014 not in primary panel"
+}
