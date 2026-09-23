@@ -1,0 +1,107 @@
+{
+  "ok": true,
+  "section": 53,
+  "path": "capital_sleeve_mix_locked_plus_bci_ppi",
+  "data_tag": "approximate_non_ftmo",
+  "rf": 0.08,
+  "port_vol_target": 0.0025,
+  "locked_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "locked_cfg_sha256": "bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790",
+  "satellite_a": "bci_chg_xs",
+  "satellite_b": "high_ppi_xs",
+  "satellite_b_rationale": "high_ppi_xs pre-registered over high_bci_z_xs for cross-family diversification (\u00a751 hard NW t\u2248+2.00); fixed a priori, no HO tune",
+  "mixes": {
+    "core_100": {
+      "core": 1.0
+    },
+    "core85_bci15": {
+      "core": 0.85,
+      "bci_chg_xs": 0.15
+    },
+    "core70_bci30": {
+      "core": 0.7,
+      "bci_chg_xs": 0.3
+    },
+    "core60_bci40": {
+      "core": 0.6,
+      "bci_chg_xs": 0.4
+    },
+    "core80_bci10_ppi10": {
+      "core": 0.8,
+      "bci_chg_xs": 0.1,
+      "high_ppi_xs": 0.1
+    },
+    "core70_bci20_ppi10": {
+      "core": 0.7,
+      "bci_chg_xs": 0.2,
+      "high_ppi_xs": 0.1
+    }
+  },
+  "is_means": {
+    "core_100": 0.015153120966803307,
+    "core85_bci15": 0.013004615260515417,
+    "core70_bci30": 0.010851100600394358,
+    "core60_bci40": 0.009412646797398417,
+    "core80_bci10_ppi10": 0.01222718665983053,
+    "core70_bci20_ppi10": 0.010791333831457955
+  },
+  "primary": "core_100",
+  "primary_selection": "IS-only argmax mean_mo (require_positive)",
+  "n_mixes": 6,
+  "soft_nw_pos": 6,
+  "hard_nw_pos": 6,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-16",
+    "end": "2026-09-16"
+  },
+  "bci_pub_lag_months": 2,
+  "ppi_pub_lag_months": 2,
+  "soft_best": {
+    "factor": "core_100",
+    "n_months": 32,
+    "mean_mo": 0.017170029867461745,
+    "tstat_ols": 2.8845535641706954,
+    "tstat_nw": 2.162843338833163,
+    "nw_lags": 3,
+    "pct_pos_mo": 0.71875,
+    "top3": 0.38489387920938045,
+    "ann_sharpe_daily": 1.4765322391029556
+  },
+  "primary_sweep": {
+    "strategy": "core_100",
+    "scale": 1.341113734703851,
+    "binding": "daily",
+    "is_total_return": 0.48117671613018476,
+    "is_static_loss": 0.05408351936093546,
+    "is_max_daily_dd": 0.04999999995267601,
+    "is_gates_pass": true,
+    "oos_total_return": 0.3563378969301647,
+    "oos_static_loss": 0.023030547056985668,
+    "oos_max_daily_dd": 0.04160221943871249,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.020268588649743575,
+    "mean_mo_oos": 0.025920358478724148,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.02300389577460454,
+    "scaled_full_pct_pos": 0.71875,
+    "scaled_ho_mean_mo": 0.025920358478724148,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": true,
+    "scaled_clears_1pct_oos": false
+  },
+  "citations": [
+    "OECD BCI \u00a739 bci_chg_xs soft/hard seed",
+    "OECD PPI \u00a751 high_ppi_xs hard board (Dahlquist\u2013Hasseltoft)",
+    "Capital sleeves (not overlays) \u2014 Frankie steering 2026-09"
+  ],
+  "distinct_from": [
+    "overlay_coolers_on_locked",
+    "oecd_bci_39_alone",
+    "oecd_ppi_51_alone",
+    "scholarly_combo_equal_weight_sleeves"
+  ]
+}

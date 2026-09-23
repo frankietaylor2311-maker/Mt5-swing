@@ -1,0 +1,29 @@
+=== scholarly FX capital-sleeve mix wave (§53) ===
+Pre-registered: core=fx4plus_gbpcad_d1_voltarget_0025 RF=0.08 VT=0.0025; sat_A=bci_chg_xs; sat_B=high_ppi_xs; n_mixes=6. Separate sleeves — not overlays.
+Building locked core daily returns (RF + VT)…
+  core n=772 [2024-01-30..2026-09-16] tag=approximate_non_ftmo
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  bci_chg_xs n=3905 [2011-09-15..2026-09-15]
+  high_ppi_xs n=3905 [2011-09-15..2026-09-15]
+  mix core_100: w={'core': 1.0}
+  mix core85_bci15: w={'core': 0.85, 'bci_chg_xs': 0.15}
+  mix core70_bci30: w={'core': 0.7, 'bci_chg_xs': 0.3}
+  mix core60_bci40: w={'core': 0.6, 'bci_chg_xs': 0.4}
+  mix core80_bci10_ppi10: w={'core': 0.8, 'bci_chg_xs': 0.1, 'high_ppi_xs': 0.1}
+  mix core70_bci20_ppi10: w={'core': 0.7, 'bci_chg_xs': 0.2, 'high_ppi_xs': 0.1}
+IS-only primary mix = core_100 (IS mean_mo=+1.515%)
+  IS means: core_100=+1.52%, core85_bci15=+1.30%, core70_bci30=+1.09%, core60_bci40=+0.94%, core80_bci10_ppi10=+1.22%, core70_bci20_ppi10=+1.08%
+  sweep core_100: scale=1.341 bind=daily IS mean_mo=2.027% OOS gates=True
+  sweep core85_bci15: scale=1.574 bind=daily IS mean_mo=2.039% OOS gates=True
+  sweep core70_bci30: scale=1.904 bind=daily IS mean_mo=2.056% OOS gates=True
+  sweep core60_bci40: scale=2.214 bind=daily IS mean_mo=2.072% OOS gates=True
+  sweep core80_bci10_ppi10: scale=1.673 bind=daily IS mean_mo=2.037% OOS gates=True
+  sweep core70_bci20_ppi10: scale=1.907 bind=daily IS mean_mo=2.048% OOS gates=True
+=== mix summary ===
+  core_100: mean_mo=+1.717% NW_t=+2.16 %pos=72%
+  core85_bci15: mean_mo=+1.475% NW_t=+2.19 %pos=72%
+  core70_bci30: mean_mo=+1.233% NW_t=+2.22 %pos=75%
+  core60_bci40: mean_mo=+1.072% NW_t=+2.25 %pos=75%
+  core80_bci10_ppi10: mean_mo=+1.389% NW_t=+2.19 %pos=72%
+  core70_bci20_ppi10: mean_mo=+1.228% NW_t=+2.21 %pos=75%
+board n=6 soft=6 hard=6 promote_unscaled=False scaled_primary=False primary=core_100 locked_untouched=True

@@ -467,7 +467,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19i. **Done (2026-09-23):** OECD CLI leading-indicator FX wave — promote=NO (see §37).
 19j. **Done (2026-09-23):** OECD CCI / consumer-confidence FX wave — promote=NO (see §38).
 19k. **Done (2026-09-23):** OECD MEI employment-growth LFEMTTTT FX wave — promote=NO (see §41).
-20. Next scholarly candidates (not sleeve coolers): **FTMO MT5 CSV re-score** when exports arrive (all boards still `approximate_non_ftmo`; `data/ftmo/` empty except README); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel. (OECD CPI / inflation §52 / PPI / PIEAMP §51 / capacity-utilization §50 / labour-productivity §49 / ULC §48 / BIS DSR §47 / Retail-sales §46 / Country-GPR bilateral §45 / ACM term-premium §44 / Building-permits §43 / Industrial-production §42 / Employment §41 / WUI §40 / BCI §39 / CCI §38 / CLI §37 done.) Optional free: **credit impulse** = Δ12 of private credit/GDP (§32 flow refresh — skip as *primary*; companion already boarded). IMF IFS trade unit-value ToT **404** on FRED.
+20. Next scholarly candidates (not sleeve coolers): **FTMO MT5 CSV re-score** when exports arrive (all boards still `approximate_non_ftmo`; `data/ftmo/` empty except README); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel. (Capital-sleeve mix §53 / OECD CPI §52 / PPI §51 / capacity-utilization §50 / labour-productivity §49 / ULC §48 / BIS DSR §47 / Retail-sales §46 / Country-GPR bilateral §45 / ACM term-premium §44 / Building-permits §43 / Industrial-production §42 / Employment §41 / WUI §40 / BCI §39 / CCI §38 / CLI §37 done.) Optional free: **credit impulse** = Δ12 of private credit/GDP (§32 flow refresh — skip as *primary*; companion already boarded). IMF IFS trade unit-value ToT **404** on FRED.
 
 ---
 
@@ -2448,7 +2448,46 @@ Sweep **run**. Primary `high_cpi_xs` scale≈**1.306** bind=**daily**; scaled HO
 
 Locked `fx4plus_gbpcad_d1_voltarget_0025` **untouched PASS** (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_cpi.md`).
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free candidate: **FTMO MT5 CSV re-score** when exports arrive (`data/ftmo/` empty except README) — *not* another locked-sleeve cooler. Optional free: **credit impulse** = Δ12 of private credit/GDP (flow refresh of §32; skip as primary — companion already boarded).
+**Next structure (if promote=0):** Done as §53 (capital-sleeve mix: locked core + BCI/PPI satellites). FX IV/RR + news-sentiment still **blocked**. Next: **FTMO MT5 CSV re-score** when exports arrive.
 
 Artifacts: `reports/scholarly_fx_cpi_wave.md`, `scholarly_fx_cpi_*.csv`, `scholarly_fx_cpi_meta.json`, `quest_locked_verify_cpi.md`.
+
+
+## 53. Capital-sleeve mix (locked core + BCI/PPI satellites) results (2026-09-24 BST)
+
+**Design (fixed priors, no HO tuning):** Keep locked `fx4plus_gbpcad_d1_voltarget_0025` as **core** capital sleeve (RF=0.08, VT=0.0025). Allocate smaller fixed capital shares to pre-registered scholarly satellites — **not** overlays/coolers on locked equity. Satellite A = `bci_chg_xs` (§39 best seed ~+14.8 bp/mo NW t≈+2.34). Satellite B = `high_ppi_xs` (§51 hard board ~+11.6 bp/mo NW t≈+2.00; chosen a priori over same-family `high_bci_z_xs` for cross-factor diversification). Mix grid (n=6, capital shares sum to 1): `core_100`, `core85_bci15`, `core70_bci30`, `core60_bci40`, `core80_bci10_ppi10`, `core70_bci20_ppi10`. Primary = **IS-only** argmax mean_mo (never HO). Combined series = Σ w_i r_i; `sweep_scale_to_ftmo_budget` on combined when IS mean>0. Core research stream uses continuous no-flatten leg equity (account FTMO gates applied on mix); official locked verify remains windowed PASS.
+
+**What is new vs overlays / combo §8 / BCI §39 / PPI §51 alone:** Prior cooler waves scaled locked equity. Combo §8 was equal-weight scholarly sleeves without the locked FTMO basket. This wave is the pre-registered **capital-sleeve mix** after scholarly promote=0 across §39–§52.
+
+**Data tag:** `approximate_non_ftmo` (no FTMO CSVs under `data/ftmo/`).
+
+### Full-sample mix summary
+
+| Mix | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|-----|--------:|------:|-----:|-----:|-----:|-------:|
+| **core_100** (IS primary) | **+1.717%** | +2.88 | **+2.16** | **72%** | 38% | +1.48 |
+| core85_bci15 | +1.475% | +2.95 | +2.19 | 72% | 38% | +1.49 |
+| core70_bci30 | +1.233% | +3.03 | +2.22 | 75% | 38% | +1.51 |
+| core60_bci40 | +1.072% | +3.10 | +2.25 | 75% | 38% | +1.53 |
+| core80_bci10_ppi10 | +1.389% | +2.95 | +2.19 | 72% | 38% | +1.49 |
+| core70_bci20_ppi10 | +1.228% | +3.01 | +2.21 | 75% | 38% | +1.51 |
+
+### Consistency windows (primary `core_100`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| 2024 | +1.31% | 64% | 71% | PASS | no (%pos/top3) |
+| 2025 | +1.42% | 73% | 68% | PASS | no (top3) |
+| 2026 | +2.62% | 75% | 85% | PASS | no (top3) |
+| holdout_365d | +1.93% | 67% | 76% | PASS | no (%pos/top3) |
+
+**Board:** n=6 soft_nw_pos=**6** hard_nw_pos=**6** promote=**0**.
+
+Sweep **run**. Primary `core_100` scale≈**1.341** bind=**daily**; scaled HO mean≈+2.59%/mo %pos 67% — clears: **NO** (%pos<70%). Soft/hard-best = `core_100` itself (IS + full-sample mean); satellites **dilute** locked mean_mo on every pre-registered mix (IS: core_100 +1.52% > core85 +1.30% > … > core60 +0.94%). Honesty: diverting capital to BCI/PPI scholarly engines does not lift the 1%/mo consistency bar vs core-only under FTMO gates.
+
+Locked `fx4plus_gbpcad_d1_voltarget_0025` **untouched PASS** (Yahoo D1 windowed verify: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_capital_sleeve_mix.md`). Config sha unchanged.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free candidate: **FTMO MT5 CSV re-score** when exports arrive (`data/ftmo/` empty except README) — *not* another locked-sleeve cooler. Optional free: **credit impulse** = Δ12 of private credit/GDP (flow refresh of §32; skip as primary — companion already boarded).
+
+Artifacts: `reports/scholarly_fx_capital_sleeve_mix_wave.md`, `scholarly_fx_capital_sleeve_mix_*.csv`, `scholarly_fx_capital_sleeve_mix_meta.json`, `quest_locked_verify_capital_sleeve_mix.md`.
 
