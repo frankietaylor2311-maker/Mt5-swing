@@ -1,0 +1,286 @@
+{
+  "ok": true,
+  "section": 43,
+  "path": "oecd_mei_building_permits_odcnpi03",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "permits_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_housing_xs",
+    "low_housing_xs",
+    "high_housing_z_xs",
+    "housing_chg_xs",
+    "us_housing_stress_fx",
+    "us_housing_haven_usd",
+    "housing_ew"
+  ],
+  "primary": "high_housing_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI {ISO3}ODCNPI03GYSAM permits YoY monthly + USD PERMIT levels\u2192YoY; EUR=DEU Germany proxy; GBP/JPY/CHF unmapped; XS on YoY; also 5y z / \u039412 of YoY boarded; high_housing primary (construction-activity \u2192 appreciate); n_long=n_short=2 on available foreign (EUR/CAD/AUD/NZD)",
+  "eur_mapping": "DEUODCNPI03GYSAM Germany proxy (EA19 GYSAM stale 2023-08; FRAODCNPI03GYSAM alt)",
+  "coverage_g10": "EUR/CAD/AUD/NZD + USD mapped; GBP/JPY/CHF unmapped (404); ACM fallback not used",
+  "acm_fallback_used": false,
+  "series_map": {
+    "USD": "PERMIT",
+    "EUR": "DEUODCNPI03GYSAM",
+    "CAD": "CANODCNPI03GYSAM",
+    "AUD": "AUSODCNPI03GYSAM",
+    "NZD": "NZLODCNPI03GYSAM"
+  },
+  "score_basis": "yoy_growth_as_reported_or_derived",
+  "distinct_from": [
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "gpr_country",
+    "AI_GPR",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "fiscal_28",
+    "debt_gdp_29",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "money_growth_33",
+    "reserves_34",
+    "house_price_35",
+    "equity_diff",
+    "employment_41",
+    "industrial_production_42",
+    "commodity",
+    "ig_oas_36"
+  ],
+  "citations": [
+    "Growth-channel / Taylor-rule FX: high relative housing activity (permits) \u2192 subsequent appreciation",
+    "Leading construction / real-activity differential (distinct from BIS HPI house-price \u00a735)",
+    "Honesty: low housing / activity-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "PERMIT",
+      "freq": "M",
+      "n_obs": 788,
+      "start": "1961-03-01",
+      "end": "2026-10-01",
+      "last": 3.489235337787666,
+      "note": "US Census PERMIT levels \u2192 YoY % (USAODCNPI03GYSAM 404; HOUST/PERMIT1 alts)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "DEUODCNPI03GYSAM",
+      "freq": "M",
+      "n_obs": 378,
+      "start": "1995-03-01",
+      "end": "2026-08-01",
+      "last": 5.57491289198617,
+      "note": "Germany proxy via DEUODCNPI03GYSAM (M) (EA19ODCNPI03GYSAM ends 2023-08; FRAODCNPI03GYSAM alt)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANODCNPI03GYSAM",
+      "freq": "M",
+      "n_obs": 930,
+      "start": "1949-03-01",
+      "end": "2026-08-01",
+      "last": 12.3249420356666,
+      "note": "OECD MEI permits YoY CANODCNPI03GYSAM (monthly)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "AUSODCNPI03GYSAM",
+      "freq": "M",
+      "n_obs": 847,
+      "start": "1956-03-01",
+      "end": "2026-09-01",
+      "last": 3.32117048659064,
+      "note": "OECD MEI permits YoY AUSODCNPI03GYSAM (monthly)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "NZLODCNPI03GYSAM",
+      "freq": "M",
+      "n_obs": 627,
+      "start": "1974-04-01",
+      "end": "2026-06-01",
+      "last": 49.7439936983066,
+      "note": "OECD MEI permits YoY NZLODCNPI03GYSAM (monthly)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_odcnpi03_permits"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_odcnpi03_permits"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_odcnpi03_permits"
+    }
+  ],
+  "unmapped": [
+    "GBP",
+    "JPY",
+    "CHF"
+  ],
+  "failed_or_alt": {
+    "usd_oecd_gysam_404": [
+      "USAODCNPI03GYSAM",
+      "USAODCNPI03IXOBSAM",
+      "USAODCNPI03GYSAQ"
+    ],
+    "usd_national_primary_permit": [
+      "PERMIT"
+    ],
+    "usd_national_alts_not_primary": [
+      "HOUST",
+      "HOUST1F",
+      "HOUST5F",
+      "PERMIT1",
+      "COMPUTSA"
+    ],
+    "gbp_all_404": [
+      "GBRODCNPI03GYSAM",
+      "GBRODCNPI03IXOBSAM",
+      "GBRODCNPI03GYSAQ",
+      "GBRWSCNDW01GYSAM",
+      "GBRWSCNDW01IXOBSAM",
+      "ODCNPI03GBM661N",
+      "ODCNPI03GBM657S",
+      "WSCNDW01GBM661N"
+    ],
+    "jpy_odcnpi03_404_wscndw_stale": [
+      "JPNODCNPI03GYSAM",
+      "JPNODCNPI03IXOBSAM",
+      "JPNWSCNDW01GYSAM",
+      "JPNWSCNDW01IXOBSAM"
+    ],
+    "chf_all_404": [
+      "CHEODCNPI03GYSAM",
+      "CHEODCNPI03IXOBSAM",
+      "CHEODCNPI03GYSAQ",
+      "CHEWSCNDW01IXOBSAM"
+    ],
+    "odcnpi02_starts_g10_404": [
+      "CANODCNPI02GYSAM",
+      "AUSODCNPI02GYSAM",
+      "NZLODCNPI02GYSAM",
+      "DEUODCNPI02GYSAM",
+      "FRAODCNPI02GYSAM",
+      "USAODCNPI02GYSAM"
+    ],
+    "odcnpi03_mlm_stale_~2023_10": [
+      "CANODCNPI03MLM",
+      "AUSODCNPI03MLM",
+      "NZLODCNPI03MLM"
+    ],
+    "eur_ea19_gysam_stale_2023_08": [
+      "EA19ODCNPI03GYSAM",
+      "EA19ODCNPI03IXOBSAM"
+    ],
+    "eur_germany_proxy_primary": [
+      "DEUODCNPI03GYSAM"
+    ],
+    "eur_france_alt": [
+      "FRAODCNPI03GYSAM"
+    ],
+    "eur_bel_prt_alts": [
+      "BELODCNPI03GYSAM",
+      "PRTODCNPI03GYSAM"
+    ],
+    "eur_ita_esp_aut_nld": [
+      "ITAODCNPI03GYSAM",
+      "ESPODCNPI03GYSAM",
+      "AUTODCNPI03GYSAM",
+      "NLDODCNPI03GYSAM"
+    ],
+    "acm_fallback_live_not_used": [
+      "THREEFYTP10",
+      "THREEFYTP5",
+      "THREEFYTP2",
+      "THREEFYTP1"
+    ],
+    "acm_alts_404": [
+      "TENEXPPECTERMPREMIUM",
+      "T5YTP",
+      "T10YTP",
+      "ACMTP10",
+      "ACMTP05"
+    ]
+  },
+  "soft_best": {
+    "factor": "us_housing_stress_fx",
+    "n_months": 180,
+    "mean_mo": 0.0002713901132405161,
+    "tstat_ols": 1.1268558247780098,
+    "tstat_nw": 1.191776368563937,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.1111111111111111,
+    "top3": 0.44177277187235153,
+    "ann_sharpe_daily": 0.2596771300779052
+  },
+  "primary_sweep": {
+    "strategy": "high_housing_xs",
+    "scale": 3.5165606123917605,
+    "binding": "daily",
+    "is_total_return": 0.06374730492548131,
+    "is_static_loss": 0.07680287230690898,
+    "is_max_daily_dd": 0.04999999990547192,
+    "is_gates_pass": true,
+    "oos_total_return": -0.03998445724952615,
+    "oos_static_loss": 0.06270828204653445,
+    "oos_max_daily_dd": 0.015085855032219406,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.00037191133679459606,
+    "mean_mo_oos": -0.001340028508465661,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.00012278346285707527,
+    "scaled_full_pct_pos": 0.5222222222222223,
+    "scaled_ho_mean_mo": -0.001340028508465661,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

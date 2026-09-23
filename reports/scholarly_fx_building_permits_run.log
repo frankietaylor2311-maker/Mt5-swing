@@ -1,0 +1,33 @@
+=== scholarly FX Building-permits (ODCNPI03) wave (§43) ===
+OECD MEI ODCNPI03GYSAM permits YoY via FRED (monthly; USD=PERMIT→YoY; EUR=DEU; GBP/JPY/CHF unmapped) — housing-activity XS; distinct from house-price §35, OECD CLI/CCI/BCI, IP §42, employment §41, WUI, EPU/TPU. Locked sleeve untouched. ACM fallback not used (panel ≥4 foreign).
+Permits panel cols=['USD', 'EUR', 'CAD', 'AUD', 'NZD'] [1949-03-01..2026-10-01] pub_lag_m=2
+currency          fred_id freq  n_obs      start        end      last                                                                                          note
+     USD           PERMIT    M    788 1961-03-01 2026-10-01  3.489235                    US Census PERMIT levels → YoY % (USAODCNPI03GYSAM 404; HOUST/PERMIT1 alts)
+     EUR DEUODCNPI03GYSAM    M    378 1995-03-01 2026-08-01  5.574913 Germany proxy via DEUODCNPI03GYSAM (M) (EA19ODCNPI03GYSAM ends 2023-08; FRAODCNPI03GYSAM alt)
+     CAD CANODCNPI03GYSAM    M    930 1949-03-01 2026-08-01 12.324942                                               OECD MEI permits YoY CANODCNPI03GYSAM (monthly)
+     AUD AUSODCNPI03GYSAM    M    847 1956-03-01 2026-09-01  3.321170                                               OECD MEI permits YoY AUSODCNPI03GYSAM (monthly)
+     NZD NZLODCNPI03GYSAM    M    627 1974-04-01 2026-06-01 49.743994                                               OECD MEI permits YoY NZLODCNPI03GYSAM (monthly)
+     GBP                            0        NaN        NaN       NaN                                                             unmapped_on_fred_odcnpi03_permits
+     JPY                            0        NaN        NaN       NaN                                                             unmapped_on_fred_odcnpi03_permits
+     CHF                            0        NaN        NaN       NaN                                                             unmapped_on_fred_odcnpi03_permits
+Series source note: FRED OECD MEI {ISO3}ODCNPI03GYSAM permits YoY monthly (CAD/AUD/NZD; EUR=DEU Germany proxy — EA19 GYSAM stale; USD=PERMIT levels→YoY — USAODCNPI03GYSAM 404; GBP/JPY/CHF unmapped 404; ODCNPI02 starts 404; ACM THREEFYTP10 live fallback not used — panel ≥4 foreign)
+Score basis: yoy_growth_as_reported_or_derived unit=permits_yoy_pct
+Failed/alt documented: {'usd_oecd_gysam_404': ['USAODCNPI03GYSAM', 'USAODCNPI03IXOBSAM', 'USAODCNPI03GYSAQ'], 'usd_national_primary_permit': ['PERMIT'], 'usd_national_alts_not_primary': ['HOUST', 'HOUST1F', 'HOUST5F', 'PERMIT1', 'COMPUTSA'], 'gbp_all_404': ['GBRODCNPI03GYSAM', 'GBRODCNPI03IXOBSAM', 'GBRODCNPI03GYSAQ', 'GBRWSCNDW01GYSAM', 'GBRWSCNDW01IXOBSAM', 'ODCNPI03GBM661N', 'ODCNPI03GBM657S', 'WSCNDW01GBM661N'], 'jpy_odcnpi03_404_wscndw_stale': ['JPNODCNPI03GYSAM', 'JPNODCNPI03IXOBSAM', 'JPNWSCNDW01GYSAM', 'JPNWSCNDW01IXOBSAM'], 'chf_all_404': ['CHEODCNPI03GYSAM', 'CHEODCNPI03IXOBSAM', 'CHEODCNPI03GYSAQ', 'CHEWSCNDW01IXOBSAM'], 'odcnpi02_starts_g10_404': ['CANODCNPI02GYSAM', 'AUSODCNPI02GYSAM', 'NZLODCNPI02GYSAM', 'DEUODCNPI02GYSAM', 'FRAODCNPI02GYSAM', 'USAODCNPI02GYSAM'], 'odcnpi03_mlm_stale_~2023_10': ['CANODCNPI03MLM', 'AUSODCNPI03MLM', 'NZLODCNPI03MLM'], 'eur_ea19_gysam_stale_2023_08': ['EA19ODCNPI03GYSAM', 'EA19ODCNPI03IXOBSAM'], 'eur_germany_proxy_primary': ['DEUODCNPI03GYSAM'], 'eur_france_alt': ['FRAODCNPI03GYSAM'], 'eur_bel_prt_alts': ['BELODCNPI03GYSAM', 'PRTODCNPI03GYSAM'], 'eur_ita_esp_aut_nld': ['ITAODCNPI03GYSAM', 'ESPODCNPI03GYSAM', 'AUTODCNPI03GYSAM', 'NLDODCNPI03GYSAM'], 'acm_fallback_live_not_used': ['THREEFYTP10', 'THREEFYTP5', 'THREEFYTP2', 'THREEFYTP1'], 'acm_alts_404': ['TENEXPPECTERMPREMIUM', 'T5YTP', 'T10YTP', 'ACMTP10', 'ACMTP05']}
+US PERMIT YoY [1961-03-01..2026-10-01] n=788 series=PERMIT
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_housing_xs: scale=3.517 bind=daily IS mean_mo=0.037% OOS gates=True
+  sweep low_housing_xs: scale=0.713 bind=static IS mean_mo=-0.023% OOS gates=True
+  sweep high_housing_z_xs: scale=3.316 bind=daily IS mean_mo=0.050% OOS gates=True
+  sweep housing_chg_xs: scale=0.755 bind=static IS mean_mo=-0.061% OOS gates=True
+  sweep us_housing_stress_fx: scale=4.570 bind=daily IS mean_mo=0.131% OOS gates=True
+  sweep us_housing_haven_usd: scale=1.408 bind=static IS mean_mo=-0.045% OOS gates=True
+  sweep housing_ew: scale=3.728 bind=static IS mean_mo=-0.052% OOS gates=True
+=== factor summary ===
+  high_housing_xs: mean_mo=+0.006% NW_t=+0.11 %pos=52%
+  low_housing_xs: mean_mo=-0.025% NW_t=-0.50 %pos=44%
+  high_housing_z_xs: mean_mo=+0.015% NW_t=+0.27 %pos=55%
+  housing_chg_xs: mean_mo=-0.083% NW_t=-1.62 %pos=52%
+  us_housing_stress_fx: mean_mo=+0.027% NW_t=+1.19 %pos=11%
+  us_housing_haven_usd: mean_mo=-0.030% NW_t=-1.29 %pos=9%
+  housing_ew: mean_mo=-0.016% NW_t=-0.57 %pos=47%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
