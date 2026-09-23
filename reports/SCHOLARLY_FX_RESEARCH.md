@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, IMF/WEO reserves §34 after money-growth §33 / BIS credit §32 / REER §31; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404).
+**Status:** Active (2026-09-23 BST, OECD/BIS house-price §35 after reserves §34 / money-growth §33 / BIS credit §32; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -138,6 +138,14 @@
 - **Key refs:** Aizenman–Jeanne–Rancière reserve-adequacy literature; IMF reserve / Guidotti–Greenspan framing.
 - **Free data:** FRED IMF IFS `TRESEG*M052N` (USD/EUR-Germany/`DEM`/GBP/JPY/CAD/AUD). `TRESEGEZM052N` ends **2018-04** — Germany proxy for EUR. NZD/CHF **404**. Reserves/GDP **not formed** (free GDP units heterogeneous / many 404). US `TOTRESNS`/`WRESBAL` are Fed bank reserves — documented alt, not IFS external buffer.
 - **What we implement (wave §34):** `data/fred_reserves.py` + `strategies/reserves_fx.py` + `scripts/scholarly_fx_reserves_wave.py` — legs `high_reserves_xs` (primary), `low_reserves_xs`, `high_reserves_z_xs`, `reserves_chg_xs`, `us_reserves_stress_fx`, `us_reserves_haven_usd`, `reserves_ew`. PIT `pub_lag_months=3` + `signal_lag=1m` + 1d weight lag. **Distinct** from CA (§21), CB-BS (§22), fiscal (§28), debt (§29), TB (§30), REER (§31), credit (§32), money-growth (§33). **Not** overlaid on the locked sleeve.
+
+### 1.28 Housing wealth / residential house-price differentials (Aoki–Proudman–Vlieghe)
+
+- **Claim:** Housing wealth / collateral channel: currencies with *high* relative residential house-price *momentum* benefit from wealth and collateral effects → subsequent appreciation prior. Honesty alternate: low-HPI / housing-stress debtor premium.
+- **Key refs:** Aoki, Proudman & Vlieghe (BoE / housing–credit literature); BIS residential property price statistics; housing–collateral channel surveys.
+- **Free data:** FRED BIS `Q*R628BIS` real residential property price index (USD/EUR-Germany/`DER`/GBP/JPY/CAD/AUD/NZD/CHF). `QEUR628BIS` **404** — Germany proxy for EUR. Scores use YoY log-diff (not levels).
+- **What we implement (wave §35):** `data/fred_house_prices.py` + `strategies/house_price_fx.py` + `scripts/scholarly_fx_house_price_wave.py` — legs `high_hpi_xs` (primary), `low_hpi_xs`, `high_hpi_z_xs`, `hpi_chg_xs`, `us_hpi_stress_fx`, `us_hpi_haven_usd`, `hpi_ew`. PIT `pub_lag_months=4` + `signal_lag=1m` + 1d weight lag. **Distinct** from BIS credit (§32), debt (§29), REER (§31), money-growth (§33), reserves (§34), CA/TB, equity-diff, funding-liq, IG OAS (deferred). **Not** overlaid on the locked sleeve.
+
 
 ### 1.2 Momentum
 
@@ -357,7 +365,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19d. **Done (2026-09-23):** BIS/FRED REER undervaluation wave — promote=NO (see §31).
 19e. **Done (2026-09-23):** BIS private credit-to-GDP / credit-gap wave — promote=NO (see §32).
 19f. **Done (2026-09-23):** IMF IFS reserves / external-buffer FX wave — promote=NO (see §34).
-20. Next scholarly candidates (not sleeve coolers): OECD **house-price** differentials or IG OAS (`BAMLC0A0CM`) risk-appetite; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19g. **Done (2026-09-23):** OECD/BIS residential house-price FX wave — promote=NO (see §35).
+20. Next scholarly candidates (not sleeve coolers): IG OAS (`BAMLC0A0CM`) risk-appetite; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1602,7 +1611,51 @@ Sweep **run**. Primary `high_reserves_xs` scale≈2.333 bind=static; scaled HO m
 
 IMF IFS external-buffer / reserve-adequacy is the right free-data structure after money-growth (§33), and is cleanly distinct from CA/TB flows and public debt. On Yahoo D1 G10 the primary high-reserves HML is essentially **flat-to-negative** (full-sample ≈ −3.8 bp/mo, NW t ≈ −0.58, %pos 48%) — nowhere near 1%/mo + 70% hit-rate. The change and low-reserves honesty legs are only marginally positive. Soft/hard NW boards empty. NZD/CHF unmapped; reserves/GDP not formed on free data. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: OECD **house-price** differentials or IG OAS (`BAMLC0A0CM`) risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §35 (house-price). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate after §35: IG OAS (`BAMLC0A0CM`) risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_reserves_wave.md`, `scholarly_fx_reserves_*.csv`, `scholarly_fx_reserves_meta.json`.
+
+
+## 35. OECD/BIS residential house-price FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED BIS `Q*R628BIS` real residential property price index. Primary `high_hpi_xs`: XS long high relative HPI *momentum* (YoY log-diff) / short low (n=2/2) on full G10 USD+EUR(DE)+GBP+JPY+CAD+AUD+NZD+CHF. Companion: `low_hpi_xs`, `high_hpi_z_xs` (5y z of YoY), `hpi_chg_xs` (Δ12 of YoY), `us_hpi_stress_fx` / `us_hpi_haven_usd`, `hpi_ew`. PIT `pub_lag_months=4` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs credit / debt / REER / money / reserves:** BIS credit (§32) is private credit/GDP; debt (§29) is public debt/GDP; REER (§31) is real effective FX; money-growth (§33) is monetary aggregates; reserves (§34) is external buffer. This wave is the **housing wealth / collateral** channel (Aoki–Proudman–Vlieghe; BIS residential property prices).
+
+**Data notes:** Prefer `Q*R628BIS`. EUR=`QDER628BIS` (Germany; `QEUR628BIS` **404**). NZD/CHF **mapped** (`QNZR628BIS` / `QCHR628BIS`). Scores = **YoY log-diff** of index (not levels — units differ by country). FR/IT/ES alts documented coverage-only.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| high_hpi_xs | +0.036% | +0.55 | +0.60 | 52% | 12% | +0.16 |
+| low_hpi_xs | −0.040% | −0.61 | −0.67 | 47% | 13% | −0.18 |
+| high_hpi_z_xs | +0.028% | +0.45 | +0.46 | 52% | 12% | +0.16 |
+| hpi_chg_xs | +0.108% | +1.60 | +1.37 | 54% | 12% | +0.40 |
+| us_hpi_stress_fx | −0.015% | −0.45 | −0.65 | 13% | 28% | −0.11 |
+| us_hpi_haven_usd | +0.013% | +0.41 | +0.59 | 16% | 25% | +0.10 |
+| hpi_ew | +0.043% | +1.10 | +1.05 | 56% | 11% | +0.30 |
+
+### Consistency windows (primary `high_hpi_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | −0.16% | 36% | 94% | PASS | no |
+| year_2025 | +0.29% | 82% | 71% | PASS | no |
+| year_2026 | +0.09% | 50% | 84% | PASS | no |
+| holdout_365d | +0.11% | 50% | 70% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run**. Primary `high_hpi_xs` scale≈1.700 bind=static; scaled HO mean≈+0.19%/mo %pos 50% — clears: **NO**. Soft-best-ish leg is `hpi_chg_xs` (~+10.8 bp/mo, NW t≈1.37) — below soft board (|t|≥1.5).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_house_price.md`).
+
+### Honest read
+
+BIS residential HPI / housing wealth-collateral is the right free-data structure after reserves (§34), and is cleanly distinct from private credit/GDP and public debt. On Yahoo D1 G10 the primary high-HPI-momentum HML is essentially **flat** (full-sample ≈ +3.6 bp/mo, NW t ≈ 0.60, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Acceleration (`hpi_chg_xs`) is the soft-best but |NW t|<1.5. Soft/hard NW boards empty. Full G10 mapped (NZD/CHF live). No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IG OAS (`BAMLC0A0CM`) risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_house_price_wave.md`, `scholarly_fx_house_price_*.csv`, `scholarly_fx_house_price_meta.json`.
 

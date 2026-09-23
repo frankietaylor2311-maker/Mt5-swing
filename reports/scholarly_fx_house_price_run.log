@@ -1,0 +1,32 @@
+=== scholarly FX OECD/BIS residential house-price wave (§35) ===
+BIS Q*R628BIS via FRED — Aoki–Proudman–Vlieghe / housing wealth-collateral XS; distinct from credit, debt, REER, money-growth, reserves, CA/TB. Locked sleeve untouched.
+HPI panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'] [1955-05-01..2026-05-01] pub_lag_m=4 unit=index_level_ffill_monthly score_unit=yoy_log_diff
+currency    fred_id  n_obs      start        end     last                                                                     note
+     USD QUSR628BIS    673 1970-05-01 2026-05-01 156.4275                          BIS real residential property prices QUSR628BIS
+     EUR QDER628BIS    673 1970-05-01 2026-05-01 128.4619 Germany proxy via QDER628BIS (QEUR628BIS 404 on free FRED — not primary)
+     GBP QGBR628BIS    694 1968-08-01 2026-05-01 109.3388                          BIS real residential property prices QGBR628BIS
+     JPY QJPR628BIS    853 1955-05-01 2026-05-01 121.3699                          BIS real residential property prices QJPR628BIS
+     CAD QCAR628BIS    673 1970-05-01 2026-05-01 140.4085                          BIS real residential property prices QCAR628BIS
+     AUD QAUR628BIS    673 1970-05-01 2026-05-01 141.8785                          BIS real residential property prices QAUR628BIS
+     NZD QNZR628BIS    766 1962-08-01 2026-05-01 156.5652                          BIS real residential property prices QNZR628BIS
+     CHF QCHR628BIS    673 1970-05-01 2026-05-01 163.1733                          BIS real residential property prices QCHR628BIS
+Series source note: FRED BIS Q*R628BIS real residential property price index (quarterly); EUR=Germany QDER628BIS (QEUR628BIS 404); ffill to month-start after pub_lag_months=4; scores use YoY log-diff not levels
+Failed/alt documented: {'eur_aggregate_404': ['QEUR628BIS'], 'germany_alt_404': ['QGER628BIS'], 'eur_secondary_fr_it_es': ['QFRR628BIS', 'QITR628BIS', 'QESR628BIS'], 'nzd_chf_alt_404': ['QNZL628BIS', 'QCHER628BIS', 'QCHE628BIS', 'QSWIR628BIS'], 'china_coverage_only': ['QCNR628BIS']}
+US QUSR628BIS [1970-05-01..2026-05-01] n=673 series=QUSR628BIS
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_hpi_xs: scale=1.700 bind=static IS mean_mo=0.044% OOS gates=True
+  sweep low_hpi_xs: scale=0.902 bind=static IS mean_mo=-0.028% OOS gates=True
+  sweep high_hpi_z_xs: scale=1.098 bind=daily IS mean_mo=0.027% OOS gates=True
+  sweep hpi_chg_xs: scale=1.778 bind=static IS mean_mo=0.216% OOS gates=True
+  sweep us_hpi_stress_fx: scale=2.020 bind=static IS mean_mo=-0.022% OOS gates=True
+  sweep us_hpi_haven_usd: scale=4.123 bind=daily IS mean_mo=0.037% OOS gates=True
+  sweep hpi_ew: scale=3.968 bind=static IS mean_mo=0.182% OOS gates=True
+=== factor summary ===
+  high_hpi_xs: mean_mo=+0.036% NW_t=+0.60 %pos=52%
+  low_hpi_xs: mean_mo=-0.040% NW_t=-0.67 %pos=47%
+  high_hpi_z_xs: mean_mo=+0.028% NW_t=+0.46 %pos=52%
+  hpi_chg_xs: mean_mo=+0.108% NW_t=+1.37 %pos=54%
+  us_hpi_stress_fx: mean_mo=-0.015% NW_t=-0.65 %pos=13%
+  us_hpi_haven_usd: mean_mo=+0.013% NW_t=+0.59 %pos=16%
+  hpi_ew: mean_mo=+0.043% NW_t=+1.05 %pos=56%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False

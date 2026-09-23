@@ -1,0 +1,194 @@
+{
+  "ok": true,
+  "section": 35,
+  "path": "bis_oecd_residential_house_price",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 4,
+  "signal_lag_months": 1,
+  "z_window": 60,
+  "yoy_periods": 12,
+  "chg_periods": 12,
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "high_hpi_xs",
+    "low_hpi_xs",
+    "high_hpi_z_xs",
+    "hpi_chg_xs",
+    "us_hpi_stress_fx",
+    "us_hpi_haven_usd",
+    "hpi_ew"
+  ],
+  "primary": "high_hpi_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "BIS Q*R628BIS real residential HPI; scores = YoY log-diff of index; also 5y z / \u039412 of YoY boarded; high-HPI-momentum primary",
+  "eur_mapping": "QDER628BIS Germany proxy (QEUR628BIS 404 on free FRED)",
+  "nzd_chf": "mapped via QNZR628BIS / QCHR628BIS",
+  "score_unit": "yoy_log_diff",
+  "distinct_from": [
+    "current_account_CA_GDP_21",
+    "CB_balance_sheet_QE_22",
+    "debt_gdp_GGGDTA_29",
+    "fiscal_balance_GGNLBA_28",
+    "trade_balance_30",
+    "bis_reer_RB_BIS_31",
+    "bis_credit_gap_32",
+    "money_growth_MABMM301_33",
+    "reserves_TRESEG_34",
+    "funding_liquidity",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew",
+    "ig_oas_BAMLC0A0CM_deferred"
+  ],
+  "citations": [
+    "Aoki\u2013Proudman\u2013Vlieghe housing wealth / collateral channel",
+    "BIS residential property price literature / housing\u2013credit channel",
+    "Honesty alternate: low-HPI / housing-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "QUSR628BIS",
+      "n_obs": 673,
+      "start": "1970-05-01",
+      "end": "2026-05-01",
+      "last": 156.4275,
+      "note": "BIS real residential property prices QUSR628BIS"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "QDER628BIS",
+      "n_obs": 673,
+      "start": "1970-05-01",
+      "end": "2026-05-01",
+      "last": 128.4619,
+      "note": "Germany proxy via QDER628BIS (QEUR628BIS 404 on free FRED \u2014 not primary)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "QGBR628BIS",
+      "n_obs": 694,
+      "start": "1968-08-01",
+      "end": "2026-05-01",
+      "last": 109.3388,
+      "note": "BIS real residential property prices QGBR628BIS"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "QJPR628BIS",
+      "n_obs": 853,
+      "start": "1955-05-01",
+      "end": "2026-05-01",
+      "last": 121.3699,
+      "note": "BIS real residential property prices QJPR628BIS"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "QCAR628BIS",
+      "n_obs": 673,
+      "start": "1970-05-01",
+      "end": "2026-05-01",
+      "last": 140.4085,
+      "note": "BIS real residential property prices QCAR628BIS"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "QAUR628BIS",
+      "n_obs": 673,
+      "start": "1970-05-01",
+      "end": "2026-05-01",
+      "last": 141.8785,
+      "note": "BIS real residential property prices QAUR628BIS"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "QNZR628BIS",
+      "n_obs": 766,
+      "start": "1962-08-01",
+      "end": "2026-05-01",
+      "last": 156.5652,
+      "note": "BIS real residential property prices QNZR628BIS"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "QCHR628BIS",
+      "n_obs": 673,
+      "start": "1970-05-01",
+      "end": "2026-05-01",
+      "last": 163.1733,
+      "note": "BIS real residential property prices QCHR628BIS"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "eur_aggregate_404": [
+      "QEUR628BIS"
+    ],
+    "germany_alt_404": [
+      "QGER628BIS"
+    ],
+    "eur_secondary_fr_it_es": [
+      "QFRR628BIS",
+      "QITR628BIS",
+      "QESR628BIS"
+    ],
+    "nzd_chf_alt_404": [
+      "QNZL628BIS",
+      "QCHER628BIS",
+      "QCHE628BIS",
+      "QSWIR628BIS"
+    ],
+    "china_coverage_only": [
+      "QCNR628BIS"
+    ]
+  },
+  "soft_best": {
+    "factor": "hpi_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.0010808032541980823,
+    "tstat_ols": 1.59975648600699,
+    "tstat_nw": 1.3687350550893342,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5388888888888889,
+    "top3": 0.11760052414258168,
+    "ann_sharpe_daily": 0.4006713913723696
+  },
+  "primary_sweep": {
+    "strategy": "high_hpi_xs",
+    "scale": 1.6996849762898432,
+    "binding": "static",
+    "is_total_return": 0.0824720933052332,
+    "is_static_loss": 0.09999999990839467,
+    "is_max_daily_dd": 0.017267281715467108,
+    "is_gates_pass": true,
+    "oos_total_return": 0.03523037384353023,
+    "oos_static_loss": 0.0004948737794133194,
+    "oos_max_daily_dd": 0.006545883257810929,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.00044352651993706326,
+    "mean_mo_oos": 0.001888870888625216,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0006057208506297293,
+    "scaled_full_pct_pos": 0.5222222222222223,
+    "scaled_ho_mean_mo": 0.001888870888625216,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

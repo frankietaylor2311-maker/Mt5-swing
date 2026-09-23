@@ -1,0 +1,9 @@
+currency,fred_id,n_obs,start,end,last,note
+USD,QUSR628BIS,673,1970-05-01,2026-05-01,156.4275,BIS real residential property prices QUSR628BIS
+EUR,QDER628BIS,673,1970-05-01,2026-05-01,128.4619,Germany proxy via QDER628BIS (QEUR628BIS 404 on free FRED — not primary)
+GBP,QGBR628BIS,694,1968-08-01,2026-05-01,109.3388,BIS real residential property prices QGBR628BIS
+JPY,QJPR628BIS,853,1955-05-01,2026-05-01,121.3699,BIS real residential property prices QJPR628BIS
+CAD,QCAR628BIS,673,1970-05-01,2026-05-01,140.4085,BIS real residential property prices QCAR628BIS
+AUD,QAUR628BIS,673,1970-05-01,2026-05-01,141.8785,BIS real residential property prices QAUR628BIS
+NZD,QNZR628BIS,766,1962-08-01,2026-05-01,156.5652,BIS real residential property prices QNZR628BIS
+CHF,QCHR628BIS,673,1970-05-01,2026-05-01,163.1733,BIS real residential property prices QCHR628BIS
