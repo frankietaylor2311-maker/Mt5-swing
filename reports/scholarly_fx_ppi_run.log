@@ -1,0 +1,34 @@
+=== scholarly FX OECD producer-price (PIEAMP01) wave (§51) ===
+OECD MEI PIEAMP01 PPI YoY via FRED (monthly GYM + JPY/AUD/NZD level→YoY; pub_lag=2) — PPI YoY XS; Dahlquist–Hasseltoft economic-momentum; STALE ~2022-12; distinct from IP §42, retail §46, ULC/LP/CU §48–50. Locked sleeve untouched.
+PPI panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'CHF', 'AUD', 'NZD'] [1948-03-01..2023-03-01] pub_lag_m=2
+currency         fred_id freq  n_obs      start        end      last                                                                                                           note
+     USD  USAPIEAMP01GYM    M    900 1948-03-01 2023-02-01  7.944540                       OECD MEI manufacturing PPI YoY USAPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)
+     EUR  DEUPIEAMP01GYM    M    324 1996-03-01 2023-02-01 11.288889 Germany proxy via DEUPIEAMP01GYM (M growth as reported) (EA19PIEAMP01GYM ends 2022-12; FRA GYM alt; GYSAM 404)
+     GBP  GBRPIEAMP01GYM    M    157 2010-02-01 2023-02-01 12.950820                       OECD MEI manufacturing PPI YoY GBRPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)
+     JPY   JPNPPDMMINMEI    M    744 1961-03-01 2023-02-01  7.063197                  OECD MEI JPNPPDMMINMEI levels → YoY % (JPNPIEAMP01GYM / PIEAMP01JP* 404; ends ~2022-12 stale)
+     CAD  CANPIEAMP01GYM    M    792 1957-03-01 2023-02-01  7.614213                       OECD MEI manufacturing PPI YoY CANPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)
+     CHF  CHEPIEAMP01GYM    M    247 2002-08-01 2023-02-01  2.287260                       OECD MEI manufacturing PPI YoY CHEPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)
+     AUD PIEAMP01AUQ661N    Q    643 1969-09-01 2023-03-01  5.955882       OECD MEI PIEAMP01AUQ661N quarterly index → YoY % (AUS/NZL PIEAMP01GYM 404; ends ~2022-07..2023-01 stale)
+     NZD PIEAMP01NZQ661N    Q    745 1961-03-01 2023-03-01 14.836066       OECD MEI PIEAMP01NZQ661N quarterly index → YoY % (AUS/NZL PIEAMP01GYM 404; ends ~2022-07..2023-01 stale)
+Series source note: FRED OECD MEI {ISO3}PIEAMP01GYM manufacturing PPI YoY monthly (USD/GBP/CAD/CHF; EUR=DEU Germany proxy — EA19 GYM stale same end; JPY=JPNPPDMMINMEI levels→YoY — OECD PIEAMP Japan 404; AUD/NZD=PIEAMP01*Q661N quarterly index→YoY — GYM 404; panel STALE ~2022-12; PPIACO/PPIFIS US alts not mixed)
+Score basis: yoy_growth_as_reported_or_derived unit=ppi_yoy_pct
+Failed/alt documented: {'iso3_pieati_gysam_404': ['USAPIEATI01GYSAM', 'DEUPIEATI01GYSAM', 'FRAPIEATI01GYSAM', 'GBRPIEATI01GYSAM', 'JPNPIEATI01GYSAM', 'CANPIEATI01GYSAM', 'AUSPIEATI01GYSAM', 'NZLPIEATI01GYSAM', 'CHEPIEATI01GYSAM', 'EA19PIEATI01GYSAM'], 'iso3_pieamp_gysam_404': ['USAPIEAMP01GYSAM', 'DEUPIEAMP01GYSAM', 'GBRPIEAMP01GYSAM', 'JPNPIEAMP01GYSAM', 'CANPIEAMP01GYSAM', 'AUSPIEAMP01GYSAM', 'NZLPIEAMP01GYSAM', 'CHEPIEAMP01GYSAM', 'EA19PIEAMP01GYSAM'], 'iso2_m657s_q657s_404': ['PIEAMP01USM657S', 'PIEAMP01DEM657S', 'PIEAMP01GBM657S', 'PIEAMP01JPM657S', 'PIEAMP01CAM657S', 'PIEAMP01AUM657S', 'PIEAMP01NZM657S', 'PIEAMP01CHM657S', 'PIEAMP01USQ657S', 'PIEAMP01DEQ657S'], 'gym_m661n_stale_~2022_12': ['USAPIEAMP01GYM', 'DEUPIEAMP01GYM', 'GBRPIEAMP01GYM', 'CANPIEAMP01GYM', 'CHEPIEAMP01GYM', 'EA19PIEAMP01GYM', 'FRAPIEAMP01GYM', 'PIEAMP01USM661N', 'PIEAMP01DEM661N', 'PIEAMP01GBM661N'], 'jpy_oecd_pieamp_404_jpnppdm_primary': ['JPNPIEAMP01GYM', 'PIEAMP01JPM661N', 'PIEAMP01JPQ661N', 'JPNPPDMMINMEI'], 'aud_nzd_gym_404_q661n_primary': ['AUSPIEAMP01GYM', 'NZLPIEAMP01GYM', 'PIEAMP01AUM661N', 'PIEAMP01NZM661N', 'PIEAMP01AUQ661N', 'PIEAMP01NZQ661N'], 'eur_ea19_gym_stale_2022_12': ['EA19PIEAMP01GYM', 'EA19PIEATI01GYM'], 'eur_germany_proxy_primary': ['DEUPIEAMP01GYM'], 'eur_france_alt_stale': ['FRAPIEAMP01GYM', 'FRAPIEATI01GYM'], 'us_national_alts_not_mixed': ['PPIACO', 'PPIFIS', 'PPIFES']}
+Stale: True note=OECD MEI PPI on free FRED ends ~2022-12 (AUD Q ~2023-01; NZD Q ~2022-07); post-2023 ranks ffilled frozen
+US USAPIEAMP01GYM [1948-03-01..2023-02-01] n=900 series=USAPIEAMP01GYM
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_ppi_xs: scale=2.054 bind=daily IS mean_mo=0.239% OOS gates=True
+  sweep low_ppi_xs: scale=0.453 bind=static IS mean_mo=-0.057% OOS gates=True
+  sweep high_ppi_z_xs: scale=2.198 bind=daily IS mean_mo=0.136% OOS gates=True
+  sweep ppi_chg_xs: scale=1.244 bind=static IS mean_mo=0.022% OOS gates=True
+  sweep us_ppi_stress_fx: scale=2.482 bind=static IS mean_mo=-0.015% OOS gates=True
+  sweep us_ppi_haven_usd: scale=5.092 bind=daily IS mean_mo=0.023% OOS gates=True
+  sweep ppi_ew: scale=3.348 bind=daily IS mean_mo=0.141% OOS gates=True
+=== factor summary ===
+  high_ppi_xs: mean_mo=+0.116% NW_t=+2.00 %pos=59%
+  low_ppi_xs: mean_mo=-0.126% NW_t=-2.14 %pos=41%
+  high_ppi_z_xs: mean_mo=+0.059% NW_t=+1.03 %pos=49%
+  ppi_chg_xs: mean_mo=+0.005% NW_t=+0.08 %pos=52%
+  us_ppi_stress_fx: mean_mo=-0.005% NW_t=-0.29 %pos=6%
+  us_ppi_haven_usd: mean_mo=+0.005% NW_t=+0.25 %pos=6%
+  ppi_ew: mean_mo=+0.039% NW_t=+1.38 %pos=50%
+board n=7 soft=1 hard=1 promote_unscaled=False scaled_primary=False

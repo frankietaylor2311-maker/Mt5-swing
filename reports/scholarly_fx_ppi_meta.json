@@ -1,0 +1,275 @@
+{
+  "ok": true,
+  "section": 51,
+  "path": "oecd_mei_ppi_pieamp01",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "ppi_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_ppi_xs",
+    "low_ppi_xs",
+    "high_ppi_z_xs",
+    "ppi_chg_xs",
+    "us_ppi_stress_fx",
+    "us_ppi_haven_usd",
+    "ppi_ew"
+  ],
+  "primary": "high_ppi_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 1,
+  "hard_nw_pos": 1,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI {ISO3}PIEAMP01GYM manufacturing PPI YoY monthly + JPY JPNPPDMMINMEI levels\u2192YoY + AUD/NZD PIEAMP01*Q661N index\u2192YoY quarterly\u2192monthly after pub_lag=2); XS on PPI YoY; also 5y z / +\u039412 of YoY boarded; high_ppi primary (Dahlquist economic-momentum \u2192 appreciate); n_long=n_short=2 full G10 foreign",
+  "eur_mapping": "DEUPIEAMP01GYM Germany proxy (EA19PIEAMP01GYM ends 2022-12; FRA GYM alt)",
+  "coverage_g10": "full G10 mapped (GYM monthly + JPY JPNPPDMMINMEI + AUD/NZD Q661N; STALE ~2022-12)",
+  "series_map": {
+    "USD": "USAPIEAMP01GYM",
+    "EUR": "DEUPIEAMP01GYM",
+    "GBP": "GBRPIEAMP01GYM",
+    "JPY": "JPNPPDMMINMEI",
+    "CAD": "CANPIEAMP01GYM",
+    "AUD": "PIEAMP01AUQ661N",
+    "NZD": "PIEAMP01NZQ661N",
+    "CHF": "CHEPIEAMP01GYM"
+  },
+  "score_basis": "yoy_growth_as_reported",
+  "distinct_from": [
+    "employment_41",
+    "industrial_production_42",
+    "ulc_48",
+    "labour_prod_49",
+    "balassa_samuelson_14",
+    "building_permits_43",
+    "retail_sales_46",
+    "house_price_35",
+    "bis_reer_31",
+    "money_growth_33",
+    "bis_credit_gap_32",
+    "bis_dsr_47",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "macro_diff_EW_CPI_IP_UR_blend"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum incl. PPI",
+    "OECD MEI PIEAMP01 manufacturing producer prices",
+    "Honesty: low PPI / cost-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "USAPIEAMP01GYM",
+      "freq": "M",
+      "n_obs": 900,
+      "start": "1948-03-01",
+      "end": "2023-02-01",
+      "last": 7.9445401142,
+      "note": "OECD MEI manufacturing PPI YoY USAPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "DEUPIEAMP01GYM",
+      "freq": "M",
+      "n_obs": 324,
+      "start": "1996-03-01",
+      "end": "2023-02-01",
+      "last": 11.2888888889,
+      "note": "Germany proxy via DEUPIEAMP01GYM (M growth as reported) (EA19PIEAMP01GYM ends 2022-12; FRA GYM alt; GYSAM 404)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRPIEAMP01GYM",
+      "freq": "M",
+      "n_obs": 157,
+      "start": "2010-02-01",
+      "end": "2023-02-01",
+      "last": 12.9508196721,
+      "note": "OECD MEI manufacturing PPI YoY GBRPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNPPDMMINMEI",
+      "freq": "M",
+      "n_obs": 744,
+      "start": "1961-03-01",
+      "end": "2023-02-01",
+      "last": 7.063197026022761,
+      "note": "OECD MEI JPNPPDMMINMEI levels \u2192 YoY % (JPNPIEAMP01GYM / PIEAMP01JP* 404; ends ~2022-12 stale)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANPIEAMP01GYM",
+      "freq": "M",
+      "n_obs": 792,
+      "start": "1957-03-01",
+      "end": "2023-02-01",
+      "last": 7.6142131958,
+      "note": "OECD MEI manufacturing PPI YoY CANPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "CHEPIEAMP01GYM",
+      "freq": "M",
+      "n_obs": 247,
+      "start": "2002-08-01",
+      "end": "2023-02-01",
+      "last": 2.287260326,
+      "note": "OECD MEI manufacturing PPI YoY CHEPIEAMP01GYM (monthly as reported; ends ~2022-12 stale)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "PIEAMP01AUQ661N",
+      "freq": "Q",
+      "n_obs": 643,
+      "start": "1969-09-01",
+      "end": "2023-03-01",
+      "last": 5.955882352941622,
+      "note": "OECD MEI PIEAMP01AUQ661N quarterly index \u2192 YoY % (AUS/NZL PIEAMP01GYM 404; ends ~2022-07..2023-01 stale)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "PIEAMP01NZQ661N",
+      "freq": "Q",
+      "n_obs": 745,
+      "start": "1961-03-01",
+      "end": "2023-03-01",
+      "last": 14.83606557377044,
+      "note": "OECD MEI PIEAMP01NZQ661N quarterly index \u2192 YoY % (AUS/NZL PIEAMP01GYM 404; ends ~2022-07..2023-01 stale)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "iso3_pieati_gysam_404": [
+      "USAPIEATI01GYSAM",
+      "DEUPIEATI01GYSAM",
+      "FRAPIEATI01GYSAM",
+      "GBRPIEATI01GYSAM",
+      "JPNPIEATI01GYSAM",
+      "CANPIEATI01GYSAM",
+      "AUSPIEATI01GYSAM",
+      "NZLPIEATI01GYSAM",
+      "CHEPIEATI01GYSAM",
+      "EA19PIEATI01GYSAM"
+    ],
+    "iso3_pieamp_gysam_404": [
+      "USAPIEAMP01GYSAM",
+      "DEUPIEAMP01GYSAM",
+      "GBRPIEAMP01GYSAM",
+      "JPNPIEAMP01GYSAM",
+      "CANPIEAMP01GYSAM",
+      "AUSPIEAMP01GYSAM",
+      "NZLPIEAMP01GYSAM",
+      "CHEPIEAMP01GYSAM",
+      "EA19PIEAMP01GYSAM"
+    ],
+    "iso2_m657s_q657s_404": [
+      "PIEAMP01USM657S",
+      "PIEAMP01DEM657S",
+      "PIEAMP01GBM657S",
+      "PIEAMP01JPM657S",
+      "PIEAMP01CAM657S",
+      "PIEAMP01AUM657S",
+      "PIEAMP01NZM657S",
+      "PIEAMP01CHM657S",
+      "PIEAMP01USQ657S",
+      "PIEAMP01DEQ657S"
+    ],
+    "gym_m661n_stale_~2022_12": [
+      "USAPIEAMP01GYM",
+      "DEUPIEAMP01GYM",
+      "GBRPIEAMP01GYM",
+      "CANPIEAMP01GYM",
+      "CHEPIEAMP01GYM",
+      "EA19PIEAMP01GYM",
+      "FRAPIEAMP01GYM",
+      "PIEAMP01USM661N",
+      "PIEAMP01DEM661N",
+      "PIEAMP01GBM661N"
+    ],
+    "jpy_oecd_pieamp_404_jpnppdm_primary": [
+      "JPNPIEAMP01GYM",
+      "PIEAMP01JPM661N",
+      "PIEAMP01JPQ661N",
+      "JPNPPDMMINMEI"
+    ],
+    "aud_nzd_gym_404_q661n_primary": [
+      "AUSPIEAMP01GYM",
+      "NZLPIEAMP01GYM",
+      "PIEAMP01AUM661N",
+      "PIEAMP01NZM661N",
+      "PIEAMP01AUQ661N",
+      "PIEAMP01NZQ661N"
+    ],
+    "eur_ea19_gym_stale_2022_12": [
+      "EA19PIEAMP01GYM",
+      "EA19PIEATI01GYM"
+    ],
+    "eur_germany_proxy_primary": [
+      "DEUPIEAMP01GYM"
+    ],
+    "eur_france_alt_stale": [
+      "FRAPIEAMP01GYM",
+      "FRAPIEATI01GYM"
+    ],
+    "us_national_alts_not_mixed": [
+      "PPIACO",
+      "PPIFIS",
+      "PPIFES"
+    ]
+  },
+  "stale": true,
+  "stale_note": "OECD MEI PPI on free FRED ends ~2022-12 (AUD Q ~2023-01; NZD Q ~2022-07); post-2023 ranks ffilled frozen",
+  "soft_best": {
+    "factor": "high_ppi_xs",
+    "n_months": 180,
+    "mean_mo": 0.0011634411998947048,
+    "tstat_ols": 1.8496200866716042,
+    "tstat_nw": 2.0047454143706687,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5944444444444444,
+    "top3": 0.08433574195225421,
+    "ann_sharpe_daily": 0.36122560550802224
+  },
+  "primary_sweep": {
+    "strategy": "high_ppi_xs",
+    "scale": 2.053545939802961,
+    "binding": "daily",
+    "is_total_return": 0.3767244942663017,
+    "is_static_loss": 0.05126657687533662,
+    "is_max_daily_dd": 0.04999999989422067,
+    "is_gates_pass": true,
+    "oos_total_return": 0.022611146461450238,
+    "oos_static_loss": 0.01993671263214521,
+    "oos_max_daily_dd": 0.010922846864993771,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.0023863494422132125,
+    "mean_mo_oos": 0.003418555065575627,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0023617845021808278,
+    "scaled_full_pct_pos": 0.5944444444444444,
+    "scaled_ho_mean_mo": 0.003418555065575627,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

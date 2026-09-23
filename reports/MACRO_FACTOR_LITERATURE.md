@@ -42,7 +42,7 @@ New line = math/statistics + economics/news/war factors grounded in scholar outc
 | Caldara–Iacoviello GPR daily/monthly | Geopolitical risk | **Present** `gpr_daily.csv`, `gpr_monthly.csv` (+ xls) |
 | AI-GPR daily (Iacoviello–Tong) | Alt news-based GPR | **Present** `ai_gpr_daily.csv` |
 | Country-specific GPR | Liu–Zhang long/short GPR FX | **Partial** — monthly export has country columns; not yet wired to legs |
-| Multi-country CPI / PPI / IP / retail / unemployment | Dahlquist economic momentum | **Missing** — need FRED/OECD/national stats panel |
+| Multi-country CPI / PPI / IP / retail / unemployment | Dahlquist economic momentum | **Partial** — IP §42 / retail §46 / employment §41 / PPI §51 boarded (OECD MEI; PPI STALE ~2022-12); CPI UR still thin in macro_diff EW |
 | News sentiment (FX-specific) | Event studies / war headlines beyond GPR | **Missing** — GDELT / RavenPack / Factiva (licensed) |
 | Cross-currency basis / CIP | Intermediary stress | **Missing** |
 | FTMO MT5 OHLC (H1/H4/D1) | Golive / true costs | **Missing** `data/ftmo/` empty |
