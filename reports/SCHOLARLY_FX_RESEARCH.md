@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, OECD CLI §37 after IG OAS §36 / house-price §35 / reserves §34; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped).
+**Status:** Active (2026-09-23 BST, OECD CCI §38 after CLI §37 / IG OAS §36 / house-price §35; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -163,6 +163,13 @@
 - **Free data:** FRED `USALOLITOAASTSAM`, `DEULOLITOAASTSAM` (EUR Germany proxy; `EA19LOLITOAASTSAM` ends 2022-11), `GBRLOLITOAASTSAM`, `JPNLOLITOAASTSAM`, `CANLOLITOAASTSAM`, `AUSLOLITOAASTSAM`. NZD (`NZL…` ends 2019) / CHF (`CHE…` ends 2022) **unmapped**.
 - **What we implement (wave §37):** `data/fred_oecd_cli.py` + `strategies/oecd_cli_fx.py` + `scripts/scholarly_fx_oecd_cli_wave.py` — legs `high_cli_xs` (primary), `low_cli_xs`, `high_cli_z_xs`, `cli_chg_xs`, `us_cli_weak_fx`, `us_cli_haven_usd`, `cli_ew`. PIT monthly `pub_lag=2m` + 1d weight lag (no extra month signal lag). **Distinct** from coincident macro-diff CPI/IP/UR, house-price §35, money-growth §33, IG OAS §36. **Not** overlaid on the locked sleeve.
 
+
+### 1.31 OECD Consumer Confidence (CCI) differentials → FX
+
+- **Claim:** Relative *consumer sentiment* / confidence differentials forecast risk appetite and FX; currencies with high lagged CCI (or CCI change) vs peers appreciate (Ludvigson-style sentiment channel framed for FX à la Dahlquist macro differentials — *sentiment*, not coincident IP/UR/CPI and not leading OECD CLI).
+- **Key refs:** Ludvigson (2004) Consumer Confidence and Consumer Spending; OECD Consumer Confidence Indicators (MEI); Dahlquist & Hasseltoft macro–FX differential framing applied to sentiment.
+- **Free data:** FRED `CSCICP02*M460S` balances (`CSCICP02GBM460S`, `CSCICP02EZM460S`, `CSCICP02JPM460S`, `CSCICP02AUM460S`); USD `USACSCICP02STSAM` (`CSCICP02USM460S` 404). Amplitude `CSCICP03*M665S` ends ~2024-01 — stale, not primary. CAD/NZD/CHF **unmapped**.
+- **What we implement (wave §38):** `data/fred_oecd_cci.py` + `strategies/oecd_cci_fx.py` + `scripts/scholarly_fx_oecd_cci_wave.py` — legs `high_cci_xs` (primary), `low_cci_xs`, `high_cci_z_xs`, `cci_chg_xs`, `us_cci_weak_fx`, `us_cci_haven_usd`, `cci_ew`. PIT monthly `pub_lag=2m` + 1d weight lag. **Distinct** from OECD CLI §37, coincident macro-diff, house-price §35, money-growth §33, IG OAS §36. **Not** overlaid on the locked sleeve.
 
 
 ### 1.2 Momentum
@@ -331,6 +338,10 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `src/mt5_swing/strategies/cb_balance_sheet_fx.py` | QE PB USD/FX tilts + peer XS + BS/GDP |
 | `scripts/scholarly_fx_cb_bs_wave.py` | CB-BS / QE wave eval + FTMO risk sweep |
 | `reports/scholarly_fx_cb_bs_wave.md` | CB balance-sheet / QE wave board |
+| `src/mt5_swing/data/fred_oecd_cci.py` | OECD MEI CCI balances (CSCICP02) + US standardised CCI PIT |
+| `src/mt5_swing/strategies/oecd_cci_fx.py` | High/low CCI XS + chg/z + US weak/haven tilts + EW |
+| `scripts/scholarly_fx_oecd_cci_wave.py` | CCI sentiment wave eval + FTMO risk sweep |
+| `reports/scholarly_fx_oecd_cci_wave.md` | OECD CCI consumer-confidence wave board |
 
 ---
 
@@ -345,6 +356,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 7. Rogoff, K. (1996). The Purchasing Power Parity Puzzle. *Journal of Economic Literature*.
 8. Chen, Y., Rogoff, K. & Rossi, B. (2010). Can Exchange Rates Forecast Commodity Prices? *QJE*.
 9. Dahlquist, M. & Hasseltoft, H. — macro differentials and currency risk premia (framing).
+9b. Ludvigson, S. (2004). Consumer Confidence and Consumer Spending. *JEP*.
 10. Della Corte, P., Riddiough, S. & Sarno, L. (2016). Currency Premia and Global Imbalances. *RFS*.
 11. Gourinchas, P.-O. & Rey, H. (2007). International Financial Adjustment. *JPE*.
 12. Gagnon, J., Raskin, M., Remache, J. & Sack, B. (2011). The Federal Reserve's Large-Scale Asset Purchases. *IJCB*.
@@ -386,7 +398,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19g. **Done (2026-09-23):** OECD/BIS residential house-price FX wave — promote=NO (see §35).
 19h. **Done (2026-09-23):** ICE BofA IG OAS / credit risk-appetite FX wave — promote=NO (see §36).
 19i. **Done (2026-09-23):** OECD CLI leading-indicator FX wave — promote=NO (see §37).
-20. Next scholarly candidates (not sleeve coolers): OECD **CLI** / business-cycle leading-indicator differentials or manufacturing **PMI**/ISM differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19j. **Done (2026-09-23):** OECD CCI / consumer-confidence FX wave — promote=NO (see §38).
+20. Next scholarly candidates (not sleeve coolers): manufacturing **PMI**/ISM differentials (or OECD BCI `BSCICP02*M460S` if ISM NAPM remains 404); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1764,7 +1777,49 @@ Sweep **run**. Primary `high_cli_xs` scale≈1.505 bind=static; scaled HO mean�
 
 OECD CLI is the right free-data *leading*-activity structure after IG OAS (§36), and is cleanly distinct from coincident macro-diff CPI/IP/UR. On Yahoo D1 G10 the primary high-CLI-YoY HML is essentially **flat-to-mildly-positive** (full-sample ≈ +4.5 bp/mo, NW t ≈ 0.72, %pos 54%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty. NZD/CHF coverage gaps documented. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: manufacturing **PMI**/ISM differentials or consumer-confidence differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §38 (OECD CCI). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: manufacturing **PMI**/ISM differentials (or OECD BCI) — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_oecd_cli_wave.md`, `scholarly_fx_oecd_cli_*.csv`, `scholarly_fx_oecd_cli_meta.json`.
 
+## 38. OECD CCI / consumer-confidence FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED OECD MEI consumer-confidence balances `CSCICP02*M460S` (+ US `USACSCICP02STSAM`; `CSCICP02USM460S` 404). Amplitude-adjusted `CSCICP03*M665S` probed but **stale** (~ends 2024-01) — not primary. Primary `high_cci_xs`: long high relative CCI YoY change (`CCI_t − CCI_{t−12}`) / short low. Companions: `low_cci_xs` (honesty), `high_cci_z_xs`, `cci_chg_xs` (Δ12 of YoY), `us_cci_weak_fx` / `us_cci_haven_usd` (US CCI YoY z ≤ −1.0), `cci_ew`. PIT monthly `pub_lag=2m` + 1d weight lag (no extra month signal lag); z_window=60, min_periods=24, usd_tilt=0.5; costs 1.5 bps/side.
+
+**What is new vs CLI / macro-diff / IG OAS:** OECD CLI §37 is *leading* activity; this wave is *consumer sentiment* (Ludvigson-style). Distinct from coincident macro-diff CPI/IP/UR, house-price §35, money-growth §33, corporate OAS §36. Country XS on YoY CCI change among foreign CSCICP02 balances (USD tilt uses USACSCICP02STSAM).
+
+**Data notes:** Prefer FTMO MT5 D1 if present — absent → `approximate_non_ftmo` (Yahoo D1). EUR = EZ `CSCICP02EZM460S` (live). CAD/NZD/CHF **unmapped** (`CSCICP02` 404; `CSCICP03` amplitude stale). Mapped: USD, EUR, GBP, JPY, AUD.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| high_cci_xs | +0.016% | +0.24 | +0.26 | 53% | 11% | +0.03 |
+| low_cci_xs | −0.029% | −0.44 | −0.47 | 47% | 12% | −0.07 |
+| high_cci_z_xs | −0.034% | −0.53 | −0.54 | 46% | 13% | −0.15 |
+| cci_chg_xs | −0.027% | −0.43 | −0.50 | 52% | 11% | −0.13 |
+| us_cci_weak_fx | +0.002% | +0.06 | +0.06 | 14% | 33% | +0.02 |
+| us_cci_haven_usd | −0.004% | −0.12 | −0.12 | 11% | 34% | −0.03 |
+| cci_ew | −0.003% | −0.07 | −0.08 | 52% | 12% | −0.05 |
+
+### Consistency windows (primary `high_cci_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.55% | 64% | 63% | PASS | no |
+| year_2025 | +0.21% | 64% | 68% | PASS | no |
+| year_2026 | +0.09% | 50% | 95% | PASS | no |
+| holdout_365d | +0.22% | 58% | 54% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run**. Primary `high_cci_xs` scale≈0.864 bind=static; scaled HO mean≈+0.19%/mo %pos 58% — clears: **NO**. Soft-best-ish leg is primary itself (~+1.6 bp/mo, NW t≈0.26) — below soft board (|t|≥1.5).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_oecd_cci.md`).
+
+### Honest read
+
+OECD CCI is the right free-data *consumer-sentiment* structure after CLI (§37), and is cleanly distinct from leading CLI and coincident macro-diff. Live path uses `CSCICP02*M460S` balances (amplitude `CSCICP03*M665S` too stale for 2025/2026). On Yahoo D1 G10 the primary high-CCI-YoY HML is essentially **flat** (full-sample ≈ +1.6 bp/mo, NW t ≈ 0.26, %pos 53%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty. CAD/NZD/CHF coverage gaps documented. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: manufacturing **PMI**/ISM differentials (free FRED ISM/NAPM still 404 — OECD BCI `BSCICP02*M460S` is the natural fallback) — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_oecd_cci_wave.md`, `scholarly_fx_oecd_cci_*.csv`, `scholarly_fx_oecd_cci_meta.json`.

@@ -1,0 +1,32 @@
+=== scholarly FX OECD CCI consumer-confidence wave (§38) ===
+OECD CCI via FRED CSCICP02*M460S (+ US USACSCICP02STSAM) — Ludvigson-style sentiment XS; distinct from OECD CLI (§37), coincident macro-diff CPI/IP/UR, house-price, money-growth, IG OAS. Locked sleeve untouched.
+CCI panel cols=['USD', 'EUR', 'GBP', 'JPY', 'AUD'] [1960-03-01..2026-10-01] pub_lag_m=2
+currency          fred_id  n_obs      start        end      last                                                                                          note
+     USD USACSCICP02STSAM    800 1960-03-01 2026-10-01  55.62629 US OECD standardised CCI USACSCICP02STSAM (CSCICP02USM460S 404; CSCICP03USM665S ends 2024-01)
+     EUR  CSCICP02EZM460S    637 1973-03-01 2026-03-01 -12.40000 EZ aggregate via CSCICP02EZM460S (DE/FR CSCICP02*M460S alts; CSCICP03 amplitude ends 2024-01)
+     GBP  CSCICP02GBM460S    632 1974-03-01 2026-10-01  -8.00000                                                              OECD CCI balance CSCICP02GBM460S
+     JPY  CSCICP02JPM460S    533 1982-06-01 2026-10-01  35.50000                                                              OECD CCI balance CSCICP02JPM460S
+     AUD  CSCICP02AUM460S    624 1974-11-01 2026-10-01 -11.00000                                                              OECD CCI balance CSCICP02AUM460S
+     CAD                       0        NaN        NaN       NaN    unmapped_on_primary_cci (CSCICP02 404; CSCICP03 amplitude stale — CAD 2017 / NZD+CHF 2023)
+     NZD                       0        NaN        NaN       NaN    unmapped_on_primary_cci (CSCICP02 404; CSCICP03 amplitude stale — CAD 2017 / NZD+CHF 2023)
+     CHF                       0        NaN        NaN       NaN    unmapped_on_primary_cci (CSCICP02 404; CSCICP03 amplitude stale — CAD 2017 / NZD+CHF 2023)
+Series source note: FRED OECD MEI CSCICP02*M460S consumer-confidence balances (EUR=EZ; USD=USACSCICP02STSAM; CAD/NZD/CHF unmapped; CSCICP03*M665S amplitude stale ~2024-01 — not primary)
+Failed/alt documented: {'usd_cscicp02_usm460s_404': ['CSCICP02USM460S'], 'usd_primary_standardised': ['USACSCICP02STSAM'], 'usd_michigan_coverage': ['UMCSENT'], 'usd_amplitude_stale_2024': ['CSCICP03USM665S'], 'eur_ez_primary': ['CSCICP02EZM460S'], 'eur_germany_alt': ['CSCICP02DEM460S'], 'eur_france_alt': ['CSCICP02FRM460S'], 'eur_amplitude_stale': ['CSCICP03EZM665S', 'CSCICP03DEM665S'], 'cad_404_and_amplitude_stale_2017': ['CSCICP02CAM460S', 'CSCICP03CAM665S'], 'nzd_404_and_amplitude_stale_2023': ['CSCICP02NZM460S', 'CSCICP03NZM665S'], 'chf_404_and_amplitude_stale_2023': ['CSCICP02CHM460S', 'CSCICP03CHM665S'], 'amplitude_family_stale_2024': ['CSCICP03GBM665S', 'CSCICP03JPM665S', 'CSCICP03AUM665S', 'CSCICP03O9M665S']}
+US USACSCICP02STSAM [1960-03-01..2026-10-01] n=800 series=USACSCICP02STSAM
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_cci_xs: scale=0.864 bind=static IS mean_mo=0.000% OOS gates=True
+  sweep low_cci_xs: scale=1.968 bind=daily IS mean_mo=-0.017% OOS gates=True
+  sweep high_cci_z_xs: scale=0.616 bind=static IS mean_mo=-0.036% OOS gates=True
+  sweep cci_chg_xs: scale=1.027 bind=static IS mean_mo=-0.023% OOS gates=True
+  sweep us_cci_weak_fx: scale=5.380 bind=daily IS mean_mo=0.050% OOS gates=True
+  sweep us_cci_haven_usd: scale=1.553 bind=static IS mean_mo=-0.017% OOS gates=True
+  sweep cci_ew: scale=1.640 bind=static IS mean_mo=-0.007% OOS gates=True
+=== factor summary ===
+  high_cci_xs: mean_mo=+0.016% NW_t=+0.26 %pos=53%
+  low_cci_xs: mean_mo=-0.029% NW_t=-0.47 %pos=47%
+  high_cci_z_xs: mean_mo=-0.034% NW_t=-0.54 %pos=46%
+  cci_chg_xs: mean_mo=-0.027% NW_t=-0.50 %pos=52%
+  us_cci_weak_fx: mean_mo=+0.002% NW_t=+0.06 %pos=14%
+  us_cci_haven_usd: mean_mo=-0.004% NW_t=-0.12 %pos=11%
+  cci_ew: mean_mo=-0.003% NW_t=-0.08 %pos=52%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
