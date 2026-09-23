@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, Menkhoff FX realized-vol wave after Balassa–Samuelson). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, term-structure / yield-curve FX wave after Menkhoff FX-RV). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -66,6 +66,13 @@
 - **Key refs:** Balassa (1964); Samuelson (1964); Chong, Jordà & Taylor (2012), “The Harrod–Balassa–Samuelson Hypothesis,” *IER*; Ricci, Milesi-Ferretti & Lee (real FX & fundamentals).
 - **What we implement:** `strategies/balassa_samuelson_fx.py` + `scripts/scholarly_fx_bs_wave.py` — FRED IP *levels* as productivity proxy + CPI real FX; PIT `bs_gap` (z(log q)−z(p)), rolling-OLS `bs_resid`, `bs_prod` channel; pub_lag CPI=1m / IP=2m + `signal_lag=1m`. AUD/NZD/CHF IP missing on FRED.
 
+
+### 1.10 Term structure / yield-curve FX
+
+- **Claim:** Relative government yield-curve factors (level, slope) vs the USD help price currency risk premia; currencies with steeper curves (vs USD) tend to appreciate on average. Slope × carry interactions appear in Ang–Chen-style work; Lustig–Stathopoulos–Verdelhan study the *term structure* of carry risk premia. Related: Fama (1984) forward-premium / UIP puzzle on short-rate differentials.
+- **Key refs:** Chen & Tsang (2013); Ang & Chen; Lustig, Stathopoulos & Verdelhan (2019); Fama (1984).
+- **What we implement:** `strategies/yield_curve_fx.py` + `data/fred_yields.py` + `scripts/scholarly_fx_curve_wave.py` — OECD `IRLTLT01*` LT govt − `IRSTCI01*` immediate short = slope; differentials vs USD; PIT `pub_lag=1m` + `signal_lag=1m`. Legs: `curve_slope_xs`, `curve_lt_xs`, `curve_slope_z_xs`, `slope_x_carry`, `curve_ew`, secondary `uip_st_xs` / `uip_ir3m_xs`. Full G10 LT coverage on FRED (EUR EZ + DE bund gap-fill).
+
 ### 1.6 TPU / economic-policy uncertainty
 
 - **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks.
@@ -103,6 +110,8 @@
 | CPI index levels (PPP / real FX) | FRED CPIAUCSL / GBRCPIALLMINMEI / … | **1 month** (+ strategy `signal_lag`) |
 | IP index levels (Balassa–Samuelson) | FRED INDPRO / *PROINDMISMEI / EA19… | **2 months** (+ strategy `signal_lag`) |
 | Commodity futures (CRR) | Yahoo `CL=F`/`HG=F`/`GC=F` | **1 day** (+ strategy `signal_lag`) |
+| OECD LT govt yields / curve slope | FRED `IRLTLT01*` − `IRSTCI01*` | **1 month** (+ strategy `signal_lag`) |
+| OECD 3m interest rates (UIP secondary) | FRED `IR3TIB01*` | **1 month** (+ strategy `signal_lag`) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 | Global FX realized vol (Menkhoff) | EW \|ccy ret\| from Yahoo USD majors | Trailing RV then `signal_lag=1` (no pub lag) |
 
@@ -154,6 +163,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 7. Rogoff, K. (1996). The Purchasing Power Parity Puzzle. *Journal of Economic Literature*.
 8. Chen, Y., Rogoff, K. & Rossi, B. (2010). Can Exchange Rates Forecast Commodity Prices? *QJE*.
 9. Dahlquist, M. & Hasseltoft, H. — macro differentials and currency risk premia (framing).
+10. Chen, Y. & Tsang, K. (2013). — relative yield-curve factors and exchange rates.
+11. Lustig, H., Stathopoulos, A. & Verdelhan, A. (2019). The Term Structure of Currency Carry Trade Risk Premia. *Journal of Finance*.
+12. Fama, E. (1984). Forward and Spot Exchange Rates. *Journal of Monetary Economics*. (UIP / forward premium)
 
 ---
 
@@ -169,7 +181,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 8. **Done (2026-09-23):** Commodity CRR + macro-diff waves — promote=NO (see §11–12).
 9. **Done (2026-09-23):** Balassa–Samuelson / productivity wave — promote=NO (see §14).
 10. **Done (2026-09-23):** True FX realized-vol risk factor (Menkhoff) — promote=NO (see §15).
-11. Next scholarly candidates (not sleeve coolers): term-structure / yield-curve FX; UIP/forward-premium variants with better rate coverage; free order-flow / positioning proxies if available; FX option-implied vol (if free) vs RV.
+11. **Done (2026-09-23):** Term-structure / yield-curve FX + UIP secondary — promote=NO (see §16).
+12. Next scholarly candidates (not sleeve coolers): free order-flow / positioning proxies if available; FX option-implied vol (if free) vs RV; transaction-cost / swap-aware carry on better forwards; bilateral AI-GPR role decompositions.
 
 ---
 
@@ -472,3 +485,57 @@ Positive IS means on standalone USD-tilt / innov legs → sweep run. Best scaled
 True FX-RV is the right *prior* relative to VIX-only: mild positive full-sample means on long-USD-in-high-FX-vol rules (NW t ≈ 0.5–0.8) and a small lift of carry when cooled by FX-RV vs raw carry. Economically **~0.02–0.03%/mo** with %pos often ≪ 50% on standalone legs (sparse risk-off episodes). Far from prop-firm 1%/mo + 70% hit-rate. Yahoo D1 abs-return average ≠ OTC tick / option-implied FX vol.
 
 Artifacts: `reports/scholarly_fx_rv_wave.md`, `scholarly_fx_rv_*.csv`, `scholarly_fx_rv_meta.json`.
+
+
+---
+
+## 16. Term-structure / yield-curve FX wave results (2026-09-23 BST) — Chen–Tsang / Ang–Chen
+
+**Design (fixed priors, no HO tuning):** OECD LT govt (`IRLTLT01*`) − immediate short (`IRSTCI01*`) = slope; differentials vs USD; `pub_lag=1m` + `signal_lag=1m`; n_long=n_short=2; costs 1.5 bps/side. EUR EZ LT with DE bund gap-fill.
+
+**Legs:**
+- `curve_slope_xs` — long steep / short flat slope differentials (primary)
+- `curve_lt_xs` — long high / short low LT yield differentials (level / long-carry)
+- `curve_slope_z_xs` — same sort on trailing 60m z of slope_diff
+- `slope_x_carry` — score = z(slope_diff)×z(st_diff); long high interaction
+- `curve_ew` — EW of slope_xs + lt_xs
+- `uip_st_xs` / `uip_ir3m_xs` — secondary UIP / forward-premium on IRSTCI and IR3TIB differentials
+
+**Coverage:** Full G10 LT on FRED (USD/EUR/GBP/JPY/AUD/CAD/CHF/NZD). IR3M also full G10. Distinct from short-rate carry (§1.1) via the *slope* and LT-level channels.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| curve_slope_xs | +0.045% | +0.71 | +0.71 | 48% | 13% | +0.18 |
+| curve_lt_xs | −0.006% | −0.07 | −0.08 | 50% | 11% | −0.05 |
+| curve_slope_z_xs | +0.039% | +0.64 | +0.75 | 48% | 12% | +0.17 |
+| slope_x_carry | −0.024% | −0.37 | −0.42 | 51% | 13% | −0.04 |
+| uip_st_xs | −0.033% | −0.42 | −0.51 | 52% | 10% | −0.13 |
+| uip_ir3m_xs | −0.033% | −0.42 | −0.49 | 53% | 10% | −0.13 |
+| curve_ew | +0.020% | +0.34 | +0.42 | 50% | 14% | +0.06 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| curve_slope_xs | holdout_365d | −0.09% | 33% | PASS | no |
+| curve_slope_xs | year_2024 | −0.11% | 45% | PASS | no |
+| curve_lt_xs | holdout_365d | +0.32% | 75% | PASS | no† |
+| uip_ir3m_xs | holdout_365d | +0.31% | 83% | PASS | no† |
+| curve_ew | holdout_365d | +0.12% | 75% | PASS | no† |
+| curve_slope_z_xs | holdout_365d | +0.08% | 50% | PASS | no |
+
+† Holdout %pos can clear 70% on some legs, but mean ≪ 1%/mo and full-sample means are basis points — not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means on slope / z / ew → sweep run. Best scaled IS mean (`curve_slope_z_xs` @ ~3.75× daily-bound) ≈ **+0.13%/mo** still ≪ 1%; primary `curve_slope_xs` scaled IS ≈ +0.11%/mo; OOS means mixed / near zero. Scaled clears: **NO**. Leverage does not invent consistency.
+
+**Unscaled promote:** **NO**. **Scaled primary (`curve_slope_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Relative slope is the right *prior*: mild positive full-sample means on `curve_slope_xs` / `curve_slope_z_xs` (NW t ≈ 0.7) vs flat/negative LT-level and UIP/carry legs on this Yahoo+FRED sample. Economically **~0.04%/mo** with %pos ≪ 70%. Slope×carry interaction does not help here. Far from prop-firm 1%/mo + 70% hit-rate. Simple OECD LT−ST slope ≠ full Nelson–Siegel curve factors or swap-implied forwards.
+
+Artifacts: `reports/scholarly_fx_curve_wave.md`, `scholarly_fx_curve_*.csv`, `scholarly_fx_curve_meta.json`.

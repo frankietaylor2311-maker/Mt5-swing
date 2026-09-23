@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_months": 1,
+  "pub_lag_months": 1,
+  "n_long": 2,
+  "n_short": 2,
+  "z_window": 60,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "curve_slope_xs",
+    "curve_lt_xs",
+    "curve_slope_z_xs",
+    "slope_x_carry",
+    "uip_st_xs",
+    "uip_ir3m_xs",
+    "curve_ew"
+  ],
+  "primary": "curve_slope_xs",
+  "lt_cols": [
+    "AUD",
+    "CAD",
+    "CHF",
+    "EUR",
+    "GBP",
+    "JPY",
+    "NZD",
+    "USD"
+  ],
+  "slope_diff_cols": [
+    "AUD",
+    "CAD",
+    "CHF",
+    "EUR",
+    "GBP",
+    "JPY",
+    "NZD"
+  ],
+  "lt_notes": {
+    "EUR": "EZ primary; DE bund fill gaps (n_na_before\u22480)"
+  },
+  "ir3m_available": true,
+  "any_pos_is": true,
+  "is_end": "2025-09-14",
+  "holdout_start": "2025-09-15",
+  "holdout_end": "2026-09-15",
+  "promote": false,
+  "scaled_promote": false,
+  "risk_sweep_primary": {
+    "strategy": "curve_slope_xs",
+    "scale": 2.134592214005406,
+    "binding": "daily",
+    "is_total_return": 0.187300606199577,
+    "is_static_loss": 0.075192046746806,
+    "is_max_daily_dd": 0.049999999924725855,
+    "is_gates_pass": true,
+    "oos_total_return": -0.01106844733715917,
+    "oos_static_loss": 0.0615781966327109,
+    "oos_max_daily_dd": 0.009983463205977315,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.001064304414657111,
+    "mean_mo_oos": -0.0018858273583168643,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0009405808191539603,
+    "scaled_full_pct_pos": 0.4777777777777778,
+    "scaled_ho_mean_mo": -0.0018858273583168643,
+    "scaled_ho_pct_pos": 0.3333333333333333,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "refs": [
+    "Chen & Tsang (2013) \u2014 relative yield-curve factors and FX",
+    "Ang & Chen \u2014 yield-curve / carry interactions in currency risk premia",
+    "Lustig, Stathopoulos & Verdelhan (2019) \u2014 term structure of currency risk premia",
+    "Fama (1984) \u2014 forward-premium / UIP puzzle (secondary uip_* legs)",
+    "OECD IRLTLT01* LT govt \u2212 IRSTCI01* immediate short = slope"
+  ]
+}
