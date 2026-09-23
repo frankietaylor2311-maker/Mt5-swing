@@ -1,0 +1,32 @@
+=== scholarly FX OECD CLI leading-indicator wave (§37) ===
+OECD amplitude-adjusted CLI via FRED *LOLITOAASTSAM — Estrella–Mishkin / leading-activity XS; distinct from coincident macro-diff CPI/IP/UR, house-price, money-growth, IG OAS. Locked sleeve untouched.
+CLI panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'] [1955-03-01..2026-10-01] pub_lag_m=2
+currency          fred_id  n_obs      start        end       last                                                                          note
+     USD USALOLITOAASTSAM    860 1955-03-01 2026-10-01 100.956250                                                  OECD US CLI USALOLITOAASTSAM
+     EUR DEULOLITOAASTSAM    788 1961-03-01 2026-10-01 100.994640 Germany proxy via DEULOLITOAASTSAM (EA19LOLITOAASTSAM ends 2022-11; EZ19 404)
+     GBP GBRLOLITOAASTSAM    825 1958-02-01 2026-10-01 101.110233                                                                              
+     JPY JPNLOLITOAASTSAM    812 1959-03-01 2026-10-01 100.303369                                                                              
+     CAD CANLOLITOAASTSAM    848 1956-03-01 2026-10-01 101.985831                                                                              
+     AUD AUSLOLITOAASTSAM    727 1966-04-01 2026-10-01 100.041356                                                                              
+     NZD                       0        NaN        NaN        NaN          unmapped_on_primary_cli (NZL ends 2019-11; CHE ends 2022-11 — stale)
+     CHF                       0        NaN        NaN        NaN          unmapped_on_primary_cli (NZL ends 2019-11; CHE ends 2022-11 — stale)
+Series source note: FRED OECD MEI *LOLITOAASTSAM amplitude-adjusted CLI (EUR=DEU proxy; NZD/CHF stale — unmapped on primary)
+Failed/alt documented: {'eur_ea19_stale_2022': ['EA19LOLITOAASTSAM'], 'eur_ez19_404': ['EZ19LOLITOAASTSAM'], 'eur_germany_primary': ['DEULOLITOAASTSAM'], 'eur_france_secondary': ['FRALOLITOAASTSAM'], 'nzd_stale_2019': ['NZLLOLITOAASTSAM'], 'chf_stale_2022': ['CHELOLITOAASTSAM'], 'chf_alt_404': ['CHFLOLITOAASTSAM'], 'oecd_aggregate_stale': ['OECDLOLITOAASTSAM']}
+US USALOLITOAASTSAM [1955-03-01..2026-10-01] n=860 series=USALOLITOAASTSAM
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_cli_xs: scale=1.505 bind=static IS mean_mo=0.053% OOS gates=True
+  sweep low_cli_xs: scale=0.758 bind=static IS mean_mo=-0.032% OOS gates=True
+  sweep high_cli_z_xs: scale=1.585 bind=static IS mean_mo=-0.049% OOS gates=True
+  sweep cli_chg_xs: scale=1.442 bind=static IS mean_mo=-0.030% OOS gates=True
+  sweep us_cli_weak_fx: scale=3.221 bind=static IS mean_mo=0.016% OOS gates=True
+  sweep us_cli_haven_usd: scale=4.693 bind=static IS mean_mo=-0.026% OOS gates=True
+  sweep cli_ew: scale=3.654 bind=static IS mean_mo=0.021% OOS gates=True
+=== factor summary ===
+  high_cli_xs: mean_mo=+0.045% NW_t=+0.72 %pos=54%
+  low_cli_xs: mean_mo=-0.051% NW_t=-0.83 %pos=44%
+  high_cli_z_xs: mean_mo=-0.007% NW_t=-0.11 %pos=51%
+  cli_chg_xs: mean_mo=-0.033% NW_t=-0.49 %pos=47%
+  us_cli_weak_fx: mean_mo=+0.005% NW_t=+0.23 %pos=9%
+  us_cli_haven_usd: mean_mo=-0.005% NW_t=-0.26 %pos=9%
+  cli_ew: mean_mo=+0.005% NW_t=+0.15 %pos=47%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False

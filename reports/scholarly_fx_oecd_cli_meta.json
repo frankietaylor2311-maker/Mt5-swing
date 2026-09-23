@@ -1,0 +1,206 @@
+{
+  "ok": true,
+  "section": 37,
+  "path": "oecd_cli_leading_indicator",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "yoy_periods": 12,
+  "chg_periods": 12,
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "high_cli_xs",
+    "low_cli_xs",
+    "high_cli_z_xs",
+    "cli_chg_xs",
+    "us_cli_weak_fx",
+    "us_cli_haven_usd",
+    "cli_ew"
+  ],
+  "primary": "high_cli_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI *LOLITOAASTSAM amplitude-adjusted CLI levels; XS on YoY diff CLI_t\u2212CLI_{t\u221212}; also 5y z / \u039412 of YoY boarded; high-CLI-growth primary (leading-activity strength \u2192 appreciate)",
+  "eur_mapping": "DEULOLITOAASTSAM Germany proxy (EA19 ends 2022-11; EZ19 404)",
+  "nzd_chf": "unmapped on primary (NZL ends 2019-11; CHE ends 2022-11)",
+  "series_map": {
+    "USD": "USALOLITOAASTSAM",
+    "EUR": "DEULOLITOAASTSAM",
+    "GBP": "GBRLOLITOAASTSAM",
+    "JPY": "JPNLOLITOAASTSAM",
+    "CAD": "CANLOLITOAASTSAM",
+    "AUD": "AUSLOLITOAASTSAM"
+  },
+  "distinct_from": [
+    "macro_diff_CPI_IP_UR",
+    "house_price_BIS_35",
+    "money_growth_MABMM301_33",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "reserves_34",
+    "equity_diff",
+    "AI_GPR",
+    "EPU_TPU",
+    "funding_liquidity",
+    "debt_gdp_29"
+  ],
+  "citations": [
+    "OECD Composite Leading Indicators methodology (amplitude-adjusted CLI)",
+    "Estrella & Mishkin (1998) leading indicators / recession prediction",
+    "Dahlquist\u2013Hasseltoft-style macro\u2013FX differential framing for leading activity"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "USALOLITOAASTSAM",
+      "n_obs": 860,
+      "start": "1955-03-01",
+      "end": "2026-10-01",
+      "last": 100.956249604339,
+      "note": "OECD US CLI USALOLITOAASTSAM"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "DEULOLITOAASTSAM",
+      "n_obs": 788,
+      "start": "1961-03-01",
+      "end": "2026-10-01",
+      "last": 100.9946403951,
+      "note": "Germany proxy via DEULOLITOAASTSAM (EA19LOLITOAASTSAM ends 2022-11; EZ19 404)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRLOLITOAASTSAM",
+      "n_obs": 825,
+      "start": "1958-02-01",
+      "end": "2026-10-01",
+      "last": 101.110232877602,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNLOLITOAASTSAM",
+      "n_obs": 812,
+      "start": "1959-03-01",
+      "end": "2026-10-01",
+      "last": 100.303368896561,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANLOLITOAASTSAM",
+      "n_obs": 848,
+      "start": "1956-03-01",
+      "end": "2026-10-01",
+      "last": 101.9858308377,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "AUSLOLITOAASTSAM",
+      "n_obs": 727,
+      "start": "1966-04-01",
+      "end": "2026-10-01",
+      "last": 100.041355832958,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_cli (NZL ends 2019-11; CHE ends 2022-11 \u2014 stale)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_cli (NZL ends 2019-11; CHE ends 2022-11 \u2014 stale)"
+    }
+  ],
+  "unmapped": [
+    "NZD",
+    "CHF"
+  ],
+  "failed_or_alt": {
+    "eur_ea19_stale_2022": [
+      "EA19LOLITOAASTSAM"
+    ],
+    "eur_ez19_404": [
+      "EZ19LOLITOAASTSAM"
+    ],
+    "eur_germany_primary": [
+      "DEULOLITOAASTSAM"
+    ],
+    "eur_france_secondary": [
+      "FRALOLITOAASTSAM"
+    ],
+    "nzd_stale_2019": [
+      "NZLLOLITOAASTSAM"
+    ],
+    "chf_stale_2022": [
+      "CHELOLITOAASTSAM"
+    ],
+    "chf_alt_404": [
+      "CHFLOLITOAASTSAM"
+    ],
+    "oecd_aggregate_stale": [
+      "OECDLOLITOAASTSAM"
+    ]
+  },
+  "soft_best": {
+    "factor": "high_cli_xs",
+    "n_months": 180,
+    "mean_mo": 0.0004457961407269315,
+    "tstat_ols": 0.708914225228873,
+    "tstat_nw": 0.7231979279716815,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5388888888888889,
+    "top3": 0.11298278089338361,
+    "ann_sharpe_daily": 0.1933247897304516
+  },
+  "primary_sweep": {
+    "strategy": "high_cli_xs",
+    "scale": 1.504936824131869,
+    "binding": "static",
+    "is_total_return": 0.09997604403926941,
+    "is_static_loss": 0.09999999991445103,
+    "is_max_daily_dd": 0.026428018658154032,
+    "is_gates_pass": true,
+    "oos_total_return": 0.02957595951622949,
+    "oos_static_loss": 0.0019007975321130653,
+    "oos_max_daily_dd": 0.007053638004160312,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.000533473244441432,
+    "mean_mo_oos": 0.0023722054324524233,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0006668679505242333,
+    "scaled_full_pct_pos": 0.5388888888888889,
+    "scaled_ho_mean_mo": 0.0023722054324524233,
+    "scaled_ho_pct_pos": 0.5833333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

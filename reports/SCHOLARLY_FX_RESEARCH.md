@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, ICE BofA IG OAS §36 after house-price §35 / reserves §34 / money-growth §33; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation).
+**Status:** Active (2026-09-23 BST, OECD CLI §37 after IG OAS §36 / house-price §35 / reserves §34; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -153,6 +153,15 @@
 - **Key refs:** Brunnermeier, Nagel & Pedersen (2008); Menkhoff, Sarno, Schmeling & Schrimpf (2012a); ICE BofA US Corporate Index OAS (FRED `BAMLC0A0CM`).
 - **Free data:** FRED `BAMLC0A0CM` (IG), `BAMLH0A0HYM2` (HY), optional `BAMLC0A4CBBB` (BBB). **Public CSV note:** free `fredgraph.csv` currently truncates ICE BofA OAS to ~3 calendar years without an API key.
 - **What we implement (wave §36):** `data/fred_ig_oas.py` + `strategies/ig_oas_fx.py` + `scripts/scholarly_fx_ig_oas_wave.py` — legs `ig_oas_usd` (primary), `hy_oas_usd`, `ig_oas_chg_usd`, `ig_oas_lvl_usd`, `oas_stress_fx` (honesty wrong-signed), `carry_ig_oas_cool`, `carry_ig_oas_loose`, `oas_ew`. PIT daily `pub_lag=1d` + `signal_lag=1d`. **Distinct** from funding-liq §20 (NFCI/TED/CPFF/BAA10Y), VIX/GPR/FX-RV/EPU, crash-skew §26, house-price §35, credit-gap §32. **Not** overlaid on the locked sleeve.
+
+
+
+### 1.30 OECD Composite Leading Indicator (CLI) differentials → FX
+
+- **Claim:** Relative *leading* activity (OECD amplitude-adjusted CLI) forecasts business-cycle turns ahead of coincident IP/UR/CPI; currencies with high lagged CLI growth vs peers appreciate (leading-activity differential / Estrella–Mishkin channel framed for FX à la Dahlquist–Hasseltoft macro differentials).
+- **Key refs:** OECD Composite Leading Indicators methodology; Estrella & Mishkin (1998) leading indicators / recession; Dahlquist & Hasseltoft (2013) macro–FX differential framing applied to leading (not coincident) activity.
+- **Free data:** FRED `USALOLITOAASTSAM`, `DEULOLITOAASTSAM` (EUR Germany proxy; `EA19LOLITOAASTSAM` ends 2022-11), `GBRLOLITOAASTSAM`, `JPNLOLITOAASTSAM`, `CANLOLITOAASTSAM`, `AUSLOLITOAASTSAM`. NZD (`NZL…` ends 2019) / CHF (`CHE…` ends 2022) **unmapped**.
+- **What we implement (wave §37):** `data/fred_oecd_cli.py` + `strategies/oecd_cli_fx.py` + `scripts/scholarly_fx_oecd_cli_wave.py` — legs `high_cli_xs` (primary), `low_cli_xs`, `high_cli_z_xs`, `cli_chg_xs`, `us_cli_weak_fx`, `us_cli_haven_usd`, `cli_ew`. PIT monthly `pub_lag=2m` + 1d weight lag (no extra month signal lag). **Distinct** from coincident macro-diff CPI/IP/UR, house-price §35, money-growth §33, IG OAS §36. **Not** overlaid on the locked sleeve.
 
 
 
@@ -376,6 +385,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19f. **Done (2026-09-23):** IMF IFS reserves / external-buffer FX wave — promote=NO (see §34).
 19g. **Done (2026-09-23):** OECD/BIS residential house-price FX wave — promote=NO (see §35).
 19h. **Done (2026-09-23):** ICE BofA IG OAS / credit risk-appetite FX wave — promote=NO (see §36).
+19i. **Done (2026-09-23):** OECD CLI leading-indicator FX wave — promote=NO (see §37).
 20. Next scholarly candidates (not sleeve coolers): OECD **CLI** / business-cycle leading-indicator differentials or manufacturing **PMI**/ISM differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
@@ -1710,6 +1720,51 @@ Sweep **run** (some non-primary legs had positive IS mean; primary IS mean **neg
 
 ICE BofA IG OAS is the right free-data *corporate* credit risk-appetite structure after house-price (§35), and is cleanly distinct from Moody's BAA10Y / NFCI funding-liq (§20). On Yahoo D1 G10 with the public ~3y OAS window the primary USD-haven tilt is essentially **flat-to-slightly-negative** (full-sample ≈ −0.9 bp/mo, NW t ≈ −0.94, sparse activity %pos ~1%) — nowhere near 1%/mo + 70% hit-rate. Carry×OAS-loose and the wrong-signed honesty leg are only marginally positive. Soft/hard NW boards empty. Public CSV ICE truncation is a material sample-length blocker for longer-history inference. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: OECD **CLI** / business-cycle leading indicators or manufacturing **PMI**/ISM differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive (and optionally re-score OAS with a FRED API key for longer ICE history).
+**Next structure (if promote=0):** Done as §37 (OECD CLI). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate after §37: manufacturing **PMI**/ISM differentials or consumer-confidence differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive (and optionally re-score OAS with a FRED API key for longer ICE history).
 
 Artifacts: `reports/scholarly_fx_ig_oas_wave.md`, `scholarly_fx_ig_oas_*.csv`, `scholarly_fx_ig_oas_meta.json`.
+
+
+## 37. OECD CLI leading-indicator FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED OECD MEI amplitude-adjusted CLI `*LOLITOAASTSAM`. Primary `high_cli_xs`: long high relative CLI YoY growth (`CLI_t − CLI_{t−12}`) / short low. Companions: `low_cli_xs` (honesty), `high_cli_z_xs`, `cli_chg_xs` (Δ12 of YoY), `us_cli_weak_fx` / `us_cli_haven_usd` (US CLI YoY z ≤ −1.0), `cli_ew`. PIT monthly `pub_lag=2m` + 1d weight lag (no extra month signal lag); z_window=60, min_periods=24, usd_tilt=0.5; costs 1.5 bps/side.
+
+**What is new vs macro-diff / house-price / money-growth / IG OAS:** Macro-diff uses coincident CPI/IP/UR; this wave uses *leading* OECD CLI. Distinct from housing HPI §35, broad-money §33, corporate OAS §36. Country XS on YoY CLI growth (not USD-tilt-only).
+
+**Data notes:** Prefer FTMO MT5 D1 if present — absent → `approximate_non_ftmo` (Yahoo D1). EUR = Germany `DEULOLITOAASTSAM` (`EA19…` ends 2022-11; `EZ19…` 404). NZD/CHF **unmapped** (NZL ends 2019-11; CHE ends 2022-11).
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| high_cli_xs | +0.045% | +0.71 | +0.72 | 54% | 11% | +0.19 |
+| low_cli_xs | −0.051% | −0.81 | −0.83 | 44% | — | — |
+| high_cli_z_xs | −0.007% | −0.11 | −0.11 | 51% | — | — |
+| cli_chg_xs | −0.033% | −0.50 | −0.49 | 47% | — | — |
+| us_cli_weak_fx | +0.005% | +0.23 | +0.23 | 9% | — | — |
+| us_cli_haven_usd | −0.005% | −0.26 | −0.26 | 9% | — | — |
+| cli_ew | +0.005% | +0.15 | +0.15 | 47% | — | — |
+
+### Consistency windows (primary `high_cli_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.20% | 55% | 86% | PASS | no |
+| year_2025 | +0.08% | 55% | 80% | PASS | no |
+| year_2026 | +0.05% | 50% | 96% | PASS | no |
+| holdout_365d | +0.16% | 58% | 78% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run**. Primary `high_cli_xs` scale≈1.505 bind=static; scaled HO mean≈+0.24%/mo %pos 58% — clears: **NO**. Soft-best-ish leg is primary itself (~+4.5 bp/mo, NW t≈0.72) — below soft board (|t|≥1.5).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_oecd_cli.md`).
+
+### Honest read
+
+OECD CLI is the right free-data *leading*-activity structure after IG OAS (§36), and is cleanly distinct from coincident macro-diff CPI/IP/UR. On Yahoo D1 G10 the primary high-CLI-YoY HML is essentially **flat-to-mildly-positive** (full-sample ≈ +4.5 bp/mo, NW t ≈ 0.72, %pos 54%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty. NZD/CHF coverage gaps documented. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: manufacturing **PMI**/ISM differentials or consumer-confidence differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_oecd_cli_wave.md`, `scholarly_fx_oecd_cli_*.csv`, `scholarly_fx_oecd_cli_meta.json`.
+
