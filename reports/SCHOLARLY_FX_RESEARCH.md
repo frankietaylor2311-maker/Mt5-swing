@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, OECD/BIS house-price §35 after reserves §34 / money-growth §33 / BIS credit §32; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404).
+**Status:** Active (2026-09-23 BST, ICE BofA IG OAS §36 after house-price §35 / reserves §34 / money-growth §33; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -144,7 +144,16 @@
 - **Claim:** Housing wealth / collateral channel: currencies with *high* relative residential house-price *momentum* benefit from wealth and collateral effects → subsequent appreciation prior. Honesty alternate: low-HPI / housing-stress debtor premium.
 - **Key refs:** Aoki, Proudman & Vlieghe (BoE / housing–credit literature); BIS residential property price statistics; housing–collateral channel surveys.
 - **Free data:** FRED BIS `Q*R628BIS` real residential property price index (USD/EUR-Germany/`DER`/GBP/JPY/CAD/AUD/NZD/CHF). `QEUR628BIS` **404** — Germany proxy for EUR. Scores use YoY log-diff (not levels).
-- **What we implement (wave §35):** `data/fred_house_prices.py` + `strategies/house_price_fx.py` + `scripts/scholarly_fx_house_price_wave.py` — legs `high_hpi_xs` (primary), `low_hpi_xs`, `high_hpi_z_xs`, `hpi_chg_xs`, `us_hpi_stress_fx`, `us_hpi_haven_usd`, `hpi_ew`. PIT `pub_lag_months=4` + `signal_lag=1m` + 1d weight lag. **Distinct** from BIS credit (§32), debt (§29), REER (§31), money-growth (§33), reserves (§34), CA/TB, equity-diff, funding-liq, IG OAS (deferred). **Not** overlaid on the locked sleeve.
+- **What we implement (wave §35):** `data/fred_house_prices.py` + `strategies/house_price_fx.py` + `scripts/scholarly_fx_house_price_wave.py` — legs `high_hpi_xs` (primary), `low_hpi_xs`, `high_hpi_z_xs`, `hpi_chg_xs`, `us_hpi_stress_fx`, `us_hpi_haven_usd`, `hpi_ew`. PIT `pub_lag_months=4` + `signal_lag=1m` + 1d weight lag. **Distinct** from BIS credit (§32), debt (§29), REER (§31), money-growth (§33), reserves (§34), CA/TB, equity-diff, funding-liq. **Not** overlaid on the locked sleeve.
+
+
+### 1.29 ICE BofA IG OAS / corporate credit risk-appetite → FX
+
+- **Claim:** Elevated corporate credit spreads (IG OAS) mark tight risk appetite / intermediary stress; USD haven demand and carry crashes coincide with widening OAS (BNP / Menkhoff risk-off channel). ICE BofA IG OAS is a *corporate* option-adjusted credit risk premium, distinct from Moody's Baa−Treasury (`BAA10Y`) already in funding-liq §20.
+- **Key refs:** Brunnermeier, Nagel & Pedersen (2008); Menkhoff, Sarno, Schmeling & Schrimpf (2012a); ICE BofA US Corporate Index OAS (FRED `BAMLC0A0CM`).
+- **Free data:** FRED `BAMLC0A0CM` (IG), `BAMLH0A0HYM2` (HY), optional `BAMLC0A4CBBB` (BBB). **Public CSV note:** free `fredgraph.csv` currently truncates ICE BofA OAS to ~3 calendar years without an API key.
+- **What we implement (wave §36):** `data/fred_ig_oas.py` + `strategies/ig_oas_fx.py` + `scripts/scholarly_fx_ig_oas_wave.py` — legs `ig_oas_usd` (primary), `hy_oas_usd`, `ig_oas_chg_usd`, `ig_oas_lvl_usd`, `oas_stress_fx` (honesty wrong-signed), `carry_ig_oas_cool`, `carry_ig_oas_loose`, `oas_ew`. PIT daily `pub_lag=1d` + `signal_lag=1d`. **Distinct** from funding-liq §20 (NFCI/TED/CPFF/BAA10Y), VIX/GPR/FX-RV/EPU, crash-skew §26, house-price §35, credit-gap §32. **Not** overlaid on the locked sleeve.
+
 
 
 ### 1.2 Momentum
@@ -366,7 +375,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19e. **Done (2026-09-23):** BIS private credit-to-GDP / credit-gap wave — promote=NO (see §32).
 19f. **Done (2026-09-23):** IMF IFS reserves / external-buffer FX wave — promote=NO (see §34).
 19g. **Done (2026-09-23):** OECD/BIS residential house-price FX wave — promote=NO (see §35).
-20. Next scholarly candidates (not sleeve coolers): IG OAS (`BAMLC0A0CM`) risk-appetite; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19h. **Done (2026-09-23):** ICE BofA IG OAS / credit risk-appetite FX wave — promote=NO (see §36).
+20. Next scholarly candidates (not sleeve coolers): OECD **CLI** / business-cycle leading-indicator differentials or manufacturing **PMI**/ISM differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1655,7 +1665,51 @@ Sweep **run**. Primary `high_hpi_xs` scale≈1.700 bind=static; scaled HO mean�
 
 BIS residential HPI / housing wealth-collateral is the right free-data structure after reserves (§34), and is cleanly distinct from private credit/GDP and public debt. On Yahoo D1 G10 the primary high-HPI-momentum HML is essentially **flat** (full-sample ≈ +3.6 bp/mo, NW t ≈ 0.60, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Acceleration (`hpi_chg_xs`) is the soft-best but |NW t|<1.5. Soft/hard NW boards empty. Full G10 mapped (NZD/CHF live). No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IG OAS (`BAMLC0A0CM`) risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §36 (IG OAS). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate after §36: OECD **CLI** / PMI–ISM differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_house_price_wave.md`, `scholarly_fx_house_price_*.csv`, `scholarly_fx_house_price_meta.json`.
 
+
+## 36. ICE BofA IG OAS / credit risk-appetite FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED ICE BofA `BAMLC0A0CM` (IG OAS) + companions `BAMLH0A0HYM2` (HY) / `BAMLC0A4CBBB` (BBB coverage). Primary `ig_oas_usd`: long USD when lagged z(IG OAS) ≥ 1.0 (binary usd_tilt=0.5). Companions: `hy_oas_usd`, `ig_oas_chg_usd`, `ig_oas_lvl_usd` (continuous intensity), `oas_stress_fx` (honesty wrong-signed risk-FX tilt), `carry_ig_oas_cool`, `carry_ig_oas_loose`, `oas_ew`. PIT daily `pub_lag=1d` + `signal_lag=1d`; z_window=252, min_periods=60, cool=0.35; costs 1.5 bps/side.
+
+**What is new vs funding-liq / VIX / crash-skew / credit-gap / house-price:** Funding-liq §20 uses NFCI/TED/CPFF/Moody's `BAA10Y`; this wave uses ICE BofA *corporate* OAS (option-adjusted). Distinct from VIX/GPR/FX-RV/EPU, crash-skew §26, BIS credit-gap §32, house-price §35. USD-tilt / carry-conditioned (not country XS).
+
+**Data notes:** Prefer FTMO MT5 D1 if present — absent → `approximate_non_ftmo` (Yahoo D1). Free FRED `fredgraph.csv` **truncates** ICE BofA OAS to ~3 calendar years (2023-09→2026-09) without an API key — documented limitation; z-scores use available window only.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| ig_oas_usd | −0.009% | −0.82 | −0.94 | 1% | 100% | −0.19 |
+| ig_oas_lvl_usd | −0.010% | −0.84 | −0.99 | 3% | 93% | −0.21 |
+| oas_stress_fx | +0.008% | +0.79 | +0.93 | 1% | 100% | +0.18 |
+| hy_oas_usd | −0.012% | −0.92 | −1.06 | 1% | 100% | −0.26 |
+| ig_oas_chg_usd | −0.017% | −1.05 | −0.96 | 6% | 62% | −0.42 |
+| carry_ig_oas_cool | −0.003% | −0.04 | −0.05 | 52% | 10% | −0.04 |
+| carry_ig_oas_loose | +0.024% | +1.18 | +0.91 | 11% | 26% | +0.27 |
+| oas_ew | −0.013% | −0.98 | −1.00 | 7% | 58% | −0.33 |
+
+### Consistency windows (primary `ig_oas_usd`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | 0.00% | 0% | — | PASS | no |
+| year_2025 | −0.14% | 9% | 100% | PASS | no |
+| year_2026 | 0.00% | 0% | — | PASS | no |
+| holdout_365d | 0.00% | 0% | — | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (some non-primary legs had positive IS mean; primary IS mean **negative**). Primary `ig_oas_usd` scale≈4.038 bind=static; scaled HO mean≈0%/mo %pos 0% — clears: **NO**. Soft-best-ish leg is `carry_ig_oas_loose` (~+2.4 bp/mo, NW t≈0.91) — below soft board (|t|≥1.5). Honesty alternate `oas_stress_fx` ~+0.8 bp/mo (NW t≈0.93).
+
+**Board:** n=8 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_ig_oas.md`).
+
+### Honest read
+
+ICE BofA IG OAS is the right free-data *corporate* credit risk-appetite structure after house-price (§35), and is cleanly distinct from Moody's BAA10Y / NFCI funding-liq (§20). On Yahoo D1 G10 with the public ~3y OAS window the primary USD-haven tilt is essentially **flat-to-slightly-negative** (full-sample ≈ −0.9 bp/mo, NW t ≈ −0.94, sparse activity %pos ~1%) — nowhere near 1%/mo + 70% hit-rate. Carry×OAS-loose and the wrong-signed honesty leg are only marginally positive. Soft/hard NW boards empty. Public CSV ICE truncation is a material sample-length blocker for longer-history inference. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: OECD **CLI** / business-cycle leading indicators or manufacturing **PMI**/ISM differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive (and optionally re-score OAS with a FRED API key for longer ICE history).
+
+Artifacts: `reports/scholarly_fx_ig_oas_wave.md`, `scholarly_fx_ig_oas_*.csv`, `scholarly_fx_ig_oas_meta.json`.

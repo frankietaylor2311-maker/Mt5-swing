@@ -1,0 +1,110 @@
+{
+  "ok": true,
+  "section": 36,
+  "path": "ice_bofa_ig_oas_risk_appetite",
+  "data_tag": "approximate_non_ftmo",
+  "daily_pub_lag_days": 1,
+  "signal_lag": 1,
+  "z_window": 252,
+  "min_periods": 60,
+  "z_high": 1.0,
+  "cool": 0.35,
+  "usd_tilt": 0.5,
+  "binary_usd": true,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "ig_oas_usd",
+    "ig_oas_lvl_usd",
+    "oas_stress_fx",
+    "hy_oas_usd",
+    "ig_oas_chg_usd",
+    "carry_ig_oas_cool",
+    "carry_ig_oas_loose",
+    "oas_ew"
+  ],
+  "primary": "ig_oas_usd",
+  "n_factors": 8,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "public_csv_note": "FRED fredgraph.csv ICE BofA OAS truncated to ~3y without API key",
+  "distinct_from": [
+    "funding_liquidity_NFCI_TED_CPFF_BAA10Y_20",
+    "VIX",
+    "GPR",
+    "FX_RV",
+    "EPU_TPU",
+    "crash_skew_26",
+    "house_price_35",
+    "bis_credit_gap_32",
+    "current_account_21",
+    "CB_balance_sheet_22",
+    "debt_gdp_29",
+    "fiscal_28",
+    "trade_balance_30",
+    "money_growth_33",
+    "reserves_34"
+  ],
+  "citations": [
+    "Brunnermeier, Nagel & Pedersen (2008), Carry Trades and Currency Crashes",
+    "Menkhoff, Sarno, Schmeling & Schrimpf (2012), Carry Trades and Global FX Volatility, JF",
+    "ICE BofA US Corporate Index OAS (FRED BAMLC0A0CM) as corporate credit risk premium"
+  ],
+  "series": {
+    "BAMLC0A0CM": {
+      "n": 784,
+      "start": "2023-09-26",
+      "end": "2026-09-22"
+    },
+    "BAMLH0A0HYM2": {
+      "n": 785,
+      "end": "2026-09-22"
+    },
+    "BAMLC0A4CBBB": {
+      "n": 785,
+      "end": "2026-09-22"
+    }
+  },
+  "soft_best": {
+    "factor": "carry_ig_oas_loose",
+    "n_months": 180,
+    "mean_mo": 0.00023876211596495777,
+    "tstat_ols": 1.1772135010927507,
+    "tstat_nw": 0.9097545688776838,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.1111111111111111,
+    "top3": 0.25969769962734035,
+    "ann_sharpe_daily": 0.2675102267205733
+  },
+  "primary_sweep": {
+    "strategy": "ig_oas_usd",
+    "scale": 4.037762607099839,
+    "binding": "static",
+    "is_total_return": -0.06325269268515821,
+    "is_static_loss": 0.09999999990205106,
+    "is_max_daily_dd": 0.04309836987747185,
+    "is_gates_pass": true,
+    "oos_total_return": 0.0,
+    "oos_static_loss": 0.0,
+    "oos_max_daily_dd": 0.0,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0003713390658607847,
+    "mean_mo_oos": 0.0,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.00034658312813673237,
+    "scaled_full_pct_pos": 0.005555555555555556,
+    "scaled_ho_mean_mo": 0.0,
+    "scaled_ho_pct_pos": 0.0,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "primary_pos_is": false
+}

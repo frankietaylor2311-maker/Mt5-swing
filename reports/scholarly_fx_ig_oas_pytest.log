@@ -1,0 +1,18 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 8 items
+
+tests/test_ig_oas_fx.py::test_oas_change_name PASSED                     [ 12%]
+tests/test_ig_oas_fx.py::test_align_and_z_pit_lag PASSED                 [ 25%]
+tests/test_ig_oas_fx.py::test_usd_tilt_fires_on_high_z PASSED            [ 37%]
+tests/test_ig_oas_fx.py::test_honesty_stress_fx_flips_sign PASSED        [ 50%]
+tests/test_ig_oas_fx.py::test_ig_oas_no_lookahead PASSED                 [ 62%]
+tests/test_ig_oas_fx.py::test_factor_shapes_match_index PASSED           [ 75%]
+tests/test_ig_oas_fx.py::test_load_ig_oas_from_cache PASSED              [ 87%]
+tests/test_ig_oas_fx.py::test_bundle_keys PASSED                         [100%]
+
+============================== 8 passed in 0.21s ===============================

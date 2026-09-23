@@ -1,0 +1,23 @@
+=== scholarly FX ICE BofA IG OAS / credit risk-appetite wave (§36) ===
+BNP / Menkhoff risk-appetite via IG OAS (BAMLC0A0CM) — distinct from funding-liq BAA10Y/NFCI, VIX, GPR, FX-RV, EPU, crash-skew, house-price, credit-gap. Locked sleeve untouched.
+IG_OAS n=784 [2023-09-26..2026-09-22] HY n=785 BBB n=785 daily_lag=1d note=FRED fredgraph.csv ICE BofA OAS truncated to ~3y without API key
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep ig_oas_usd: scale=4.038 bind=static IS mean_mo=-0.037% OOS gates=True
+  sweep ig_oas_lvl_usd: scale=3.847 bind=static IS mean_mo=-0.040% OOS gates=True
+  sweep oas_stress_fx: scale=5.973 bind=daily IS mean_mo=0.051% OOS gates=True
+  sweep hy_oas_usd: scale=3.508 bind=static IS mean_mo=-0.040% OOS gates=True
+  sweep ig_oas_chg_usd: scale=3.867 bind=static IS mean_mo=-0.059% OOS gates=True
+  sweep carry_ig_oas_cool: scale=0.963 bind=static IS mean_mo=-0.024% OOS gates=True
+  sweep carry_ig_oas_loose: scale=6.482 bind=daily IS mean_mo=-0.006% OOS gates=True
+  sweep oas_ew: scale=4.055 bind=static IS mean_mo=-0.048% OOS gates=True
+  note: primary ig_oas_usd IS mean not positive — scaled promote will fail
+=== factor summary ===
+  ig_oas_usd: mean_mo=-0.009% NW_t=-0.94 %pos=1%
+  ig_oas_lvl_usd: mean_mo=-0.010% NW_t=-0.99 %pos=3%
+  oas_stress_fx: mean_mo=+0.008% NW_t=+0.93 %pos=1%
+  hy_oas_usd: mean_mo=-0.012% NW_t=-1.06 %pos=1%
+  ig_oas_chg_usd: mean_mo=-0.017% NW_t=-0.96 %pos=6%
+  carry_ig_oas_cool: mean_mo=-0.003% NW_t=-0.05 %pos=52%
+  carry_ig_oas_loose: mean_mo=+0.024% NW_t=+0.91 %pos=11%
+  oas_ew: mean_mo=-0.013% NW_t=-1.00 %pos=7%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
