@@ -1,0 +1,33 @@
+=== scholarly FX OECD ULC (ULQEUL01) wave (§48) ===
+OECD MEI ULQEUL01{ISO2}Q657S ULC YoY via FRED (quarterly → monthly after pub_lag=3) — ULC YoY XS competitiveness; distinct from employment §41, IP §42, retail §46, house-price §35, REER §31, DSR §47, money/credit. Locked sleeve untouched.
+ULC panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'] [1955-07-01..2026-07-01] pub_lag_m=3
+currency         fred_id freq  n_obs      start        end      last                                                                                         note
+     USD ULQEUL01USQ657S    Q    853 1955-07-01 2026-07-01  0.272461                                  OECD MEI early-estimate ULC YoY ULQEUL01USQ657S (quarterly)
+     EUR ULQEUL01DEQ657S    Q    421 1991-07-01 2026-07-01  0.814509 Germany proxy via ULQEUL01DEQ657S (Q) (ULQEUL01EZQ657S ends 2024-01; FR/IT/ES/NL Q657S alts)
+     GBP ULQEUL01GBQ657S    Q    406 1992-10-01 2026-07-01  0.738475                                  OECD MEI early-estimate ULC YoY ULQEUL01GBQ657S (quarterly)
+     JPY ULQEUL01JPQ657S    Q    553 1980-07-01 2026-07-01  0.062009                                  OECD MEI early-estimate ULC YoY ULQEUL01JPQ657S (quarterly)
+     CAD ULQEUL01CAQ657S    Q    541 1981-07-01 2026-07-01  1.331172                                  OECD MEI early-estimate ULC YoY ULQEUL01CAQ657S (quarterly)
+     AUD ULQEUL01AUQ657S    Q    595 1977-01-01 2026-07-01  1.116281                                  OECD MEI early-estimate ULC YoY ULQEUL01AUQ657S (quarterly)
+     NZD ULQEUL01NZQ657S    Q    445 1989-07-01 2026-07-01  0.556827                                  OECD MEI early-estimate ULC YoY ULQEUL01NZQ657S (quarterly)
+     CHF ULQEUL01CHQ657S    Q    373 1995-07-01 2026-07-01 -0.332060                                  OECD MEI early-estimate ULC YoY ULQEUL01CHQ657S (quarterly)
+Series source note: FRED OECD MEI ULQEUL01{ISO2}Q657S early-estimate ULC YoY quarterly (full G10; EUR=DE Germany proxy — EZ Q657S ends 2024-01; Q661S index stale ~2023-07 — not primary; {ISO3}ULQEUL01GYSAQ country 404; ULQULC01/ULCQEM01 404; LCEAMN wage fallback not primary; ULCNFB/PRS85006112 US alts)
+Score basis: yoy_growth_as_reported unit=ulc_yoy_pct_as_reported
+Failed/alt documented: {'ulqulc01_ulcqem01_ulqmhn01_mostly_404': ['ULQULC01USQ657S', 'ULCQEM01USQ657S', 'ULQMHN01USQ657S', 'USAULC', 'USAULQEUL01GYSAQ', 'GBRULQEUL01GYSAQ', 'DEUULQEUL01GYSAQ'], 'iso3_ulqeul01_gysaq_country_404_oecd_agg_stale': ['OECDULQEUL01GYSAQ', 'USAULQEUL01GYSAQ', 'GBRULQEUL01GYSAQ', 'JPNULQEUL01GYSAQ', 'CANULQEUL01GYSAQ', 'AUSULQEUL01GYSAQ', 'NZLULQEUL01GYSAQ', 'CHEULQEUL01GYSAQ', 'DEUULQEUL01GYSAQ', 'EA19ULQEUL01GYSAQ'], 'q661s_index_stale_~2023_07': ['ULQEUL01USQ661S', 'ULQEUL01GBQ661S', 'ULQEUL01JPQ661S', 'ULQEUL01CAQ661S', 'ULQEUL01AUQ661S', 'ULQEUL01NZQ661S', 'ULQEUL01CHQ661S', 'ULQEUL01DEQ661S', 'ULQEUL01EZQ661S'], 'eur_ez_yoy_stale_2024_01': ['ULQEUL01EZQ657S'], 'eur_germany_proxy_primary': ['ULQEUL01DEQ657S'], 'eur_fr_it_es_nl_alts': ['ULQEUL01FRQ657S', 'ULQEUL01ITQ657S', 'ULQEUL01ESQ657S', 'ULQEUL01NLQ657S'], 'wage_lceamn_fallback_not_primary': ['LCEAMN01USM657S', 'LCEAMN01CAM657S', 'LCEAMN01USQ657S', 'LCEAMN01CAQ657S', 'LCEAMN01DEQ657S', 'LCEAMN01NZQ657S', 'LCEAMN01GBQ661S', 'LCEAMN01JPQ661S', 'LCEAMN01AUQ661S'], 'us_national_alts_not_primary': ['ULCNFB', 'PRS85006112', 'COMPRNFB'], 'chf_wage_lceamn_404': ['LCEAMN01CHQ657S', 'LCEAMN01CHQ661S', 'LCEAMN01CHM657S', 'LCEAMN01CHM661S']}
+US ULQEUL01USQ657S [1955-07-01..2025-10-01] n=844 series=ULQEUL01USQ657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep low_ulc_xs: scale=0.943 bind=static IS mean_mo=-0.042% OOS gates=True
+  sweep high_ulc_xs: scale=1.231 bind=daily IS mean_mo=0.036% OOS gates=True
+  sweep low_ulc_z_xs: scale=0.455 bind=static IS mean_mo=-0.055% OOS gates=True
+  sweep ulc_chg_xs: scale=0.442 bind=static IS mean_mo=-0.055% OOS gates=True
+  sweep us_ulc_stress_fx: scale=8.324 bind=daily IS mean_mo=0.178% OOS gates=True
+  sweep us_ulc_haven_usd: scale=2.716 bind=static IS mean_mo=-0.058% OOS gates=True
+  sweep ulc_ew: scale=1.026 bind=static IS mean_mo=-0.051% OOS gates=True
+=== factor summary ===
+  low_ulc_xs: mean_mo=-0.044% NW_t=-0.78 %pos=46%
+  high_ulc_xs: mean_mo=+0.029% NW_t=+0.52 %pos=54%
+  low_ulc_z_xs: mean_mo=-0.100% NW_t=-1.77 %pos=44%
+  ulc_chg_xs: mean_mo=-0.108% NW_t=-1.98 %pos=42%
+  us_ulc_stress_fx: mean_mo=+0.019% NW_t=+0.97 %pos=8%
+  us_ulc_haven_usd: mean_mo=-0.020% NW_t=-1.01 %pos=7%
+  ulc_ew: mean_mo=-0.044% NW_t=-1.39 %pos=45%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
