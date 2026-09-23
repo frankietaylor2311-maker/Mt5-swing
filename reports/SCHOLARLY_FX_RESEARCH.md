@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, CB balance-sheet / QE differential wave after CA imbalances; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`).
+**Status:** Active (2026-09-23 BST, real-rate / breakeven differential wave after CB-BS QE; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -42,6 +42,15 @@
 - **Key refs:** Gagnon, Raskin, Remache & Sack (2011), "The Federal Reserve's Large-Scale Asset Purchases," *IJCB*; Neely (2015), "Unconventional Monetary Policy Effects on Exchange Rates," *JBF*; Bauer & Neely (2014), "International Channels of the Fed's Unconventional Monetary Policy," *JIMF*.
 - **Free data:** FRED `WALCL` (Fed weekly), `ECBASSETSW` (ECB weekly), `JPNASSETS` (BoJ monthly). `UKASSETS` discontinued 2014-09 — excluded from primary panel. Optional GDP: `GDP` / `EUNNGDP` / `JPNNGDP` for BS/GDP ratios (within-currency z only — units heterogeneous).
 - **What we implement (wave §22):** `data/fred_cb_balance_sheet.py` + `strategies/cb_balance_sheet_fx.py` + `scripts/scholarly_fx_cb_bs_wave.py` — legs `walcl_pb_fx` (primary Neely PB), `walcl_haven_usd`, `walcl_chg_pb_fx`, `bs_diff_pb_fx` (US−peer YoY), `bs_peer_xs` (EUR/JPY), `bs_gdp_pb_fx`, `bs_ew`. PIT weekly `pub_lag=7d`, monthly `pub_lag=1m`, GDP `pub_lag=1Q` + `signal_lag=1d`. YoY growth avoids FX conversion of level units. **Distinct** from NFCI funding (§20) and CA/GDP (§21). **Not** overlaid on the locked sleeve.
+
+
+
+### 1.17 Real-rate / breakeven inflation differentials
+
+- **Claim:** Real interest differentials (RID) and inflation expectations price FX: currencies with higher *real* rates tend to appreciate (Frankel); US TIPS real yields and breakevens are market state variables for the dollar; foreign LT−CPI proxies approximate real rates where linkers are unavailable.
+- **Key refs:** Frankel (1979), "On the Mark," *AER*; Meese & Rogoff (1988), "Was It Real?," *JF*; Dahlquist & Hasseltoft (2013), "International Bond Risk Premia," *JIE*; Lustig, Stathopoulos & Verdelhan (2019), "Term Structure of Currency Carry Trade Risk Premia," *JF*; Hofmann, Shim & Shin (BIS) on bond risk premia / real rates and FX.
+- **Free data:** FRED `DFII10` (US 10y TIPS real), `T10YIE` (10y breakeven), `DGS10` (nominal); foreign OECD LT (`IRLTLT01*`) − CPI YoY (honest proxy — **not** true linkers).
+- **What we implement (wave §23):** `data/fred_real_rates.py` + `strategies/real_rate_fx.py` + `scripts/scholarly_fx_real_rate_wave.py` — legs `us_real_usd` (primary), `us_real_chg_usd`, `us_be_fx`, `us_be_usd`, `rr_xs`, `rr_z_xs`, `rr_chg_xs`, `rr_ew`. PIT daily `pub_lag=1d`, monthly `pub_lag=1m` + `signal_lag=1d/1m`. **Distinct** from nominal yield-curve (§16), PPP/CPI, and CB-BS (§22). **Not** overlaid on the locked sleeve.
 
 
 ### 1.2 Momentum
@@ -251,7 +260,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 12. **Done (2026-09-23):** CFTC COT positioning / speculative-pressure wave — promote=NO (see §17).
 13. **Done (2026-09-23):** EPU/TPU, forward-carry, Hau–Rey equity, funding-liq, CA imbalances — promote=NO (§18–21).
 14. **Done (2026-09-23):** CB balance-sheet / QE differential — promote=NO (see §22).
-15. Next scholarly candidates (not sleeve coolers): **real-rate / breakeven differentials** (free FRED `DFII10` / `T10YIE` + foreign LT−CPI proxies); FX IV/RR **blocked**; bilateral AI-GPR role decompositions; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
+15. **Done (2026-09-23):** Real-rate / breakeven differentials — promote=NO (see §23).
+16. Next scholarly candidates (not sleeve coolers): FX IV/RR **blocked**; bilateral AI-GPR role decompositions; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -948,8 +958,70 @@ Positive IS means on PB legs → sweep run. Best scaled IS mean (`walcl_pb_fx` @
 
 Neely / Gagnon portfolio-balance priors are the right *direction* and are **distinct** from NFCI funding and CA/GDP: mild positive full-sample mean on `walcl_pb_fx` / `walcl_chg_pb_fx` / `bs_diff_pb_fx` (~+1–4 bp/mo, NW t ≈ 0.4–1.4), with haven and peer-XS / BS-GDP legs flat-to-negative. Binary z≥1 episodes are infrequent → sparse %pos (~16%). Far from prop-firm 1%/mo + 70% hit-rate. Free FRED multi-CB (Fed+ECB+BoJ) is sufficient; inventing BoE continuity after UKASSETS end-2014 would be dishonest. Multi-CB coverage was **not** too thin — real-rate fallback deferred.
 
-**Next structure (if promote=0):** **Real-rate / breakeven inflation differentials** using free FRED `DFII10` / `T10YIE` (US TIPS) plus foreign LT govt − CPI YoY proxies where available — *not* another locked-sleeve cooler. FX IV/RR still blocked without a free panel.
+**Next structure (if promote=0):** delivered as wave §23 (real-rate / breakeven).
 
 Artifacts: `reports/scholarly_fx_cb_bs_wave.md`, `scholarly_fx_cb_bs_*.csv`, `scholarly_fx_cb_bs_meta.json`.
 
+
+---
+
+## 23. Real-rate / breakeven differential wave results (2026-09-23 BST) — Frankel / Meese–Rogoff
+
+**Design (fixed priors, no HO tuning):** Distinct RID / inflation-expectations channel vs nominal yield-curve (§16), PPP/CPI real FX (§13), and CB-BS QE (§22).
+- Sources: FRED `DFII10` (US 10y TIPS real), `T10YIE` (10y breakeven), `DGS10` (nominal); foreign OECD LT govt − CPI YoY as **honest proxy** (not true linkers where unavailable).
+- PIT: daily `pub_lag_days=1`, monthly `pub_lag_months=1` + `signal_lag=1` trading day (daily tilts) / 1 month (XS) + 1d weight lag. Costs 1.5 bps/side.
+- Legs: `us_real_usd` (**primary** — high US real → long USD), `us_real_chg_usd`, `us_be_fx` (high BE → long FX), `us_be_usd` (alternate), `rr_xs` / `rr_z_xs` / `rr_chg_xs` (foreign proxy − US TIPS sorts), `rr_ew`.
+- **Explicit:** scholarly sleeve evaluation only — **no cooler overlay** on locked `fx4plus_gbpcad_d1_voltarget_0025`. Free FRED only.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| us_real_usd | +0.012% | +0.31 | +0.30 | 21% | 23% | +0.08 |
+| us_real_chg_usd | +0.084% | +2.46 | +2.24 | 28% | 20% | +0.65 |
+| us_be_fx | -0.062% | -1.81 | -1.97 | 16% | 35% | -0.51 |
+| us_be_usd | +0.053% | +1.54 | +1.73 | 19% | 25% | +0.44 |
+| rr_xs | -0.068% | -1.04 | -1.16 | 50% | 10% | -0.22 |
+| rr_z_xs | -0.056% | -0.94 | -1.04 | 49% | 14% | -0.15 |
+| rr_chg_xs | -0.034% | -0.51 | -0.48 | 50% | 12% | -0.10 |
+| rr_ew | -0.027% | -0.75 | -0.70 | 48% | 12% | -0.16 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| us_real_usd | year_2024 | -0.09% | 9% | PASS | no |
+| us_real_usd | year_2025 | -0.08% | 0% | PASS | no |
+| us_real_usd | year_2026 | +0.04% | 25% | PASS | no |
+| us_real_usd | holdout_365d | +0.03% | 17% | PASS | no |
+| us_real_chg_usd | year_2024 | +0.13% | 36% | PASS | no |
+| us_real_chg_usd | year_2025 | +0.01% | 18% | PASS | no |
+| us_real_chg_usd | year_2026 | +0.02% | 38% | PASS | no |
+| us_real_chg_usd | holdout_365d | +0.03% | 42% | PASS | no |
+| us_be_usd | year_2024 | +0.10% | 18% | PASS | no |
+| us_be_usd | year_2025 | -0.07% | 18% | PASS | no |
+| us_be_usd | year_2026 | -0.05% | 12% | PASS | no |
+| us_be_usd | holdout_365d | -0.03% | 8% | PASS | no |
+| rr_xs | year_2024 | -0.10% | 73% | PASS | no |
+| rr_xs | year_2025 | -0.19% | 45% | PASS | no |
+| rr_xs | year_2026 | +0.14% | 62% | PASS | no |
+| rr_xs | holdout_365d | +0.04% | 50% | PASS | no |
+| rr_ew | year_2024 | -0.10% | 55% | PASS | no |
+| rr_ew | year_2025 | -0.13% | 36% | PASS | no |
+| rr_ew | year_2026 | +0.09% | 38% | PASS | no |
+| rr_ew | holdout_365d | +0.03% | 33% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep run (positive IS on some legs). Primary `us_real_usd` scale≈3.32 bind=daily; scaled IS mean_mo≈+0.037% still ≪ 1%; scaled HO clears: **NO**. Leverage does not invent consistency.
+
+**Board:** n=8 soft=2 hard=1 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`us_real_usd`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Frankel RID / Meese–Rogoff priors are the right *economic* direction and are **distinct** from nominal curve, PPP, and CB-BS: mild positive full-sample mean on `us_real_usd` / `us_real_chg_usd` / `us_be_usd` (~+1–8 bp/mo; `us_real_chg_usd` NW t≈+2.2 is the only soft/hard hit), but %pos is sparse (~21–28%) because binary z≥1 tilts fire infrequently. Cross-sectional LT−CPI proxies (`rr_xs` family) are flat-to-negative — consistent with proxy noise vs true linkers. Far from prop-firm 1%/mo + 70% hit-rate. Free FRED TIPS/BE panel is sufficient for the USD state claim; inventing foreign linker series would be dishonest.
+
+**Next structure (if promote=0):** **Terms-of-trade / commodity-currency terms** refinement beyond CRR (§11) using free commodity panels already on disk, **or** bilateral AI-GPR role decompositions — *not* another locked-sleeve cooler. FX IV/RR still blocked without a free panel.
+
+Artifacts: `reports/scholarly_fx_real_rate_wave.md`, `scholarly_fx_real_rate_*.csv`, `scholarly_fx_real_rate_meta.json`.
 

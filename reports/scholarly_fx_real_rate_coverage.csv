@@ -1,0 +1,12 @@
+series,kind,n_obs,start,end,note
+DFII10,us_daily,5934,2003-01-03,2026-09-22,true linker / market BE
+T10YIE,us_daily,5935,2003-01-03,2026-09-23,true linker / market BE
+DGS10,us_daily,16165,1962-01-03,2026-09-22,true linker / market BE
+LT-CPI_AUD,proxy_monthly,667,1969-08-01,2025-02-01,proxy_not_linker
+LT-CPI_CAD,proxy_monthly,843,1955-02-01,2025-04-01,proxy_not_linker
+LT-CPI_CHF,proxy_monthly,832,1956-02-01,2025-05-01,proxy_not_linker
+LT-CPI_EUR,proxy_monthly,344,1998-01-01,2026-08-01,proxy_not_linker
+LT-CPI_GBP,proxy_monthly,783,1960-02-01,2025-04-01,proxy_not_linker
+LT-CPI_JPY,proxy_monthly,390,1989-02-01,2021-07-01,proxy_not_linker
+LT-CPI_NZD,proxy_monthly,660,1970-02-01,2025-02-01,proxy_not_linker
+LT-CPI_USD,proxy_monthly,880,1953-05-01,2026-09-01,US_proxy_LT_minus_CPI

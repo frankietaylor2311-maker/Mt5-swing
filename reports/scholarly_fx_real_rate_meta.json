@@ -1,0 +1,141 @@
+{
+  "ok": true,
+  "path": "real_rate_breakeven_differential",
+  "data_tag": "approximate_non_ftmo",
+  "daily_pub_lag_days": 1,
+  "monthly_pub_lag_months": 1,
+  "signal_lag_days": 1,
+  "signal_lag_months": 1,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "us_real_usd",
+    "us_real_chg_usd",
+    "us_be_fx",
+    "us_be_usd",
+    "rr_xs",
+    "rr_z_xs",
+    "rr_chg_xs",
+    "rr_ew"
+  ],
+  "primary": "us_real_usd",
+  "n_factors": 8,
+  "soft_nw_pos": 2,
+  "hard_nw_pos": 1,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "foreign_real_honest_note": "Foreign real rates = OECD LT govt \u2212 CPI YoY proxies; not true TIPS/linker yields where unavailable on free FRED",
+  "distinct_from": [
+    "yield_curve_nominal_slope_LT_ST",
+    "PPP_real_FX_CPI_levels",
+    "Balassa_Samuelson",
+    "cb_balance_sheet_QE",
+    "macro_diff_CPI_IP_UR",
+    "funding_liquidity_NFCI"
+  ],
+  "citations": [
+    "Frankel (1979), On the Mark: Real Interest Differentials, AER",
+    "Meese & Rogoff (1988), Was It Real? Exchange Rate-Interest Differential, JF",
+    "Dahlquist & Hasseltoft (2013), International Bond Risk Premia, JIE",
+    "Lustig, Stathopoulos & Verdelhan (2019), Term Structure of Currency Carry Trade Risk Premia, JF",
+    "Hofmann, Shim & Shin (BIS), bond risk premia / real rates and FX"
+  ],
+  "coverage": [
+    {
+      "series": "DFII10",
+      "kind": "us_daily",
+      "n_obs": 5934,
+      "start": "2003-01-03",
+      "end": "2026-09-22",
+      "note": "true linker / market BE"
+    },
+    {
+      "series": "T10YIE",
+      "kind": "us_daily",
+      "n_obs": 5935,
+      "start": "2003-01-03",
+      "end": "2026-09-23",
+      "note": "true linker / market BE"
+    },
+    {
+      "series": "DGS10",
+      "kind": "us_daily",
+      "n_obs": 16165,
+      "start": "1962-01-03",
+      "end": "2026-09-22",
+      "note": "true linker / market BE"
+    },
+    {
+      "series": "LT-CPI_AUD",
+      "kind": "proxy_monthly",
+      "n_obs": 667,
+      "start": "1969-08-01",
+      "end": "2025-02-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_CAD",
+      "kind": "proxy_monthly",
+      "n_obs": 843,
+      "start": "1955-02-01",
+      "end": "2025-04-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_CHF",
+      "kind": "proxy_monthly",
+      "n_obs": 832,
+      "start": "1956-02-01",
+      "end": "2025-05-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_EUR",
+      "kind": "proxy_monthly",
+      "n_obs": 344,
+      "start": "1998-01-01",
+      "end": "2026-08-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_GBP",
+      "kind": "proxy_monthly",
+      "n_obs": 783,
+      "start": "1960-02-01",
+      "end": "2025-04-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_JPY",
+      "kind": "proxy_monthly",
+      "n_obs": 390,
+      "start": "1989-02-01",
+      "end": "2021-07-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_NZD",
+      "kind": "proxy_monthly",
+      "n_obs": 660,
+      "start": "1970-02-01",
+      "end": "2025-02-01",
+      "note": "proxy_not_linker"
+    },
+    {
+      "series": "LT-CPI_USD",
+      "kind": "proxy_monthly",
+      "n_obs": 880,
+      "start": "1953-05-01",
+      "end": "2026-09-01",
+      "note": "US_proxy_LT_minus_CPI"
+    }
+  ]
+}
