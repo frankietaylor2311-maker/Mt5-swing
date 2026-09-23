@@ -1,0 +1,248 @@
+{
+  "ok": true,
+  "section": 47,
+  "path": "bis_ws_dsr_pnfs",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 5,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "dsr_pct_of_income",
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_dsr_xs",
+    "low_dsr_xs",
+    "high_dsr_z_xs",
+    "dsr_chg_xs",
+    "us_dsr_stress_fx",
+    "us_dsr_haven_usd",
+    "dsr_ew"
+  ],
+  "primary": "high_dsr_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "BIS SDMX WS_DSR Q..P PNFS DSR % after pub_lag=5; XS on DSR level; also 5y z / \u039412 boarded; high_dsr primary (Drehmann\u2013Juselius risk premia); n_long=n_short=2 on mapped foreign (NZD unmapped)",
+  "eur_mapping": "BIS WS_DSR Q.DE.P Germany proxy (XM/EA euro-area keys missing; FR available unused)",
+  "coverage_g10": "USD/GBP/JPY/CAD/AUD/CHF + EUR=DE mapped; NZD unmapped (NZ absent from WS_DSR)",
+  "series_map": {
+    "USD": "BIS:WS_DSR:Q.US.P",
+    "EUR": "BIS:WS_DSR:Q.DE.P",
+    "GBP": "BIS:WS_DSR:Q.GB.P",
+    "JPY": "BIS:WS_DSR:Q.JP.P",
+    "CAD": "BIS:WS_DSR:Q.CA.P",
+    "AUD": "BIS:WS_DSR:Q.AU.P",
+    "CHF": "BIS:WS_DSR:Q.CH.P"
+  },
+  "score_basis": "pnfs_dsr_level_pct",
+  "distinct_from": [
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "gpr_country",
+    "AI_GPR",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "fiscal_28",
+    "debt_gdp_29",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "money_growth_33",
+    "reserves_34",
+    "house_price_35",
+    "equity_diff",
+    "employment_41",
+    "industrial_production_42",
+    "building_permits_43",
+    "retail_sales_46",
+    "acm_tp_44",
+    "country_gpr_bilateral_45",
+    "commodity",
+    "ig_oas_36"
+  ],
+  "citations": [
+    "Drehmann & Juselius (BIS): debt-service ratio early-warning vs stock leverage",
+    "Drehmann et al. (2015): DSR = interest + amortisation / income",
+    "Primary: high relative PNFS DSR \u2192 FX stress / risk premia",
+    "Honesty: low DSR lean balance-sheet"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "bis_key": "BIS:WS_DSR:Q.US.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 13.8,
+      "note": "BIS WS_DSR Q.US.P PNFS debt-service ratio (%)"
+    },
+    {
+      "currency": "EUR",
+      "bis_key": "BIS:WS_DSR:Q.DE.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 12.2,
+      "note": "Germany proxy via BIS WS_DSR Q.DE.P (XM/EA euro-area keys missing on WS_DSR; FR available but unused as primary)"
+    },
+    {
+      "currency": "GBP",
+      "bis_key": "BIS:WS_DSR:Q.GB.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 12.9,
+      "note": "BIS WS_DSR Q.GB.P PNFS debt-service ratio (%)"
+    },
+    {
+      "currency": "JPY",
+      "bis_key": "BIS:WS_DSR:Q.JP.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 15.5,
+      "note": "BIS WS_DSR Q.JP.P PNFS debt-service ratio (%)"
+    },
+    {
+      "currency": "CAD",
+      "bis_key": "BIS:WS_DSR:Q.CA.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 25.5,
+      "note": "BIS WS_DSR Q.CA.P PNFS debt-service ratio (%)"
+    },
+    {
+      "currency": "AUD",
+      "bis_key": "BIS:WS_DSR:Q.AU.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 20.3,
+      "note": "BIS WS_DSR Q.AU.P PNFS debt-service ratio (%)"
+    },
+    {
+      "currency": "CHF",
+      "bis_key": "BIS:WS_DSR:Q.CH.P",
+      "n_obs": 325,
+      "start": "1999-06-01",
+      "end": "2026-06-01",
+      "last": 20.0,
+      "note": "BIS WS_DSR Q.CH.P PNFS debt-service ratio (%)"
+    },
+    {
+      "currency": "NZD",
+      "bis_key": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_bis_ws_dsr (NZ absent)"
+    }
+  ],
+  "unmapped": [
+    "NZD"
+  ],
+  "failed_or_alt": {
+    "fred_pnf_dsr_404": [
+      "QUSPNFDSR",
+      "QGBPNFDSR",
+      "QJPPNFDSR",
+      "QCAPNFDSR",
+      "QAUPNFDSR",
+      "QNZPNFDSR",
+      "QCHPNFDSR",
+      "QDEPNFDSR",
+      "QFRPNFDSR",
+      "QXMPNFDSR"
+    ],
+    "fred_bisdsr_404": [
+      "BISDSRUS",
+      "BISDSRGB",
+      "BISDSRJP",
+      "BISDSRCA",
+      "BISDSRAU",
+      "BISDSRNZ",
+      "BISDSRCH",
+      "BISDSRDE",
+      "BISDSRXM"
+    ],
+    "fred_dsr_pnf_404": [
+      "DSRUSPNF",
+      "DSRGBPNF",
+      "DSRJPPNF",
+      "DSRCAPNF",
+      "DSRAUPNF",
+      "DSRNZPNF",
+      "DSRCHPNF",
+      "DSRDEPNF",
+      "DSRXMPNF"
+    ],
+    "fred_dorq_404": [
+      "QUSDORQDSR",
+      "QGBDORQDSR",
+      "QJPDORQDSR",
+      "QCADORQDSR",
+      "QAUDORQDSR"
+    ],
+    "euro_area_keys_missing_on_bis": [
+      "XM",
+      "EA",
+      "EZ"
+    ],
+    "nzd_missing_on_bis_ws_dsr": [
+      "NZ"
+    ]
+  },
+  "soft_best": {
+    "factor": "low_dsr_xs",
+    "n_months": 180,
+    "mean_mo": 0.0006453045419556763,
+    "tstat_ols": 0.9417737122175686,
+    "tstat_nw": 1.01674311744494,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5388888888888889,
+    "top3": 0.11258488431752753,
+    "ann_sharpe_daily": 0.27731479514495755
+  },
+  "primary_sweep": {
+    "strategy": "high_dsr_xs",
+    "scale": 0.6072801022172848,
+    "binding": "static",
+    "is_total_return": -0.09882742189968319,
+    "is_static_loss": 0.09999999983207351,
+    "is_max_daily_dd": 0.007517759128117177,
+    "is_gates_pass": true,
+    "oos_total_return": 0.012835936469622666,
+    "oos_static_loss": 0.004584427404185117,
+    "oos_max_daily_dd": 0.002435371300037659,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005116479775261486,
+    "mean_mo_oos": 0.0011460623425021688,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0004051300701341847,
+    "scaled_full_pct_pos": 0.4722222222222222,
+    "scaled_ho_mean_mo": 0.0011460623425021688,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}
