@@ -1,0 +1,262 @@
+{
+  "ok": true,
+  "section": 46,
+  "path": "oecd_mei_retail_sales_slrtto",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "retail_yoy_growth_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_retail_xs",
+    "low_retail_xs",
+    "high_retail_z_xs",
+    "retail_chg_xs",
+    "us_retail_stress_fx",
+    "us_retail_haven_usd",
+    "retail_ew"
+  ],
+  "primary": "high_retail_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI SLRTTO01*Q657S retail volume growth + USD RSAFS / CAD CANWSCNDW01IXOBSAM\u2192YoY after pub_lag=2; XS on YoY/growth; also 5y z / \u039412 of YoY boarded; high_retail primary (Dahlquist\u2013Hasseltoft); n_long=n_short=2 full G10 foreign",
+  "eur_mapping": "SLRTTO01DEQ657S Germany proxy (EA19 WSCNDW 404; FRA WSCNDW stale 2018; EZ SLRTTO ends 2023-07)",
+  "coverage_g10": "full G10 mapped (USD RSAFS M; CAD CANWSCNDW IXOBSAM M ends~2024-04; EUR/GBP/JPY/AUD/NZD/CHF SLRTTO Q)",
+  "series_map": {
+    "USD": "RSAFS",
+    "EUR": "SLRTTO01DEQ657S",
+    "GBP": "SLRTTO01GBQ657S",
+    "JPY": "SLRTTO01JPQ657S",
+    "CAD": "CANWSCNDW01IXOBSAM",
+    "AUD": "SLRTTO01AUQ657S",
+    "NZD": "SLRTTO01NZQ657S",
+    "CHF": "SLRTTO01CHQ657S"
+  },
+  "score_basis": "yoy_growth_as_reported_or_derived",
+  "distinct_from": [
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "gpr_country",
+    "AI_GPR",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "fiscal_28",
+    "debt_gdp_29",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "money_growth_33",
+    "reserves_34",
+    "house_price_35",
+    "equity_diff",
+    "employment_41",
+    "industrial_production_42",
+    "building_permits_43",
+    "acm_tp_44",
+    "country_gpr_bilateral_45",
+    "commodity",
+    "ig_oas_36"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020, JFE): economic momentum incl. retail sales \u2192 appreciate",
+    "Primary: high relative retail-sales growth \u2192 subsequent appreciation",
+    "Honesty: low retail / consumer-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "RSAFS",
+      "freq": "M",
+      "n_obs": 404,
+      "start": "1993-03-01",
+      "end": "2026-10-01",
+      "last": 6.014763635267806,
+      "note": "US Census RSAFS levels \u2192 YoY % (USAWSCNDW01GYSAM ends 2023-11; SLRTTO01USQ657S ends 2018; RSXFS/RETAILIMSA alts)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANWSCNDW01IXOBSAM",
+      "freq": "M",
+      "n_obs": 808,
+      "start": "1957-03-01",
+      "end": "2024-06-01",
+      "last": -8.04843347067019,
+      "note": "OECD MEI CANWSCNDW01IXOBSAM index \u2192 YoY % (ends ~2024-04 gap; SLRTTO01CAQ657S ends 2022; CANWSCNDW01GYSAM ends 2023-11)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "SLRTTO01DEQ657S",
+      "freq": "Q",
+      "n_obs": 853,
+      "start": "1955-06-01",
+      "end": "2026-06-01",
+      "last": 0.098814229248845,
+      "note": "Germany proxy via SLRTTO01DEQ657S (Q growth as reported) (EA19WSCNDW 404; FRAWSCNDW ends 2018; SLRTTO01EZQ657S ends 2023-07)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "SLRTTO01GBQ657S",
+      "freq": "Q",
+      "n_obs": 829,
+      "start": "1957-06-01",
+      "end": "2026-06-01",
+      "last": 0.9006111289805,
+      "note": "OECD MEI retail volume growth SLRTTO01GBQ657S (quarterly as reported)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "SLRTTO01JPQ657S",
+      "freq": "Q",
+      "n_obs": 853,
+      "start": "1955-06-01",
+      "end": "2026-06-01",
+      "last": 1.1435733229811,
+      "note": "OECD MEI retail volume growth SLRTTO01JPQ657S (quarterly as reported)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "SLRTTO01AUQ657S",
+      "freq": "Q",
+      "n_obs": 511,
+      "start": "1983-12-01",
+      "end": "2026-06-01",
+      "last": 0.3452166619,
+      "note": "OECD MEI retail volume growth SLRTTO01AUQ657S (quarterly as reported)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "SLRTTO01NZQ657S",
+      "freq": "Q",
+      "n_obs": 757,
+      "start": "1963-06-01",
+      "end": "2026-06-01",
+      "last": -0.530781895846399,
+      "note": "OECD MEI retail volume growth SLRTTO01NZQ657S (quarterly as reported)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "SLRTTO01CHQ657S",
+      "freq": "Q",
+      "n_obs": 853,
+      "start": "1955-06-01",
+      "end": "2026-06-01",
+      "last": 0.885245901639586,
+      "note": "OECD MEI retail volume growth SLRTTO01CHQ657S (quarterly as reported)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "usd_oecd_wscndw_stale": [
+      "USAWSCNDW01GYSAM",
+      "USAWSCNDW01IXOBSAM"
+    ],
+    "usd_slrtto_stale": [
+      "SLRTTO01USA657S",
+      "SLRTTO01USQ657S"
+    ],
+    "usd_national_primary_rsafs": [
+      "RSAFS"
+    ],
+    "usd_national_alts_not_primary": [
+      "RSXFS",
+      "RETAILIMSA",
+      "MRTSSM44X72USS"
+    ],
+    "eur_ea19_wscndw_404": [
+      "EA19WSCNDW01GYSAM"
+    ],
+    "eur_fra_wscndw_stale_2018": [
+      "FRAWSCNDW01GYSAM",
+      "FRAWSCNDW01IXOBSAM"
+    ],
+    "eur_ez_slrtto_stale_2023_07": [
+      "SLRTTO01EZQ657S"
+    ],
+    "eur_germany_proxy_primary": [
+      "SLRTTO01DEQ657S"
+    ],
+    "jpy_wscndw_stale": [
+      "JPNWSCNDW01GYSAM",
+      "JPNWSCNDW01IXOBSAM"
+    ],
+    "cad_slrtto_ends_2022": [
+      "SLRTTO01CAQ657S"
+    ],
+    "cad_wscndw_gysam_stale_2023_11": [
+      "CANWSCNDW01GYSAM"
+    ],
+    "cad_index_yoy_primary_gap_2024_04": [
+      "CANWSCNDW01IXOBSAM"
+    ],
+    "wscndw_g10_mostly_404": [
+      "AUSWSCNDW01GYSAM",
+      "NZLWSCNDW01GYSAM",
+      "CHEWSCNDW01GYSAM",
+      "DEUWSCNDW01GYSAM",
+      "GBRWSCNDW01GYSAM"
+    ],
+    "slrtto_monthly_m657s_mostly_404": [
+      "SLRTTO01DEM657S",
+      "SLRTTO01GBM657S",
+      "SLRTTO01JPM657S",
+      "SLRTTO01AUM657S",
+      "SLRTTO01NZM657S",
+      "SLRTTO01CHM657S",
+      "SLRTTO01CAM657S"
+    ]
+  },
+  "soft_best": {
+    "factor": "retail_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.0006176676559129451,
+    "tstat_ols": 0.999381721923938,
+    "tstat_nw": 1.1428232575523445,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5333333333333333,
+    "top3": 0.11111291026866556,
+    "ann_sharpe_daily": 0.24890239218058952
+  },
+  "primary_sweep": {
+    "strategy": "high_retail_xs",
+    "scale": 1.0713863041742238,
+    "binding": "static",
+    "is_total_return": -0.025462118660809052,
+    "is_static_loss": 0.09999999998795392,
+    "is_max_daily_dd": 0.043732104147978824,
+    "is_gates_pass": true,
+    "oos_total_return": 0.02295502007934691,
+    "oos_static_loss": 0.007287599967284186,
+    "oos_max_daily_dd": 0.005682666793541576,
+    "oos_gates_pass": true,
+    "mean_mo_is": -4.584231502135586e-05,
+    "mean_mo_oos": 0.0024787107455844135,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 8.704242551229159e-05,
+    "scaled_full_pct_pos": 0.45555555555555555,
+    "scaled_ho_mean_mo": 0.0024787107455844135,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

@@ -1,0 +1,33 @@
+=== scholarly FX Retail-sales (SLRTTO / RSAFS) wave (§46) ===
+OECD MEI SLRTTO01*Q657S + USD RSAFS / CAD CANWSCNDW IXOBSAM→YoY (pub_lag=2) — retail YoY XS; Dahlquist–Hasseltoft. Distinct from IP §42, employment §41, permits §43, OECD CLI/CCI/BCI. Locked sleeve untouched.
+Retail panel cols=['USD', 'CAD', 'EUR', 'GBP', 'JPY', 'AUD', 'NZD', 'CHF'] [1955-06-01..2026-10-01] pub_lag_m=2
+currency            fred_id freq  n_obs      start        end      last                                                                                                                         note
+     USD              RSAFS    M    404 1993-03-01 2026-10-01  6.014764             US Census RSAFS levels → YoY % (USAWSCNDW01GYSAM ends 2023-11; SLRTTO01USQ657S ends 2018; RSXFS/RETAILIMSA alts)
+     CAD CANWSCNDW01IXOBSAM    M    808 1957-03-01 2024-06-01 -8.048433      OECD MEI CANWSCNDW01IXOBSAM index → YoY % (ends ~2024-04 gap; SLRTTO01CAQ657S ends 2022; CANWSCNDW01GYSAM ends 2023-11)
+     EUR    SLRTTO01DEQ657S    Q    853 1955-06-01 2026-06-01  0.098814 Germany proxy via SLRTTO01DEQ657S (Q growth as reported) (EA19WSCNDW 404; FRAWSCNDW ends 2018; SLRTTO01EZQ657S ends 2023-07)
+     GBP    SLRTTO01GBQ657S    Q    829 1957-06-01 2026-06-01  0.900611                                                        OECD MEI retail volume growth SLRTTO01GBQ657S (quarterly as reported)
+     JPY    SLRTTO01JPQ657S    Q    853 1955-06-01 2026-06-01  1.143573                                                        OECD MEI retail volume growth SLRTTO01JPQ657S (quarterly as reported)
+     AUD    SLRTTO01AUQ657S    Q    511 1983-12-01 2026-06-01  0.345217                                                        OECD MEI retail volume growth SLRTTO01AUQ657S (quarterly as reported)
+     NZD    SLRTTO01NZQ657S    Q    757 1963-06-01 2026-06-01 -0.530782                                                        OECD MEI retail volume growth SLRTTO01NZQ657S (quarterly as reported)
+     CHF    SLRTTO01CHQ657S    Q    853 1955-06-01 2026-06-01  0.885246                                                        OECD MEI retail volume growth SLRTTO01CHQ657S (quarterly as reported)
+Series source note: FRED OECD MEI SLRTTO01*Q657S retail volume growth (GBP/JPY/AUD/NZD/CHF; EUR=DEU Germany proxy — EA19 WSCNDW 404 / FRA stale / EZ SLRTTO stale; USD=RSAFS levels→YoY — USAWSCNDW/SLRTTO US stale; CAD=CANWSCNDW01IXOBSAM index→YoY ends ~2024-04 — SLRTTO CAQ ends 2022)
+Score basis: yoy_growth_as_reported_or_derived unit=retail_yoy_growth_pct
+Failed/alt documented: {'usd_oecd_wscndw_stale': ['USAWSCNDW01GYSAM', 'USAWSCNDW01IXOBSAM'], 'usd_slrtto_stale': ['SLRTTO01USA657S', 'SLRTTO01USQ657S'], 'usd_national_primary_rsafs': ['RSAFS'], 'usd_national_alts_not_primary': ['RSXFS', 'RETAILIMSA', 'MRTSSM44X72USS'], 'eur_ea19_wscndw_404': ['EA19WSCNDW01GYSAM'], 'eur_fra_wscndw_stale_2018': ['FRAWSCNDW01GYSAM', 'FRAWSCNDW01IXOBSAM'], 'eur_ez_slrtto_stale_2023_07': ['SLRTTO01EZQ657S'], 'eur_germany_proxy_primary': ['SLRTTO01DEQ657S'], 'jpy_wscndw_stale': ['JPNWSCNDW01GYSAM', 'JPNWSCNDW01IXOBSAM'], 'cad_slrtto_ends_2022': ['SLRTTO01CAQ657S'], 'cad_wscndw_gysam_stale_2023_11': ['CANWSCNDW01GYSAM'], 'cad_index_yoy_primary_gap_2024_04': ['CANWSCNDW01IXOBSAM'], 'wscndw_g10_mostly_404': ['AUSWSCNDW01GYSAM', 'NZLWSCNDW01GYSAM', 'CHEWSCNDW01GYSAM', 'DEUWSCNDW01GYSAM', 'GBRWSCNDW01GYSAM'], 'slrtto_monthly_m657s_mostly_404': ['SLRTTO01DEM657S', 'SLRTTO01GBM657S', 'SLRTTO01JPM657S', 'SLRTTO01AUM657S', 'SLRTTO01NZM657S', 'SLRTTO01CHM657S', 'SLRTTO01CAM657S']}
+US RSAFS YoY [1993-03-01..2026-10-01] n=404 series=RSAFS
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_retail_xs: scale=1.071 bind=static IS mean_mo=-0.005% OOS gates=True
+  sweep low_retail_xs: scale=1.366 bind=static IS mean_mo=-0.024% OOS gates=True
+  sweep high_retail_z_xs: scale=1.201 bind=daily IS mean_mo=0.062% OOS gates=True
+  sweep retail_chg_xs: scale=1.014 bind=daily IS mean_mo=0.070% OOS gates=True
+  sweep us_retail_stress_fx: scale=1.498 bind=static IS mean_mo=-0.034% OOS gates=True
+  sweep us_retail_haven_usd: scale=5.663 bind=daily IS mean_mo=0.115% OOS gates=True
+  sweep retail_ew: scale=1.658 bind=daily IS mean_mo=0.024% OOS gates=True
+=== factor summary ===
+  high_retail_xs: mean_mo=+0.008% NW_t=+0.14 %pos=46%
+  low_retail_xs: mean_mo=-0.029% NW_t=-0.50 %pos=51%
+  high_retail_z_xs: mean_mo=+0.059% NW_t=+1.08 %pos=53%
+  retail_chg_xs: mean_mo=+0.062% NW_t=+1.14 %pos=53%
+  us_retail_stress_fx: mean_mo=-0.021% NW_t=-0.80 %pos=8%
+  us_retail_haven_usd: mean_mo=+0.020% NW_t=+0.75 %pos=7%
+  retail_ew: mean_mo=+0.017% NW_t=+0.46 %pos=52%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
