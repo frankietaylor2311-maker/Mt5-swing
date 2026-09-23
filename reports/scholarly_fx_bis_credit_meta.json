@@ -1,0 +1,232 @@
+{
+  "ok": true,
+  "section": 32,
+  "path": "bis_private_credit_gap",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 5,
+  "signal_lag_months": 1,
+  "gap_lookback_months": 180,
+  "z_window": 60,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "low_credit_gap_xs",
+    "low_credit_xs",
+    "high_credit_xs",
+    "low_credit_z_xs",
+    "credit_chg_xs",
+    "us_credit_stress_fx",
+    "us_credit_haven_usd",
+    "credit_ew"
+  ],
+  "primary": "low_credit_gap_xs",
+  "n_factors": 8,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "credit gap = credit/GDP \u2212 trailing mean (180m \u2248 60q HP-like one-sided); also level / 5y z / \u039412 boarded",
+  "eur_mapping": "QXMPAM770A euro-area (QDEPAM770A Germany alt documented)",
+  "distinct_from": [
+    "debt_gdp_GGGDTA_29",
+    "fiscal_balance_GGNLBA_28",
+    "trade_balance_30",
+    "bis_reer_RB_BIS_31",
+    "current_account_CA_GDP",
+    "CB_balance_sheet_QE",
+    "funding_liquidity",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew"
+  ],
+  "citations": [
+    "Borio & Drehmann \u2014 assessing the risk of banking crises (BIS)",
+    "Basel credit-to-GDP gap / financial-cycle early-warning",
+    "Honesty alternate: high-credit debtor/fragile FX risk premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "QUSPAM770A",
+      "n_obs": 937,
+      "start": "1948-03-01",
+      "end": "2026-03-01",
+      "last": 140.3,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "QXMPAM770A",
+      "n_obs": 322,
+      "start": "1999-06-01",
+      "end": "2026-03-01",
+      "last": 153.6,
+      "note": "Euro-area via QXMPAM770A; Germany alt QDEPAM770A documented (unused as primary)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "QGBPAM770A",
+      "n_obs": 754,
+      "start": "1963-06-01",
+      "end": "2026-03-01",
+      "last": 132.6,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "QJPPAM770A",
+      "n_obs": 733,
+      "start": "1965-03-01",
+      "end": "2026-03-01",
+      "last": 175.1,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "QCAPAM770A",
+      "n_obs": 841,
+      "start": "1956-03-01",
+      "end": "2026-03-01",
+      "last": 218.9,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "QAUPAM770A",
+      "n_obs": 787,
+      "start": "1960-09-01",
+      "end": "2026-03-01",
+      "last": 176.1,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "QNZPAM770A",
+      "n_obs": 781,
+      "start": "1961-03-01",
+      "end": "2026-03-01",
+      "last": 161.2,
+      "note": ""
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "QCHPAM770A",
+      "n_obs": 781,
+      "start": "1961-03-01",
+      "end": "2026-03-01",
+      "last": 251.9,
+      "note": ""
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "absolute_crdq_unused_as_pct": [
+      "CRDQUSAPABIS",
+      "CRDQDEAPABIS",
+      "CRDQGBAPABIS",
+      "CRDQJPAPABIS",
+      "CRDQCAAPABIS",
+      "CRDQAUAPABIS",
+      "CRDQCHAPABIS",
+      "CRDQXMAPABIS"
+    ],
+    "nzd_absolute_404": [
+      "CRDQNZAPABIS",
+      "CRDQNZLAPABIS",
+      "CRDQNZAAPABIS"
+    ],
+    "eur_ez_404": [
+      "CRDQEZAPABIS",
+      "CRDQEUAPABIS",
+      "QEUPAM770A"
+    ],
+    "credit_gap_precomputed_404": [
+      "BISCRDGAPUS",
+      "BISCRDGAPGB",
+      "BISCREDGAPUS",
+      "CRDGAPUSA",
+      "CRDGAPUS",
+      "CRDQUSAGAP",
+      "CRDQUSAAGAP",
+      "CRDQUSAHPABIS"
+    ],
+    "eur_germany_alt_pct": [
+      "QDEPAM770A"
+    ],
+    "france_coverage_only": [
+      "QFRPAM770A"
+    ]
+  },
+  "soft_best": {
+    "factor": "credit_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.0008315828327261249,
+    "tstat_ols": 1.2009035311824754,
+    "tstat_nw": 1.1996844933204696,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5055555555555555,
+    "top3": 0.09906037764516418,
+    "ann_sharpe_daily": 0.30308964526222143
+  },
+  "primary_sweep": {
+    "strategy": "low_credit_gap_xs",
+    "scale": 1.1544901710673101,
+    "binding": "daily",
+    "is_total_return": -0.02035109431314941,
+    "is_static_loss": 0.0703468720520883,
+    "is_max_daily_dd": 0.04999999995816237,
+    "is_gates_pass": true,
+    "oos_total_return": 0.0020365233533428118,
+    "oos_static_loss": 0.010161624318888207,
+    "oos_max_daily_dd": 0.005021978169625217,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00017847300378406872,
+    "mean_mo_oos": 0.0002059099133408885,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0001552220197632237,
+    "scaled_full_pct_pos": 0.45555555555555555,
+    "scaled_ho_mean_mo": 0.0002059099133408885,
+    "scaled_ho_pct_pos": 0.5833333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "locked_sleeve_verify": {
+    "tag": "fx4plus_gbpcad_d1_voltarget_0025",
+    "untouched": true,
+    "status": "PASS",
+    "windows": {
+      "2024": {
+        "mean_mo": 0.0042,
+        "pct_pos": 0.55,
+        "top3": 0.74
+      },
+      "2025": {
+        "mean_mo": 0.0163,
+        "pct_pos": 0.73,
+        "top3": 0.69
+      },
+      "2026": {
+        "mean_mo": 0.023,
+        "pct_pos": 0.88,
+        "top3": 0.87
+      },
+      "holdout_365d": {
+        "mean_mo": 0.0152,
+        "pct_pos": 0.75,
+        "top3": 0.81
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, BIS REER §31 after trade-balance §30 / debt/GDP §29; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`).
+**Status:** Active (2026-09-23 BST, BIS credit/GDP §32 after BIS REER §31 / TB §30 / debt §29; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -112,6 +112,14 @@
 - **Key refs:** Rogoff (1996), "The Purchasing Power Parity Puzzle," *JEL*; Taylor / REER misalignment literature; BIS real broad effective exchange rates. Optional secondary: REER *momentum* (high z → long) as contrast prior.
 - **Free data:** FRED `RB*BIS` monthly (USD/EUR-`RBXMBIS`/GBP/JPY/CAD/AUD/NZD/CHF). `RBEZBIS`/`RBEMUBIS` **404**; Germany `RBDEBIS` documented alt (unused — prefer euro-area `RBXMBIS`). Full G10 mapped.
 - **What we implement (wave §31):** `data/fred_bis_reer.py` + `strategies/bis_reer_fx.py` + `scripts/scholarly_fx_bis_reer_wave.py` — legs `reer_cheap_xs` (primary, 60m z), `reer_cheap_xs_36`, `reer_mom_xs` (contrast), `reer_chg_xs` (Δ12), `us_reer_strong_usd`, `us_reer_meanrev_fx`, `reer_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag. **Distinct** from `ppp_real_fx` bilateral CPI, TB (§30), debt (§29), fiscal (§28), CA, CB-BS, macro-diff. **Not** overlaid on the locked sleeve.
+
+### 1.25 BIS private credit-to-GDP / credit-gap (Borio–Drehmann)
+
+- **Claim:** Private credit/GDP and the credit gap (deviation from a long-run trend) predict financial-cycle stress and FX risk premia. Long low-gap / low-credit currencies (lean balance sheets) vs high-gap / high-credit (fragile / debtor premium honesty alternate).
+- **Key refs:** Borio & Drehmann / BIS early-warning; Basel credit-to-GDP gap / financial-cycle literature.
+- **Free data:** FRED BIS `Q*PAM770A` quarterly % GDP (USD/EUR-`QXMPAM770A`/GBP/JPY/CAD/AUD/NZD/CHF). Brief `CRDQ*APABIS` is **absolute** credit (documented unused). Pre-computed gap IDs (`BISCRDGAP*`, `CRDGAP*`, …) **404** — gap = level − trailing 180m mean (a priori HP-like one-sided).
+- **What we implement (wave §32):** `data/fred_bis_credit.py` + `strategies/bis_credit_fx.py` + `scripts/scholarly_fx_bis_credit_wave.py` — legs `low_credit_gap_xs` (primary), `low_credit_xs`, `high_credit_xs`, `low_credit_z_xs` (5y z), `credit_chg_xs`, `us_credit_stress_fx`, `us_credit_haven_usd`, `credit_ew`. PIT `pub_lag_months=5` + `signal_lag=1m` + 1d weight lag. **Distinct** from debt (§29), fiscal (§28), TB (§30), REER (§31), CA, CB-BS, funding-liq. **Not** overlaid on the locked sleeve.
+
 
 ### 1.2 Momentum
 
@@ -329,7 +337,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19b. **Done (2026-09-23):** FRED government debt/GDP differentials — promote=NO (see §29).
 19c. **Done (2026-09-23):** Monthly trade-balance FX wave — promote=NO (see §30).
 19d. **Done (2026-09-23):** BIS/FRED REER undervaluation wave — promote=NO (see §31).
-20. Next scholarly candidates (not sleeve coolers): IMF/WEO **reserves** / external-buffer differentials; BIS **credit-to-GDP** / financial-cycle FX; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19e. **Done (2026-09-23):** BIS private credit-to-GDP / credit-gap wave — promote=NO (see §32).
+20. Next scholarly candidates (not sleeve coolers): IMF/WEO **reserves** / TRESEG* / total reserves % GDP / external-buffer differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1441,6 +1450,51 @@ Sweep **run** (positive IS mean on several legs). Primary `reer_cheap_xs` scale�
 
 Official BIS multilateral REER is the right free-data undervaluation structure after TB (§30), and is cleanly distinct from homemade bilateral PPP. On Yahoo D1 G10 the primary cheap-REER HML is essentially **flat** (full-sample ≈ +3.4 bp/mo, NW t ≈ 0.60, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Momentum contrast is wrong-signed; change leg is the soft-best but |NW t|<1. Soft/hard NW boards empty for positive means. Full G10 mapped (NZD/CHF/`RBXMBIS` EUR present). No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: IMF/WEO **reserves** / external-buffer differentials or BIS **credit-to-GDP** / financial-cycle FX — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §32 (BIS credit/GDP). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IMF/WEO **reserves** / TRESEG* / total reserves % GDP — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_bis_reer_wave.md`, `scholarly_fx_bis_reer_*.csv`, `scholarly_fx_bis_reer_meta.json`.
+
+
+## 32. BIS private credit-to-GDP / credit-gap FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED BIS private credit/GDP `Q*PAM770A` quarterly → monthly. Primary `low_credit_gap_xs`: XS long negative trailing-trend credit gap / short positive (n=2/2) on **full G10** (USD, EUR=`QXMPAM770A` euro-area, GBP, JPY, CAD, AUD, NZD, CHF). Gap = credit/GDP − trailing 180m mean (≈60q HP-like one-sided; precomputed FRED gap IDs 404). Companion: `low_credit_xs`, `high_credit_xs` (debtor/fragile alternate), `low_credit_z_xs` (5y z), `credit_chg_xs` (−Δ12), `us_credit_stress_fx` / `us_credit_haven_usd`, `credit_ew`. PIT `pub_lag_months=5` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs debt / fiscal / TB / REER:** Government debt/GDP (§29 GGGDTA*) is *public* stock; fiscal GGNLBA (§28) is budget *flow*; TB (§30) is goods external balance; BIS REER (§31) is multilateral real FX. This wave is the **private credit / financial-cycle** Borio–Drehmann channel.
+
+**Data notes:** Prefer `Q*PAM770A` (% GDP). Brief `CRDQ*APABIS` live but absolute bn — documented unused. `CRDQNZAPABIS` / precomputed gap IDs **404**. EUR=`QXMPAM770A` (Germany `QDEPAM770A` alt). Full G10 incl. NZD/CHF mapped. Latest raw quarter 2025-10 as of 2026-09-23 — consistent with fixed pub_lag=5.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| low_credit_gap_xs | −0.013% | −0.25 | −0.25 | 46% | — | — |
+| low_credit_xs | +0.000% | +0.00 | +0.00 | 48% | — | — |
+| high_credit_xs | −0.002% | −0.05 | −0.05 | 51% | — | — |
+| low_credit_z_xs | +0.037% | +0.53 | +0.53 | 51% | — | — |
+| credit_chg_xs | +0.083% | +1.20 | +1.20 | 51% | — | — |
+| us_credit_stress_fx | −0.003% | −0.19 | −0.19 | 6% | — | — |
+| us_credit_haven_usd | +0.003% | +0.20 | +0.20 | 5% | — | — |
+| credit_ew | +0.023% | +0.62 | +0.62 | 51% | — | — |
+
+### Consistency windows (primary `low_credit_gap_xs`)
+
+| Window | mean_mo | %pos | gates | 1% bar |
+|--------|--------:|-----:|:-----:|:------:|
+| year_2024 | +0.11% | 55% | PASS | no |
+| year_2025 | +0.00% | 55% | PASS | no |
+| year_2026 | −0.04% | 50% | PASS | no |
+| holdout_365d | +0.02% | 58% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on several legs). Primary `low_credit_gap_xs` scale≈1.15 bind=daily; scaled HO mean≈0.02%/mo %pos 58% — clears: **NO**. Soft-best-ish leg is `credit_chg_xs` (+8.3 bp/mo, NW t≈1.20) — still below soft board (|t|≥1.5).
+
+**Board:** n=8 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`low_credit_gap_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS on all key windows (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_bis_credit.md`).
+
+### Honest read
+
+BIS private credit/GDP is the right free-data financial-cycle structure after REER (§31), and is cleanly distinct from public debt/GDP. On Yahoo D1 G10 the primary low-gap HML is essentially **flat / slightly negative** (full-sample ≈ −1.3 bp/mo, NW t ≈ −0.25, %pos 46%) — nowhere near 1%/mo + 70% hit-rate. Change and 5y-z legs are the soft-best but |NW t|<1.5. Soft/hard NW boards empty for positive means. Full G10 mapped (NZD/CHF/`QXMPAM770A` EUR present). No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IMF/WEO **reserves** / TRESEG* / total reserves % GDP / external-buffer FX — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_bis_credit_wave.md`, `scholarly_fx_bis_credit_*.csv`, `scholarly_fx_bis_credit_meta.json`.

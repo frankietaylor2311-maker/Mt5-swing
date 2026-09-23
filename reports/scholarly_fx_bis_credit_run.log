@@ -1,0 +1,34 @@
+=== scholarly FX BIS private credit / credit-gap wave (§32) ===
+BIS private credit/GDP via FRED Q*PAM770A — Borio–Drehmann / Basel credit-cycle XS; distinct from debt (§29), fiscal (§28), TB (§30), REER (§31). Locked sleeve untouched.
+Credit panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'] [1948-03-01..2026-03-01] pub_lag_m=5
+currency    fred_id  n_obs      start        end  last                                                                            note
+     USD QUSPAM770A    937 1948-03-01 2026-03-01 140.3                                                                                
+     EUR QXMPAM770A    322 1999-06-01 2026-03-01 153.6 Euro-area via QXMPAM770A; Germany alt QDEPAM770A documented (unused as primary)
+     GBP QGBPAM770A    754 1963-06-01 2026-03-01 132.6                                                                                
+     JPY QJPPAM770A    733 1965-03-01 2026-03-01 175.1                                                                                
+     CAD QCAPAM770A    841 1956-03-01 2026-03-01 218.9                                                                                
+     AUD QAUPAM770A    787 1960-09-01 2026-03-01 176.1                                                                                
+     NZD QNZPAM770A    781 1961-03-01 2026-03-01 161.2                                                                                
+     CHF QCHPAM770A    781 1961-03-01 2026-03-01 251.9                                                                                
+Series source note: FRED BIS Q*PAM770A private credit/GDP % (CRDQ*APABIS = absolute credit, unused as primary)
+Failed/alt documented: {'absolute_crdq_unused_as_pct': ['CRDQUSAPABIS', 'CRDQDEAPABIS', 'CRDQGBAPABIS', 'CRDQJPAPABIS', 'CRDQCAAPABIS', 'CRDQAUAPABIS', 'CRDQCHAPABIS', 'CRDQXMAPABIS'], 'nzd_absolute_404': ['CRDQNZAPABIS', 'CRDQNZLAPABIS', 'CRDQNZAAPABIS'], 'eur_ez_404': ['CRDQEZAPABIS', 'CRDQEUAPABIS', 'QEUPAM770A'], 'credit_gap_precomputed_404': ['BISCRDGAPUS', 'BISCRDGAPGB', 'BISCREDGAPUS', 'CRDGAPUSA', 'CRDGAPUS', 'CRDQUSAGAP', 'CRDQUSAAGAP', 'CRDQUSAHPABIS'], 'eur_germany_alt_pct': ['QDEPAM770A'], 'france_coverage_only': ['QFRPAM770A']}
+US QUSPAM770A [1948-03-01..2026-03-01] n=937 series=QUSPAM770A
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep low_credit_gap_xs: scale=1.154 bind=daily IS mean_mo=-0.018% OOS gates=True
+  sweep low_credit_xs: scale=1.129 bind=daily IS mean_mo=-0.003% OOS gates=True
+  sweep high_credit_xs: scale=0.967 bind=static IS mean_mo=0.000% OOS gates=True
+  sweep low_credit_z_xs: scale=1.117 bind=daily IS mean_mo=0.064% OOS gates=True
+  sweep credit_chg_xs: scale=2.385 bind=daily IS mean_mo=0.252% OOS gates=True
+  sweep us_credit_stress_fx: scale=8.064 bind=static IS mean_mo=-0.019% OOS gates=True
+  sweep us_credit_haven_usd: scale=3.462 bind=static IS mean_mo=0.013% OOS gates=True
+  sweep credit_ew: scale=3.300 bind=daily IS mean_mo=0.097% OOS gates=True
+=== factor summary ===
+  low_credit_gap_xs: mean_mo=-0.013% NW_t=-0.25 %pos=46%
+  low_credit_xs: mean_mo=+0.000% NW_t=+0.00 %pos=48%
+  high_credit_xs: mean_mo=-0.002% NW_t=-0.05 %pos=51%
+  low_credit_z_xs: mean_mo=+0.037% NW_t=+0.53 %pos=51%
+  credit_chg_xs: mean_mo=+0.083% NW_t=+1.20 %pos=51%
+  us_credit_stress_fx: mean_mo=-0.003% NW_t=-0.19 %pos=6%
+  us_credit_haven_usd: mean_mo=+0.003% NW_t=+0.20 %pos=5%
+  credit_ew: mean_mo=+0.023% NW_t=+0.62 %pos=51%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
