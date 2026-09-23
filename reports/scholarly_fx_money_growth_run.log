@@ -1,0 +1,32 @@
+=== scholarly FX monetary / money-growth wave (§33) ===
+OECD broad-money growth via FRED MABMM301*M657S — Frenkel–Bilson / sticky-price monetary XS; distinct from CB-BS, real-rate, debt, credit, REER. Locked sleeve untouched.
+Money panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'] [1959-04-01..2026-09-01] pub_lag_m=2
+currency         fred_id  n_obs      start        end     last                                                                              note
+     USD MABMM301USM657S    810 1959-04-01 2026-09-01 0.444729             OECD US broad-money growth MABMM301USM657S; M2SL level alt documented
+     EUR MABMM301EZM657S    671 1970-04-01 2026-02-01 0.735560                                                     Euro-area via MABMM301EZM657S
+     GBP MABMM301GBM657S    474 1987-04-01 2026-09-01 0.455833                                                                                  
+     JPY MABMM301JPM657S    558 1980-04-01 2026-09-01 0.039199                                                                                  
+     CAD MABMM301CAM657S    677 1970-04-01 2026-08-01 0.989741                                                                                  
+     AUD MABMM301AUM657S    797 1960-05-01 2026-09-01 0.579580                                                                                  
+     NZD                      0        NaN        NaN      NaN unmapped_on_primary_657s (stale/alt: MABMM301NZM189N; 657S ends 2018 for NZD/CHF)
+     CHF                      0        NaN        NaN      NaN unmapped_on_primary_657s (stale/alt: MABMM301CHM189N; 657S ends 2018 for NZD/CHF)
+Series source note: FRED OECD MEI MABMM301*M657S broad-money growth (NZD/CHF 657S stale 2018 — unmapped on primary; M2SL US level alt)
+Failed/alt documented: {'nzd_chf_657s_stale_2018': ['MABMM301NZM657S', 'MABMM301CHM657S'], 'sa_levels_end_~2023': ['MABMM301EZM189S', 'MABMM301GBM189S', 'MABMM301JPM189S', 'MABMM301CAM189S', 'MABMM301AUM189S', 'MABMM301USM189S'], 'nzd_chf_nsa_levels_archival': ['MABMM301NZM189N', 'MABMM301CHM189N'], 'imf_myagm_mostly_404': ['MYAGM2GBM196N', 'MYAGM3GBM196N', 'MYAGM2CAM196N', 'MYAGM2AUM196N', 'MYAGM2NZM196N', 'MYAGM2CHM196N'], 'us_m2_level_alt': ['M2SL', 'M2NS', 'BOGMBASE']}
+US MABMM301USM657S [1959-04-01..2026-09-01] n=810 series=MABMM301USM657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep low_money_growth_xs: scale=3.637 bind=daily IS mean_mo=0.154% OOS gates=False
+  sweep high_money_growth_xs: scale=0.717 bind=static IS mean_mo=-0.048% OOS gates=True
+  sweep low_money_growth_z_xs: scale=1.507 bind=static IS mean_mo=0.002% OOS gates=True
+  sweep money_growth_chg_xs: scale=3.177 bind=daily IS mean_mo=0.140% OOS gates=True
+  sweep us_money_stress_fx: scale=1.755 bind=static IS mean_mo=-0.025% OOS gates=True
+  sweep us_money_haven_usd: scale=4.030 bind=daily IS mean_mo=0.049% OOS gates=True
+  sweep money_ew: scale=5.176 bind=daily IS mean_mo=0.130% OOS gates=True
+=== factor summary ===
+  low_money_growth_xs: mean_mo=+0.034% NW_t=+0.59 %pos=52%
+  high_money_growth_xs: mean_mo=-0.058% NW_t=-0.99 %pos=46%
+  low_money_growth_z_xs: mean_mo=-0.003% NW_t=-0.04 %pos=46%
+  money_growth_chg_xs: mean_mo=+0.041% NW_t=+0.65 %pos=48%
+  us_money_stress_fx: mean_mo=-0.021% NW_t=-0.98 %pos=6%
+  us_money_haven_usd: mean_mo=+0.020% NW_t=+0.91 %pos=8%
+  money_ew: mean_mo=+0.018% NW_t=+0.54 %pos=48%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False

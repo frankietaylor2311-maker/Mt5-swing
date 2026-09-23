@@ -1,0 +1,202 @@
+{
+  "ok": true,
+  "section": 33,
+  "path": "monetary_money_growth",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "low_money_growth_xs",
+    "high_money_growth_xs",
+    "low_money_growth_z_xs",
+    "money_growth_chg_xs",
+    "us_money_stress_fx",
+    "us_money_haven_usd",
+    "money_ew"
+  ],
+  "primary": "low_money_growth_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI MABMM301*M657S broad-money growth (measure 657); also 5y z / \u039412 of growth boarded; Frenkel\u2013Bilson low-growth primary",
+  "eur_mapping": "MABMM301EZM657S euro-area",
+  "nzd_chf": "unmapped on primary (657S ends 2018-12); NSA levels archival only",
+  "distinct_from": [
+    "CB_balance_sheet_QE_22",
+    "real_rate_breakeven_23",
+    "debt_gdp_GGGDTA_29",
+    "fiscal_balance_GGNLBA_28",
+    "trade_balance_30",
+    "bis_reer_RB_BIS_31",
+    "bis_credit_gap_32",
+    "current_account_CA_GDP",
+    "funding_liquidity",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew"
+  ],
+  "citations": [
+    "Frenkel (1976) / Bilson (1978) monetary approach to the exchange rate",
+    "Dornbusch (1976) sticky-price / overshooting monetary model",
+    "Honesty alternate: high money-growth liquidity / risk-premium sort"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "MABMM301USM657S",
+      "n_obs": 810,
+      "start": "1959-04-01",
+      "end": "2026-09-01",
+      "last": 0.444729009483202,
+      "note": "OECD US broad-money growth MABMM301USM657S; M2SL level alt documented"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "MABMM301EZM657S",
+      "n_obs": 671,
+      "start": "1970-04-01",
+      "end": "2026-02-01",
+      "last": 0.735560023987869,
+      "note": "Euro-area via MABMM301EZM657S"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "MABMM301GBM657S",
+      "n_obs": 474,
+      "start": "1987-04-01",
+      "end": "2026-09-01",
+      "last": 0.455832855646965,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "MABMM301JPM657S",
+      "n_obs": 558,
+      "start": "1980-04-01",
+      "end": "2026-09-01",
+      "last": 0.039198553044706,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "MABMM301CAM657S",
+      "n_obs": 677,
+      "start": "1970-04-01",
+      "end": "2026-08-01",
+      "last": 0.989740569083031,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "MABMM301AUM657S",
+      "n_obs": 797,
+      "start": "1960-05-01",
+      "end": "2026-09-01",
+      "last": 0.579579704205591,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_657s (stale/alt: MABMM301NZM189N; 657S ends 2018 for NZD/CHF)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_657s (stale/alt: MABMM301CHM189N; 657S ends 2018 for NZD/CHF)"
+    }
+  ],
+  "unmapped": [
+    "NZD",
+    "CHF"
+  ],
+  "failed_or_alt": {
+    "nzd_chf_657s_stale_2018": [
+      "MABMM301NZM657S",
+      "MABMM301CHM657S"
+    ],
+    "sa_levels_end_~2023": [
+      "MABMM301EZM189S",
+      "MABMM301GBM189S",
+      "MABMM301JPM189S",
+      "MABMM301CAM189S",
+      "MABMM301AUM189S",
+      "MABMM301USM189S"
+    ],
+    "nzd_chf_nsa_levels_archival": [
+      "MABMM301NZM189N",
+      "MABMM301CHM189N"
+    ],
+    "imf_myagm_mostly_404": [
+      "MYAGM2GBM196N",
+      "MYAGM3GBM196N",
+      "MYAGM2CAM196N",
+      "MYAGM2AUM196N",
+      "MYAGM2NZM196N",
+      "MYAGM2CHM196N"
+    ],
+    "us_m2_level_alt": [
+      "M2SL",
+      "M2NS",
+      "BOGMBASE"
+    ]
+  },
+  "soft_best": {
+    "factor": "money_growth_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.00040706100879174566,
+    "tstat_ols": 0.6272682483185663,
+    "tstat_nw": 0.6493182736601452,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.4777777777777778,
+    "top3": 0.11910531337770307,
+    "ann_sharpe_daily": 0.12243310641019045
+  },
+  "primary_sweep": {
+    "strategy": "low_money_growth_xs",
+    "scale": 3.6373408826497884,
+    "binding": "daily",
+    "is_total_return": 0.1839821249360336,
+    "is_static_loss": 0.03367402195172792,
+    "is_max_daily_dd": 0.04999999996236496,
+    "is_gates_pass": true,
+    "oos_total_return": -0.04606880136024449,
+    "oos_static_loss": 0.1097920748327997,
+    "oos_max_daily_dd": 0.016756918645127298,
+    "oos_gates_pass": false,
+    "mean_mo_is": 0.0015388646650831435,
+    "mean_mo_oos": -0.004077512542536049,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0011707700729697511,
+    "scaled_full_pct_pos": 0.5055555555555555,
+    "scaled_ho_mean_mo": -0.004077512542536049,
+    "scaled_ho_pct_pos": 0.4166666666666667,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

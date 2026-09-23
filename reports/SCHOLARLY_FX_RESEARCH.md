@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, BIS credit/GDP §32 after BIS REER §31 / TB §30 / debt §29; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused).
+**Status:** Active (2026-09-23 BST, monetary money-growth §33 after BIS credit §32 / REER §31 / TB §30; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -119,6 +119,15 @@
 - **Key refs:** Borio & Drehmann / BIS early-warning; Basel credit-to-GDP gap / financial-cycle literature.
 - **Free data:** FRED BIS `Q*PAM770A` quarterly % GDP (USD/EUR-`QXMPAM770A`/GBP/JPY/CAD/AUD/NZD/CHF). Brief `CRDQ*APABIS` is **absolute** credit (documented unused). Pre-computed gap IDs (`BISCRDGAP*`, `CRDGAP*`, …) **404** — gap = level − trailing 180m mean (a priori HP-like one-sided).
 - **What we implement (wave §32):** `data/fred_bis_credit.py` + `strategies/bis_credit_fx.py` + `scripts/scholarly_fx_bis_credit_wave.py` — legs `low_credit_gap_xs` (primary), `low_credit_xs`, `high_credit_xs`, `low_credit_z_xs` (5y z), `credit_chg_xs`, `us_credit_stress_fx`, `us_credit_haven_usd`, `credit_ew`. PIT `pub_lag_months=5` + `signal_lag=1m` + 1d weight lag. **Distinct** from debt (§29), fiscal (§28), TB (§30), REER (§31), CA, CB-BS, funding-liq. **Not** overlaid on the locked sleeve.
+
+
+
+### 1.26 Monetary approach / money-growth differentials (Frenkel–Bilson)
+
+- **Claim:** Sticky-price / monetary-approach FX: higher *relative* broad-money growth depreciates the expanding currency (Frenkel–Bilson; Dornbusch overshooting). Primary prior: long low relative money growth (tightness → appreciate).
+- **Key refs:** Frenkel (1976); Bilson (1978); Dornbusch (1976) sticky-price monetary model.
+- **Free data:** FRED OECD MEI `MABMM301*M657S` broad-money growth (USD/EUR-`EZ`/GBP/JPY/CAD/AUD). NZD/CHF `*657S` ends **2018-12** — unmapped on primary; NSA levels `*189N` archival only. US `M2SL` level documented alt.
+- **What we implement (wave §33):** `data/fred_money_growth.py` + `strategies/money_growth_fx.py` + `scripts/scholarly_fx_money_growth_wave.py` — legs `low_money_growth_xs` (primary), `high_money_growth_xs`, `low_money_growth_z_xs`, `money_growth_chg_xs`, `us_money_stress_fx`, `us_money_haven_usd`, `money_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag. **Distinct** from CB-BS/QE (§22), real-rate (§23), debt (§29), fiscal (§28), TB (§30), REER (§31), BIS credit (§32). **Not** overlaid on the locked sleeve.
 
 
 ### 1.2 Momentum
@@ -1450,7 +1459,7 @@ Sweep **run** (positive IS mean on several legs). Primary `reer_cheap_xs` scale�
 
 Official BIS multilateral REER is the right free-data undervaluation structure after TB (§30), and is cleanly distinct from homemade bilateral PPP. On Yahoo D1 G10 the primary cheap-REER HML is essentially **flat** (full-sample ≈ +3.4 bp/mo, NW t ≈ 0.60, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Momentum contrast is wrong-signed; change leg is the soft-best but |NW t|<1. Soft/hard NW boards empty for positive means. Full G10 mapped (NZD/CHF/`RBXMBIS` EUR present). No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** Done as §32 (BIS credit/GDP). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IMF/WEO **reserves** / TRESEG* / total reserves % GDP — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §33 (money-growth). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IMF/WEO **reserves** / TRESEG* / total reserves % GDP, or OECD **house-price** differentials — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_bis_reer_wave.md`, `scholarly_fx_bis_reer_*.csv`, `scholarly_fx_bis_reer_meta.json`.
 
@@ -1498,3 +1507,47 @@ BIS private credit/GDP is the right free-data financial-cycle structure after RE
 **Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: IMF/WEO **reserves** / TRESEG* / total reserves % GDP / external-buffer FX — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_bis_credit_wave.md`, `scholarly_fx_bis_credit_*.csv`, `scholarly_fx_bis_credit_meta.json`.
+
+
+## 33. Monetary / money-growth FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED OECD MEI `MABMM301*M657S` broad-money growth. Primary `low_money_growth_xs`: XS long low relative money growth / short high (n=2/2) on USD+EUR+GBP+JPY+CAD+AUD. Companion: `high_money_growth_xs`, `low_money_growth_z_xs` (5y z), `money_growth_chg_xs` (−Δ12 of growth), `us_money_stress_fx` / `us_money_haven_usd`, `money_ew`. PIT `pub_lag_months=2` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs CB-BS / real-rate / credit:** CB-BS (§22) is *central-bank assets* (QE); real-rate (§23) is TIPS/BE; BIS credit (§32) is private credit/GDP. This wave is the classic **monetary-approach money-growth differential**.
+
+**Data notes:** Prefer `MABMM301*M657S`. NZD/CHF 657S ends 2018 — **unmapped** on primary (NSA `*189N` archival). US `M2SL` level alt documented. EUR=`MABMM301EZM657S`.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| low_money_growth_xs | +0.034% | +0.55 | +0.59 | 52% | 11% | +0.12 |
+| high_money_growth_xs | −0.058% | −0.92 | −0.99 | 46% | 12% | −0.21 |
+| low_money_growth_z_xs | −0.003% | −0.04 | −0.04 | 46% | 13% | −0.06 |
+| money_growth_chg_xs | +0.041% | +0.63 | +0.65 | 48% | 12% | +0.12 |
+| us_money_stress_fx | −0.021% | −0.96 | −0.98 | 6% | 65% | −0.24 |
+| us_money_haven_usd | +0.020% | +0.88 | +0.91 | 8% | 51% | +0.22 |
+| money_ew | +0.018% | +0.48 | +0.54 | 48% | 12% | +0.10 |
+
+### Consistency windows (primary `low_money_growth_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.17% | 64% | 72% | PASS | no |
+| year_2025 | −0.33% | 27% | 100% | PASS | no |
+| year_2026 | +0.05% | 50% | 98% | PASS | no |
+| holdout_365d | −0.11% | 42% | 96% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run**. Primary `low_money_growth_xs` scale≈3.637 bind=daily; scaled HO mean≈−0.41%/mo %pos 42% — clears: **NO** (OOS gates FAIL). Soft-best-ish leg is `money_growth_chg_xs` (~+4.1 bp/mo, NW t≈0.65) — below soft board (|t|≥1.5).
+
+**Board:** n=7 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_money_growth.md`).
+
+### Honest read
+
+Frenkel–Bilson money-growth XS is the right free-data monetary-approach structure after BIS credit (§32). On Yahoo D1 G10 the primary low-growth HML is essentially **flat** (full-sample ≈ +3.4 bp/mo, NW t ≈ 0.59, %pos 52%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty. NZD/CHF unmapped on primary. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** IMF/WEO **reserves** / TRESEG* / total reserves % GDP, or OECD **house-price** differentials / IG OAS risk-appetite — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_money_growth_wave.md`, `scholarly_fx_money_growth_*.csv`, `scholarly_fx_money_growth_meta.json`.
