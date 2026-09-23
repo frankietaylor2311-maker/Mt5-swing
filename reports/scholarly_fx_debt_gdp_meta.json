@@ -1,0 +1,145 @@
+{
+  "ok": true,
+  "path": "government_debt_gdp",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 15,
+  "signal_lag_months": 1,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "low_debt_xs",
+    "high_debt_xs",
+    "debt_chg_xs",
+    "us_debt_twin_fx",
+    "us_debt_haven_usd",
+    "debt_fiscal_blend",
+    "debt_ew"
+  ],
+  "primary": "low_debt_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "fred_mnemonic_note": "Brief suggested GGXWDG*188N (IMF GGXWDG_NGDP); those 404 on FRED. Live actuals are GGGDTA*188N (same WEO release).",
+  "us_tilt_series": "GFDEGDQ188S",
+  "distinct_from": [
+    "fiscal_balance_GGNLBA_28",
+    "current_account_CA_GDP",
+    "CB_balance_sheet_QE",
+    "macro_diff_CPI_IP_UR",
+    "equity_diff",
+    "AI_GPR",
+    "ToT",
+    "dollar_beta",
+    "crash_skew"
+  ],
+  "citations": [
+    "Reinhart\u2013Rogoff debt overhang / fiscal sustainability lineage",
+    "Twin deficits / external-adjustment surveys (stock vs flow)",
+    "Della Corte\u2013Riddiough\u2013Sarno debtor premium (honesty alternate)"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "GGGDTAUSA188N",
+      "n_obs": 277,
+      "start": "2002-04-01",
+      "end": "2025-04-01",
+      "last": 120.786,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "GGGDTADEA188N",
+      "n_obs": 397,
+      "start": "1992-04-01",
+      "end": "2025-04-01",
+      "last": 63.888,
+      "note": "Germany proxy via GGGDTADEA188N"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GGGDTAGBA188N",
+      "n_obs": 529,
+      "start": "1981-04-01",
+      "end": "2025-04-01",
+      "last": 101.227,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "GGGDTAJPA188N",
+      "n_obs": 529,
+      "start": "1981-04-01",
+      "end": "2025-04-01",
+      "last": 239.971,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "GGGDTACNA188N",
+      "n_obs": 349,
+      "start": "1996-04-01",
+      "end": "2025-04-01",
+      "last": 88.327,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "GGGDTAAUA188N",
+      "n_obs": 421,
+      "start": "1990-04-01",
+      "end": "2025-04-01",
+      "last": 49.828,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_gggdta"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_gggdta"
+    }
+  ],
+  "unmapped": [
+    "NZD",
+    "CHF"
+  ],
+  "failed_aliases": {
+    "GGXWDG_prefix": [
+      "GGXWDGUSA188N",
+      "GGXWDGDEA188N",
+      "GGXWDGGBA188N",
+      "GGXWDGJPA188N",
+      "GGXWDGCNA188N",
+      "GGXWDGAUA188N"
+    ],
+    "NZD_CHF": [
+      "GGGDTANZA188N",
+      "GGGDTANZL188N",
+      "GGGDTACHE188N",
+      "GGGDTACH188N"
+    ]
+  }
+}
