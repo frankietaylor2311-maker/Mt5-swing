@@ -268,3 +268,61 @@ def macro_diff_coverage() -> pd.DataFrame:
                     }
                 )
     return pd.DataFrame(rows)
+
+
+def _load_cpi_index_level(
+    series_id: str,
+    *,
+    kind: str,
+    download: bool,
+) -> pd.Series:
+    """Load CPI as an index *level* (not YoY). Quarterly series are ffilled to MS."""
+    if download:
+        download_fred_series(series_id, force=False)
+    raw = load_fred_series(series_id, download=False)
+    if kind == "quarterly_index":
+        s = _to_month_start(raw).resample("MS").ffill()
+        if s.index.tz is None:
+            s.index = s.index.tz_localize("UTC")
+        return s
+    if kind == "yoy":
+        raise ValueError(f"{series_id} is YoY-only; cannot build CPI level")
+    return _to_month_start(raw)
+
+
+def load_cpi_level_panel(
+    currencies: Iterable[str] | None = None,
+    *,
+    pub_lag_months: int = DEFAULT_PUB_LAGS["cpi"],
+    download: bool = True,
+) -> pd.DataFrame:
+    """CPI / HICP *index levels* for real FX construction. Publication lag applied.
+
+    Rebased columns are **not** required — real FX uses ratios CPI_US / CPI_f,
+    so any common index base cancels. Quarterly AU/NZ series are forward-filled
+    to month-start (documented limitation vs true monthly CPI).
+    """
+    curs = [c.upper() for c in (currencies or CPI_SERIES.keys())]
+    cols: dict[str, pd.Series] = {}
+    notes: dict[str, str] = {}
+    for c in curs:
+        meta = CPI_SERIES.get(c)
+        if not meta:
+            notes[c] = "unmapped"
+            continue
+        sid, kind = meta
+        try:
+            cols[c] = _load_cpi_index_level(sid, kind=kind, download=download)
+            if kind == "quarterly_index":
+                notes[c] = "quarterly index ffilled to monthly"
+        except Exception as exc:  # noqa: BLE001
+            notes[c] = f"load_fail:{exc}"[:120]
+    df = pd.DataFrame(cols).sort_index()
+    if pub_lag_months > 0:
+        df.index = df.index + pd.DateOffset(months=int(pub_lag_months))
+        df = df[~df.index.duplicated(keep="last")].sort_index()
+    df.attrs["factor"] = "cpi_level"
+    df.attrs["pub_lag_months"] = int(pub_lag_months)
+    df.attrs["series_map"] = {c: CPI_SERIES[c][0] for c in df.columns if c in CPI_SERIES}
+    df.attrs["notes"] = notes
+    return df

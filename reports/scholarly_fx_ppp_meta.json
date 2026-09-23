@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_months": 1,
+  "pub_lag_months": 1,
+  "lookbacks": [
+    60,
+    120
+  ],
+  "min_periods": 36,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "ppp_xs_60m",
+    "ppp_ts_60m",
+    "ppp_xs_120m",
+    "ppp_ts_120m",
+    "ppp_xs_ew"
+  ],
+  "primary": "ppp_xs_60m",
+  "cpi_cols": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD",
+    "CHF",
+    "AUD",
+    "NZD"
+  ],
+  "cpi_notes": {
+    "AUD": "quarterly index ffilled to monthly",
+    "NZD": "quarterly index ffilled to monthly"
+  },
+  "is_end": "2025-09-14",
+  "holdout_start": "2025-09-15",
+  "holdout_end": "2026-09-15",
+  "promote": false,
+  "scaled_promote": false,
+  "risk_sweep_primary": {
+    "strategy": "ppp_xs_60m",
+    "scale": 1.1511589534659992,
+    "binding": "static",
+    "is_total_return": -0.03634542551763564,
+    "is_static_loss": 0.09999999992230106,
+    "is_max_daily_dd": 0.04274612007632429,
+    "is_gates_pass": true,
+    "oos_total_return": 0.007960045986007191,
+    "oos_static_loss": 0.01149725975143534,
+    "oos_max_daily_dd": 0.004352403775296406,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00017170865433174083,
+    "mean_mo_oos": 0.001104195736164465,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.00011147853589568898,
+    "scaled_full_pct_pos": 0.4222222222222222,
+    "scaled_full_top3": 0.12027010076545852,
+    "scaled_ho_mean_mo": 0.001104195736164465,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "refs": [
+    "Rogoff (1996), The Purchasing Power Parity Puzzle, JEL",
+    "Taylor & Taylor \u2014 PPP and real exchange rates survey",
+    "Long-horizon real FX value / mean reversion (half-life years)"
+  ]
+}

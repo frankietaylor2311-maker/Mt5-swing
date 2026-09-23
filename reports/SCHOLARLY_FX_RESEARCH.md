@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-17, news/event wave after country-GPR). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, PPP/real-FX value wave after commodity + macro-diff). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -50,6 +50,13 @@
 - **What we implement:** `data/news_events.py` (feed interface + resolver) + `strategies/news_event_fx.py` (event vs control study; optional lagged long-USD rule if gate clears).
 - **Paid NLP:** Needed for multi-year multilingual sentiment/entity panels (RavenPack / Refinitiv / Bloomberg / keyed GDELT Cloud). Free stack is insufficient for that claim.
 
+
+### 1.8 PPP / real exchange-rate value
+
+- **Claim:** Real exchange rates mean-revert toward PPP over long horizons (Rogoff PPP puzzle — half-lives often measured in *years*). Currencies that are expensive in real terms tend to depreciate subsequently.
+- **Key refs:** Rogoff (1996), “The Purchasing Power Parity Puzzle,” *JEL*; Taylor & Taylor surveys; related real-FX value / mean-reversion work.
+- **What we implement:** `strategies/ppp_real_fx.py` + `scripts/scholarly_fx_ppp_wave.py` — PIT real FX `q = S·(CPI_US/CPI_f)` from FRED CPI levels + Yahoo USD majors; trailing 60m/120m z; long undervalued / short overvalued (`pub_lag=1m`, `signal_lag=1m`). FTMO risk sweep on IS → OOS confirm via `backtest/ftmo_risk_sweep.py`.
+
 ### 1.6 TPU / economic-policy uncertainty
 
 - **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks.
@@ -84,6 +91,8 @@
 | Country GPR (GPRC_*) | Same monthly Excel → `gpr_country_monthly.csv` | **1 month** (+ strategy `signal_lag`) |
 | OECD immediate rates (extended) | FRED `IRSTCI01*` G10 + SEK/NOK/DKK/MXN/… | **1 month** (see coverage CSV) |
 | News intensity (GDELT/RSS/GPR proxy) | GDELT DOC / RSS / `gpr_daily.csv` | **1 day** (+ strategy `extra_lag`/`signal_lag`) |
+| CPI index levels (PPP / real FX) | FRED CPIAUCSL / GBRCPIALLMINMEI / … | **1 month** (+ strategy `signal_lag`) |
+| Commodity futures (CRR) | Yahoo `CL=F`/`HG=F`/`GC=F` | **1 day** (+ strategy `signal_lag`) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 
 If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (instructions in `macro_uncertainty.download_gpr`).
@@ -128,6 +137,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 4. Lustig, H., Roussanov, N. & Verdelhan, A. (2011). Common Risk Factors in Currency Markets. *Review of Financial Studies*.
 5. Baker, S., Bloom, N. & Davis, S. (2016). Measuring Economic Policy Uncertainty. *QJE*. (EPU/TPU)
 6. Surveys / related: work by Sarno; Nucera et al. on FX risk premia / dollar–carry structure (use for framing, not for claiming our sample matches their tables).
+7. Rogoff, K. (1996). The Purchasing Power Parity Puzzle. *Journal of Economic Literature*.
+8. Chen, Y., Rogoff, K. & Rossi, B. (2010). Can Exchange Rates Forecast Commodity Prices? *QJE*.
+9. Dahlquist, M. & Hasseltoft, H. — macro differentials and currency risk premia (framing).
 
 ---
 
@@ -139,6 +151,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 4. Macro-news NLP panel — **intensity layer wired** (GDELT interface + GPR proxy event study); signed NLP still needs paid API.
 5. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
 6. Optional: AI-GPR bilateral / role decompositions (initiator vs spillover) if useful beyond GPRC_*.
+7. **Done (2026-09-23):** PPP / real-FX value wave — promote=NO (see §13).
+8. **Done (2026-09-23):** Commodity CRR + macro-diff waves — promote=NO (see §11–12).
 
 ---
 
@@ -255,3 +269,84 @@ Gate **NO** → gated strategy flat. Forced diagnostic (not for promotion): full
 **Yes.** Free GDELT/RSS cannot support a multi-year signed NLP panel. GPR is intensity proxy only. Paid options: RavenPack, Refinitiv News Analytics, Bloomberg, or keyed GDELT Cloud history.
 
 Artifacts: `reports/scholarly_fx_news_event_wave.md`, `scholarly_fx_news_event_*.csv`, `scholarly_fx_news_event_meta.json`, cached `data/macro/gdelt_conflict_timeline.csv` + `yahoo_fx_rss_counts.csv`.
+
+
+---
+
+## 11. Commodity-currency wave results (2026-09-23 BST) — Chen–Rogoff–Rossi
+
+**Design (fixed priors):** lagged commodity momentum → AUD (copper) / CAD (oil) / NZD (basket); pub_lag=1d + signal_lag=1d; formation 63d / skip 21d; costs 1.5 bps/side. Yahoo futures ≠ spot export baskets.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t NW | %pos | clears 1%/mo? |
+|--------|--------:|-----:|-----:|:-------------:|
+| commodity_country_ts | −0.037% | −0.30 | 38% | **NO** |
+| commodity_xs_basket | +0.001% | +0.01 | 38% | **NO** |
+
+Year/holdout: FTMO gates mostly PASS; means are basis points; joint promote: **NO**. Locked sleeve untouched.
+
+Artifacts: `reports/scholarly_fx_commodity_wave.md`, `scholarly_fx_commodity_*.csv`.
+
+---
+
+## 12. Macro-differential wave results (2026-09-23 BST) — Dahlquist-style FRED
+
+**Design (fixed priors):** lagged CPI/IP/UR differentials vs USD; pub_lags CPI/UR=1m, IP=2m + signal_lag=1m; n_long=n_short=2.
+
+### Full-sample
+
+| Factor | mean_mo | t NW | %pos | clears 1%/mo? |
+|--------|--------:|-----:|-----:|:-------------:|
+| macro_cpi | −0.022% | −0.39 | 46% | **NO** |
+| macro_ip | −0.032% | −0.60 | 49% | **NO** |
+| macro_ur | −0.008% | −0.15 | 46% | **NO** |
+| macro_diff_ew | −0.020% | −0.59 | 46% | **NO** |
+
+Joint promote: **NO**. Artifacts: `reports/scholarly_fx_macro_diff_wave.md`, `scholarly_fx_macro_diff_*.csv`.
+
+
+---
+
+## 13. PPP / real-FX value wave results (2026-09-23 BST) — Rogoff-style
+
+**Design (fixed priors, no HO tuning):** real FX `q = S·(CPI_US/CPI_f)` from FRED CPI *levels* (pub_lag=1m) + Yahoo USD majors; trailing z at 60m/120m (`min_periods=36`); long 2 undervalued / short 2 overvalued; `signal_lag=1m` + 1d weight lag. Primary for sizing: `ppp_xs_60m`.
+
+**Prop sizing:** IS risk sweep (`ftmo_risk_sweep`) pushes scale just under FTMO 10% static / 5% daily; OOS = last 365d confirm (no retune).
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| ppp_xs_60m | −0.010% | −0.15 | −0.15 | 42% | 12% | −0.03 |
+| ppp_ts_60m | −0.014% | −0.25 | −0.30 | 39% | 13% | −0.05 |
+| ppp_xs_120m | +0.007% | +0.11 | +0.11 | 43% | 12% | +0.03 |
+| ppp_ts_120m | −0.016% | −0.28 | −0.32 | 41% | 13% | −0.06 |
+| ppp_xs_ew | −0.001% | −0.02 | −0.02 | 42% | 12% | −0.00 |
+
+### Consistency windows (`ppp_xs_60m`, unscaled)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| 2024 | −0.10% | 64% | 65% | PASS | no |
+| 2025 | −0.35% | 27% | 100% | PASS | no |
+| 2026 | +0.15% | 75% | 63% | PASS | no |
+| holdout_365d | +0.10% | 67% | 52% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+| Strategy | scale | bind | IS mean_mo | IS static/daily | OOS mean_mo | OOS gates |
+|----------|------:|:----:|-----------:|----------------:|------------:|:---------:|
+| ppp_xs_60m | 1.15 | static | −0.017% | 10.00% / 4.27% | +0.11% | PASS |
+| ppp_xs_120m | 1.15 | static | +0.003% | 10.00% / 4.27% | +0.11% | PASS |
+
+IS already sits on the static DD budget at ~1.15× unit leverage — **no unused headroom**. Scaling does **not** create a 1%/mo edge: OOS mean ≈ +0.11%/mo ≪ 1%.
+
+**Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged. No technical overlay hunt.
+
+### Honest read
+
+Long-horizon PPP mean reversion is the right *prior*, but on this Yahoo+FRED sample the tradable monthly sort earns **basis points** (often negative) with %pos ≪ 70%. Slow Rogoff half-lives are incompatible with prop-firm monthly consistency without additional (non-overfit) edges. Free CPI levels are sufficient for the relative-z construction; absolute Big-Mac / ICP price levels are not required for this z-score design.
+
+Artifacts: `reports/scholarly_fx_ppp_wave.md`, `scholarly_fx_ppp_*.csv`, `scholarly_fx_ppp_meta.json`, `scholarly_fx_ppp_risk_sweep.csv`.
+
