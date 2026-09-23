@@ -1,0 +1,32 @@
+=== scholarly FX OECD BCI manufacturing-confidence wave (§39) ===
+OECD BCI via FRED BSCICP02*M460S (ISM/NAPM 404 fallback) — manufacturing-confidence XS; distinct from OECD CLI (§37), OECD CCI (§38), coincident macro-diff CPI/IP/UR, house-price, money-growth, IG OAS. Locked sleeve untouched.
+BCI panel cols=['USD', 'EUR', 'GBP', 'CHF'] [1950-03-01..2026-10-01] pub_lag_m=2
+currency         fred_id  n_obs      start        end      last                                                                                                      note
+     USD BSCICP02USM460S    920 1950-03-01 2026-10-01  9.200000                             OECD BCI balance BSCICP02USM460S (NAPM/ISM 404; BSCICP03USM665S ends 2024-01)
+     EUR BSCICP02EZM460S    493 1985-03-01 2026-03-01 -6.800000      EZ aggregate via BSCICP02EZM460S (DE/FR/IT/ES BSCICP02*M460S alts; BSCICP03 amplitude ends ~2024-01)
+     GBP BSCICP02GBM460S    594 1977-05-01 2026-10-01 -8.214735                                                                          OECD BCI balance BSCICP02GBM460S
+     CHF BSCICP02CHM460S    715 1967-04-01 2026-10-01 -3.013333                                                  OECD BCI balance BSCICP02CHM460S (live — unlike CCI CHF)
+     JPY                      0        NaN        NaN       NaN unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 — AUD/JPY/NZD; CAD 404)
+     CAD                      0        NaN        NaN       NaN unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 — AUD/JPY/NZD; CAD 404)
+     AUD                      0        NaN        NaN       NaN unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 — AUD/JPY/NZD; CAD 404)
+     NZD                      0        NaN        NaN       NaN unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 — AUD/JPY/NZD; CAD 404)
+Series source note: FRED OECD MEI BSCICP02*M460S business-confidence balances (EUR=EZ; CHF live; AUD/CAD/NZD/JPY unmapped; BSCICP03*M665S amplitude stale ~2023-11..2024-01 — not primary; NAPM/ISM 404)
+Failed/alt documented: {'ism_napm_404': ['NAPM'], 'usd_primary_balance': ['BSCICP02USM460S'], 'usd_amplitude_stale_2024': ['BSCICP03USM665S'], 'eur_ez_primary': ['BSCICP02EZM460S'], 'eur_germany_alt': ['BSCICP02DEM460S'], 'eur_france_alt': ['BSCICP02FRM460S'], 'eur_italy_coverage': ['BSCICP02ITM460S'], 'eur_spain_coverage': ['BSCICP02ESM460S'], 'eur_amplitude_stale': ['BSCICP03EZM665S', 'BSCICP03DEM665S'], 'jpy_404_and_amplitude_stale_2023': ['BSCICP02JPM460S', 'BSCICP03JPM665S'], 'aud_404_and_amplitude_stale_2023': ['BSCICP02AUM460S', 'BSCICP03AUM665S'], 'cad_404': ['BSCICP02CAM460S'], 'nzd_404_and_amplitude_stale_2023': ['BSCICP02NZM460S', 'BSCICP03NZM665S'], 'chf_primary_live': ['BSCICP02CHM460S'], 'chf_amplitude_stale_2023': ['BSCICP03CHM665S'], 'amplitude_family_stale_2023_2024': ['BSCICP03GBM665S', 'BSCICP03JPM665S', 'BSCICP03AUM665S', 'BSCICP03NZM665S', 'BSCICP03USM665S', 'BSCICP03EZM665S']}
+US BSCICP02USM460S [1950-03-01..2026-10-01] n=920 series=BSCICP02USM460S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_bci_xs: scale=0.593 bind=daily IS mean_mo=0.038% OOS gates=True
+  sweep low_bci_xs: scale=0.612 bind=static IS mean_mo=-0.052% OOS gates=True
+  sweep high_bci_z_xs: scale=2.343 bind=daily IS mean_mo=0.273% OOS gates=True
+  sweep bci_chg_xs: scale=2.192 bind=daily IS mean_mo=0.303% OOS gates=True
+  sweep us_bci_weak_fx: scale=3.011 bind=static IS mean_mo=-0.027% OOS gates=True
+  sweep us_bci_haven_usd: scale=4.423 bind=daily IS mean_mo=0.029% OOS gates=True
+  sweep bci_ew: scale=1.811 bind=daily IS mean_mo=0.117% OOS gates=True
+=== factor summary ===
+  high_bci_xs: mean_mo=+0.081% NW_t=+0.98 %pos=57%
+  low_bci_xs: mean_mo=-0.105% NW_t=-1.29 %pos=42%
+  high_bci_z_xs: mean_mo=+0.126% NW_t=+1.90 %pos=56%
+  bci_chg_xs: mean_mo=+0.148% NW_t=+2.34 %pos=59%
+  us_bci_weak_fx: mean_mo=-0.008% NW_t=-0.32 %pos=9%
+  us_bci_haven_usd: mean_mo=+0.007% NW_t=+0.27 %pos=11%
+  bci_ew: mean_mo=+0.074% NW_t=+1.65 %pos=58%
+board n=7 soft=3 hard=1 promote_unscaled=False scaled_primary=False

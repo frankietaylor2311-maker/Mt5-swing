@@ -1,0 +1,241 @@
+{
+  "ok": true,
+  "section": 39,
+  "path": "oecd_bci_manufacturing_confidence",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 0,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "yoy_periods": 12,
+  "chg_periods": 12,
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "high_bci_xs",
+    "low_bci_xs",
+    "high_bci_z_xs",
+    "bci_chg_xs",
+    "us_bci_weak_fx",
+    "us_bci_haven_usd",
+    "bci_ew"
+  ],
+  "primary": "high_bci_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 3,
+  "hard_nw_pos": 1,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "OECD MEI BSCICP02*M460S business-confidence balances levels; XS on YoY diff BCI_t\u2212BCI_{t\u221212}; also 5y z / \u039412 of YoY boarded; high-BCI-growth primary (business-confidence strength \u2192 appreciate); n_long=n_short=1 a priori (EUR/GBP/CHF foreign panel)",
+  "eur_mapping": "BSCICP02EZM460S EZ aggregate (DE/FR/IT/ES alts; BSCICP03 amplitude stale ~2024-01)",
+  "nzd_aud_cad_jpy": "AUD/CAD/NZD/JPY unmapped (BSCICP02 404; BSCICP03 amplitude stale); CHF mapped live",
+  "series_map": {
+    "USD": "BSCICP02USM460S",
+    "EUR": "BSCICP02EZM460S",
+    "GBP": "BSCICP02GBM460S",
+    "CHF": "BSCICP02CHM460S"
+  },
+  "distinct_from": [
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "macro_diff_CPI_IP_UR",
+    "house_price_BIS_35",
+    "money_growth_MABMM301_33",
+    "ig_oas_BAMLC0A0CM_36",
+    "CA_GDP_21",
+    "trade_balance_30",
+    "bis_reer_31",
+    "bis_credit_gap_32",
+    "reserves_34",
+    "equity_diff",
+    "AI_GPR",
+    "EPU_TPU",
+    "funding_liquidity",
+    "debt_gdp_29"
+  ],
+  "citations": [
+    "OECD Business Confidence Indicators (MEI BSCICP02 / BSCICP03)",
+    "ISM manufacturing PMI literature (NAPM 404 on FRED \u2014 BCI fallback)",
+    "Dahlquist\u2013Hasseltoft-style macro\u2013FX differential framing for business confidence"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "BSCICP02USM460S",
+      "n_obs": 920,
+      "start": "1950-03-01",
+      "end": "2026-10-01",
+      "last": 9.2,
+      "note": "OECD BCI balance BSCICP02USM460S (NAPM/ISM 404; BSCICP03USM665S ends 2024-01)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "BSCICP02EZM460S",
+      "n_obs": 493,
+      "start": "1985-03-01",
+      "end": "2026-03-01",
+      "last": -6.8,
+      "note": "EZ aggregate via BSCICP02EZM460S (DE/FR/IT/ES BSCICP02*M460S alts; BSCICP03 amplitude ends ~2024-01)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "BSCICP02GBM460S",
+      "n_obs": 594,
+      "start": "1977-05-01",
+      "end": "2026-10-01",
+      "last": -8.21473538,
+      "note": "OECD BCI balance BSCICP02GBM460S"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "BSCICP02CHM460S",
+      "n_obs": 715,
+      "start": "1967-04-01",
+      "end": "2026-10-01",
+      "last": -3.01333333333333,
+      "note": "OECD BCI balance BSCICP02CHM460S (live \u2014 unlike CCI CHF)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 \u2014 AUD/JPY/NZD; CAD 404)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 \u2014 AUD/JPY/NZD; CAD 404)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 \u2014 AUD/JPY/NZD; CAD 404)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_primary_bci (BSCICP02 404; BSCICP03 amplitude stale ~2023-11..2024-01 \u2014 AUD/JPY/NZD; CAD 404)"
+    }
+  ],
+  "unmapped": [
+    "JPY",
+    "CAD",
+    "AUD",
+    "NZD"
+  ],
+  "failed_or_alt": {
+    "ism_napm_404": [
+      "NAPM"
+    ],
+    "usd_primary_balance": [
+      "BSCICP02USM460S"
+    ],
+    "usd_amplitude_stale_2024": [
+      "BSCICP03USM665S"
+    ],
+    "eur_ez_primary": [
+      "BSCICP02EZM460S"
+    ],
+    "eur_germany_alt": [
+      "BSCICP02DEM460S"
+    ],
+    "eur_france_alt": [
+      "BSCICP02FRM460S"
+    ],
+    "eur_italy_coverage": [
+      "BSCICP02ITM460S"
+    ],
+    "eur_spain_coverage": [
+      "BSCICP02ESM460S"
+    ],
+    "eur_amplitude_stale": [
+      "BSCICP03EZM665S",
+      "BSCICP03DEM665S"
+    ],
+    "jpy_404_and_amplitude_stale_2023": [
+      "BSCICP02JPM460S",
+      "BSCICP03JPM665S"
+    ],
+    "aud_404_and_amplitude_stale_2023": [
+      "BSCICP02AUM460S",
+      "BSCICP03AUM665S"
+    ],
+    "cad_404": [
+      "BSCICP02CAM460S"
+    ],
+    "nzd_404_and_amplitude_stale_2023": [
+      "BSCICP02NZM460S",
+      "BSCICP03NZM665S"
+    ],
+    "chf_primary_live": [
+      "BSCICP02CHM460S"
+    ],
+    "chf_amplitude_stale_2023": [
+      "BSCICP03CHM665S"
+    ],
+    "amplitude_family_stale_2023_2024": [
+      "BSCICP03GBM665S",
+      "BSCICP03JPM665S",
+      "BSCICP03AUM665S",
+      "BSCICP03NZM665S",
+      "BSCICP03USM665S",
+      "BSCICP03EZM665S"
+    ]
+  },
+  "soft_best": {
+    "factor": "bci_chg_xs",
+    "n_months": 180,
+    "mean_mo": 0.0014836648993984693,
+    "tstat_ols": 2.017145654240102,
+    "tstat_nw": 2.3355028492864407,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5944444444444444,
+    "top3": 0.11726450127133872,
+    "ann_sharpe_daily": 0.48258922816956545
+  },
+  "primary_sweep": {
+    "strategy": "high_bci_xs",
+    "scale": 0.5927907963849212,
+    "binding": "daily",
+    "is_total_return": 0.06574784627195518,
+    "is_static_loss": 0.03062044485840961,
+    "is_max_daily_dd": 0.04999999996546991,
+    "is_gates_pass": true,
+    "oos_total_return": 0.02420848769311812,
+    "oos_static_loss": 0.0003175626775638375,
+    "oos_max_daily_dd": 0.003998515658234392,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.00037804552963281523,
+    "mean_mo_oos": 0.0017625256064827028,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.00048436380217496965,
+    "scaled_full_pct_pos": 0.5777777777777777,
+    "scaled_ho_mean_mo": 0.0017625256064827028,
+    "scaled_ho_pct_pos": 0.8333333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  }
+}

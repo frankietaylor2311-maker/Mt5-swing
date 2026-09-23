@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, OECD CCI §38 after CLI §37 / IG OAS §36 / house-price §35; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01).
+**Status:** Active (2026-09-23 BST, OECD BCI §39 after CCI §38 / CLI §37 / IG OAS §36; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`) + IMF WEO gross debt (`GGGDTA*188N`; `GGXWDG*` 404) + US federal debt/GDP Q (`GFDEGDQ188S`) + BIS private credit/GDP (`Q*PAM770A`; `CRDQ*APABIS` absolute unused) + OECD broad-money growth (`MABMM301*M657S`; NZD/CHF 657S stale) + IMF IFS total reserves excl. gold (`TRESEG*M052N`; EUR=`TRESEGDEM052N`; NZD/CHF 404) + BIS real residential HPI (`Q*R628BIS`; EUR=`QDER628BIS`, `QEUR628BIS` 404) + ICE BofA OAS (`BAMLC0A0CM` IG / `BAMLH0A0HYM2` HY / `BAMLC0A4CBBB` BBB; public CSV ~3y ICE truncation). + OECD CLI amplitude-adjusted (`*LOLITOAASTSAM`; EUR=`DEULOLITOAASTSAM`; NZD/CHF stale unmapped). + OECD CCI balances (`CSCICP02*M460S`; USD=`USACSCICP02STSAM`; EUR=`CSCICP02EZM460S`; CAD/NZD/CHF unmapped; `CSCICP03*M665S` amplitude stale ~2024-01). + OECD BCI balances (`BSCICP02*M460S`; EUR=`BSCICP02EZM460S`; CHF live; AUD/CAD/NZD/JPY unmapped; `BSCICP03*M665S` amplitude stale ~2023-11..2024-01; NAPM/ISM 404).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -1820,6 +1820,49 @@ Sweep **run**. Primary `high_cci_xs` scale≈0.864 bind=static; scaled HO mean�
 
 OECD CCI is the right free-data *consumer-sentiment* structure after CLI (§37), and is cleanly distinct from leading CLI and coincident macro-diff. Live path uses `CSCICP02*M460S` balances (amplitude `CSCICP03*M665S` too stale for 2025/2026). On Yahoo D1 G10 the primary high-CCI-YoY HML is essentially **flat** (full-sample ≈ +1.6 bp/mo, NW t ≈ 0.26, %pos 53%) — nowhere near 1%/mo + 70% hit-rate. Soft/hard NW boards empty. CAD/NZD/CHF coverage gaps documented. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: manufacturing **PMI**/ISM differentials (free FRED ISM/NAPM still 404 — OECD BCI `BSCICP02*M460S` is the natural fallback) — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §39 (OECD BCI / manufacturing-confidence). FX IV/RR + news-sentiment still **blocked**. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_oecd_cci_wave.md`, `scholarly_fx_oecd_cci_*.csv`, `scholarly_fx_oecd_cci_meta.json`.
+
+## 39. OECD BCI / manufacturing-confidence FX wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** FRED OECD MEI business-confidence balances `BSCICP02*M460S` (ISM/NAPM manufacturing PMI **404** on FRED — BCI is the free fallback). Amplitude-adjusted `BSCICP03*M665S` probed but **stale** (~ends 2023-11..2024-01) — not primary. Primary `high_bci_xs`: long high relative BCI YoY change (`BCI_t − BCI_{t−12}`) / short low. Companions: `low_bci_xs` (honesty), `high_bci_z_xs`, `bci_chg_xs` (Δ12 of YoY), `us_bci_weak_fx` / `us_bci_haven_usd` (US BCI YoY z ≤ −1.0), `bci_ew`. PIT monthly `pub_lag=2m` + 1d weight lag (no extra month signal lag); z_window=60, min_periods=24, usd_tilt=0.5; costs 1.5 bps/side. **`n_long=n_short=1` a priori** (foreign panel only EUR/GBP/CHF).
+
+**What is new vs CLI / CCI / macro-diff / IG OAS:** OECD CLI §37 is *leading* activity; CCI §38 is *consumer* sentiment; this wave is *business / manufacturing* confidence (PMI-style). Distinct from coincident macro-diff CPI/IP/UR, house-price §35, money-growth §33, corporate OAS §36.
+
+**Data notes:** Prefer FTMO MT5 D1 if present — absent → `approximate_non_ftmo` (Yahoo D1). EUR = EZ `BSCICP02EZM460S` (live through ~2026-01). CHF = `BSCICP02CHM460S` **live** (unlike CCI). AUD/CAD/NZD/JPY **unmapped** (`BSCICP02` 404; `BSCICP03` amplitude stale). Mapped: USD, EUR, GBP, CHF.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| high_bci_xs | +0.081% | +1.02 | +0.98 | 57% | 13% | +0.24 |
+| low_bci_xs | −0.105% | −1.35 | −1.29 | 42% | 17% | −0.29 |
+| high_bci_z_xs | +0.126% | +1.71 | +1.90 | 56% | 15% | +0.37 |
+| bci_chg_xs | +0.148% | +2.02 | +2.34 | 59% | 12% | +0.48 |
+| us_bci_weak_fx | −0.008% | −0.28 | −0.32 | 9% | 43% | −0.06 |
+| us_bci_haven_usd | +0.007% | +0.23 | +0.27 | 11% | 33% | +0.06 |
+| bci_ew | +0.074% | +1.61 | +1.65 | 58% | 13% | +0.38 |
+
+### Consistency windows (primary `high_bci_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.25% | 73% | 71% | PASS | no |
+| year_2025 | +0.44% | 82% | 61% | PASS | no |
+| year_2026 | +0.48% | 88% | 64% | PASS | no |
+| holdout_365d | +0.30% | 83% | 56% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run**. Primary `high_bci_xs` scale≈0.593 bind=daily; scaled HO mean≈+0.18%/mo %pos 83% — clears: **NO**. Soft-best leg `bci_chg_xs` (~+14.8 bp/mo, NW t≈+2.34, hard board) — still far below 1%/mo consistency bar on year/HO means (~0.2–0.5%/mo).
+
+**Board:** n=7 soft=3 hard=1 promote=0. **Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_oecd_bci.md`).
+
+### Honest read
+
+OECD BCI is the right free-data *manufacturing / business-confidence* structure after CLI (§37) and CCI (§38), and is cleanly distinct from both. Live path uses `BSCICP02*M460S` balances (amplitude `BSCICP03*M665S` too stale for 2025/2026; NAPM/ISM 404). On Yahoo D1 G10 the primary high-BCI-YoY HML is mildly positive (full-sample ≈ +8.1 bp/mo, NW t ≈ 0.98, %pos 57%) with strong recent-year %pos (73–88%) but means still ≲0.5%/mo — nowhere near 1%/mo. Soft board has 3 legs (`bci_chg_xs` hard NW t≈2.34; `high_bci_z_xs` / `bci_ew` soft); none clear promote. Thin foreign panel (EUR/GBP/CHF only) documented via `n_long=n_short=1`. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: (1) OECD / national **industrial production** volume differentials beyond macro-diff IP already boarded; (2) **retail sales** / private consumption volume XS; (3) **labour-market** tightness beyond UR (vacancies / emp growth if free FRED MEI live); (4) re-score all boards when **FTMO MT5 CSVs** arrive — *not* another locked-sleeve cooler.
+
+Artifacts: `reports/scholarly_fx_oecd_bci_wave.md`, `scholarly_fx_oecd_bci_*.csv`, `scholarly_fx_oecd_bci_meta.json`.
