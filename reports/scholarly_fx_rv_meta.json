@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag": 1,
+  "rv_windows": [
+    21,
+    63
+  ],
+  "z_window": 252,
+  "z_high": 1.0,
+  "z_low": 0.0,
+  "cool": 0.35,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "carry_raw",
+    "fxrv_usd_tilt_21d",
+    "fxrv_innov_usd_21d",
+    "fxrv_highvol_usd_21d",
+    "carry_fxrv_cool_21d",
+    "carry_fxrv_lowvol_only_21d",
+    "fxrv_usd_tilt_63d",
+    "fxrv_innov_usd_63d",
+    "fxrv_highvol_usd_63d",
+    "carry_fxrv_cool_63d",
+    "carry_fxrv_lowvol_only_63d",
+    "fxrv_ew_21d"
+  ],
+  "primary": "carry_fxrv_cool_21d",
+  "fx_cols": [
+    "EURUSD",
+    "GBPUSD",
+    "AUDUSD",
+    "NZDUSD",
+    "USDJPY",
+    "USDCAD",
+    "USDCHF"
+  ],
+  "rates_cols": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "AUD",
+    "CAD",
+    "CHF",
+    "NZD"
+  ],
+  "corr_fxrv21_vix": 0.44236153857735566,
+  "any_pos_is": true,
+  "is_end": "2025-09-14",
+  "holdout_start": "2025-09-15",
+  "holdout_end": "2026-09-15",
+  "promote": false,
+  "scaled_promote": false,
+  "risk_sweep_primary": {
+    "strategy": "carry_fxrv_cool_21d",
+    "scale": 1.4104875960471412,
+    "binding": "static",
+    "is_total_return": -0.049481350531978885,
+    "is_static_loss": 0.09999999991816833,
+    "is_max_daily_dd": 0.024191743546583166,
+    "is_gates_pass": true,
+    "oos_total_return": 0.04526103658090053,
+    "oos_static_loss": 0.006589944360290829,
+    "oos_max_daily_dd": 0.006522089116074494,
+    "oos_gates_pass": true,
+    "mean_mo_is": 3.2371703953471527e-07,
+    "mean_mo_oos": 0.004145159414799288,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0002524572257111557,
+    "scaled_full_pct_pos": 0.49444444444444446,
+    "scaled_ho_mean_mo": 0.004145159414799288,
+    "scaled_ho_pct_pos": 0.8333333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "refs": [
+    "Menkhoff, Sarno, Schmeling & Schrimpf (2012), Carry Trades and Global FX Volatility, JF",
+    "True FX RV = EW mean |ccy return|; distinct from equity VIX proxy",
+    "Frozen cutoffs z_high=1, cool=0.35 matching scholarly combo priors"
+  ]
+}

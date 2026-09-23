@@ -1,0 +1,30 @@
+=== scholarly Menkhoff FX realized-vol wave ===
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo n=3905
+rates cols=['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD'] rows=866
+corr(fx_rv_21d, VIX) = 0.442
+  sweep carry_raw: scale=0.963 bind=static IS mean_mo=-0.021% OOS gates=True
+  sweep fxrv_usd_tilt_21d: scale=3.291 bind=daily IS mean_mo=0.077% OOS gates=True
+  sweep fxrv_innov_usd_21d: scale=3.063 bind=daily IS mean_mo=0.106% OOS gates=True
+  sweep fxrv_highvol_usd_21d: scale=3.351 bind=daily IS mean_mo=0.084% OOS gates=True
+  sweep carry_fxrv_cool_21d: scale=1.410 bind=static IS mean_mo=0.000% OOS gates=True
+  sweep carry_fxrv_lowvol_only_21d: scale=1.181 bind=static IS mean_mo=-0.004% OOS gates=True
+  sweep fxrv_usd_tilt_63d: scale=3.320 bind=daily IS mean_mo=0.101% OOS gates=True
+  sweep fxrv_innov_usd_63d: scale=3.527 bind=daily IS mean_mo=0.037% OOS gates=True
+  sweep fxrv_highvol_usd_63d: scale=3.239 bind=daily IS mean_mo=0.115% OOS gates=True
+  sweep carry_fxrv_cool_63d: scale=1.341 bind=static IS mean_mo=0.008% OOS gates=True
+  sweep carry_fxrv_lowvol_only_63d: scale=1.500 bind=static IS mean_mo=-0.007% OOS gates=True
+  sweep fxrv_ew_21d: scale=3.167 bind=daily IS mean_mo=0.092% OOS gates=True
+wrote /workspace/Mt5-swing/reports/scholarly_fx_rv_wave.md
+promote=False scaled_promote=False any_pos_is=True
+  carry_raw: mean_mo=-0.002% pos=51.1% sharpe=-0.04 tNW=-0.03
+  fxrv_usd_tilt_21d: mean_mo=0.021% pos=25.6% sharpe=0.13 tNW=0.52
+  fxrv_innov_usd_21d: mean_mo=0.032% pos=36.7% sharpe=0.19 tNW=0.76
+  fxrv_highvol_usd_21d: mean_mo=0.024% pos=12.8% sharpe=0.17 tNW=0.65
+  carry_fxrv_cool_21d: mean_mo=0.018% pos=49.4% sharpe=0.02 tNW=0.34
+  carry_fxrv_lowvol_only_21d: mean_mo=0.012% pos=40.0% sharpe=0.05 tNW=0.25
+  fxrv_usd_tilt_63d: mean_mo=0.026% pos=20.6% sharpe=0.16 tNW=0.57
+  fxrv_innov_usd_63d: mean_mo=0.012% pos=29.4% sharpe=0.07 tNW=0.27
+  fxrv_highvol_usd_63d: mean_mo=0.033% pos=12.2% sharpe=0.20 tNW=0.73
+  carry_fxrv_cool_63d: mean_mo=0.023% pos=51.1% sharpe=0.04 tNW=0.41
+  carry_fxrv_lowvol_only_63d: mean_mo=0.012% pos=39.4% sharpe=0.05 tNW=0.24
+  fxrv_ew_21d: mean_mo=0.026% pos=38.3% sharpe=0.17 tNW=0.67

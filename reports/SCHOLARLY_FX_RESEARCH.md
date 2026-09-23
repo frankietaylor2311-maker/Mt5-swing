@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, Balassa–Samuelson / productivity wave after PPP). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, Menkhoff FX realized-vol wave after Balassa–Samuelson). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -30,7 +30,9 @@
 
 - **Claim:** Innovations in global FX volatility are a state variable: high FX vol predicts carry underperformance; vol-sensitive risk premia matter for sorting currencies.
 - **Key refs:** Menkhoff, Sarno, Schmeling & Schrimpf (2012a) *JF* (carry & global FX volatility).
-- **Proxy here:** VIX (equity vol) as a freely available **uncertainty / risk-off** proxy — correlated with, but not identical to, global FX vol. Documented limitation.
+- **Proxies here:**
+  - **VIX** (equity vol) — free uncertainty / risk-off proxy (combo wave §8). Correlated with, but not identical to, global FX vol.
+  - **True FX realized vol** (this wave §15): equal-weight mean of |currency-vs-USD daily returns| on available G10 USD majors; trailing 21d/63d RV → causal z; standalone USD-tilt / innov legs + carry cool / low-vol-only gate. `strategies/fx_realized_vol.py`. corr(FX-RV₂₁, VIX) ≈ 0.44 on this sample — **distinct** from VIX-only.
 
 ### 1.5 Geopolitical risk (GPR)
 
@@ -102,6 +104,7 @@
 | IP index levels (Balassa–Samuelson) | FRED INDPRO / *PROINDMISMEI / EA19… | **2 months** (+ strategy `signal_lag`) |
 | Commodity futures (CRR) | Yahoo `CL=F`/`HG=F`/`GC=F` | **1 day** (+ strategy `signal_lag`) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
+| Global FX realized vol (Menkhoff) | EW \|ccy ret\| from Yahoo USD majors | Trailing RV then `signal_lag=1` (no pub lag) |
 
 If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (instructions in `macro_uncertainty.download_gpr`).
 
@@ -134,6 +137,9 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | `reports/scholarly_fx_combo_wave.md` | Combo wave board |
 | `reports/scholarly_fx_country_gpr_wave.md` | Country-GPR wave board (this) |
 | `reports/scholarly_fx_fred_rate_coverage.csv` | Extended OECD rate sparsity/missing |
+| `src/mt5_swing/strategies/fx_realized_vol.py` | Menkhoff FX-RV level/z/innov + USD tilt + carry cool |
+| `scripts/scholarly_fx_rv_wave.py` | FX-RV factor board + FTMO risk sweep |
+| `reports/scholarly_fx_rv_wave.md` | FX-RV wave board (this) |
 
 ---
 
@@ -154,7 +160,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 ## 7. Next steps (research, not HO hunt)
 
 1. Add simple transaction-cost / spread haircut on Yahoo D1.
-2. Optional true FX-vol proxy (realized G10 vol) beside VIX.
+2. **Done:** true FX-vol proxy (realized G10 vol) beside VIX — see §15.
 3. Wire EPU/TPU CSV when downloaded.
 4. Macro-news NLP panel — **intensity layer wired** (GDELT interface + GPR proxy event study); signed NLP still needs paid API.
 5. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
@@ -162,7 +168,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 7. **Done (2026-09-23):** PPP / real-FX value wave — promote=NO (see §13).
 8. **Done (2026-09-23):** Commodity CRR + macro-diff waves — promote=NO (see §11–12).
 9. **Done (2026-09-23):** Balassa–Samuelson / productivity wave — promote=NO (see §14).
-10. Next scholarly candidates (not sleeve coolers): term-structure / yield-curve FX; order-flow proxies if free; true FX realized-vol risk factor (Menkhoff); UIP/forward-premium variants with better rate coverage.
+10. **Done (2026-09-23):** True FX realized-vol risk factor (Menkhoff) — promote=NO (see §15).
+11. Next scholarly candidates (not sleeve coolers): term-structure / yield-curve FX; UIP/forward-premium variants with better rate coverage; free order-flow / positioning proxies if available; FX option-implied vol (if free) vs RV.
 
 ---
 
@@ -409,3 +416,59 @@ Rolling-OLS productivity-adjusted residual (`bs_resid`) is the only leg with a m
 
 Artifacts: `reports/scholarly_fx_bs_wave.md`, `scholarly_fx_bs_*.csv`, `scholarly_fx_bs_meta.json`.
 
+
+---
+
+## 15. Menkhoff FX realized-vol wave results (2026-09-23 BST) — true G10 FX-RV
+
+**Design (fixed priors, no HO tuning):** daily global FX vol = equal-weight mean of |currency-vs-USD returns| on EUR/GBP/AUD/NZD/JPY/CAD/CHF; trailing RV 21d/63d; z vs 252d (`min_periods=60`); `signal_lag=1`. Cutoffs frozen to match combo priors: `z_high=1`, `z_low=0`, `cool=0.35`. Costs 1.5 bps/side.
+
+**Legs:**
+- `fxrv_usd_tilt_*` — continuous long-USD intensity from FX-RV z
+- `fxrv_innov_usd_*` — long USD on positive RV innovations (RV − trailing mean)
+- `fxrv_highvol_usd_*` — binary long-USD when z ≥ 1 (else flat)
+- `carry_fxrv_cool_*` — scholarly carry × FX-RV risk_scale ∈ [0.35, 1]
+- `carry_fxrv_lowvol_only_*` — carry only when z ≤ 0 (else flat)
+- `carry_raw` / `fxrv_ew_21d` baselines
+
+**Distinctness:** corr(fx_rv_21d, lagged VIX) ≈ **0.44** — overlapping risk-off information but not a VIX clone.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| carry_raw | −0.002% | −0.03 | −0.03 | 51% | 10% | −0.04 |
+| fxrv_usd_tilt_21d | +0.021% | +0.52 | +0.52 | 26% | 28% | +0.13 |
+| fxrv_innov_usd_21d | +0.032% | +0.77 | +0.76 | 37% | 18% | +0.19 |
+| fxrv_highvol_usd_21d | +0.024% | +0.65 | +0.65 | 13% | 32% | +0.17 |
+| carry_fxrv_cool_21d | +0.018% | +0.34 | +0.34 | 49% | 12% | +0.02 |
+| carry_fxrv_lowvol_only_21d | +0.012% | +0.25 | +0.25 | 40% | — | +0.05 |
+| fxrv_usd_tilt_63d | +0.026% | +0.57 | +0.57 | 21% | — | +0.16 |
+| fxrv_innov_usd_63d | +0.012% | +0.27 | +0.27 | 29% | — | +0.07 |
+| fxrv_highvol_usd_63d | +0.033% | +0.73 | +0.73 | 12% | 31% | +0.20 |
+| carry_fxrv_cool_63d | +0.023% | +0.41 | +0.41 | 51% | 12% | +0.04 |
+| fxrv_ew_21d | +0.026% | +0.67 | +0.67 | 38% | 22% | +0.17 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| fxrv_innov_usd_21d | holdout_365d | +0.00% | 33% | PASS | no |
+| fxrv_usd_tilt_21d | holdout_365d | −0.02% | 25% | PASS | no |
+| carry_fxrv_cool_21d | holdout_365d | +0.29% | 83% | PASS | no† |
+| carry_fxrv_cool_63d | holdout_365d | +0.28% | 75% | PASS | no† |
+| fxrv_highvol_usd_63d | year_2024 | +0.37% | 27% | PASS | no |
+
+† Holdout %pos can clear 70% on cooled carry, but mean ≪ 1%/mo and full-sample means are basis points — not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means on standalone USD-tilt / innov legs → sweep run. Best scaled IS mean (`fxrv_highvol_usd_63d` @ ~3.2× daily-bound) ≈ **+0.12%/mo** still ≪ 1%; OOS means near zero / flat. Scaled clears: **NO**. Leverage does not invent a consistency edge.
+
+**Unscaled promote:** **NO**. **Scaled primary (`carry_fxrv_cool_21d`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+True FX-RV is the right *prior* relative to VIX-only: mild positive full-sample means on long-USD-in-high-FX-vol rules (NW t ≈ 0.5–0.8) and a small lift of carry when cooled by FX-RV vs raw carry. Economically **~0.02–0.03%/mo** with %pos often ≪ 50% on standalone legs (sparse risk-off episodes). Far from prop-firm 1%/mo + 70% hit-rate. Yahoo D1 abs-return average ≠ OTC tick / option-implied FX vol.
+
+Artifacts: `reports/scholarly_fx_rv_wave.md`, `scholarly_fx_rv_*.csv`, `scholarly_fx_rv_meta.json`.
