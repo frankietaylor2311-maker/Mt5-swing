@@ -1,0 +1,125 @@
+{
+  "ok": true,
+  "path": "fiscal_balance_government_budget",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 15,
+  "signal_lag_months": 1,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "fiscal_surplus_xs",
+    "fiscal_deficit_xs",
+    "fiscal_chg_xs",
+    "us_fiscal_twin_fx",
+    "us_fiscal_haven_usd",
+    "us_mts_chg_usd",
+    "fiscal_ca_blend",
+    "fiscal_ew"
+  ],
+  "primary": "fiscal_surplus_xs",
+  "n_factors": 8,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "current_account_CA_GDP",
+    "CB_balance_sheet_QE",
+    "macro_diff_CPI_IP_UR",
+    "PPP",
+    "Balassa_Samuelson"
+  ],
+  "citations": [
+    "Abell (1990), Twin Deficits during the 1980s, JMacro",
+    "Corsetti, Dedola & Leduc on fiscal shocks and exchange rates",
+    "Dai & Philippon on fiscal deficits and risk premia",
+    "Twin deficits / fiscal sustainability FX channel (survey literature)"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "GGNLBAUSA188N",
+      "n_obs": 277,
+      "start": "2002-04-01",
+      "end": "2025-04-01",
+      "last": -7.262,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "GGNLBADEA188N",
+      "n_obs": 397,
+      "start": "1992-04-01",
+      "end": "2025-04-01",
+      "last": -2.759,
+      "note": "Germany proxy via GGNLBADEA188N (EA19/EZA discontinued ~2010)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GGNLBAGBA188N",
+      "n_obs": 529,
+      "start": "1981-04-01",
+      "end": "2025-04-01",
+      "last": -5.749,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "GGNLBAJPA188N",
+      "n_obs": 529,
+      "start": "1981-04-01",
+      "end": "2025-04-01",
+      "last": -2.261,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "GGNLBACNA188N",
+      "n_obs": 505,
+      "start": "1983-04-01",
+      "end": "2025-04-01",
+      "last": -7.344,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "GGNLBAAUA188N",
+      "n_obs": 433,
+      "start": "1989-04-01",
+      "end": "2025-04-01",
+      "last": -2.156,
+      "note": ""
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_ggnlba"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_ggnlba"
+    }
+  ],
+  "unmapped": [
+    "NZD",
+    "CHF"
+  ]
+}

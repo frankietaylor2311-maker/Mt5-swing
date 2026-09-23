@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, Lustig–Verdelhan dollar-factor beta §27 after BNP crash-skew §26; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region).
+**Status:** Active (2026-09-23 BST, twin-deficits / fiscal-balance §28 after Lustig–Verdelhan dollar-beta §27; FX IV/RR + news-sentiment still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region) + IMF WEO fiscal balance (`GGNLBA*188N`) + US MTS (`MTSDS133FMS`).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -84,6 +84,16 @@
 - **What we implement (wave §27):** `strategies/dollar_beta_fx.py` + `scripts/scholarly_fx_dollar_beta_wave.py` — legs `dollar_beta_xs` (primary 60m monthly OLS β HML), `dollar_beta_xs_36m`, `dollar_beta_afd` (HML × sign(AFD) from FRED short rates), `dollar_rx_tsmom` (12m trailing RX sign), `dollar_ew`. PIT `skip=1m` + `signal_lag=1m`; monthly XS rebalance; costs 1.5 bps/side. **Distinct** from Lustig carry (rate sort), Menkhoff FX-RV, Hau–Rey equity-diff, BNP crash-skew (§26), AI-GPR. **Not** overlaid on the locked sleeve.
 
 
+
+
+
+
+### 1.22 Fiscal-balance / government-budget differentials (twin deficits)
+
+- **Claim:** Relative fiscal stance (general-government net lending/borrowing as % of GDP) prices FX via twin-deficits / external-adjustment and fiscal-sustainability channels: stronger relative fiscal balances tend to support subsequent appreciation; deep US deficits can foreshadow USD adjustment (or, alternately, safe-haven USD demand).
+- **Key refs:** Abell (1990) twin deficits; Corsetti–Dedola–Leduc on fiscal shocks and exchange rates; Dai & Philippon on fiscal deficits / risk premia; related fiscal-sustainability FX surveys.
+- **Free data:** IMF WEO general-government net lending/borrowing (% GDP) via FRED `GGNLBA*188N` (USD/EUR-DE/GBP/JPY/CAD/AUD). NZD/CHF **unmapped** on free FRED. US Monthly Treasury Statement `MTSDS133FMS` for higher-frequency US tilt.
+- **What we implement (wave §28):** `data/fred_fiscal_balance.py` + `strategies/fiscal_balance_fx.py` + `scripts/scholarly_fx_fiscal_wave.py` — legs `fiscal_surplus_xs` (primary), `fiscal_deficit_xs`, `fiscal_chg_xs`, `us_fiscal_twin_fx`, `us_fiscal_haven_usd`, `us_mts_chg_usd`, scholarly `fiscal_ca_blend` (EW with CA surplus; **not** locked-sleeve overlay), `fiscal_ew`. PIT annual WEO `pub_lag_months=15` (~April Y+1) + MTS `pub_lag=1m` + `signal_lag=1m` + 1d weight lag. **Distinct** from CA/GDP (§21), CB-BS (§22), macro-diff. **Not** overlaid on the locked sleeve.
 
 
 ### 1.2 Momentum
@@ -298,7 +308,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 16. **Done (2026-09-23):** Bilateral AI-GPR role decompositions — promote=NO (see §25).
 17. **Done (2026-09-23):** Brunnermeier–Nagel–Pedersen crash-skew / left-tail wave — promote=NO (see §26).
 18. **Done (2026-09-23):** Lustig–Verdelhan dollar-factor beta sorts — promote=NO (see §27).
-19. Next scholarly candidates (not sleeve coolers): FRED **fiscal-balance / government budget** differentials; FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
+19. **Done (2026-09-23):** FRED fiscal-balance / government-budget differentials — promote=NO (see §28).
+20. Next scholarly candidates (not sleeve coolers): sovereign **debt/GDP** differentials (flow vs stock vs §28); monthly **trade-balance** (higher-freq vs quarterly CA); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -1237,6 +1248,50 @@ Sweep **run** (positive IS mean on `dollar_beta_xs` / `dollar_beta_afd`). Primar
 
 Dollar-factor β sorts are the right free-data Verdelhan structure after BNP crash-skew, and are cleanly distinct from carry / FX-RV / equity-diff / skew / AI-GPR. On Yahoo D1 G10 the primary 60m β HML is essentially **flat** (full-sample ≈ +1.4 bp/mo, NW t ≈ 0.2, %pos 39%) — nowhere near 1%/mo + 70% hit-rate. AFD conditioning helps only marginally (+2 bp/mo). Dollar RX TSMOM is wrong-signed on this sample (~−23 bp/mo). Soft/hard NW boards empty for positive means. No go-live claim under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidate: **FRED fiscal-balance / government budget differentials** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+**Next structure (if promote=0):** Done as §28 (fiscal-balance). FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: sovereign **debt/GDP** differentials or monthly **trade-balance** — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
 
 Artifacts: `reports/scholarly_fx_dollar_beta_wave.md`, `scholarly_fx_dollar_beta_*.csv`, `scholarly_fx_dollar_beta_meta.json`.
+
+
+## 28. Twin-deficits / fiscal-balance wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** IMF WEO general-government net lending/borrowing (% GDP) via FRED `GGNLBA*188N`. Primary `fiscal_surplus_xs`: monthly XS long high fiscal balance / short deficit (n=2/2) on mapped G10 (USD, EUR-DE proxy, GBP, JPY, CAD, AUD; NZD/CHF unmapped). Companion: `fiscal_deficit_xs` (risk-premium opposite), `fiscal_chg_xs` (YoY Δ), `us_fiscal_twin_fx` / `us_fiscal_haven_usd` (US deficit z tilts), `us_mts_chg_usd` (MTS surplus z → long USD), scholarly `fiscal_ca_blend` (EW with CA surplus; **not** on locked fx4plus), `fiscal_ew`. PIT `pub_lag_months=15` + `signal_lag=1m` + 1d weight lag; costs 1.5 bps/side.
+
+**What is new vs CA / CB-BS / macro-diff / dollar-beta:** CA (§21) is external imbalance; CB-BS is QE assets; macro-diff is CPI/IP/UR; dollar-beta sorts on RX β. This wave is **fiscal balance / GDP** (budget stance) — twin-deficits stock-flow cousin of CA, not the same series.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| fiscal_surplus_xs | −0.037% | −0.75 | −0.75 | 48% | 12% | −0.18 |
+| fiscal_deficit_xs | +0.035% | +0.70 | +0.70 | 52% | 12% | +0.17 |
+| fiscal_chg_xs | +0.021% | +0.36 | +0.36 | 48% | 14% | +0.07 |
+| us_fiscal_twin_fx | −0.029% | −0.79 | −0.79 | 13% | — | −0.20 |
+| us_fiscal_haven_usd | +0.030% | +0.79 | +0.79 | 13% | — | +0.20 |
+| us_mts_chg_usd | −0.003% | −0.11 | −0.11 | 16% | — | −0.03 |
+| fiscal_ca_blend | −0.032% | −0.88 | −0.88 | 47% | 13% | −0.22 |
+| fiscal_ew | −0.015% | −0.58 | −0.58 | 48% | 14% | −0.15 |
+
+### Consistency windows (primary `fiscal_surplus_xs`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | +0.05% | 64% | 73% | PASS | no |
+| year_2025 | −0.18% | 36% | 96% | PASS | no |
+| year_2026 | +0.18% | 62% | 92% | PASS | no |
+| holdout_365d | +0.06% | 50% | 86% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep **run** (positive IS mean on `fiscal_deficit_xs` / `fiscal_chg_xs` / `us_fiscal_haven_usd`). Primary `fiscal_surplus_xs` scale≈0.76 bind=static; scaled IS mean still negative / ≪1%; scaled HO clears: **NO**. Deficit-premium opposite is the soft-best (+3.5 bp/mo, NW t≈0.7) — still nowhere near a soft board hit.
+
+**Board:** n=8 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`fiscal_surplus_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` config **untouched**; re-verify gates PASS on all key windows (Yahoo D1: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_fiscal.md`).
+
+### Honest read
+
+Fiscal-balance / twin-deficits is the right free-data structure after dollar-factor β, and is cleanly distinct from CA/GDP, CB-BS, and macro-diff. On Yahoo D1 G10 the primary surplus HML is essentially **flat-to-negative** (full-sample ≈ −3.7 bp/mo, NW t ≈ −0.75, %pos 48%) — nowhere near 1%/mo + 70% hit-rate. The deficit-premium opposite and YoY-change legs are only marginally positive. US tilt legs rarely fire in 2024–26 under honest 15m WEO lag (annual fiscal state moves slowly). Soft/hard NW boards empty for positive means. NZD/CHF missing from free GGNLBA panel. No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Next free scholarly candidates: sovereign **debt/GDP** differentials (stock vs §28 flow) or monthly **trade-balance** (higher-freq vs quarterly CA) — *not* another locked-sleeve cooler. Re-score all boards when FTMO MT5 CSVs arrive.
+
+Artifacts: `reports/scholarly_fx_fiscal_wave.md`, `scholarly_fx_fiscal_*.csv`, `scholarly_fx_fiscal_meta.json`.
+
