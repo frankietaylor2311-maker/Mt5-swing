@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "path": "ai_gpr_bilateral_role_decompositions",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_days": 1,
+  "signal_lag": 1,
+  "z_window": 252,
+  "z_high": 1.0,
+  "cool": 0.35,
+  "usd_tilt": 0.5,
+  "binary_usd": true,
+  "cost_bps_side": 1.5,
+  "factors": [
+    "ai_threats_usd",
+    "ai_acts_usd",
+    "ai_gpr_usd",
+    "oil_gpr_usd",
+    "oil_threats_usd",
+    "oil_me_vs_non",
+    "carry_ai_threats_cool",
+    "ai_ew"
+  ],
+  "primary": "ai_threats_usd",
+  "n_factors": 8,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "distinct_from": [
+    "aggregate_GPR_regime",
+    "country_GPRC_sorts",
+    "news_event_intensity",
+    "commodity_CRR",
+    "commodity_ToT"
+  ],
+  "citations": [
+    "Caldara & Iacoviello (2022), Measuring Geopolitical Risk, AER",
+    "Caldara\u2013Iacoviello AI-GPR / threats-acts / oil-region role indices (matteoiacoviello.com/gpr.htm)"
+  ],
+  "series": {
+    "THREATS_GPR_AI": {
+      "n": 24350,
+      "end": "2026-09-01"
+    },
+    "GPR_OIL_end": "2026-09-01",
+    "panel_end": "2026-09-01"
+  }
+}

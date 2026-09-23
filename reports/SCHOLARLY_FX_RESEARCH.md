@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, ToT / commodity-currency refinement after real-rate; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`).
+**Status:** Active (2026-09-23 BST, AI-GPR bilateral roles after ToT §24; FX IV/RR still blocked). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates / OECD IR3M money-market + Chicago NFCI/ANFCI + TED/CPFF/BAA + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU + IMF BOP CA/GDP (`{ISO3}B6BLTT02STSAQ`) + Fed/ECB/BoJ CB assets (`WALCL` / `ECBASSETSW` / `JPNASSETS`) + US TIPS/BE (`DFII10` / `T10YIE`) + Caldara–Iacoviello AI-GPR daily roles (`ai_gpr_daily.csv` threats/acts/oil-region).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -58,6 +58,14 @@
 - **Claim:** Commodity-currency real exchange rates co-move with country *terms of trade* (export commodity prices relative to import prices), not only with a single export commodity. Positive ToT shocks appreciate commodity currencies vs USD.
 - **Key refs:** Cashin, Céspedes & Sahay (2004), "Commodity Currencies and the Real Exchange Rate," *JDE*; Chen, Rogoff & Rossi (2010), *QJE* (export-commodity side); Amano & van Norden (oil–CAD).
 - **What we implement (wave §24):** `COUNTRY_TOT_MAP` in `data/commodity_prices.py` + `strategies/tot_fx.py` + `scripts/scholarly_fx_tot_wave.py` — ToT change = export_mom − import_mom (AUD copper−oil, CAD oil−copper, NZD basket−oil; NOK/ZAR mapped, untraded). Legs `tot_country_ts`, `tot_xs`, `tot_vs_g10`, `tot_ew`. PIT pub_lag=1d + signal_lag=1d; calendar-date align. **Distinct** from CRR single-commodity mom (§11 / `commodity_fx.py`); corr≈0.71 / 0.31 on this sample. **Not** overlaid on the locked sleeve.
+
+
+
+### 1.19 Bilateral AI-GPR role decompositions (threats / acts / oil-region)
+
+- **Claim:** Geopolitical *threats* and *acts*, and oil-region GPR roles, associate with risk-off / safe-haven USD (and often CHF/JPY) and commodity-currency pressure — a finer decomposition than aggregate GPR or country-GPRC_* sorts.
+- **Key refs:** Caldara & Iacoviello (2022), *AER*; AI-GPR / oil-region role indices (Iacoviello GPR page).
+- **What we implement (wave §25):** `data/ai_gpr.py` + `strategies/ai_gpr_fx.py` + `scripts/scholarly_fx_ai_gpr_wave.py` — legs `ai_threats_usd` (primary), `ai_acts_usd`, `ai_gpr_usd`, `oil_gpr_usd`, `oil_threats_usd`, `oil_me_vs_non`, `carry_ai_threats_cool` (scholarly only), `ai_ew`. PIT daily `pub_lag=1d` + `signal_lag=1d`; trailing z=252d; binary z≥1; costs 1.5 bps/side. **Distinct** from aggregate GPR regime (§8), country-GPRC sorts (§9), news events (§10), CRR/ToT. **Not** overlaid on the locked sleeve.
 
 
 
@@ -259,7 +267,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 3. Wire EPU/TPU CSV when downloaded.
 4. Macro-news NLP panel — **intensity layer wired** (GDELT interface + GPR proxy event study); signed NLP still needs paid API.
 5. Re-run stats on FTMO CSVs when available — **only then** discuss golive.
-6. Optional: AI-GPR bilateral / role decompositions (initiator vs spillover) if useful beyond GPRC_*.
+6. **Done (2026-09-23):** Bilateral AI-GPR role decompositions — promote=NO (see §25).
 7. **Done (2026-09-23):** PPP / real-FX value wave — promote=NO (see §13).
 8. **Done (2026-09-23):** Commodity CRR + macro-diff waves — promote=NO (see §11–12).
 8b. **Done (2026-09-23):** Terms-of-trade / commodity-currency refinement — promote=NO (see §24).
@@ -270,7 +278,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 13. **Done (2026-09-23):** EPU/TPU, forward-carry, Hau–Rey equity, funding-liq, CA imbalances — promote=NO (§18–21).
 14. **Done (2026-09-23):** CB balance-sheet / QE differential — promote=NO (see §22).
 15. **Done (2026-09-23):** Real-rate / breakeven differentials — promote=NO (see §23).
-16. Next scholarly candidates (not sleeve coolers): FX IV/RR **blocked**; bilateral AI-GPR role decompositions (after ToT §24 promote=0); news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
+16. **Done (2026-09-23):** Bilateral AI-GPR role decompositions — promote=NO (see §25).
+17. Next scholarly candidates (not sleeve coolers): FX IV/RR **blocked**; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive; optional signed NLP only with free multi-year panel (no paid API).
 
 ---
 
@@ -1084,7 +1093,51 @@ Skipped — no ToT leg with positive IS mean monthly. Leverage would not invent 
 
 Cashin–CCS ToT priors are the right *economic* refinement of CRR and are **empirically distinct** on this free panel (corr≪1), but the export−import Yahoo futures proxy does not clear prop-firm 1%/mo + 70% hit-rate. Means are zero-to-negative (~−18 bp/mo on primary). Free futures ≠ true country export/import unit-value indices — a limitation shared with §11. Expanding to NOK/ZAR would need FX history we do not have under `approximate_non_ftmo`.
 
-**Next structure (if promote=0):** **Bilateral AI-GPR role decompositions** (Caldara–Iacoviello `ai_gpr_daily.csv` threats/acts / oil-region roles — *not* a redo of plain country-GPRC sorts, *not* a locked-sleeve cooler). FX IV/RR still blocked without a free panel.
+**Next structure (if promote=0):** Done as §25 (AI-GPR roles). FX IV/RR still blocked without a free panel; next free scholarly candidate if promote=0 again: news-based currency-specific sentiment (free multi-year panel) or FTMO MT5 CSV re-run.
 
 Artifacts: `reports/scholarly_fx_tot_wave.md`, `scholarly_fx_tot_*.csv`, `scholarly_fx_tot_meta.json`.
+
+---
+
+## 25. Bilateral AI-GPR role decompositions wave results (2026-09-23 BST) — Caldara–Iacoviello
+
+**Design (fixed priors, no HO tuning):** Daily AI-GPR roles from free `ai_gpr_daily.csv`. Primary `ai_threats_usd`: binary long-USD when lagged trailing-z(THREATS_GPR_AI) ≥ 1. Companion legs: `ai_acts_usd`, `ai_gpr_usd`, `oil_gpr_usd`, `oil_threats_usd`, `oil_me_vs_non` (ME oil − non-oil differential), scholarly `carry_ai_threats_cool` (cool≤1; **not** applied to locked fx4plus), `ai_ew`. PIT `pub_lag=1d` + `signal_lag=1d`; z_window=252; usd_tilt=0.5; costs 1.5 bps/side. Mapped to USD majors via `USD_LONG_PAIRS`.
+
+**What is new vs §8–§9:** Aggregate GPR regime and monthly GPRC_* country sorts use classic / country indices. This wave uses **AI newspaper GPR role decompositions** (threats vs acts; oil vs non-oil; ME oil differential) — bilateral role structure, not another country sort or sleeve cooler.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| ai_threats_usd | -0.012% | -0.40 | -0.39 | 43% | 21% | -0.12 |
+| ai_acts_usd | +0.001% | +0.05 | +0.06 | 37% | 24% | +0.01 |
+| ai_gpr_usd | -0.045% | -1.52 | -1.55 | 33% | 28% | -0.43 |
+| oil_gpr_usd | +0.020% | +0.76 | +0.71 | 41% | 17% | +0.20 |
+| oil_threats_usd | -0.043% | -1.59 | -1.48 | 39% | 19% | -0.41 |
+| oil_me_vs_non | -0.027% | -1.05 | -1.17 | 36% | 21% | -0.30 |
+| carry_ai_threats_cool | -0.062% | -0.95 | -1.03 | 49% | 12% | -0.25 |
+| ai_ew | -0.009% | -0.42 | -0.43 | 44% | 24% | -0.12 |
+
+### Consistency windows (primary `ai_threats_usd`)
+
+| Window | mean_mo | %pos | top3 | gates | 1% bar |
+|--------|--------:|-----:|-----:|:-----:|:------:|
+| year_2024 | -0.03% | 36% | 90% | PASS | no |
+| year_2025 | -0.30% | 27% | 100% | PASS | no |
+| year_2026 | +0.04% | 62% | 83% | PASS | no |
+| holdout_365d | +0.07% | 58% | 74% | PASS | no |
+
+### Risk sweep (IS → OOS)
+
+Sweep run (positive IS mean on some legs, e.g. `oil_gpr_usd` / `ai_acts_usd`). Primary `ai_threats_usd` scale≈2.92 bind=static; scaled IS mean still negative / ≪ 1%; scaled HO clears: **NO**. Leverage does not invent consistency.
+
+**Board:** n=8 soft=0 hard=0 promote=0. **Unscaled promote:** **NO**. **Scaled primary (`ai_threats_usd`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` verified unchanged PASS (2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81%).
+
+### Honest read
+
+Caldara–Iacoviello AI-GPR *role* priors are the right economic refinement beyond aggregate GPR / GPRC_* sorts and are implementable on free daily data, but binary USD tilts on elevated threats/acts/oil roles do not clear prop-firm 1%/mo + 70% hit-rate on Yahoo D1. Full-sample means are ~0 to −6 bp/mo (primary −1.2 bp; best oil leg ~+2 bp with NW t≪1.5). Soft/hard NW boards empty. Distinctness from §8–§11/§24 is by construction (role columns, not country sorts or commodity prices). No go-live claim under `approximate_non_ftmo`.
+
+**Next structure (if promote=0):** FX IV/RR still **blocked** without a free panel. Next free scholarly candidates: news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive (then re-score all scholarly boards). Avoid further locked-sleeve coolers.
+
+Artifacts: `reports/scholarly_fx_ai_gpr_wave.md`, `scholarly_fx_ai_gpr_*.csv`, `scholarly_fx_ai_gpr_meta.json`.
 
