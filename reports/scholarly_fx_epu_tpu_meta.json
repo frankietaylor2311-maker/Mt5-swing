@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "path": "epu_tpu_fallback",
+  "iv_rr_available": false,
+  "iv_rr_reason": "No free downloadable PIT FX option IV / risk-reversal panel; commercial only (LSEG VolSurf, TFS-ICAP/CME DataMine, Bloomberg). Do not fabricate IV from Yahoo OHLC.",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 1,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "n_long": 2,
+  "n_short": 2,
+  "cost_bps_side": 1.5,
+  "country_epu_columns": [
+    "AUD",
+    "CAD",
+    "JPY",
+    "GBP",
+    "USD",
+    "EUR"
+  ],
+  "missing_currencies": [
+    "NZD",
+    "CHF"
+  ],
+  "tpu_source": "policyuncertainty_Categorical_EPU_Data",
+  "factors": [
+    "country_epu_xs",
+    "epu_diff_xs",
+    "epu_us_usd",
+    "tpu_us_usd",
+    "gepu_usd",
+    "carry_epu_cool",
+    "carry_tpu_cool",
+    "epu_ew"
+  ],
+  "primary": "country_epu_xs",
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "citations": [
+    "Baker, Bloom & Davis (2016), Measuring Economic Policy Uncertainty, QJE",
+    "Davis (2016), An Index of Global Economic Policy Uncertainty, NBER WP 22740",
+    "policyuncertainty.com categorical Trade policy = US TPU"
+  ]
+}

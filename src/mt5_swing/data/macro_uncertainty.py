@@ -372,18 +372,26 @@ def load_country_gpr(
 
 
 def load_epu_tpu_stub() -> pd.DataFrame:
-    """Backward-compatible stub: prefer live FRED EPU, else local CSV, else empty."""
+    """Backward-compatible stub: prefer live FRED EPU + true TPU, else local CSV."""
     path = macro_dir() / "epu_tpu.csv"
     try:
         panel = load_epu_panel(download=True, pub_lag_months=0)
         out = panel.rename(columns={"US_EPU": "EPU"})
-        if "GEPU" in out.columns:
-            out["TPU"] = out["GEPU"]  # placeholder col; true TPU is separate
+        try:
+            tpu = load_tpu(download=True, pub_lag_months=0)
+            out = out.join(tpu.rename("TPU"), how="outer")
+        except Exception:
+            if "GEPU" in out.columns:
+                out["TPU"] = out["GEPU"]
+                out.attrs["note"] = "TPU fallback=GEPU (true TPU load failed)"
+            else:
+                out["TPU"] = pd.NA
+                out.attrs["note"] = "TPU unavailable"
         else:
-            out["TPU"] = pd.NA
+            out.attrs["note"] = "FRED USEPUINDXM/GEPUCURRENT + categorical Trade policy TPU"
         out.attrs["available"] = True
-        out.attrs["note"] = "FRED USEPUINDXM/GEPUCURRENT; TPU column is GEPU placeholder"
-        return out[["EPU", "TPU"]].sort_index()
+        cols = [c for c in ("EPU", "TPU", "GEPU") if c in out.columns]
+        return out[cols].sort_index()
     except Exception:
         pass
     if not path.exists():
@@ -511,3 +519,227 @@ def load_epu_panel(
     df.attrs["citation"] = "Baker, Bloom & Davis (2016); Davis (2016) GEPU"
     df.attrs["xlsx_cached"] = bool(xlsx.exists())
     return df
+
+
+# ---------------------------------------------------------------------------
+# Country EPU (Baker–Bloom–Davis All_Country_Data) + US TPU
+# ---------------------------------------------------------------------------
+
+EPU_CATEGORICAL_XLSX = "https://www.policyuncertainty.com/media/Categorical_EPU_Data.xlsx"
+TPU_TRADE_XLSX = "https://www.policyuncertainty.com/media/Trade_Uncertainty_Data.xlsx"
+
+# Country workbook column → ISO currency (G10 FX majors we trade)
+COUNTRY_EPU_TO_CURRENCY: dict[str, str] = {
+    "Australia": "AUD",
+    "Canada": "CAD",
+    "Japan": "JPY",
+    "UK": "GBP",
+    "US": "USD",
+}
+# Euro-area EPU proxy = equal-weight France + Germany (Italy optional if present)
+EUR_EPU_COUNTRIES: tuple[str, ...] = ("France", "Germany")
+
+
+def _read_year_month_workbook(path: Path, *, value_cols: list[str] | None = None) -> pd.DataFrame:
+    """Parse policyuncertainty.com Year/Month Excel → UTC month-start index."""
+    raw = pd.read_excel(path, sheet_name=0)
+    # Drop trailing source footnote rows
+    if "Year" in raw.columns:
+        year_num = pd.to_numeric(raw["Year"], errors="coerce")
+        raw = raw.loc[year_num.notna()].copy()
+        raw["Year"] = year_num.loc[raw.index].astype(int)
+        raw["Month"] = pd.to_numeric(raw["Month"], errors="coerce").astype("Int64")
+        raw = raw.dropna(subset=["Month"])
+        raw["date"] = pd.to_datetime(
+            dict(year=raw["Year"].astype(int), month=raw["Month"].astype(int), day=1),
+            utc=True,
+        )
+        raw = raw.drop(columns=["Year", "Month"]).set_index("date").sort_index()
+    else:
+        raise ValueError(f"Expected Year/Month columns in {path}")
+    if value_cols is not None:
+        keep = [c for c in value_cols if c in raw.columns]
+        raw = raw[keep]
+    # Coerce numeric
+    for c in raw.columns:
+        raw[c] = pd.to_numeric(raw[c], errors="coerce")
+    return raw[~raw.index.duplicated(keep="last")].sort_index()
+
+
+def download_tpu(*, force: bool = False) -> Path:
+    """Download categorical EPU (Trade policy) + optional Trade_Uncertainty workbook.
+
+    Returns the categorical path when available (updated through present);
+    otherwise the trade workbook path.
+    """
+    cat = _ensure_macro() / "epu_categorical.xlsx"
+    path = _ensure_macro() / "tpu_trade_uncertainty.xlsx"
+    if force or not cat.exists() or cat.stat().st_size < 1000:
+        try:
+            urlretrieve(EPU_CATEGORICAL_XLSX, cat)
+        except (URLError, HTTPError, OSError):
+            pass
+    if force or not path.exists() or path.stat().st_size < 1000:
+        try:
+            urlretrieve(TPU_TRADE_XLSX, path)
+        except (URLError, HTTPError, OSError):
+            pass
+    if cat.exists() and cat.stat().st_size > 1000:
+        return cat
+    if path.exists() and path.stat().st_size > 1000:
+        return path
+    raise RuntimeError(
+        f"TPU download failed. Place Categorical_EPU_Data.xlsx at {cat} "
+        f"or Trade_Uncertainty_Data.xlsx at {path} from {EPU_PAGE}"
+    )
+
+
+def load_tpu(
+    *,
+    download: bool = True,
+    pub_lag_months: int = 1,
+    force: bool = False,
+    prefer: str = "trade_workbook",
+) -> pd.Series:
+    """US Trade Policy Uncertainty (Baker–Bloom–Davis categorical Trade policy).
+
+    PIT: monthly index for calendar month *t* first usable early *t+1*
+    → default ``pub_lag_months=1``. Distinct from aggregate US EPU / GEPU / VIX / GPR.
+    """
+    trade_path = macro_dir() / "tpu_trade_uncertainty.xlsx"
+    cat_path = macro_dir() / "epu_categorical.xlsx"
+    if download or force:
+        try:
+            download_tpu(force=force)
+        except RuntimeError:
+            if not trade_path.exists() and not cat_path.exists():
+                raise
+    # Prefer categorical workbook: identical historically to Trade_Uncertainty_Data
+    # but updated through the present (trade workbook freezes ~2019).
+    s: pd.Series | None = None
+    source = ""
+    if cat_path.exists() and prefer in {"categorical", "trade_workbook", "auto"}:
+        df = _read_year_month_workbook(cat_path)
+        col = None
+        for c in df.columns:
+            if "trade policy" in str(c).lower():
+                col = c
+                break
+        if col is not None:
+            s = df[col].dropna()
+            source = "policyuncertainty_Categorical_EPU_Data"
+    if s is None and trade_path.exists():
+        df = _read_year_month_workbook(trade_path)
+        col = "US Trade Policy Uncertainty"
+        if col in df.columns:
+            s = df[col].dropna()
+            source = "policyuncertainty_Trade_Uncertainty_Data"
+    if s is None:
+        raise RuntimeError(
+            "TPU series unavailable. Download Trade_Uncertainty_Data.xlsx or "
+            f"Categorical_EPU_Data.xlsx into {macro_dir()} from {EPU_PAGE}"
+        )
+    s = s.sort_index()
+    s.name = "TPU"
+    if pub_lag_months > 0:
+        s.index = s.index + pd.DateOffset(months=int(pub_lag_months))
+        s = s[~s.index.duplicated(keep="last")].sort_index()
+    s.attrs["source"] = source
+    s.attrs["citation"] = (
+        "Baker, Bloom & Davis (2016), Measuring Economic Policy Uncertainty, QJE; "
+        "US Categorical EPU — Trade policy"
+    )
+    s.attrs["url"] = "https://www.policyuncertainty.com/trade_uncertainty.html"
+    s.attrs["pub_lag_months"] = int(pub_lag_months)
+    # Cache cleaned CSV
+    csv_path = macro_dir() / "tpu_us_monthly.csv"
+    s.to_frame().to_csv(csv_path)
+    return s
+
+
+def ensure_country_epu_csv(*, force: bool = False) -> Path:
+    """Ensure ``epu_country_monthly.csv`` from All_Country_Data.xlsx."""
+    csv_path = macro_dir() / "epu_country_monthly.csv"
+    xlsx = macro_dir() / "epu_all_country.xlsx"
+    if csv_path.exists() and not force and csv_path.stat().st_size > 50:
+        return csv_path
+    if force or not xlsx.exists() or xlsx.stat().st_size < 1000:
+        got = download_epu_all_country_xlsx(force=force)
+        if got is None and not xlsx.exists():
+            raise RuntimeError(
+                f"Country EPU workbook missing. Download All_Country_Data.xlsx from "
+                f"{EPU_PAGE}all_country_data.html into {xlsx}"
+            )
+    raw = _read_year_month_workbook(xlsx)
+    raw.to_csv(csv_path)
+    return csv_path
+
+
+def load_country_epu(
+    *,
+    download: bool = True,
+    pub_lag_months: int = 1,
+    force: bool = False,
+    currencies: list[str] | None = None,
+) -> pd.DataFrame:
+    """Monthly country EPU mapped to FX currencies (Baker–Bloom–Davis).
+
+    Columns are ISO currencies (AUD, CAD, GBP, JPY, EUR aggregate, USD).
+    EUR = equal-weight mean of France + Germany. Publication lag shifts the
+    availability index forward by ``pub_lag_months`` (default 1).
+
+    Notes
+    -----
+    - No Switzerland / New Zealand country EPU in the standard 22-country file
+      → CHF and NZD omitted (documented gap).
+    - Yellow-highlighted imputed cells in the source workbook are retained as
+      published (Davis 2016 imputation) — we do not re-impute.
+    """
+    if download or force or not (macro_dir() / "epu_country_monthly.csv").exists():
+        try:
+            ensure_country_epu_csv(force=force)
+        except RuntimeError:
+            if not (macro_dir() / "epu_all_country.xlsx").exists():
+                raise
+            ensure_country_epu_csv(force=True)
+    df = pd.read_csv(macro_dir() / "epu_country_monthly.csv", index_col=0, parse_dates=True)
+    df.index = pd.to_datetime(df.index, utc=True)
+    cols: dict[str, pd.Series] = {}
+    for country, ccy in COUNTRY_EPU_TO_CURRENCY.items():
+        if country in df.columns:
+            cols[ccy] = pd.to_numeric(df[country], errors="coerce")
+    ez = []
+    for country in EUR_EPU_COUNTRIES:
+        if country in df.columns:
+            ez.append(pd.to_numeric(df[country], errors="coerce"))
+    if ez:
+        cols["EUR"] = pd.concat(ez, axis=1).mean(axis=1)
+    panel = pd.DataFrame(cols).sort_index()
+    panel = panel.dropna(how="all")
+    if pub_lag_months > 0:
+        panel.index = panel.index + pd.DateOffset(months=int(pub_lag_months))
+        panel = panel[~panel.index.duplicated(keep="last")].sort_index()
+    if currencies is not None:
+        keep = [c.upper() for c in currencies if c.upper() in panel.columns]
+        panel = panel[keep]
+    panel.attrs["source"] = "baker_bloom_davis_all_country_epu"
+    panel.attrs["citation"] = "Baker, Bloom & Davis (2016); Davis (2016) GEPU; country pages on policyuncertainty.com"
+    panel.attrs["url"] = "https://www.policyuncertainty.com/all_country_data.html"
+    panel.attrs["pub_lag_months"] = int(pub_lag_months)
+    panel.attrs["eur_constituents"] = list(EUR_EPU_COUNTRIES)
+    panel.attrs["missing_currencies"] = ["NZD", "CHF"]
+    return panel
+
+
+def load_epu_tpu_bundle(
+    *,
+    download: bool = True,
+    pub_lag_months: int = 1,
+    force: bool = False,
+) -> dict[str, pd.Series | pd.DataFrame]:
+    """Convenience: US EPU, GEPU, TPU, country EPU panel with shared pub lag."""
+    us = load_epu(series="US", download=download, pub_lag_months=pub_lag_months, force=force)
+    ge = load_epu(series="GEPU", download=download, pub_lag_months=pub_lag_months, force=force)
+    tpu = load_tpu(download=download, pub_lag_months=pub_lag_months, force=force)
+    country = load_country_epu(download=download, pub_lag_months=pub_lag_months, force=force)
+    return {"US_EPU": us, "GEPU": ge, "TPU": tpu, "country_epu": country}

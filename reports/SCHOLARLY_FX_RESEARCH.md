@@ -1,7 +1,7 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, CFTC COT positioning wave after term-structure / yield-curve). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
-**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT.
+**Status:** Active (2026-09-23 BST, EPU/TPU wave after CFTC COT; FX IV/RR free panel unavailable). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR + free CFTC TFF/Legacy COT + Baker–Bloom–Davis EPU/TPU (FRED + policyuncertainty.com).
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
 ---
@@ -81,9 +81,10 @@
 
 ### 1.6 TPU / economic-policy uncertainty
 
-- **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks.
-- **Refs:** Baker, Bloom & Davis (2016) and policyuncertainty.com TPU series.
-- **v1 status:** **Stub only** — place `data/macro/epu_tpu.csv` manually if needed (`load_epu_tpu_stub`). Not in the default factor board until a PIT CSV is cached.
+- **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks; elevated *home-country* EPU is associated with subsequent FX depreciation vs USD (risk premium), and high US EPU/TPU coincides with risk-off / safe-haven USD.
+- **Refs:** Baker, Bloom & Davis (2016), *QJE*; Davis (2016) GEPU; policyuncertainty.com categorical *Trade policy* = US TPU; All_Country monthly EPU workbook.
+- **What we implement (this wave §18):** `data/macro_uncertainty.py` loaders (`load_epu`, `load_tpu`, `load_country_epu`, `load_epu_tpu_bundle`) + `strategies/epu_tpu_fx.py` + `scripts/scholarly_fx_epu_tpu_wave.py`. PIT `pub_lag=1m` + `signal_lag_months=1` + `signal_lag_days=1`. Legs: country-EPU XS, EPU−US relative, US-EPU/TPU/GEPU USD tilts, carry cooled by **EPU-only** / **TPU-only** (no VIX/GPR — distinct from §8 combo). CHF/NZD country EPU absent in the 22-country file.
+- **FX IV / risk-reversal:** **No free PIT panel** (LSEG VolSurf, TFS-ICAP/CME DataMine, Bloomberg commercial only). Do **not** fabricate option IV from Yahoo OHLC. Documented blocker → EPU/TPU fallback this wave.
 
 ---
 
@@ -121,6 +122,10 @@
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 | Global FX realized vol (Menkhoff) | EW \|ccy ret\| from Yahoo USD majors | Trailing RV then `signal_lag=1` (no pub lag) |
 | CFTC COT (TFF / Legacy FX) | CFTC SODA `gpe5-46if` / `6dca-aqww` | **3 calendar days** (Tue→Fri) + strategy `signal_lag=1` trading day |
+| US EPU (Baker–Bloom–Davis) | FRED `USEPUINDXM` / policyuncertainty.com | **1 month** (+ strategy `signal_lag`) |
+| Global EPU (GEPU) | FRED `GEPUCURRENT` | **1 month** (+ strategy `signal_lag`) |
+| US TPU (categorical Trade policy) | policyuncertainty.com Categorical EPU | **1 month** (+ strategy `signal_lag`) |
+| Country EPU (22-country) | policyuncertainty.com All_Country_Data.xlsx | **1 month** (+ strategy `signal_lag`) |
 
 If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (instructions in `macro_uncertainty.download_gpr`).
 
@@ -140,7 +145,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 | Path | Role |
 |------|------|
 | `src/mt5_swing/data/fred_rates.py` | FRED download + PIT rate panel |
-| `src/mt5_swing/data/macro_uncertainty.py` | VIX, GPR, EPU/TPU stub |
+| `src/mt5_swing/data/macro_uncertainty.py` | VIX, GPR, EPU/TPU/country-EPU loaders |
 | `src/mt5_swing/strategies/carry_rank.py` | Cross-sectional carry |
 | `src/mt5_swing/strategies/fx_momentum.py` | Currency momentum + dollar factor |
 | `src/mt5_swing/strategies/gpr_regime.py` | GPR/VIX scale + USD tilt |
@@ -194,7 +199,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 10. **Done (2026-09-23):** True FX realized-vol risk factor (Menkhoff) — promote=NO (see §15).
 11. **Done (2026-09-23):** Term-structure / yield-curve FX + UIP secondary — promote=NO (see §16).
 12. **Done (2026-09-23):** CFTC COT positioning / speculative-pressure wave — promote=NO (see §17).
-13. Next scholarly candidates (not sleeve coolers): FX risk-reversal / skew or option-implied vol vs RV **if a free panel exists**; transaction-cost / swap-aware carry on better free forwards; Baker–Bloom–Davis EPU/TPU PIT CSV; bilateral AI-GPR role decompositions; FTMO MT5 CSV re-run when exports arrive.
+13. Next scholarly candidates (not sleeve coolers): **EPU/TPU delivered (§18)**; FX IV/RR **blocked** (no free panel); transaction-cost / swap-aware carry on better free forwards; bilateral AI-GPR role decompositions; news-based currency-specific sentiment if a free multi-year panel appears; FTMO MT5 CSV re-run when exports arrive.
 
 ---
 
@@ -603,4 +608,54 @@ Positive IS means only on MR / DX → sweep run for all legs. Best scaled IS mea
 On this Yahoo+CFTC sample, **continuation** speculative-pressure sorts (level, change, z, Legacy NonComm) earn **negative** full-sample means with NW |t| ≈ 1.9–3.2 — economically a few bp/week against the crowded side. The pre-specified **mean-reversion** z-leg and DX USD tilt are mildly positive (NW t ≈ 0.9–1.2) at **~0.08–0.15%/mo**, %pos ≪ 70%. Far from prop-firm 1%/mo + 70% hit-rate. Free CFTC SODA is sufficient; no need for paid positioning vendors this wave. CME FX futures positioning ≠ OTC spot order flow.
 
 Artifacts: `reports/scholarly_fx_cot_wave.md`, `scholarly_fx_cot_*.csv`, `scholarly_fx_cot_meta.json`.
+
+
+---
+
+## 18. EPU / TPU wave results (2026-09-23 BST) — Baker–Bloom–Davis (IV/RR fallback)
+
+**Path decision:** Primary goal was FX option-implied vol vs realized vol and/or risk-reversal/skew. **No free, downloadable, PIT-safe FX IV/RR panel exists** (commercial: LSEG VolSurf, TFS-ICAP/CME DataMine, Bloomberg). Fabricating IV from Yahoo OHLC is disallowed. **Fallback delivered:** deepen EPU/TPU with honest PIT release timing — distinct from prior VIX/GPR combo (§8) and Menkhoff FX-RV (§15).
+
+**Design (fixed priors, no HO tuning):**
+- Sources: FRED `USEPUINDXM` / `GEPUCURRENT`; policyuncertainty.com `All_Country_Data.xlsx` (country EPU); Categorical EPU *Trade policy* = US TPU (updated through present; Trade_Uncertainty_Data.xlsx freezes ~2019, corr=1.0 historically).
+- PIT: `pub_lag_months=1` + `signal_lag_months=1` + `signal_lag_days=1`; n_long=n_short=2; costs 1.5 bps/side.
+- Legs: `country_epu_xs` (long low / short high home EPU z — primary), `epu_diff_xs` (home−US), `epu_us_usd` / `tpu_us_usd` / `gepu_usd` (binary USD tilt when z≥1), `carry_epu_cool` / `carry_tpu_cool` (EPU-only / TPU-only cool — **no VIX/GPR**), `epu_ew`.
+- Coverage: AUD/CAD/JPY/GBP/EUR/USD country EPU; **CHF/NZD missing** in 22-country file.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| country_epu_xs | +0.031% | +0.54 | +0.63 | 53% | 12% | +0.17 |
+| epu_diff_xs | +0.031% | +0.54 | +0.63 | 53% | 12% | +0.17 |
+| epu_us_usd | +0.011% | +1.06 | +0.87 | 17% | 29% | +0.28 |
+| tpu_us_usd | +0.011% | +1.38 | +1.13 | 19% | 27% | +0.29 |
+| gepu_usd | +0.001% | +0.14 | +0.11 | 19% | 33% | +0.03 |
+| carry_epu_cool | +0.035% | +0.53 | +0.60 | 52% | 11% | +0.08 |
+| carry_tpu_cool | −0.005% | −0.07 | −0.08 | 52% | 12% | −0.05 |
+| epu_ew | +0.021% | +0.70 | +0.81 | 53% | 12% | +0.21 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| country_epu_xs | holdout_365d | +0.30% | 75% | PASS | no† |
+| country_epu_xs | year_2024 | −0.07% | 36% | PASS | no |
+| carry_epu_cool | holdout_365d | +0.31% | 75% | PASS | no† |
+| tpu_us_usd | holdout_365d | +0.00% | 0% | PASS | no |
+| epu_ew | holdout_365d | +0.15% | 75% | PASS | no† |
+
+† Holdout %pos can clear 70% on XS / cooled carry, but mean ≪ 1%/mo and full-sample means are basis points — not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS means → sweep run. Best scaled IS mean (`tpu_us_usd` @ ~11.2× daily-bound) ≈ **+0.13%/mo** still ≪ 1%; primary `country_epu_xs` scaled IS ≈ +0.03%/mo; scaled HO mean ≈ +0.93% still below bar with clears=NO. Scaled clears: **NO**. Leverage does not invent consistency.
+
+**Unscaled promote:** **NO**. **Scaled primary (`country_epu_xs`) promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Country-EPU depreciation sorts and EPU-only carry cool are the right *priors* and are **distinct** from VIX/GPR: mild positive full-sample means (NW t ≈ 0.6–1.1) at **~0.01–0.04%/mo**, %pos ≪ 70% on sparse USD-tilt legs. Far from prop-firm 1%/mo + 70% hit-rate. Free policyuncertainty.com + FRED is sufficient; no paid NLP. FX IV/RR remains blocked without a vendor panel.
+
+Artifacts: `reports/scholarly_fx_epu_tpu_wave.md`, `scholarly_fx_epu_tpu_*.csv`, `scholarly_fx_epu_tpu_meta.json`.
 

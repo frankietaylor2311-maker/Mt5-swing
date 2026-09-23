@@ -1,0 +1,22 @@
+=== scholarly FX EPU / TPU wave ===
+IV/RR path: NO free PIT FX option-implied vol / risk-reversal panel (commercial LSEG/TFS-ICAP/Bloomberg only). Delivering EPU/TPU fallback.
+US_EPU n=500 GEPU n=355 TPU n=500 country_cols=['AUD', 'CAD', 'JPY', 'GBP', 'USD', 'EUR'] missing=['NZD', 'CHF']
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep country_epu_xs: scale=3.059 bind=static IS mean_mo=0.034% OOS gates=True
+  sweep epu_diff_xs: scale=3.059 bind=static IS mean_mo=0.034% OOS gates=True
+  sweep epu_us_usd: scale=11.388 bind=daily IS mean_mo=0.130% OOS gates=True
+  sweep tpu_us_usd: scale=11.237 bind=daily IS mean_mo=0.135% OOS gates=True
+  sweep gepu_usd: scale=13.564 bind=daily IS mean_mo=0.018% OOS gates=True
+  sweep carry_epu_cool: scale=1.530 bind=static IS mean_mo=0.025% OOS gates=True
+  sweep carry_tpu_cool: scale=0.879 bind=static IS mean_mo=-0.021% OOS gates=True
+  sweep epu_ew: scale=6.189 bind=daily IS mean_mo=0.071% OOS gates=True
+=== factor summary ===
+  country_epu_xs: mean_mo=+0.031% NW_t=+0.63 %pos=53%
+  epu_diff_xs: mean_mo=+0.031% NW_t=+0.63 %pos=53%
+  epu_us_usd: mean_mo=+0.011% NW_t=+0.87 %pos=17%
+  tpu_us_usd: mean_mo=+0.011% NW_t=+1.13 %pos=19%
+  gepu_usd: mean_mo=+0.001% NW_t=+0.11 %pos=19%
+  carry_epu_cool: mean_mo=+0.035% NW_t=+0.60 %pos=52%
+  carry_tpu_cool: mean_mo=-0.005% NW_t=-0.08 %pos=52%
+  epu_ew: mean_mo=+0.021% NW_t=+0.81 %pos=53%
+promote_unscaled=False scaled_primary=False
