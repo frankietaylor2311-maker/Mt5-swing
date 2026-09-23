@@ -1,6 +1,6 @@
 # Scholarly FX research line (v1)
 
-**Status:** Active (2026-09-23 BST, PPP/real-FX value wave after commodity + macro-diff). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
+**Status:** Active (2026-09-23 BST, Balassa–Samuelson / productivity wave after PPP). Replaces the technical **overlay hunt** as the primary path toward FTMO-consistent ~1%/month.
 **Data tag:** `approximate_non_ftmo` (Yahoo D1) + free FRED short rates + yfinance VIX + Caldara–Iacoviello GPR.
 **Discipline:** `signal_lag≥1`, publication lags on macro, walk-forward / calendar windows, **no holdout tuning**.
 
@@ -57,6 +57,13 @@
 - **Key refs:** Rogoff (1996), “The Purchasing Power Parity Puzzle,” *JEL*; Taylor & Taylor surveys; related real-FX value / mean-reversion work.
 - **What we implement:** `strategies/ppp_real_fx.py` + `scripts/scholarly_fx_ppp_wave.py` — PIT real FX `q = S·(CPI_US/CPI_f)` from FRED CPI levels + Yahoo USD majors; trailing 60m/120m z; long undervalued / short overvalued (`pub_lag=1m`, `signal_lag=1m`). FTMO risk sweep on IS → OOS confirm via `backtest/ftmo_risk_sweep.py`.
 
+
+### 1.9 Balassa–Samuelson / productivity-adjusted real FX
+
+- **Claim:** Relative productivity in tradables raises relative prices (real appreciation) — Harrod–Balassa–Samuelson. Residuals of real FX vs relative productivity are a productivity-*adjusted* PPP / value signal.
+- **Key refs:** Balassa (1964); Samuelson (1964); Chong, Jordà & Taylor (2012), “The Harrod–Balassa–Samuelson Hypothesis,” *IER*; Ricci, Milesi-Ferretti & Lee (real FX & fundamentals).
+- **What we implement:** `strategies/balassa_samuelson_fx.py` + `scripts/scholarly_fx_bs_wave.py` — FRED IP *levels* as productivity proxy + CPI real FX; PIT `bs_gap` (z(log q)−z(p)), rolling-OLS `bs_resid`, `bs_prod` channel; pub_lag CPI=1m / IP=2m + `signal_lag=1m`. AUD/NZD/CHF IP missing on FRED.
+
 ### 1.6 TPU / economic-policy uncertainty
 
 - **Claim:** Trade-policy and economic-policy uncertainty (Baker–Bloom–Davis EPU / TPU) affect FX and risk premia around tariff / policy shocks.
@@ -92,6 +99,7 @@
 | OECD immediate rates (extended) | FRED `IRSTCI01*` G10 + SEK/NOK/DKK/MXN/… | **1 month** (see coverage CSV) |
 | News intensity (GDELT/RSS/GPR proxy) | GDELT DOC / RSS / `gpr_daily.csv` | **1 day** (+ strategy `extra_lag`/`signal_lag`) |
 | CPI index levels (PPP / real FX) | FRED CPIAUCSL / GBRCPIALLMINMEI / … | **1 month** (+ strategy `signal_lag`) |
+| IP index levels (Balassa–Samuelson) | FRED INDPRO / *PROINDMISMEI / EA19… | **2 months** (+ strategy `signal_lag`) |
 | Commodity futures (CRR) | Yahoo `CL=F`/`HG=F`/`GC=F` | **1 day** (+ strategy `signal_lag`) |
 | FX prices | Yahoo D1 in `data/history/` | Strategy `signal_lag=1` |
 
@@ -153,6 +161,8 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 6. Optional: AI-GPR bilateral / role decompositions (initiator vs spillover) if useful beyond GPRC_*.
 7. **Done (2026-09-23):** PPP / real-FX value wave — promote=NO (see §13).
 8. **Done (2026-09-23):** Commodity CRR + macro-diff waves — promote=NO (see §11–12).
+9. **Done (2026-09-23):** Balassa–Samuelson / productivity wave — promote=NO (see §14).
+10. Next scholarly candidates (not sleeve coolers): term-structure / yield-curve FX; order-flow proxies if free; true FX realized-vol risk factor (Menkhoff); UIP/forward-premium variants with better rate coverage.
 
 ---
 
@@ -349,4 +359,53 @@ IS already sits on the static DD budget at ~1.15× unit leverage — **no unused
 Long-horizon PPP mean reversion is the right *prior*, but on this Yahoo+FRED sample the tradable monthly sort earns **basis points** (often negative) with %pos ≪ 70%. Slow Rogoff half-lives are incompatible with prop-firm monthly consistency without additional (non-overfit) edges. Free CPI levels are sufficient for the relative-z construction; absolute Big-Mac / ICP price levels are not required for this z-score design.
 
 Artifacts: `reports/scholarly_fx_ppp_wave.md`, `scholarly_fx_ppp_*.csv`, `scholarly_fx_ppp_meta.json`, `scholarly_fx_ppp_risk_sweep.csv`.
+
+
+---
+
+## 14. Balassa–Samuelson / productivity wave results (2026-09-23 BST)
+
+**Design (fixed priors, no HO tuning):** real FX `q = S·(CPI_US/CPI_f)` + relative productivity `p = log(IP_f)−log(IP_US)`; CPI pub_lag=1m, IP pub_lag=2m + `signal_lag=1m`; lookbacks 60m/120m.
+- `bs_gap`: score = −(z(log q) − z(p)) — unit-coeff HBS residual after z-score
+- `bs_resid`: score = −rolling OLS residual of log(q) on p
+- `bs_prod`: score = z(p) — high relative productivity → long foreign
+- `bs_ew`: EW of 60m legs
+
+**Coverage:** IP on FRED for USD/EUR/GBP/JPY/CAD only (AUD/NZD/CHF missing). Thin G10 cross-section.
+
+### Full-sample (unscaled)
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| bs_gap_60m | −0.045% | −0.71 | −0.76 | 41% | 14% | −0.15 |
+| bs_resid_60m | +0.109% | +1.72 | +1.62 | 44% | 18% | +0.38 |
+| bs_prod_60m | −0.011% | −0.17 | −0.19 | 47% | 12% | −0.07 |
+| bs_gap_120m | −0.044% | −0.68 | −0.74 | 40% | 14% | −0.15 |
+| bs_resid_120m | +0.117% | +1.81 | +1.73 | 45% | 17% | +0.39 |
+| bs_prod_120m | −0.003% | −0.05 | −0.05 | 47% | 10% | −0.04 |
+| bs_ew | +0.018% | +0.50 | +0.60 | 53% | 15% | +0.09 |
+
+### Consistency windows (selected)
+
+| Strategy | Window | mean_mo | %pos | gates | 1% bar |
+|----------|--------|--------:|-----:|:-----:|:------:|
+| bs_resid_60m | holdout_365d | −0.02% | 50% | PASS | no |
+| bs_resid_120m | holdout_365d | +0.02% | 50% | PASS | no |
+| bs_resid_120m | 2024 | +0.27% | 64% | PASS | no |
+| bs_ew | holdout_365d | +0.06% | 58% | PASS | no |
+| bs_prod_60m | holdout_365d | +0.22% | 75% | PASS | no† |
+
+† Holdout %pos hits 70% for `bs_prod_60m` but mean ≪ 1% and top3 > 55%; full-sample mean negative — not a promote.
+
+### Risk sweep (IS → OOS)
+
+Positive IS mean on resid/ew → sweep run. Best scaled IS mean (`bs_resid_120m` @ ~2.0×) ≈ **+0.24%/mo** still ≪ 1%; OOS means basis points. Scaled clears: **NO**.
+
+**Unscaled promote:** **NO**. **Scaled primary promote:** **NO**. Locked `fx4plus_gbpcad_d1_voltarget_0025` unchanged.
+
+### Honest read
+
+Rolling-OLS productivity-adjusted residual (`bs_resid`) is the only leg with a mild full-sample positive mean and NW t≈1.6–1.7 — economically **~0.1%/mo**, %pos ≪ 70%. Gap and raw productivity sorts are flat/negative. HBS is the right long-run prior; free IP levels + thin currency set do not deliver prop-firm monthly consistency. Distinct from plain PPP (§13) and macro-diff IP YoY (§12).
+
+Artifacts: `reports/scholarly_fx_bs_wave.md`, `scholarly_fx_bs_*.csv`, `scholarly_fx_bs_meta.json`.
 

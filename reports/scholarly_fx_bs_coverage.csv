@@ -1,0 +1,9 @@
+currency,has_cpi,has_ip,in_bs_sort,cpi_note,ip_note
+AUD,True,False,False,quarterly index ffilled to monthly,unmapped_or_unavailable_on_fred
+CAD,True,True,True,,
+CHF,True,False,False,,unmapped_or_unavailable_on_fred
+EUR,True,True,True,,EA19 series ends ~2023-10 on FRED — sparse tail
+GBP,True,True,True,,
+JPY,True,True,True,,
+NZD,True,False,False,quarterly index ffilled to monthly,unmapped_or_unavailable_on_fred
+USD,True,True,False,,

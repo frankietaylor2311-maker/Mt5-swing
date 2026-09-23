@@ -1,0 +1,45 @@
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+=== scholarly Balassa–Samuelson / productivity FX wave ===
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+cpi=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'CHF', 'AUD', 'NZD'] ip=['USD', 'EUR', 'GBP', 'JPY', 'CAD'] rel_prod=['EUR', 'GBP', 'JPY', 'CAD'] missing_ip=['AUD', 'NZD', 'CHF']
+  sweep bs_gap_60m: scale=0.800 bind=static IS mean_mo=-0.038% OOS gates=True
+  sweep bs_resid_60m: scale=1.976 bind=static IS mean_mo=0.229% OOS gates=True
+  sweep bs_prod_60m: scale=0.791 bind=static IS mean_mo=-0.020% OOS gates=True
+  sweep bs_gap_120m: scale=0.800 bind=static IS mean_mo=-0.037% OOS gates=True
+  sweep bs_resid_120m: scale=1.976 bind=static IS mean_mo=0.243% OOS gates=True
+  sweep bs_prod_120m: scale=0.624 bind=static IS mean_mo=-0.011% OOS gates=True
+  sweep bs_ew: scale=2.133 bind=static IS mean_mo=0.031% OOS gates=True
+wrote /workspace/Mt5-swing/reports/scholarly_fx_bs_wave.md
+promote=False scaled_promote=False any_pos_is=True
+  bs_gap_60m: mean_mo=-0.045% pos=41.1% sharpe=-0.15 tNW=-0.76
+  bs_resid_60m: mean_mo=0.109% pos=43.9% sharpe=0.38 tNW=1.62
+  bs_prod_60m: mean_mo=-0.011% pos=47.2% sharpe=-0.07 tNW=-0.19
+  bs_gap_120m: mean_mo=-0.044% pos=40.0% sharpe=-0.15 tNW=-0.74
+  bs_resid_120m: mean_mo=0.117% pos=45.0% sharpe=0.39 tNW=1.73
+  bs_prod_120m: mean_mo=-0.003% pos=47.2% sharpe=-0.04 tNW=-0.05
+  bs_ew: mean_mo=0.018% pos=52.8% sharpe=0.09 tNW=0.60

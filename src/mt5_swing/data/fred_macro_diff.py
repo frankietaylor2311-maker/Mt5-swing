@@ -326,3 +326,78 @@ def load_cpi_level_panel(
     df.attrs["series_map"] = {c: CPI_SERIES[c][0] for c in df.columns if c in CPI_SERIES}
     df.attrs["notes"] = notes
     return df
+
+
+# ---------------------------------------------------------------------------
+# Industrial production *levels* for Balassa–Samuelson / productivity work
+# ---------------------------------------------------------------------------
+
+def _load_ip_index_level(
+    series_id: str,
+    *,
+    kind: str,
+    download: bool,
+) -> pd.Series:
+    """Load IP as an index *level* (not YoY)."""
+    if download:
+        download_fred_series(series_id, force=False)
+    raw = load_fred_series(series_id, download=False)
+    if kind == "quarterly_index":
+        s = _to_month_start(raw).resample("MS").ffill()
+        if s.index.tz is None:
+            s.index = s.index.tz_localize("UTC")
+        return s
+    return _to_month_start(raw)
+
+
+def load_ip_level_panel(
+    currencies: Iterable[str] | None = None,
+    *,
+    pub_lag_months: int = DEFAULT_PUB_LAGS["ip"],
+    download: bool = True,
+) -> pd.DataFrame:
+    """Industrial production *index levels* for relative productivity (BS).
+
+    Publication lag default = 2 months (same as IP YoY). AUD/NZD/CHF omitted
+    when unmapped on FRED (documented in attrs).
+    """
+    curs = [c.upper() for c in (currencies or list(IP_SERIES.keys()) + ["AUD", "NZD", "CHF"])]
+    cols: dict[str, pd.Series] = {}
+    notes: dict[str, str] = {}
+    for c in curs:
+        meta = IP_SERIES.get(c)
+        if not meta:
+            notes[c] = "unmapped_or_unavailable_on_fred"
+            continue
+        sid, kind = meta
+        try:
+            cols[c] = _load_ip_index_level(sid, kind=kind, download=download)
+            if c == "EUR":
+                notes[c] = "EA19 series ends ~2023-10 on FRED — sparse tail"
+        except Exception as exc:  # noqa: BLE001
+            notes[c] = f"load_fail:{exc}"[:120]
+    df = pd.DataFrame(cols).sort_index()
+    if pub_lag_months > 0:
+        df.index = df.index + pd.DateOffset(months=int(pub_lag_months))
+        df = df[~df.index.duplicated(keep="last")].sort_index()
+    df.attrs["factor"] = "ip_level"
+    df.attrs["pub_lag_months"] = int(pub_lag_months)
+    df.attrs["series_map"] = {c: IP_SERIES[c][0] for c in df.columns if c in IP_SERIES}
+    df.attrs["notes"] = notes
+    df.attrs["missing"] = [c for c in ("AUD", "NZD", "CHF") if c not in df.columns]
+    return df
+
+
+def relative_productivity_vs_usd(ip_levels: pd.DataFrame) -> pd.DataFrame:
+    """log(IP_f) − log(IP_US). Relative manufacturing/output productivity proxy."""
+    if "USD" not in ip_levels.columns:
+        raise ValueError("ip_levels must include USD")
+    usd = np.log(ip_levels["USD"].replace(0.0, np.nan))
+    out = pd.DataFrame(index=ip_levels.index)
+    for c in ip_levels.columns:
+        if c == "USD":
+            continue
+        out[c] = np.log(ip_levels[c].replace(0.0, np.nan)) - usd
+    out.attrs.update(getattr(ip_levels, "attrs", {}))
+    out.attrs["definition"] = "log_ip_f_minus_log_ip_usd"
+    return out

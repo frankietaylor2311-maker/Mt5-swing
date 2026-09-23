@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "data_tag": "approximate_non_ftmo",
+  "signal_lag_months": 1,
+  "pub_lag_cpi": 1,
+  "pub_lag_ip": 2,
+  "lookbacks": [
+    60,
+    120
+  ],
+  "min_periods": 36,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "bs_gap_60m",
+    "bs_resid_60m",
+    "bs_prod_60m",
+    "bs_gap_120m",
+    "bs_resid_120m",
+    "bs_prod_120m",
+    "bs_ew"
+  ],
+  "primary": "bs_gap_60m",
+  "cpi_cols": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD",
+    "CHF",
+    "AUD",
+    "NZD"
+  ],
+  "ip_cols": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD"
+  ],
+  "rel_prod_cols": [
+    "EUR",
+    "GBP",
+    "JPY",
+    "CAD"
+  ],
+  "ip_missing": [
+    "AUD",
+    "NZD",
+    "CHF"
+  ],
+  "any_pos_is": true,
+  "is_end": "2025-09-14",
+  "holdout_start": "2025-09-15",
+  "holdout_end": "2026-09-15",
+  "promote": false,
+  "scaled_promote": false,
+  "risk_sweep_primary": {
+    "strategy": "bs_gap_60m",
+    "scale": 0.8001698715218801,
+    "binding": "static",
+    "is_total_return": -0.06549623226188195,
+    "is_static_loss": 0.09999999983133777,
+    "is_max_daily_dd": 0.019410716210177488,
+    "is_gates_pass": true,
+    "oos_total_return": -0.0016159368117120154,
+    "oos_static_loss": 0.007125393424603098,
+    "oos_max_daily_dd": 0.005087267271350866,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00037867485049876876,
+    "mean_mo_oos": -0.00015538595840103309,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0003596665555561614,
+    "scaled_full_pct_pos": 0.4111111111111111,
+    "scaled_ho_mean_mo": -0.00015538595840103309,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "refs": [
+    "Balassa (1964); Samuelson (1964) \u2014 productivity & relative prices",
+    "Chong, Jord\u00e0 & Taylor (2012), The Harrod\u2013Balassa\u2013Samuelson Hypothesis, IER",
+    "Ricci, Milesi-Ferretti & Lee \u2014 real exchange rates and fundamentals",
+    "IP as free tradable-productivity proxy (AUD/NZD/CHF sparse on FRED)"
+  ]
+}
