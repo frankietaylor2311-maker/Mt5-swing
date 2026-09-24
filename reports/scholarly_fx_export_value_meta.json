@@ -1,0 +1,268 @@
+{
+  "ok": true,
+  "section": 61,
+  "path": "oecd_mei_merchandise_export_value_xtexva01",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "export_value_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_xval_xs",
+    "low_xval_xs",
+    "high_xval_z_xs",
+    "xval_chg_xs",
+    "us_xval_stress_fx",
+    "us_xval_haven_usd",
+    "xval_ew"
+  ],
+  "primary": "high_xval_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI XTEXVA01 merchandise export-value YoY % (full G10 *M657S; EUR=XTEXVA01DEM657S Germany proxy \u2014 EZM657S 404, EZM667S stale ~2023-04; unit=VALUE not volume; *M667S levels not mixed); XS on export-value YoY %; also 5y z / +\u039412 of YoY boarded; high_xval primary (growth-channel / external demand \u2192 appreciate); n_long=n_short=2 on available foreign panel (full G10)",
+  "eur_mapping": "XTEXVA01DEM657S Germany proxy (EZM657S 404; EZM667S stale ~2023-04)",
+  "coverage_g10": "full G10 mapped (USD/EUR/GBP/JPY/CAD/AUD/CHF/NZD)",
+  "series_unit_caveat": "value_not_volume",
+  "series_map": {
+    "USD": "XTEXVA01USM657S",
+    "EUR": "XTEXVA01DEM657S",
+    "GBP": "XTEXVA01GBM657S",
+    "JPY": "XTEXVA01JPM657S",
+    "CAD": "XTEXVA01CAM657S",
+    "AUD": "XTEXVA01AUM657S",
+    "CHF": "XTEXVA01CHM657S",
+    "NZD": "XTEXVA01NZM657S"
+  },
+  "score_basis": "export_value_yoy_pct",
+  "distinct_from": [
+    "trade_balance_30",
+    "current_account_gdp_21",
+    "terms_of_trade_uv_404",
+    "retail_sales_46",
+    "industrial_production_42",
+    "passenger_car_regs_60",
+    "construction_production_59",
+    "real_gdp_growth_58",
+    "building_permits_43",
+    "oecd_cli_37",
+    "oecd_bci_39",
+    "oecd_cci_38",
+    "debt_gdp_29",
+    "employment_persons_41",
+    "employment_rate_57",
+    "unemployment_rate_54",
+    "lfp_activity_56",
+    "wage_earnings_55",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "ulc_unit_labour_cost_48",
+    "labour_prod_49",
+    "cap_util_50"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum / growth differentials",
+    "Growth-channel FX on merchandise export-value YoY (external demand / trade intensity)",
+    "OECD MEI XTEXVA01 merchandise export-value YoY (M657S; value not volume)",
+    "Honesty: low export-value growth / external-demand-stress premium",
+    "Fall-through: CIP/basis Missing free G10; hours/vacancies thin/stale; PRSVTT*/ODMN* 404"
+  ],
+  "fallthrough_from": [
+    "cip_cross_currency_basis_missing_free_g10",
+    "hours_vacancies_thin_or_stale",
+    "services_production_mfg_turnover_404"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "XTEXVA01USM657S",
+      "freq": "M",
+      "n_obs": 857,
+      "start": "1955-04-01",
+      "end": "2026-08-01",
+      "last": -1.80371,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01USM657S (monthly; value not volume)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "XTEXVA01DEM657S",
+      "freq": "M",
+      "n_obs": 832,
+      "start": "1957-04-01",
+      "end": "2026-07-01",
+      "last": 0.774164,
+      "note": "Germany proxy XTEXVA01DEM657S (M YoY % value); EZM657S 404; EZM667S stale ~2023-04"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "XTEXVA01GBM657S",
+      "freq": "M",
+      "n_obs": 833,
+      "start": "1957-04-01",
+      "end": "2026-08-01",
+      "last": -9.788905,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01GBM657S (monthly; value not volume)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "XTEXVA01JPM657S",
+      "freq": "M",
+      "n_obs": 833,
+      "start": "1957-04-01",
+      "end": "2026-08-01",
+      "last": -1.145887,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01JPM657S (monthly; value not volume)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "XTEXVA01CAM657S",
+      "freq": "M",
+      "n_obs": 833,
+      "start": "1957-04-01",
+      "end": "2026-08-01",
+      "last": 0.4364788,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01CAM657S (monthly; value not volume)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "XTEXVA01AUM657S",
+      "freq": "M",
+      "n_obs": 821,
+      "start": "1958-04-01",
+      "end": "2026-08-01",
+      "last": 8.233658,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01AUM657S (monthly; value not volume)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "XTEXVA01CHM657S",
+      "freq": "M",
+      "n_obs": 833,
+      "start": "1957-04-01",
+      "end": "2026-08-01",
+      "last": -3.451777,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01CHM657S (monthly; value not volume)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "XTEXVA01NZM657S",
+      "freq": "M",
+      "n_obs": 833,
+      "start": "1957-04-01",
+      "end": "2026-08-01",
+      "last": 3.316679,
+      "note": "OECD MEI merchandise export-value YoY XTEXVA01NZM657S (monthly; value not volume)"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "cip_cross_currency_basis_missing_free_g10_fallthrough": [
+      "Du\u2013Tepper\u2013Verdelhan CIP/basis \u2014 no free multi-year G10 panel",
+      "rates+spot CIP-implied FD already \u00a719 \u2014 do not fake basis"
+    ],
+    "hours_hohwmn_us_only_or_404_fallthrough": [
+      "HOHWMN02USM065S",
+      "HOHWMN02USQ065S",
+      "AWHMAN",
+      "AWHAE"
+    ],
+    "vacancies_lmjvttuv_partial_stale_fallthrough": [
+      "LMJVTTUVUSM647S",
+      "LMJVTTUVGBM647S",
+      "LMJVTTUVDEM647S",
+      "LMJVTTUVCHM647S",
+      "LMJVTTUVAUM647S",
+      "JTSJOL",
+      "JTSJOR"
+    ],
+    "services_production_prsvtt_404_fallthrough": [
+      "USAPRSVTT01GYSAM",
+      "CANPRSVTT01GYSAM",
+      "DEUPRSVTT01GYSAM",
+      "GBRPRSVTT01GYSAM"
+    ],
+    "mfg_turnover_odmn_404_fallthrough": [
+      "USAODMNTO01GYSAM",
+      "CANODMNTO01GYSAM",
+      "DEUODMNTO01GYSAM",
+      "GBRODMNTO01GYSAM"
+    ],
+    "eur_ez_m657s_404_germany_proxy": [
+      "XTEXVA01EZM657S",
+      "XTEXVA01DEM657S"
+    ],
+    "eur_ez_m667s_stale_2023_04": [
+      "XTEXVA01EZM667S"
+    ],
+    "levels_m667s_value_not_volume_not_mixed": [
+      "XTEXVA01USM667S",
+      "XTEXVA01DEM667S",
+      "XTEXVA01GBM667S",
+      "XTEXVA01JPM667S",
+      "XTEXVA01CAM667S",
+      "XTEXVA01AUM667S",
+      "XTEXVA01CHM667S",
+      "XTEXVA01NZM667S"
+    ],
+    "distinct_channels_not_this_wave": [
+      "BOPGTB",
+      "AUSB6BLTT02STSAQ",
+      "USAPRINTO01GYSAM",
+      "USASLRTCR03GYSAM",
+      "USAPRCNTO01GYSAM",
+      "NAEXKP01USQ657S",
+      "SLRTTO01USA657S"
+    ]
+  },
+  "stale": false,
+  "stale_note": "XTEXVA01EZM657S 404; XTEXVA01EZM667S stale ~2023-04; EUR=XTEXVA01DEM657S Germany proxy a priori; series unit = export VALUE YoY (not volume); *M667S levels not mixed; CIP/cross-currency basis free G10 Missing \u2192 fall through; hours HOHWMN* US-only/404 + vacancies LMJVTTUV* thin/stale \u2192 fall through; services PRSVTT* / mfg turnover ODMN* 404 \u2192 fall through",
+  "soft_best": {
+    "factor": "us_xval_haven_usd",
+    "n_months": 180,
+    "mean_mo": 0.00025185525501367087,
+    "tstat_ols": 1.16015671294762,
+    "tstat_nw": 1.2155810421861364,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.1111111111111111,
+    "top3": 0.4173967836411278,
+    "ann_sharpe_daily": 0.2946369533892515
+  },
+  "primary_sweep": {
+    "strategy": "high_xval_xs",
+    "scale": 0.49224989866162105,
+    "binding": "static",
+    "is_total_return": -0.0503037065969566,
+    "is_static_loss": 0.09999999999590611,
+    "is_max_daily_dd": 0.022660932264545262,
+    "is_gates_pass": true,
+    "oos_total_return": 0.005978218079975672,
+    "oos_static_loss": 0.0011816287125647068,
+    "oos_max_daily_dd": 0.0020613139951047195,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00033984401300356633,
+    "mean_mo_oos": 0.0004095449880011648,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0002817186228067098,
+    "scaled_full_pct_pos": 0.46111111111111114,
+    "scaled_ho_mean_mo": 0.0004095449880011648,
+    "scaled_ho_pct_pos": 0.5833333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

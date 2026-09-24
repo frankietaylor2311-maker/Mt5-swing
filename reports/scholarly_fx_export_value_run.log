@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED merchandise export-value wave (§61) ===
+FRED XTEXVA01 merchandise export-value YoY (M657S; pub_lag=2) — high_xval XS; growth-channel / external-demand prior; EUR=DEM Germany proxy; full G10; distinct from TB §30, CA §21, retail §46, IP §42, cars §60, construction §59, GDP §58. Locked sleeve untouched. Fall-through: CIP/basis Missing; hours/vacancies thin; PRSVTT*/ODMN* 404. Unit=VALUE not volume.
+export_value panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'NZD'] [1955-04-01..2026-08-01] pub_lag_m=2
+currency         fred_id freq  n_obs      start        end      last                                                                               note
+     USD XTEXVA01USM657S    M    857 1955-04-01 2026-08-01 -1.803710  OECD MEI merchandise export-value YoY XTEXVA01USM657S (monthly; value not volume)
+     EUR XTEXVA01DEM657S    M    832 1957-04-01 2026-07-01  0.774164 Germany proxy XTEXVA01DEM657S (M YoY % value); EZM657S 404; EZM667S stale ~2023-04
+     GBP XTEXVA01GBM657S    M    833 1957-04-01 2026-08-01 -9.788905  OECD MEI merchandise export-value YoY XTEXVA01GBM657S (monthly; value not volume)
+     JPY XTEXVA01JPM657S    M    833 1957-04-01 2026-08-01 -1.145887  OECD MEI merchandise export-value YoY XTEXVA01JPM657S (monthly; value not volume)
+     CAD XTEXVA01CAM657S    M    833 1957-04-01 2026-08-01  0.436479  OECD MEI merchandise export-value YoY XTEXVA01CAM657S (monthly; value not volume)
+     AUD XTEXVA01AUM657S    M    821 1958-04-01 2026-08-01  8.233658  OECD MEI merchandise export-value YoY XTEXVA01AUM657S (monthly; value not volume)
+     CHF XTEXVA01CHM657S    M    833 1957-04-01 2026-08-01 -3.451777  OECD MEI merchandise export-value YoY XTEXVA01CHM657S (monthly; value not volume)
+     NZD XTEXVA01NZM657S    M    833 1957-04-01 2026-08-01  3.316679  OECD MEI merchandise export-value YoY XTEXVA01NZM657S (monthly; value not volume)
+Series source note: FRED OECD MEI XTEXVA01{ISO2}M657S merchandise export-value YoY (full G10; EUR=XTEXVA01DEM657S Germany proxy — EZM657S 404, EZM667S stale ~2023-04; unit=VALUE not volume; *M667S levels not mixed; CIP/basis Missing fallthrough; hours/vacancies thin fallthrough; PRSVTT*/ODMN* 404 fallthrough)
+Score basis: export_value_yoy_pct unit=yoy_pct
+Failed/alt documented: {'cip_cross_currency_basis_missing_free_g10_fallthrough': ['Du–Tepper–Verdelhan CIP/basis — no free multi-year G10 panel', 'rates+spot CIP-implied FD already §19 — do not fake basis'], 'hours_hohwmn_us_only_or_404_fallthrough': ['HOHWMN02USM065S', 'HOHWMN02USQ065S', 'AWHMAN', 'AWHAE'], 'vacancies_lmjvttuv_partial_stale_fallthrough': ['LMJVTTUVUSM647S', 'LMJVTTUVGBM647S', 'LMJVTTUVDEM647S', 'LMJVTTUVCHM647S', 'LMJVTTUVAUM647S', 'JTSJOL', 'JTSJOR'], 'services_production_prsvtt_404_fallthrough': ['USAPRSVTT01GYSAM', 'CANPRSVTT01GYSAM', 'DEUPRSVTT01GYSAM', 'GBRPRSVTT01GYSAM'], 'mfg_turnover_odmn_404_fallthrough': ['USAODMNTO01GYSAM', 'CANODMNTO01GYSAM', 'DEUODMNTO01GYSAM', 'GBRODMNTO01GYSAM'], 'eur_ez_m657s_404_germany_proxy': ['XTEXVA01EZM657S', 'XTEXVA01DEM657S'], 'eur_ez_m667s_stale_2023_04': ['XTEXVA01EZM667S'], 'levels_m667s_value_not_volume_not_mixed': ['XTEXVA01USM667S', 'XTEXVA01DEM667S', 'XTEXVA01GBM667S', 'XTEXVA01JPM667S', 'XTEXVA01CAM667S', 'XTEXVA01AUM667S', 'XTEXVA01CHM667S', 'XTEXVA01NZM667S'], 'distinct_channels_not_this_wave': ['BOPGTB', 'AUSB6BLTT02STSAQ', 'USAPRINTO01GYSAM', 'USASLRTCR03GYSAM', 'USAPRCNTO01GYSAM', 'NAEXKP01USQ657S', 'SLRTTO01USA657S']}
+Stale: False note=XTEXVA01EZM657S 404; XTEXVA01EZM667S stale ~2023-04; EUR=XTEXVA01DEM657S Germany proxy a priori; series unit = export VALUE YoY (not volume); *M667S levels not mixed; CIP/cross-currency basis free G10 Missing → fall through; hours HOHWMN* US-only/404 + vacancies LMJVTTUV* thin/stale → fall through; services PRSVTT* / mfg turnover ODMN* 404 → fall through
+Unmapped: []
+US XTEXVA01USM657S YoY [1955-04-01..2026-08-01] n=857 series=XTEXVA01USM657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_xval_xs: scale=0.492 bind=static IS mean_mo=-0.034% OOS gates=True
+  sweep low_xval_xs: scale=2.765 bind=daily IS mean_mo=0.051% OOS gates=True
+  sweep high_xval_z_xs: scale=0.466 bind=static IS mean_mo=-0.036% OOS gates=True
+  sweep xval_chg_xs: scale=0.827 bind=static IS mean_mo=-0.028% OOS gates=True
+  sweep us_xval_stress_fx: scale=1.681 bind=static IS mean_mo=-0.036% OOS gates=True
+  sweep us_xval_haven_usd: scale=3.823 bind=daily IS mean_mo=0.074% OOS gates=True
+  sweep xval_ew: scale=0.881 bind=static IS mean_mo=-0.036% OOS gates=True
+=== factor summary ===
+  high_xval_xs: mean_mo=-0.058% NW_t=-0.79 %pos=46%
+  low_xval_xs: mean_mo=+0.008% NW_t=+0.11 %pos=52%
+  high_xval_z_xs: mean_mo=-0.064% NW_t=-0.92 %pos=48%
+  xval_chg_xs: mean_mo=-0.034% NW_t=-0.51 %pos=46%
+  us_xval_stress_fx: mean_mo=-0.028% NW_t=-1.32 %pos=8%
+  us_xval_haven_usd: mean_mo=+0.025% NW_t=+1.22 %pos=11%
+  xval_ew: mean_mo=-0.039% NW_t=-0.94 %pos=46%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False

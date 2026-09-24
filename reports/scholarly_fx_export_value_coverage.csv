@@ -1,0 +1,9 @@
+currency,fred_id,freq,n_obs,start,end,last,note
+USD,XTEXVA01USM657S,M,857,1955-04-01,2026-08-01,-1.80371,OECD MEI merchandise export-value YoY XTEXVA01USM657S (monthly; value not volume)
+EUR,XTEXVA01DEM657S,M,832,1957-04-01,2026-07-01,0.774164,Germany proxy XTEXVA01DEM657S (M YoY % value); EZM657S 404; EZM667S stale ~2023-04
+GBP,XTEXVA01GBM657S,M,833,1957-04-01,2026-08-01,-9.788905,OECD MEI merchandise export-value YoY XTEXVA01GBM657S (monthly; value not volume)
+JPY,XTEXVA01JPM657S,M,833,1957-04-01,2026-08-01,-1.145887,OECD MEI merchandise export-value YoY XTEXVA01JPM657S (monthly; value not volume)
+CAD,XTEXVA01CAM657S,M,833,1957-04-01,2026-08-01,0.4364788,OECD MEI merchandise export-value YoY XTEXVA01CAM657S (monthly; value not volume)
+AUD,XTEXVA01AUM657S,M,821,1958-04-01,2026-08-01,8.233658,OECD MEI merchandise export-value YoY XTEXVA01AUM657S (monthly; value not volume)
+CHF,XTEXVA01CHM657S,M,833,1957-04-01,2026-08-01,-3.451777,OECD MEI merchandise export-value YoY XTEXVA01CHM657S (monthly; value not volume)
+NZD,XTEXVA01NZM657S,M,833,1957-04-01,2026-08-01,3.316679,OECD MEI merchandise export-value YoY XTEXVA01NZM657S (monthly; value not volume)
