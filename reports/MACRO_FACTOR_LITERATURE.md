@@ -42,7 +42,7 @@ New line = math/statistics + economics/news/war factors grounded in scholar outc
 | Caldara–Iacoviello GPR daily/monthly | Geopolitical risk | **Present** `gpr_daily.csv`, `gpr_monthly.csv` (+ xls) |
 | AI-GPR daily (Iacoviello–Tong) | Alt news-based GPR | **Present** `ai_gpr_daily.csv` |
 | Country-specific GPR | Liu–Zhang long/short GPR FX | **Partial** — monthly export has country columns; not yet wired to legs |
-| Multi-country CPI / PPI / IP / retail / unemployment / wages | Dahlquist economic momentum | **Mostly boarded** — IP §42 / retail §46 / employment §41 (persons) / PPI §51 / CPI §52 / **UR §54** / **wage/earnings §55** (LCEAMN01 YoY; CHF unmapped; EUR EZ ends ~2025-07; promote=0). PPI STALE ~2022-12; CPI JPY STALE ~2021-06. Capital-sleeve mix §53 boarded (promote=0). ULC §48 LCEAMN fallback now dedicated §55. |
+| Multi-country CPI / PPI / IP / retail / unemployment / wages / LFP | Dahlquist economic momentum | **Mostly boarded** — IP §42 / retail §46 / employment §41 (persons) / PPI §51 / CPI §52 / **UR §54** / **wage/earnings §55** / **LFP/activity §56** (LRAC64TT levels; full G10; EUR=DE proxy; promote=0). PPI STALE ~2022-12; CPI JPY STALE ~2021-06. Capital-sleeve mix §53 boarded (promote=0). |
 | News sentiment (FX-specific) | Event studies / war headlines beyond GPR | **Missing** — GDELT / RavenPack / Factiva (licensed) |
 | Cross-currency basis / CIP | Intermediary stress | **Missing** |
 | FTMO MT5 OHLC (H1/H4/D1) | Golive / true costs | **Missing** `data/ftmo/` empty |

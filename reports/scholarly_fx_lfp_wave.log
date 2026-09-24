@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED labour-force participation / activity-rate wave (§56) ===
+FRED LRAC64TT LFP/activity levels (pub_lag=2) — high_lfp XS; growth/engagement prior; full G10; EUR=DE proxy (EZQ stale); distinct from employment §41, UR §54, wages §55. Locked sleeve untouched.
+lfp panel cols=['USD', 'JPY', 'CAD', 'AUD', 'GBP', 'EUR', 'CHF', 'NZD'] [1970-03-01..2026-10-01] pub_lag_m=2
+currency         fred_id freq  n_obs      start        end     last                                                                                        note
+     USD LRAC64TTUSM156S    M    595 1977-03-01 2026-09-01 74.71407                                     OECD MEI activity rate LRAC64TTUSM156S monthly levels %
+     JPY LRAC64TTJPM156S    M    679 1970-03-01 2026-09-01 82.50602                                     OECD MEI activity rate LRAC64TTJPM156S monthly levels %
+     CAD LRAC64TTCAM156S    M    608 1976-03-01 2026-10-01 80.10000                                     OECD MEI activity rate LRAC64TTCAM156S monthly levels %
+     AUD LRAC64TTAUM156S    M    582 1978-04-01 2026-09-01 80.78805                                     OECD MEI activity rate LRAC64TTAUM156S monthly levels %
+     GBP LRAC64TTGBQ156S    Q    664 1971-03-01 2026-06-01 79.07874                                   OECD MEI activity rate LRAC64TTGBQ156S quarterly levels %
+     EUR LRAC64TTDEQ156S    Q    256 2005-03-01 2026-06-01 80.57294 Germany proxy LRAC64TTDEQ156S (Q levels %); EA LRAC64TTEZQ156S stale ~2022-10 — not primary
+     CHF LRAC64TTCHQ156S    Q    337 1998-06-01 2026-06-01 83.92238                                   OECD MEI activity rate LRAC64TTCHQ156S quarterly levels %
+     NZD LRAC64TTNZQ156S    Q    484 1986-03-01 2026-06-01 81.90199                                   OECD MEI activity rate LRAC64TTNZQ156S quarterly levels %
+Series source note: FRED OECD MEI LRAC64TT activity rate ages 15–64 (%) (USD/JPY/CAD/AUD *M156S; GBP/CHF/NZD *Q156S; EUR=LRAC64TTDEQ156S Germany proxy — EZQ156S stale ~2022-10; full G10 mapped; vacancies/hours alts documented not boarded)
+Score basis: lfp_level_pct unit=lfp_activity_rate_pct_level
+Failed/alt documented: {'eur_ez_stale_germany_proxy': ['LRAC64TTEZQ156S', 'LRAC64TTDEQ156S'], 'monthly_gb_de_ch_nz_mostly_404': ['LRAC64TTGBM156S', 'LRAC64TTDEM156S', 'LRAC64TTCHM156S', 'LRAC64TTNZM156S'], 'vacancies_lmjvttuv_stale_not_this_wave': ['LMJVTTUVUSM647S', 'LMJVTTUVEZM647S'], 'hours_hohwmn02_g10_404': ['HOHWMN02USM065S', 'HOHWMN02GBM065S'], 'employment_persons_lfemtttt_distinct_41': ['LFEMTTTTUSM647S', 'LFEMTTTTDEQ647S'], 'unemployment_rate_lrhutttt_distinct_54': ['LRHUTTTTUSM156S', 'LRHUTTTTEZM156S'], 'wage_lceamn_distinct_55': ['LCEAMN01USM657S', 'LCEAMN01EZQ657S']}
+Stale: True note=EUR EA LRAC64TTEZQ156S stale ~2022-10 — Germany DEQ156S proxy used
+Unmapped: []
+US LRAC64TTUSM156S [1977-03-01..2026-09-01] n=595 series=LRAC64TTUSM156S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_lfp_xs: scale=0.761 bind=static IS mean_mo=-0.033% OOS gates=True
+  sweep low_lfp_xs: scale=1.084 bind=daily IS mean_mo=0.043% OOS gates=True
+  sweep high_lfp_z_xs: scale=1.087 bind=static IS mean_mo=-0.061% OOS gates=True
+  sweep lfp_chg_xs: scale=0.827 bind=static IS mean_mo=-0.053% OOS gates=True
+  sweep us_lfp_stress_fx: scale=1.504 bind=static IS mean_mo=-0.026% OOS gates=True
+  sweep us_lfp_haven_usd: scale=3.604 bind=daily IS mean_mo=0.061% OOS gates=True
+  sweep lfp_ew: scale=1.182 bind=static IS mean_mo=-0.049% OOS gates=True
+=== factor summary ===
+  high_lfp_xs: mean_mo=-0.050% NW_t=-1.09 %pos=49%
+  low_lfp_xs: mean_mo=+0.047% NW_t=+1.01 %pos=51%
+  high_lfp_z_xs: mean_mo=-0.052% NW_t=-0.93 %pos=44%
+  lfp_chg_xs: mean_mo=-0.070% NW_t=-1.14 %pos=44%
+  us_lfp_stress_fx: mean_mo=-0.016% NW_t=-0.52 %pos=18%
+  us_lfp_haven_usd: mean_mo=+0.015% NW_t=+0.49 %pos=13%
+  lfp_ew: mean_mo=-0.045% NW_t=-1.64 %pos=47%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False

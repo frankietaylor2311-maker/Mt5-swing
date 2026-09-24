@@ -1,0 +1,227 @@
+{
+  "ok": true,
+  "section": 56,
+  "path": "oecd_mei_lfp_activity_rate_lrac64tt",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "lfp_level_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_lfp_xs",
+    "low_lfp_xs",
+    "high_lfp_z_xs",
+    "lfp_chg_xs",
+    "us_lfp_stress_fx",
+    "us_lfp_haven_usd",
+    "lfp_ew"
+  ],
+  "primary": "high_lfp_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI LRAC64TT activity rate ages 15\u201364 (%) (USD/JPY/CAD/AUD *M156S; GBP/CHF/NZD *Q156S; EUR=LRAC64TTDEQ156S Germany proxy \u2014 EZQ156S stale ~2022-10); XS on LFP level %; also 5y z / +\u039412 of level boarded; high_lfp primary (growth/engagement \u2192 appreciate); n_long=n_short=2 on available foreign panel (full G10)",
+  "eur_mapping": "LRAC64TTDEQ156S Germany proxy (EA EZQ156S stale ~2022-10)",
+  "coverage_g10": "USD/EUR/GBP/JPY/AUD/CAD/CHF/NZD all mapped (full G10)",
+  "series_map": {
+    "USD": "LRAC64TTUSM156S",
+    "JPY": "LRAC64TTJPM156S",
+    "CAD": "LRAC64TTCAM156S",
+    "AUD": "LRAC64TTAUM156S",
+    "GBP": "LRAC64TTGBQ156S",
+    "EUR": "LRAC64TTDEQ156S",
+    "CHF": "LRAC64TTCHQ156S",
+    "NZD": "LRAC64TTNZQ156S"
+  },
+  "score_basis": "lfp_level_pct",
+  "distinct_from": [
+    "employment_persons_41",
+    "unemployment_rate_54",
+    "wage_earnings_55",
+    "ulc_unit_labour_cost_48",
+    "labour_prod_49",
+    "cap_util_50",
+    "cpi_52",
+    "ppi_51",
+    "industrial_production_42",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "retail_sales_46"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum labour companion",
+    "Labour-force participation / activity rate as growth / extensive labour-supply margin",
+    "OECD MEI LRAC64TT activity rate ages 15\u201364 (%)",
+    "Honesty: low LFP / labour-disengagement debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "LRAC64TTUSM156S",
+      "freq": "M",
+      "n_obs": 595,
+      "start": "1977-03-01",
+      "end": "2026-09-01",
+      "last": 74.71407,
+      "note": "OECD MEI activity rate LRAC64TTUSM156S monthly levels %"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "LRAC64TTJPM156S",
+      "freq": "M",
+      "n_obs": 679,
+      "start": "1970-03-01",
+      "end": "2026-09-01",
+      "last": 82.50602,
+      "note": "OECD MEI activity rate LRAC64TTJPM156S monthly levels %"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "LRAC64TTCAM156S",
+      "freq": "M",
+      "n_obs": 608,
+      "start": "1976-03-01",
+      "end": "2026-10-01",
+      "last": 80.1,
+      "note": "OECD MEI activity rate LRAC64TTCAM156S monthly levels %"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "LRAC64TTAUM156S",
+      "freq": "M",
+      "n_obs": 582,
+      "start": "1978-04-01",
+      "end": "2026-09-01",
+      "last": 80.78805,
+      "note": "OECD MEI activity rate LRAC64TTAUM156S monthly levels %"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "LRAC64TTGBQ156S",
+      "freq": "Q",
+      "n_obs": 664,
+      "start": "1971-03-01",
+      "end": "2026-06-01",
+      "last": 79.07874,
+      "note": "OECD MEI activity rate LRAC64TTGBQ156S quarterly levels %"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "LRAC64TTDEQ156S",
+      "freq": "Q",
+      "n_obs": 256,
+      "start": "2005-03-01",
+      "end": "2026-06-01",
+      "last": 80.57294,
+      "note": "Germany proxy LRAC64TTDEQ156S (Q levels %); EA LRAC64TTEZQ156S stale ~2022-10 \u2014 not primary"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "LRAC64TTCHQ156S",
+      "freq": "Q",
+      "n_obs": 337,
+      "start": "1998-06-01",
+      "end": "2026-06-01",
+      "last": 83.92238,
+      "note": "OECD MEI activity rate LRAC64TTCHQ156S quarterly levels %"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "LRAC64TTNZQ156S",
+      "freq": "Q",
+      "n_obs": 484,
+      "start": "1986-03-01",
+      "end": "2026-06-01",
+      "last": 81.90199,
+      "note": "OECD MEI activity rate LRAC64TTNZQ156S quarterly levels %"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "eur_ez_stale_germany_proxy": [
+      "LRAC64TTEZQ156S",
+      "LRAC64TTDEQ156S"
+    ],
+    "monthly_gb_de_ch_nz_mostly_404": [
+      "LRAC64TTGBM156S",
+      "LRAC64TTDEM156S",
+      "LRAC64TTCHM156S",
+      "LRAC64TTNZM156S"
+    ],
+    "vacancies_lmjvttuv_stale_not_this_wave": [
+      "LMJVTTUVUSM647S",
+      "LMJVTTUVEZM647S"
+    ],
+    "hours_hohwmn02_g10_404": [
+      "HOHWMN02USM065S",
+      "HOHWMN02GBM065S"
+    ],
+    "employment_persons_lfemtttt_distinct_41": [
+      "LFEMTTTTUSM647S",
+      "LFEMTTTTDEQ647S"
+    ],
+    "unemployment_rate_lrhutttt_distinct_54": [
+      "LRHUTTTTUSM156S",
+      "LRHUTTTTEZM156S"
+    ],
+    "wage_lceamn_distinct_55": [
+      "LCEAMN01USM657S",
+      "LCEAMN01EZQ657S"
+    ]
+  },
+  "stale": true,
+  "stale_note": "EUR EA LRAC64TTEZQ156S stale ~2022-10 \u2014 Germany DEQ156S proxy used",
+  "soft_best": {
+    "factor": "low_lfp_xs",
+    "n_months": 180,
+    "mean_mo": 0.0004692585684585927,
+    "tstat_ols": 0.953928638958777,
+    "tstat_nw": 1.0121025976875333,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5055555555555555,
+    "top3": 0.10075831065706974,
+    "ann_sharpe_daily": 0.25048088071279273
+  },
+  "primary_sweep": {
+    "strategy": "high_lfp_xs",
+    "scale": 0.7612709099024808,
+    "binding": "static",
+    "is_total_return": -0.06789158051983779,
+    "is_static_loss": 0.09999999994227168,
+    "is_max_daily_dd": 0.006604167411876697,
+    "is_gates_pass": true,
+    "oos_total_return": -0.012552429468467019,
+    "oos_static_loss": 0.01898981272944191,
+    "oos_max_daily_dd": 0.003031327038514719,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0003290825457218933,
+    "mean_mo_oos": -0.0013038879977578615,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.00038111717668166245,
+    "scaled_full_pct_pos": 0.49444444444444446,
+    "scaled_ho_mean_mo": -0.0013038879977578615,
+    "scaled_ho_pct_pos": 0.3333333333333333,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}
