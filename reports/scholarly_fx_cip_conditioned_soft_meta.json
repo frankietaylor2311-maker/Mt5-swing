@@ -1,0 +1,217 @@
+{
+  "ok": true,
+  "section": 71,
+  "path": "du_schreger_cip_conditioned_dahlquist_soft_ew",
+  "data_tag": "approximate_non_ftmo",
+  "tenor": "5y",
+  "tenor_prior": "5y a priori (same \u00a767/\u00a768; not HO-tuned)",
+  "value_col": "cip_govt",
+  "unit": "bps",
+  "cip_stress": "ust_premium = -mean(G10 cip_govt)",
+  "pub_lag_days": 1,
+  "signal_lag_months": 1,
+  "weight_lag_days": 1,
+  "z_window": 60,
+  "z_high": 1.0,
+  "cool": 0.35,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "soft_legs": [
+    "bci_chg_xs",
+    "high_ip_xs",
+    "high_ppi_xs",
+    "low_gdp_xs",
+    "low_cars_xs"
+  ],
+  "soft_ew_name": "soft_ew_macro5",
+  "factors": [
+    "soft_low_cip_stress",
+    "soft_cip_cool",
+    "soft_raw",
+    "soft_high_cip_stress",
+    "cip_stress_haven_usd",
+    "soft_cip_ew"
+  ],
+  "primary": "soft_low_cip_stress",
+  "primary_sign_prior": "trade Dahlquist soft_ew_macro5 only when lagged CIP-stress z (UST premium) \u2264 0 \u2014 sit out when intermediary dollar-funding stress elevated",
+  "n_factors": 6,
+  "soft_nw_pos": 5,
+  "hard_nw_pos": 3,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "locked_verify": {
+    "sha256": "bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790",
+    "basket_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+    "untouched": true,
+    "gates": "PASS"
+  },
+  "panel_start": "2000-01-31",
+  "panel_end": "2025-07-31",
+  "data_caveat": "cip_dataset_v4 ends ~2025-06-30; 2026 FX window has stale/ffilled CIP. EUR=Germany in Du\u2013Schreger G10 panel. approximate_non_ftmo Yahoo D1. Soft legs rebuilt with \u00a766 source-wave PIT; costs inside source factors.",
+  "normalisation": "CIP stress = \u2212mean(cip_govt) at 5y; month-end after pub_lag_days=1; trailing z 60m; gate z\u22640 / cool z\u22651.0; soft_ew_macro5 = EW SOFT_LEGS (\u22652 legs/day)",
+  "coverage_g10": "EUR/GBP/JPY/AUD/CAD/CHF/NZD (full trade G10)",
+  "distinct_from": [
+    "soft_signal_stack_66",
+    "soft_signal_cip_stack_69",
+    "cip_conditioned_carry_68",
+    "cip_basis_xs_67",
+    "capital_sleeve_53",
+    "capital_sleeve_soft_70",
+    "combo_8"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum (EW of macro signals)",
+    "Du, Tepper & Verdelhan (2018), JF \u2014 CIP deviations / intermediary constraints",
+    "Du, Keerati & Schreger (2025) \u2014 Decoupling Dollar and Treasury Privilege (cip_dataset_v4)",
+    "Soft boards \u00a739 BCI / \u00a742 IP / \u00a751 PPI / \u00a758 GDP honesty / \u00a760 cars honesty (\u00a766 SOFT_LEGS)"
+  ],
+  "coverage": [
+    {
+      "currency": "EUR",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -28.145006
+    },
+    {
+      "currency": "GBP",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -14.279994
+    },
+    {
+      "currency": "JPY",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": 12.460004
+    },
+    {
+      "currency": "AUD",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -34.010006
+    },
+    {
+      "currency": "CAD",
+      "n_obs": 306,
+      "start": "2000-02-29",
+      "end": "2025-07-31",
+      "last": -5.7601018
+    },
+    {
+      "currency": "CHF",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -21.175005
+    },
+    {
+      "currency": "NZD",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": 0.050010614
+    }
+  ],
+  "soft_best": {
+    "factor": "soft_raw",
+    "n_months": 180,
+    "mean_mo": 0.0011839821699388459,
+    "tstat_ols": 4.2550356288388445,
+    "tstat_nw": 3.629026550312175,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.6055555555555555,
+    "top3": 0.10935313826121149,
+    "ann_sharpe_daily": 1.021704168206851
+  },
+  "primary_sweep": {
+    "strategy": "soft_low_cip_stress",
+    "scale": 11.47876663424883,
+    "binding": "daily",
+    "is_total_return": 1.0165695435219635,
+    "is_static_loss": 0.02851751048437305,
+    "is_max_daily_dd": 0.04999999990946468,
+    "is_gates_pass": true,
+    "oos_total_return": 0.08565430667937202,
+    "oos_static_loss": 0.04915843833118343,
+    "oos_max_daily_dd": 0.01982287553241127,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.00445248533647679,
+    "mean_mo_oos": 0.007050536641951784,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.004626169247764418,
+    "scaled_full_pct_pos": 0.2111111111111111,
+    "scaled_ho_mean_mo": 0.007050536641951784,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "leg_summaries": [
+    {
+      "factor": "bci_chg_xs",
+      "n_months": 180,
+      "mean_mo": 0.0014836648993984693,
+      "tstat_ols": 2.017145654240102,
+      "tstat_nw": 2.3355028492864407,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5944444444444444,
+      "top3": 0.11726450127133872,
+      "ann_sharpe_daily": 0.48258922816956545
+    },
+    {
+      "factor": "high_ip_xs",
+      "n_months": 180,
+      "mean_mo": 0.00100736560395639,
+      "tstat_ols": 1.8133639303123974,
+      "tstat_nw": 1.8835030708518525,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5388888888888889,
+      "top3": 0.08983693644119055,
+      "ann_sharpe_daily": 0.3651202113820443
+    },
+    {
+      "factor": "high_ppi_xs",
+      "n_months": 180,
+      "mean_mo": 0.0011634411998947048,
+      "tstat_ols": 1.8496200866716042,
+      "tstat_nw": 2.0047454143706687,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5944444444444444,
+      "top3": 0.08433574195225421,
+      "ann_sharpe_daily": 0.36122560550802224
+    },
+    {
+      "factor": "low_gdp_xs",
+      "n_months": 180,
+      "mean_mo": 0.0010235651143882362,
+      "tstat_ols": 1.4040909982737995,
+      "tstat_nw": 1.5519412970897435,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5444444444444444,
+      "top3": 0.12222279479896475,
+      "ann_sharpe_daily": 0.3573343907178246
+    },
+    {
+      "factor": "low_cars_xs",
+      "n_months": 180,
+      "mean_mo": 0.0012018904389552462,
+      "tstat_ols": 1.8685754071033884,
+      "tstat_nw": 1.9274515051129375,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5388888888888889,
+      "top3": 0.10857246373943802,
+      "ann_sharpe_daily": 0.46709650875208064
+    }
+  ],
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

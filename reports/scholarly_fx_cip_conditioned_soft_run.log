@@ -1,0 +1,43 @@
+=== scholarly FX CIP-conditioned soft-signal EW wave (§71) ===
+cip_govt 5y stress gate/cool on soft_ew_macro5 — primary soft_low_cip_stress; Dahlquist–Hasseltoft + Du–Tepper–Verdelhan / Du–Keerati–Schreger; distinct from soft_ew §66, soft CIP §69, CIP×carry §68, CIP XS §67, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+slim G10 panel → /workspace/Mt5-swing/data/macro/cip_g10_5y_govt_panel.csv
+cip panel cols=['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD'] [2000-01-31..2025-07-31] tenor=5y pub_lag_d=1
+currency  n_obs      start        end       last
+     EUR    307 2000-01-31 2025-07-31 -28.145006
+     GBP    307 2000-01-31 2025-07-31 -14.279994
+     JPY    307 2000-01-31 2025-07-31  12.460004
+     AUD    307 2000-01-31 2025-07-31 -34.010006
+     CAD    306 2000-02-29 2025-07-31  -5.760102
+     CHF    307 2000-01-31 2025-07-31 -21.175005
+     NZD    307 2000-01-31 2025-07-31   0.050011
+UST premium / cip_stress [2000-01-31..2025-07-31] n=307
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  load BCI panel pub_lag=2 signal_lag=0…
+  load IP panel pub_lag=2 signal_lag=0…
+  load PPI panel pub_lag=2 signal_lag=1…
+  load GDP panel pub_lag=3 signal_lag=1…
+  load cars panel pub_lag=2 signal_lag=1…
+soft_ew_macro5 n=3905 [2011-09-15..2026-09-15]
+  sweep soft_raw: scale=5.396 bind=daily IS mean_mo=0.661% OOS gates=True
+  sweep soft_cip_cool: scale=7.982 bind=daily IS mean_mo=0.677% OOS gates=True
+  sweep soft_low_cip_stress: scale=11.479 bind=daily IS mean_mo=0.445% OOS gates=True
+  sweep soft_high_cip_stress: scale=10.578 bind=daily IS mean_mo=0.214% OOS gates=True
+  sweep cip_stress_haven_usd: scale=2.881 bind=daily IS mean_mo=0.225% OOS gates=True
+  sweep soft_cip_ew: scale=6.366 bind=daily IS mean_mo=0.428% OOS gates=True
+Locked sleeve re-verify (§71 cip_conditioned_soft): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §70 capital_sleeve_soft — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_cip_conditioned_soft.md
+=== factor summary ===
+  soft_low_cip_stress: mean_mo=+0.040% NW_t=+1.98 %pos=21%
+  soft_cip_cool: mean_mo=+0.083% NW_t=+3.36 %pos=61%
+  soft_raw: mean_mo=+0.118% NW_t=+3.63 %pos=61%
+  soft_high_cip_stress: mean_mo=+0.019% NW_t=+1.11 %pos=20%
+  cip_stress_haven_usd: mean_mo=+0.073% NW_t=+1.91 %pos=21%
+  soft_cip_ew: mean_mo=+0.065% NW_t=+3.33 %pos=61%
+board n=6 soft=5 hard=3 promote_unscaled=False scaled_primary=False
