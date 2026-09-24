@@ -1,0 +1,25 @@
+=== scholarly FX VIX/GPR-conditioned Menkhoff FX momentum wave (§74) ===
+VIX + aggregate GPR stress gate/cool on Menkhoff FX momentum — primary mom_low_vix; Menkhoff et al. (2012 JFE) + Menkhoff et al. (2012 JF) + Caldara–Iacoviello / Liu–Zhang; distinct from combo §8, raw fx_momentum, soft EW §66, soft CIP §69, CIP XS §67, CIP×carry §68, CIP-conditioned soft §71, VIX/GPR soft §72, VIX/GPR carry §73, capital-sleeve §53/§70, funding_liq §20, gpr_regime, AI-GPR §25, country-GPR §45. Locked sleeve untouched.
+VIX [1990-01-03..2026-09-16] n=9245
+GPR [1985-01-02..2026-09-14] n=15231
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  skip risk sweep: no positive IS mean on any factor
+Locked sleeve re-verify (§74 vix_gpr_conditioned_mom): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §73 / §72 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_vix_gpr_conditioned_mom.md
+=== factor summary ===
+  mom_raw: mean_mo=-0.076% NW_t=-1.10 %pos=45%
+  mom_vix_cool: mean_mo=-0.035% NW_t=-0.60 %pos=47%
+  mom_gpr_cool: mean_mo=-0.120% NW_t=-1.85 %pos=43%
+  mom_low_vix: mean_mo=-0.017% NW_t=-0.30 %pos=42%
+  mom_low_gpr: mean_mo=-0.170% NW_t=-2.71 %pos=42%
+  mom_high_vix: mean_mo=-0.043% NW_t=-1.59 %pos=17%
+  mom_vix_gpr_stack: mean_mo=-0.068% NW_t=-1.25 %pos=46%
+  mom_vix_gpr_ew: mean_mo=-0.085% NW_t=-1.59 %pos=45%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
