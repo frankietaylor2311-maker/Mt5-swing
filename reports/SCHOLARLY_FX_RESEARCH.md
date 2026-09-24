@@ -3461,3 +3461,19 @@ Artifacts: `reports/scholarly_fx_vix_gpr_conditioned_mom_wave.md`, `scholarly_fx
 **Takeaway:** Gating PPP value on low VIX/GPR did not rescue it; all eight legs negative full-sample. Classic carry/mom/value triad under VIX/GPR is closed with no promotes.
 
 **Next:** FTMO MT5 CSV re-score when exports arrive, or EPU/TPU-conditioned soft EW / BIS REER HML-FX value — without cooler-overlay on locked fx4plus. FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
+
+## §76 — EPU/TPU-conditioned Dahlquist soft-signal EW (2026-09-24)
+
+**Path:** Baker–Bloom–Davis **EPU** (US USEPUINDXM) + **TPU** (categorical Trade policy) stress × Dahlquist–Hasseltoft ``soft_ew_macro5`` gate/cool — parallel to CIP-conditioned soft §71 and VIX/GPR-conditioned soft §72. Distinct from standalone EPU/TPU §18, soft_ew §66, soft CIP §69, CIP×carry §68, CIP soft §71, VIX/GPR soft §72, carry/mom/value VIX/GPR §73–§75, capital-sleeve §53/§70, combo §8.
+
+**Board:** n=8 soft=8 hard=8 **promote=0**
+**Primary `soft_low_epu`:** full-sample **+0.061%/mo**, NW t **+2.63**, %pos **37%**
+- 2024 +0.08%/55%; 2025 +0.01%/18%; 2026 +0.00%/0%; HO +0.00%/0% — 1% bar **no**
+**Risk sweep:** primary scale≈6.997 bind=daily; scaled HO flat (gate off — elevated EPU recent) — **not** clear
+**Locked** `fx4plus_gbpcad_d1_voltarget_0025` untouched **PASS**
+**Data:** `approximate_non_ftmo`; EPU→2026-09-01, TPU→2026-09-01 (categorical); soft legs §66 PIT; monthly z_window=60m (CIP §71 mirror, not 252d daily)
+**Artifacts:** `reports/scholarly_fx_epu_tpu_conditioned_soft_wave.md`, strategy + runner + tests
+
+**Takeaway:** Soft-stack under EPU/TPU stress retains hard |t| (all 8 legs NW |t|≥2 full-sample) — confirming soft_ew is the structure that still shows hard significance under stress gates. Primary binary low-EPU gate sits flat through 2026/HO (policy uncertainty elevated → capital retention by design) so consistency / promote fail; cool/EW companions keep mild positive recent means but far below 1%/mo bar.
+
+**Next:** FTMO MT5 CSV re-score when exports arrive, or BIS REER HML-FX value — without cooler-overlay on locked fx4plus. FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
