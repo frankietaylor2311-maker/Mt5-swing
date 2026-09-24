@@ -1,0 +1,156 @@
+{
+  "ok": true,
+  "section": 68,
+  "path": "du_schreger_cip_conditioned_lustig_verdelhan_carry",
+  "data_tag": "approximate_non_ftmo",
+  "tenor": "5y",
+  "tenor_prior": "5y a priori (same \u00a767 Du\u2013Im\u2013Schreger medium tenor; not HO-tuned)",
+  "value_col": "cip_govt",
+  "unit": "bps",
+  "cip_stress": "ust_premium = -mean(G10 cip_govt)",
+  "pub_lag_days": 1,
+  "signal_lag_months": 1,
+  "carry_signal_lag_days": 1,
+  "weight_lag_days": 1,
+  "z_window": 60,
+  "z_high": 1.0,
+  "cool": 0.35,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "cip_stress_haven_usd",
+    "carry_raw",
+    "carry_cip_cool",
+    "carry_low_cip_stress",
+    "carry_high_cip_stress",
+    "cip_carry_ew"
+  ],
+  "primary": "carry_low_cip_stress",
+  "primary_sign_prior": "trade Lustig\u2013Verdelhan cash-rate carry only when lagged CIP-stress z (UST premium) \u2264 0 \u2014 carry crashes when CIP / dollar-funding stress elevated (Du\u2013Tepper\u2013Verdelhan / Du\u2013Keerati\u2013Schreger)",
+  "n_factors": 6,
+  "soft_nw_pos": 2,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "locked_verify": {
+    "sha256": "bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790",
+    "basket_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+    "untouched": true,
+    "gates": "PASS"
+  },
+  "panel_start": "2000-01-31",
+  "panel_end": "2025-07-31",
+  "data_caveat": "cip_dataset_v4 ends ~2025-06-30; 2026 FX window has stale/ffilled CIP. EUR=Germany in Du\u2013Schreger G10 panel. approximate_non_ftmo Yahoo D1.",
+  "normalisation": "CIP stress = \u2212mean(cip_govt) at 5y; month-end after pub_lag_days=1; trailing z 60m; gate z\u22640 / cool z\u22651.0; IR3M carry n_long=n_short=2",
+  "coverage_g10": "EUR/GBP/JPY/AUD/CAD/CHF/NZD (full trade G10; DKK/NOK/SEK unused)",
+  "distinct_from": [
+    "forward_carry_19",
+    "funding_liquidity_20",
+    "ig_oas_36",
+    "acm_term_premium_44",
+    "cip_basis_xs_67",
+    "combo_8",
+    "capital_sleeve_53",
+    "soft_signal_stack_66"
+  ],
+  "citations": [
+    "Lustig, Roussanov & Verdelhan (2011) \u2014 currency carry risk factors",
+    "Du, Tepper & Verdelhan (2018), JF \u2014 CIP deviations / intermediary constraints",
+    "Du, Im & Schreger (2018) \u2014 U.S. Treasury Premium",
+    "Du, Keerati & Schreger (2025) \u2014 Decoupling Dollar and Treasury Privilege (cip_dataset_v4)"
+  ],
+  "coverage": [
+    {
+      "currency": "EUR",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -28.145006
+    },
+    {
+      "currency": "GBP",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -14.279994
+    },
+    {
+      "currency": "JPY",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": 12.460004
+    },
+    {
+      "currency": "AUD",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -34.010006
+    },
+    {
+      "currency": "CAD",
+      "n_obs": 306,
+      "start": "2000-02-29",
+      "end": "2025-07-31",
+      "last": -5.7601018
+    },
+    {
+      "currency": "CHF",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -21.175005
+    },
+    {
+      "currency": "NZD",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": 0.050010614
+    }
+  ],
+  "soft_best": {
+    "factor": "cip_stress_haven_usd",
+    "n_months": 180,
+    "mean_mo": 0.0007276452903552283,
+    "tstat_ols": 1.7844171790021162,
+    "tstat_nw": 1.9115655527923758,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.20555555555555555,
+    "top3": 0.2361656901238321,
+    "ann_sharpe_daily": 0.47443242411930364
+  },
+  "primary_sweep": {
+    "strategy": "carry_low_cip_stress",
+    "scale": 2.6015080764942358,
+    "binding": "daily",
+    "is_total_return": 0.17865869419904845,
+    "is_static_loss": 0.00039022621147407336,
+    "is_max_daily_dd": 0.04999999993620877,
+    "is_gates_pass": true,
+    "oos_total_return": 0.08870466643649477,
+    "oos_static_loss": 0.012140760985106172,
+    "oos_max_daily_dd": 0.013340451604020346,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.0010479497235385436,
+    "mean_mo_oos": 0.00798473791636766,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.0014654922164671477,
+    "scaled_full_pct_pos": 0.22777777777777777,
+    "scaled_ho_mean_mo": 0.00798473791636766,
+    "scaled_ho_pct_pos": 0.75,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

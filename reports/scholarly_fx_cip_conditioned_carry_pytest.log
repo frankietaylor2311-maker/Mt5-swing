@@ -1,0 +1,17 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 7 items
+
+tests/test_cip_conditioned_carry_fx.py::test_cip_stress_is_negative_mean PASSED [ 14%]
+tests/test_cip_conditioned_carry_fx.py::test_align_cip_stress_z_pit_lag PASSED [ 28%]
+tests/test_cip_conditioned_carry_fx.py::test_gate_direction_low_stress_on_high_off PASSED [ 42%]
+tests/test_cip_conditioned_carry_fx.py::test_usd_tilt_fires_on_high_stress_z PASSED [ 57%]
+tests/test_cip_conditioned_carry_fx.py::test_no_lookahead_mutate_future_cip PASSED [ 71%]
+tests/test_cip_conditioned_carry_fx.py::test_factor_shapes_match_index PASSED [ 85%]
+tests/test_cip_conditioned_carry_fx.py::test_load_slim_panel_stress PASSED [100%]
+
+============================== 7 passed in 1.88s ===============================
