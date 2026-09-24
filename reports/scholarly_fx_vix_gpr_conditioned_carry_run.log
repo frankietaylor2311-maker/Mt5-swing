@@ -1,0 +1,33 @@
+=== scholarly FX VIX/GPR-conditioned Lustig–Verdelhan carry wave (§73) ===
+VIX + aggregate GPR stress gate/cool on IR3M carry — primary carry_low_vix; Lustig–Roussanov–Verdelhan + Menkhoff et al. (2012 JF) + Caldara–Iacoviello / Liu–Zhang; distinct from fwd_carry §19, funding_liq §20, IG OAS §36, ACM TP §44, CIP XS §67, CIP×carry §68, soft EW §66, soft CIP §69, capital-sleeve §53/§70, CIP-conditioned soft §71, VIX/GPR-conditioned soft §72, combo §8, gpr_regime, AI-GPR §25, country-GPR §45. Locked sleeve untouched.
+VIX [1990-01-03..2026-09-16] n=9245
+GPR [1985-01-02..2026-09-14] n=15231
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+rates cols=['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD'] [1954-08-01..2026-09-01]
+  sweep carry_raw: scale=0.963 bind=static IS mean_mo=-0.021% OOS gates=True
+  sweep carry_vix_cool: scale=0.723 bind=static IS mean_mo=-0.038% OOS gates=True
+  sweep carry_gpr_cool: scale=0.817 bind=static IS mean_mo=-0.039% OOS gates=True
+  sweep carry_low_vix: scale=0.482 bind=static IS mean_mo=-0.053% OOS gates=True
+  sweep carry_low_gpr: scale=0.681 bind=static IS mean_mo=-0.058% OOS gates=True
+  sweep carry_high_vix: scale=1.557 bind=daily IS mean_mo=0.002% OOS gates=True
+  sweep carry_vix_gpr_stack: scale=0.691 bind=static IS mean_mo=-0.045% OOS gates=True
+  sweep carry_vix_gpr_ew: scale=0.708 bind=static IS mean_mo=-0.052% OOS gates=True
+Locked sleeve re-verify (§73 vix_gpr_conditioned_carry): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §72 / §68 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_vix_gpr_conditioned_carry.md
+=== factor summary ===
+  carry_raw: mean_mo=-0.002% NW_t=-0.03 %pos=51%
+  carry_vix_cool: mean_mo=-0.035% NW_t=-0.57 %pos=48%
+  carry_gpr_cool: mean_mo=-0.038% NW_t=-0.67 %pos=53%
+  carry_low_vix: mean_mo=-0.091% NW_t=-1.59 %pos=43%
+  carry_low_gpr: mean_mo=-0.086% NW_t=-1.70 %pos=49%
+  carry_high_vix: mean_mo=+0.003% NW_t=+0.10 %pos=19%
+  carry_vix_gpr_stack: mean_mo=-0.055% NW_t=-1.06 %pos=49%
+  carry_vix_gpr_ew: mean_mo=-0.062% NW_t=-1.22 %pos=49%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False

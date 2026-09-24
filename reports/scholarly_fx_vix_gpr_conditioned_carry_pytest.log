@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 9 items
+
+tests/test_vix_gpr_conditioned_carry_fx.py::test_primary_name_constant PASSED [ 11%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_gate_direction_low_on_high_off PASSED [ 22%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_cool_scale_bounds PASSED [ 33%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_stack_scales_compound PASSED [ 44%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_no_lookahead_mutate_future_vix PASSED [ 55%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_factor_shapes_match_index PASSED [ 66%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_align_stress_z_lagged PASSED [ 77%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_gate_on_off_explicit_z PASSED [ 88%]
+tests/test_vix_gpr_conditioned_carry_fx.py::test_load_real_vix_gpr_carry PASSED [100%]
+
+============================== 9 passed in 0.69s ===============================
