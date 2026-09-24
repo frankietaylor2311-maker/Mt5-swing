@@ -1,0 +1,294 @@
+{
+  "ok": true,
+  "section": 60,
+  "path": "oecd_mei_passenger_cars_slrtcr03",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "passenger_cars_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_cars_xs",
+    "low_cars_xs",
+    "high_cars_z_xs",
+    "cars_chg_xs",
+    "us_cars_stress_fx",
+    "us_cars_haven_usd",
+    "cars_ew"
+  ],
+  "primary": "high_cars_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 1,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI SLRTCR03 passenger-car regs YoY % (USD/GBP/JPY/CAD/AUD *GYSAM; EUR=ESPSLRTCR03GYSAM Spain proxy; NZD/CHF unmapped stale); XS on car-regs YoY %; also 5y z / +\u039412 of YoY boarded; high_cars primary (growth-channel / durable auto demand \u2192 appreciate); n_long=n_short=2 on available foreign panel (EUR/GBP/JPY/CAD/AUD)",
+  "eur_mapping": "ESPSLRTCR03GYSAM Spain proxy (DEU/FRA 404; EA19 stale ~2018-12)",
+  "coverage_g10": "USD/EUR/GBP/JPY/AUD/CAD mapped; NZD/CHF unmapped stale",
+  "series_map": {
+    "USD": "USASLRTCR03GYSAM",
+    "EUR": "ESPSLRTCR03GYSAM",
+    "GBP": "GBRSLRTCR03GYSAM",
+    "JPY": "JPNSLRTCR03GYSAM",
+    "CAD": "CANSLRTCR03GYSAM",
+    "AUD": "AUSSLRTCR03GYSAM"
+  },
+  "score_basis": "passenger_cars_yoy_pct",
+  "distinct_from": [
+    "retail_sales_46",
+    "building_permits_43",
+    "construction_production_59",
+    "industrial_production_42",
+    "real_gdp_growth_58",
+    "oecd_cli_37",
+    "oecd_bci_39",
+    "oecd_cci_38",
+    "house_price_35",
+    "employment_persons_41",
+    "employment_rate_57",
+    "unemployment_rate_54",
+    "lfp_activity_56",
+    "wage_earnings_55",
+    "debt_gdp_29",
+    "current_account_gdp_21",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "ulc_unit_labour_cost_48",
+    "labour_prod_49",
+    "cap_util_50"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum / growth differentials",
+    "Growth-channel / Taylor-rule FX applied to passenger-car demand (durable goods)",
+    "OECD MEI SLRTCR03 passenger-car registrations YoY (GYSAM)",
+    "Honesty: low car-regs growth / demand-stress debtor premium",
+    "Fall-through: housing starts ODCNPI02/04 404 thin; mfg orders ODMN* 404 thin"
+  ],
+  "fallthrough_from": [
+    "housing_starts_completions_thin_or_404",
+    "manufacturing_new_orders_inventories_thin_or_404"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "USASLRTCR03GYSAM",
+      "freq": "M",
+      "n_obs": 799,
+      "start": "1960-03-01",
+      "end": "2026-09-01",
+      "last": 3.48659003831415,
+      "note": "OECD MEI passenger-car regs YoY USASLRTCR03GYSAM (monthly)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "ESPSLRTCR03GYSAM",
+      "freq": "M",
+      "n_obs": 788,
+      "start": "1961-03-01",
+      "end": "2026-10-01",
+      "last": 12.1943532504827,
+      "note": "Spain proxy ESPSLRTCR03GYSAM (M YoY %); DEU/FRA GYSAM 404; EA19 GYSAM stale ~2018-12"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRSLRTCR03GYSAM",
+      "freq": "M",
+      "n_obs": 823,
+      "start": "1958-03-01",
+      "end": "2026-09-01",
+      "last": 13.7042785150969,
+      "note": "OECD MEI passenger-car regs YoY GBRSLRTCR03GYSAM (monthly)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNSLRTCR03GYSAM",
+      "freq": "M",
+      "n_obs": 688,
+      "start": "1969-06-01",
+      "end": "2026-09-01",
+      "last": 9.93129890721021,
+      "note": "OECD MEI passenger-car regs YoY JPNSLRTCR03GYSAM (monthly)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANSLRTCR03GYSAM",
+      "freq": "M",
+      "n_obs": 943,
+      "start": "1948-02-01",
+      "end": "2026-08-01",
+      "last": -1.24377517173324,
+      "note": "OECD MEI passenger-car regs YoY CANSLRTCR03GYSAM (monthly)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "AUSSLRTCR03GYSAM",
+      "freq": "M",
+      "n_obs": 392,
+      "start": "1994-03-01",
+      "end": "2026-10-01",
+      "last": 2.82522589200274,
+      "note": "OECD MEI passenger-car regs YoY AUSSLRTCR03GYSAM (monthly)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_stale:NZLSLRTCR03GYSAM~2021-04"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_stale:CHESLRTCR03GYSAM~2018-12"
+    }
+  ],
+  "unmapped": [
+    "NZD",
+    "CHF"
+  ],
+  "failed_or_alt": {
+    "housing_starts_odcnpi02_g10_404_fallthrough": [
+      "USAODCNPI02GYSAM",
+      "CANODCNPI02GYSAM",
+      "AUSODCNPI02GYSAM",
+      "DEUODCNPI02GYSAM",
+      "FRAODCNPI02GYSAM",
+      "GBRODCNPI02GYSAM",
+      "JPNODCNPI02GYSAM",
+      "CHEODCNPI02GYSAM",
+      "NZLODCNPI02GYSAM",
+      "EA19ODCNPI02GYSAM"
+    ],
+    "housing_completions_odcnpi04_404_fallthrough": [
+      "USAODCNPI04GYSAM",
+      "CANODCNPI04GYSAM",
+      "AUSODCNPI04GYSAM",
+      "DEUODCNPI04GYSAM"
+    ],
+    "us_housing_starts_live_thin_panel": [
+      "HOUST",
+      "HOUST1F",
+      "COMPUTSA",
+      "COMPU1USA"
+    ],
+    "mfg_orders_odmn_g10_404_fallthrough": [
+      "USAODMNNO01GYSAM",
+      "CANODMNNO01GYSAM",
+      "DEUODMNNO01GYSAM",
+      "GBRODMNNO01GYSAM",
+      "JPNODMNNO01GYSAM",
+      "AUSODMNNO01GYSAM",
+      "USAODMNTO01GYSAM",
+      "CANODMNTO01GYSAM",
+      "DEUODMNTO01GYSAM"
+    ],
+    "us_mfg_orders_live_thin_panel": [
+      "AMTMNO",
+      "DGORDER",
+      "NEWORDER",
+      "ISRATIO",
+      "MNFCTRIRSA"
+    ],
+    "eur_deu_fra_gysam_404": [
+      "DEUSLRTCR03GYSAM",
+      "FRASLRTCR03GYSAM"
+    ],
+    "eur_ea19_gysam_stale_2018_12": [
+      "EA19SLRTCR03GYSAM",
+      "EA19SLRTCR03GYSAQ"
+    ],
+    "eur_spain_proxy_primary": [
+      "ESPSLRTCR03GYSAM"
+    ],
+    "nzd_stale_2021_04": [
+      "NZLSLRTCR03GYSAM"
+    ],
+    "chf_stale_2018_12": [
+      "CHESLRTCR03GYSAM"
+    ],
+    "slrtcr03_q657s_stale_~2018": [
+      "SLRTCR03USQ657S",
+      "SLRTCR03CAQ657S",
+      "SLRTCR03DEQ657S",
+      "SLRTCR03GBQ657S",
+      "SLRTCR03JPQ657S",
+      "SLRTCR03AUQ657S",
+      "SLRTCR03NZQ657S",
+      "SLRTCR03CHQ657S"
+    ],
+    "us_national_unit_sales_alts_not_mixed": [
+      "TOTALSA",
+      "ALTSALES"
+    ],
+    "hours_vacancies_404_or_stale_not_this_wave": [
+      "HOHWMN02USM065S",
+      "LMJVTTUVUSM647S",
+      "JTSJOL"
+    ],
+    "distinct_channels_not_this_wave": [
+      "SLRTTO01USA657S",
+      "ODCNPI03USA661N",
+      "USAPRCNTO01GYSAM",
+      "USAPRINTO01GYSAM",
+      "BSCICP02USM460S",
+      "USALOLITOAASTSAM"
+    ]
+  },
+  "stale": true,
+  "stale_note": "NZLSLRTCR03GYSAM stale ~2021-04 \u2014 NZD unmapped; CHESLRTCR03GYSAM stale ~2018-12 \u2014 CHF unmapped; DEUSLRTCR03GYSAM/FRASLRTCR03GYSAM 404; EA19SLRTCR03GYSAM stale ~2018-12; EUR=ESPSLRTCR03GYSAM Spain proxy a priori; housing starts ODCNPI02 G10 404 + US HOUST thin \u2192 fall through; mfg orders ODMN* G10 404 + US AMTMNO thin \u2192 fall through",
+  "soft_best": {
+    "factor": "low_cars_xs",
+    "n_months": 180,
+    "mean_mo": 0.0012018904389552462,
+    "tstat_ols": 1.8685754071033884,
+    "tstat_nw": 1.9274515051129375,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5388888888888889,
+    "top3": 0.10857246373943802,
+    "ann_sharpe_daily": 0.46709650875208064
+  },
+  "primary_sweep": {
+    "strategy": "high_cars_xs",
+    "scale": 0.3513100330162838,
+    "binding": "static",
+    "is_total_return": -0.08959533955271448,
+    "is_static_loss": 0.09999999994283164,
+    "is_max_daily_dd": 0.007485970471434848,
+    "is_gates_pass": true,
+    "oos_total_return": 0.0014194764317836395,
+    "oos_static_loss": 0.0017382847427557862,
+    "oos_max_daily_dd": 0.0011915057702572085,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005251007653092405,
+    "mean_mo_oos": 7.522327775405513e-05,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0004827899518305127,
+    "scaled_full_pct_pos": 0.45555555555555555,
+    "scaled_ho_mean_mo": 7.522327775405513e-05,
+    "scaled_ho_pct_pos": 0.5833333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}
