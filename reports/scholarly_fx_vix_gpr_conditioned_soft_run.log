@@ -1,0 +1,38 @@
+=== scholarly FX VIX/GPR-conditioned soft-signal EW wave (§72) ===
+VIX + aggregate GPR stress gate/cool on soft_ew_macro5 — primary soft_low_vix; Dahlquist–Hasseltoft + Menkhoff et al. + Caldara–Iacoviello / Liu–Zhang; distinct from soft_ew §66, soft CIP §69, CIP×carry §68, CIP XS §67, CIP-conditioned soft §71, capital-sleeve §53/§70, funding_liq §20, combo §8, gpr_regime / AI-GPR §25 / country-GPR §45. Locked sleeve untouched.
+VIX [1990-01-03..2026-09-16] n=9245
+GPR [1985-01-02..2026-09-14] n=15231
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  load BCI panel pub_lag=2 signal_lag=0…
+  load IP panel pub_lag=2 signal_lag=0…
+  load PPI panel pub_lag=2 signal_lag=1…
+  load GDP panel pub_lag=3 signal_lag=1…
+  load cars panel pub_lag=2 signal_lag=1…
+soft_ew_macro5 n=3905 [2011-09-15..2026-09-15]
+  sweep soft_raw: scale=5.396 bind=daily IS mean_mo=0.661% OOS gates=True
+  sweep soft_vix_cool: scale=6.600 bind=daily IS mean_mo=0.626% OOS gates=True
+  sweep soft_gpr_cool: scale=6.562 bind=daily IS mean_mo=0.613% OOS gates=True
+  sweep soft_low_vix: scale=7.930 bind=daily IS mean_mo=0.503% OOS gates=True
+  sweep soft_low_gpr: scale=12.137 bind=daily IS mean_mo=0.548% OOS gates=True
+  sweep soft_high_vix: scale=9.265 bind=daily IS mean_mo=0.264% OOS gates=True
+  sweep soft_vix_gpr_stack: scale=8.861 bind=daily IS mean_mo=0.646% OOS gates=True
+  sweep soft_vix_gpr_ew: scale=8.879 bind=daily IS mean_mo=0.658% OOS gates=True
+Locked sleeve re-verify (§72 vix_gpr_conditioned_soft): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §71 cip_conditioned_soft — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_vix_gpr_conditioned_soft.md
+=== factor summary ===
+  soft_low_vix: mean_mo=+0.058% NW_t=+2.38 %pos=48%
+  soft_vix_cool: mean_mo=+0.091% NW_t=+3.21 %pos=59%
+  soft_low_gpr: mean_mo=+0.044% NW_t=+2.16 %pos=52%
+  soft_gpr_cool: mean_mo=+0.089% NW_t=+3.41 %pos=59%
+  soft_raw: mean_mo=+0.118% NW_t=+3.63 %pos=61%
+  soft_high_vix: mean_mo=+0.029% NW_t=+2.07 %pos=24%
+  soft_vix_gpr_stack: mean_mo=+0.069% NW_t=+2.98 %pos=57%
+  soft_vix_gpr_ew: mean_mo=+0.071% NW_t=+3.07 %pos=57%
+board n=8 soft=8 hard=8 promote_unscaled=False scaled_primary=False
