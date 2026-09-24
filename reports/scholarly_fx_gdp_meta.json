@@ -1,0 +1,241 @@
+{
+  "ok": true,
+  "section": 58,
+  "path": "oecd_mei_gdp_lrem64tt",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 3,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "gdp_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_gdp_xs",
+    "low_gdp_xs",
+    "high_gdp_z_xs",
+    "gdp_chg_xs",
+    "us_gdp_stress_fx",
+    "us_gdp_haven_usd",
+    "gdp_ew"
+  ],
+  "primary": "high_gdp_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 1,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI NAEXKP01*Q657S real GDP QoQ % \u2192 compounded YoY % (USD/GBP/JPY/CAD/AUD/CHF/NZD *Q657S; EUR=NAEXKP01DEQ657S Germany proxy \u2014 EZQ657S stale ~2023-01); XS on GDP YoY %; also 5y z / +\u039412 of YoY boarded; high_gdp primary (growth / economic-momentum \u2192 appreciate); n_long=n_short=2 on available foreign panel (full G10)",
+  "eur_mapping": "NAEXKP01DEQ657S Germany proxy (EA EZQ657S stale ~2023-01)",
+  "coverage_g10": "USD/EUR/GBP/JPY/AUD/CAD/CHF/NZD all mapped (full G10)",
+  "series_map": {
+    "USD": "NAEXKP01USQ657S",
+    "EUR": "NAEXKP01DEQ657S",
+    "GBP": "NAEXKP01GBQ657S",
+    "JPY": "NAEXKP01JPQ657S",
+    "CAD": "NAEXKP01CAQ657S",
+    "AUD": "NAEXKP01AUQ657S",
+    "CHF": "NAEXKP01CHQ657S",
+    "NZD": "NAEXKP01NZQ657S"
+  },
+  "score_basis": "gdp_yoy_pct",
+  "distinct_from": [
+    "industrial_production_42",
+    "oecd_cli_37",
+    "oecd_bci_39",
+    "oecd_cci_38",
+    "employment_persons_41",
+    "employment_rate_57",
+    "unemployment_rate_54",
+    "lfp_activity_56",
+    "wage_earnings_55",
+    "debt_gdp_29",
+    "current_account_gdp_21",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "ulc_unit_labour_cost_48",
+    "labour_prod_49",
+    "cap_util_50",
+    "retail_sales_46"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum / GDP growth differentials",
+    "Real GDP YoY growth as output / economic-momentum channel",
+    "OECD MEI NAEXKP01*Q657S real GDP growth (QoQ\u2192YoY %)",
+    "Honesty: low GDP growth / activity-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "NAEXKP01USQ657S",
+      "freq": "Q",
+      "n_obs": 940,
+      "start": "1948-04-01",
+      "end": "2026-07-01",
+      "last": 2.0976715416663794,
+      "note": "OECD MEI real GDP NAEXKP01USQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "NAEXKP01DEQ657S",
+      "freq": "Q",
+      "n_obs": 664,
+      "start": "1971-04-01",
+      "end": "2026-07-01",
+      "last": 1.0172051509021562,
+      "note": "Germany proxy NAEXKP01DEQ657S (Q\u2192YoY %); EA NAEXKP01EZQ657S stale ~2023-01 \u2014 not primary"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "NAEXKP01GBQ657S",
+      "freq": "Q",
+      "n_obs": 844,
+      "start": "1956-04-01",
+      "end": "2026-07-01",
+      "last": 1.1744008723871602,
+      "note": "OECD MEI real GDP NAEXKP01GBQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "NAEXKP01JPQ657S",
+      "freq": "Q",
+      "n_obs": 376,
+      "start": "1995-04-01",
+      "end": "2026-07-01",
+      "last": 0.7266540380768571,
+      "note": "OECD MEI real GDP NAEXKP01JPQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "NAEXKP01CAQ657S",
+      "freq": "Q",
+      "n_obs": 772,
+      "start": "1962-04-01",
+      "end": "2026-07-01",
+      "last": 1.1278959079993323,
+      "note": "OECD MEI real GDP NAEXKP01CAQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "NAEXKP01AUQ657S",
+      "freq": "Q",
+      "n_obs": 784,
+      "start": "1961-04-01",
+      "end": "2026-07-01",
+      "last": 2.1376357652062694,
+      "note": "OECD MEI real GDP NAEXKP01AUQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "NAEXKP01CHQ657S",
+      "freq": "Q",
+      "n_obs": 544,
+      "start": "1981-04-01",
+      "end": "2026-07-01",
+      "last": 2.6324211557014143,
+      "note": "OECD MEI real GDP NAEXKP01CHQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "NAEXKP01NZQ657S",
+      "freq": "Q",
+      "n_obs": 445,
+      "start": "1989-04-01",
+      "end": "2026-04-01",
+      "last": 2.134175917072434,
+      "note": "OECD MEI real GDP NAEXKP01NZQ657S QoQ\u2192YoY %"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "eur_ez_stale_germany_proxy": [
+      "NAEXKP01EZQ657S",
+      "NAEXKP01DEQ657S"
+    ],
+    "q659s_same_period_yoy_404": [
+      "NAEXKP01USQ659S",
+      "NAEXKP01GBQ659S",
+      "NAEXKP01DEQ659S"
+    ],
+    "q652s_levels_partial_stale_or_404": [
+      "NAEXKP01USQ652S",
+      "NAEXKP01EZQ652S",
+      "NAEXKP01GBQ652S",
+      "NAEXKP01CHQ652S",
+      "NAEXKP01DEQ652S",
+      "NAEXKP01JPQ652S",
+      "NAEXKP01CAQ652S",
+      "NAEXKP01AUQ652S",
+      "NAEXKP01NZQ652S"
+    ],
+    "lorsgpnostsam_oecd_trend_stale": [
+      "USALORSGPNOSTSAM",
+      "DEULORSGPNOSTSAM",
+      "EA19LORSGPNOSTSAM"
+    ],
+    "national_real_gdp_alts_not_mixed": [
+      "GDPC1",
+      "JPNRGDPEXP",
+      "CLVMNACSCAB1GQEA19",
+      "NGDPRSAXDCAUQ",
+      "NGDPRSAXDCGBQ",
+      "AUSGDPNQDSMEI",
+      "CANGDPNQDSMEI"
+    ],
+    "distinct_channels_not_this_wave": [
+      "USAPRINTO01GYSAM",
+      "USALOLITOAASTSAM",
+      "BSCICP02USM460S",
+      "LFEMTTTTUSM647S",
+      "LRHUTTTTUSM156S",
+      "GGGDTAUSA188N",
+      "USB6BLTT02STSAQ"
+    ]
+  },
+  "stale": true,
+  "stale_note": "EUR EA NAEXKP01EZQ657S stale ~2023-01 \u2014 Germany DEQ657S proxy used",
+  "soft_best": {
+    "factor": "low_gdp_xs",
+    "n_months": 180,
+    "mean_mo": 0.0010235651143882362,
+    "tstat_ols": 1.4040909982737995,
+    "tstat_nw": 1.5519412970897435,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5444444444444444,
+    "top3": 0.12222279479896475,
+    "ann_sharpe_daily": 0.3573343907178246
+  },
+  "primary_sweep": {
+    "strategy": "high_gdp_xs",
+    "scale": 0.4292188435358937,
+    "binding": "static",
+    "is_total_return": -0.09308288787069974,
+    "is_static_loss": 0.0999999998730021,
+    "is_max_daily_dd": 0.005160451164799597,
+    "is_gates_pass": true,
+    "oos_total_return": 0.012245743153133537,
+    "oos_static_loss": 0.0005481129743160273,
+    "oos_max_daily_dd": 0.0021874025405663996,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005764678257073542,
+    "mean_mo_oos": 0.0009183339000167953,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0004685499204291362,
+    "scaled_full_pct_pos": 0.45555555555555555,
+    "scaled_ho_mean_mo": 0.0009183339000167953,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

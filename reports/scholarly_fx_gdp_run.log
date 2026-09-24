@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED real GDP growth wave (§58) ===
+FRED NAEXKP01 real GDP YoY (from Q657S QoQ; pub_lag=3) — high_gdp XS; growth / economic-momentum prior; full G10; EUR=DE proxy (EZQ657S stale ~2023-01); distinct from IP §42, CLI §37, BCI §39, emp §41, UR §54, debt/GDP §29, CA/GDP §21. Locked sleeve untouched.
+gdp panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'NZD'] [1948-04-01..2026-07-01] pub_lag_m=3
+currency         fred_id freq  n_obs      start        end     last                                                                                     note
+     USD NAEXKP01USQ657S    Q    940 1948-04-01 2026-07-01 2.097672                                              OECD MEI real GDP NAEXKP01USQ657S QoQ→YoY %
+     EUR NAEXKP01DEQ657S    Q    664 1971-04-01 2026-07-01 1.017205 Germany proxy NAEXKP01DEQ657S (Q→YoY %); EA NAEXKP01EZQ657S stale ~2023-01 — not primary
+     GBP NAEXKP01GBQ657S    Q    844 1956-04-01 2026-07-01 1.174401                                              OECD MEI real GDP NAEXKP01GBQ657S QoQ→YoY %
+     JPY NAEXKP01JPQ657S    Q    376 1995-04-01 2026-07-01 0.726654                                              OECD MEI real GDP NAEXKP01JPQ657S QoQ→YoY %
+     CAD NAEXKP01CAQ657S    Q    772 1962-04-01 2026-07-01 1.127896                                              OECD MEI real GDP NAEXKP01CAQ657S QoQ→YoY %
+     AUD NAEXKP01AUQ657S    Q    784 1961-04-01 2026-07-01 2.137636                                              OECD MEI real GDP NAEXKP01AUQ657S QoQ→YoY %
+     CHF NAEXKP01CHQ657S    Q    544 1981-04-01 2026-07-01 2.632421                                              OECD MEI real GDP NAEXKP01CHQ657S QoQ→YoY %
+     NZD NAEXKP01NZQ657S    Q    445 1989-04-01 2026-04-01 2.134176                                              OECD MEI real GDP NAEXKP01NZQ657S QoQ→YoY %
+Series source note: FRED OECD MEI NAEXKP01*Q657S real GDP growth rate previous period (QoQ %) → compounded to YoY % (USD/GBP/JPY/CAD/AUD/CHF/NZD *Q657S; EUR=NAEXKP01DEQ657S Germany proxy — EZQ657S stale ~2023-01; full G10 mapped; Q659S 404; Q652S levels partial stale/404; GDPC1/JPNRGDPEXP/EA19 CLVM national alts documented not mixed)
+Score basis: gdp_yoy_pct unit=yoy_pct_compounded
+Failed/alt documented: {'eur_ez_stale_germany_proxy': ['NAEXKP01EZQ657S', 'NAEXKP01DEQ657S'], 'q659s_same_period_yoy_404': ['NAEXKP01USQ659S', 'NAEXKP01GBQ659S', 'NAEXKP01DEQ659S'], 'q652s_levels_partial_stale_or_404': ['NAEXKP01USQ652S', 'NAEXKP01EZQ652S', 'NAEXKP01GBQ652S', 'NAEXKP01CHQ652S', 'NAEXKP01DEQ652S', 'NAEXKP01JPQ652S', 'NAEXKP01CAQ652S', 'NAEXKP01AUQ652S', 'NAEXKP01NZQ652S'], 'lorsgpnostsam_oecd_trend_stale': ['USALORSGPNOSTSAM', 'DEULORSGPNOSTSAM', 'EA19LORSGPNOSTSAM'], 'national_real_gdp_alts_not_mixed': ['GDPC1', 'JPNRGDPEXP', 'CLVMNACSCAB1GQEA19', 'NGDPRSAXDCAUQ', 'NGDPRSAXDCGBQ', 'AUSGDPNQDSMEI', 'CANGDPNQDSMEI'], 'distinct_channels_not_this_wave': ['USAPRINTO01GYSAM', 'USALOLITOAASTSAM', 'BSCICP02USM460S', 'LFEMTTTTUSM647S', 'LRHUTTTTUSM156S', 'GGGDTAUSA188N', 'USB6BLTT02STSAQ']}
+Stale: True note=EUR EA NAEXKP01EZQ657S stale ~2023-01 — Germany DEQ657S proxy used
+Unmapped: []
+US NAEXKP01USQ657S YoY [1948-04-01..2026-07-01] n=940 series=NAEXKP01USQ657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_gdp_xs: scale=0.429 bind=static IS mean_mo=-0.058% OOS gates=True
+  sweep low_gdp_xs: scale=2.770 bind=daily IS mean_mo=0.353% OOS gates=False
+  sweep high_gdp_z_xs: scale=0.879 bind=static IS mean_mo=-0.060% OOS gates=True
+  sweep gdp_chg_xs: scale=1.731 bind=static IS mean_mo=0.014% OOS gates=True
+  sweep us_gdp_stress_fx: scale=4.046 bind=static IS mean_mo=0.058% OOS gates=True
+  sweep us_gdp_haven_usd: scale=3.761 bind=static IS mean_mo=-0.052% OOS gates=True
+  sweep gdp_ew: scale=1.311 bind=static IS mean_mo=-0.049% OOS gates=True
+=== factor summary ===
+  high_gdp_xs: mean_mo=-0.109% NW_t=-1.65 %pos=46%
+  low_gdp_xs: mean_mo=+0.102% NW_t=+1.55 %pos=54%
+  high_gdp_z_xs: mean_mo=-0.057% NW_t=-1.15 %pos=48%
+  gdp_chg_xs: mean_mo=+0.016% NW_t=+0.27 %pos=54%
+  us_gdp_stress_fx: mean_mo=+0.013% NW_t=+0.59 %pos=4%
+  us_gdp_haven_usd: mean_mo=-0.013% NW_t=-0.60 %pos=4%
+  gdp_ew: mean_mo=-0.027% NW_t=-0.76 %pos=44%
+board n=7 soft=1 hard=0 promote_unscaled=False scaled_primary=False
