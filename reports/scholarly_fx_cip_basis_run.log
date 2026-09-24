@@ -1,0 +1,44 @@
+/workspace/Mt5-swing/src/mt5_swing/data/cip_basis.py:92: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+  pd.to_datetime(s, errors="coerce")
+/workspace/Mt5-swing/src/mt5_swing/data/cip_basis.py:92: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+  pd.to_datetime(s, errors="coerce")
+=== scholarly FX Du–Schreger CIP/basis wave (§67) ===
+cip_govt 5y (pub_lag_days=1) — primary low_cip_xs; Du–Tepper–Verdelhan / Du–Keerati–Schreger gov CIP + UST premium; distinct from funding_liq §20, fwd_carry §19, IG OAS §36, CB-BS §22. Locked sleeve untouched.
+slim G10 panel → /workspace/Mt5-swing/data/macro/cip_g10_5y_govt_panel.csv
+cip panel cols=['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD'] [2000-01-31..2025-07-31] tenor=5y pub_lag_d=1
+currency  n_obs      start        end       last
+     EUR    307 2000-01-31 2025-07-31 -28.145006
+     GBP    307 2000-01-31 2025-07-31 -14.279994
+     JPY    307 2000-01-31 2025-07-31  12.460004
+     AUD    307 2000-01-31 2025-07-31 -34.010006
+     CAD    306 2000-02-29 2025-07-31  -5.760102
+     CHF    307 2000-01-31 2025-07-31 -21.175005
+     NZD    307 2000-01-31 2025-07-31   0.050011
+attrs tenor=5y unit=bps end_note=raw panel ends ~2025-06-30 (dataset vintage)
+UST premium [2000-01-31..2025-07-31] n=307
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep low_cip_xs: scale=0.712 bind=static IS mean_mo=0.021% OOS gates=True
+  sweep high_cip_xs: scale=1.848 bind=static IS mean_mo=-0.063% OOS gates=True
+  sweep low_cip_z_xs: scale=2.075 bind=static IS mean_mo=0.104% OOS gates=True
+  sweep cip_chg_xs: scale=1.299 bind=daily IS mean_mo=0.089% OOS gates=True
+  sweep ust_premium_haven_usd: scale=2.848 bind=daily IS mean_mo=0.233% OOS gates=True
+  sweep ust_premium_stress_fx: scale=0.602 bind=static IS mean_mo=-0.050% OOS gates=True
+  sweep cip_ew: scale=2.038 bind=daily IS mean_mo=0.123% OOS gates=True
+Locked sleeve re-verify (§67 cip_basis): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §66 soft_signal_stack / §65 pce — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_cip_basis.md
+=== factor summary ===
+  low_cip_xs: mean_mo=+0.047% NW_t=+0.63 %pos=53%
+  high_cip_xs: mean_mo=-0.051% NW_t=-0.67 %pos=46%
+  low_cip_z_xs: mean_mo=+0.041% NW_t=+0.68 %pos=49%
+  cip_chg_xs: mean_mo=+0.059% NW_t=+0.88 %pos=56%
+  ust_premium_haven_usd: mean_mo=+0.076% NW_t=+1.94 %pos=22%
+  ust_premium_stress_fx: mean_mo=-0.077% NW_t=-1.99 %pos=16%
+  cip_ew: mean_mo=+0.061% NW_t=+1.68 %pos=58%
+board n=7 soft=2 hard=0 promote_unscaled=False scaled_primary=False

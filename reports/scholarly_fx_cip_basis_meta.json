@@ -1,0 +1,150 @@
+{
+  "ok": true,
+  "section": 67,
+  "path": "du_schreger_cip_govt_ust_premium",
+  "data_tag": "approximate_non_ftmo",
+  "tenor": "5y",
+  "tenor_prior": "5y a priori (Du\u2013Im\u2013Schreger Treasury-premium medium tenor; not HO-tuned)",
+  "value_col": "cip_govt",
+  "unit": "bps",
+  "pub_lag_days": 1,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "low_cip_xs",
+    "high_cip_xs",
+    "low_cip_z_xs",
+    "cip_chg_xs",
+    "ust_premium_haven_usd",
+    "ust_premium_stress_fx",
+    "cip_ew"
+  ],
+  "primary": "low_cip_xs",
+  "primary_sign_prior": "long low/more-negative cip_govt / short high (Du\u2013Schreger convenience + DTV dollar-funding stress channel; high cip_govt embeds more-negative CCS basis)",
+  "n_factors": 7,
+  "soft_nw_pos": 2,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "locked_verify": {
+    "sha256": "bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790",
+    "basket_tag": "fx4plus_gbpcad_d1_voltarget_0025",
+    "untouched": true,
+    "gates": "PASS"
+  },
+  "panel_start": "2000-01-31",
+  "panel_end": "2025-07-31",
+  "data_caveat": "cip_dataset_v4 ends ~2025-06-30; 2026 FX window has stale/ffilled CIP. EUR=Germany in Du\u2013Schreger G10 panel. approximate_non_ftmo Yahoo D1.",
+  "normalisation": "Du\u2013Keerati\u2013Schreger cip_govt bps at 5y; month-end of daily after pub_lag_days=1; XS n_long=n_short=2 on G10 trade foreign panel; UST premium = \u2212mean(cip_govt)",
+  "coverage_g10": "EUR/GBP/JPY/AUD/CAD/CHF/NZD (full trade G10; DKK/NOK/SEK unused)",
+  "distinct_from": [
+    "funding_liquidity_20",
+    "forward_carry_19",
+    "ig_oas_36",
+    "cb_balance_sheet_22"
+  ],
+  "citations": [
+    "Du, Tepper & Verdelhan (2018), JF \u2014 CIP deviations / intermediary constraints",
+    "Du, Im & Schreger (2018) \u2014 U.S. Treasury Premium",
+    "Du, Keerati & Schreger (2025) \u2014 Decoupling Dollar and Treasury Privilege (cip_dataset_v4)"
+  ],
+  "coverage": [
+    {
+      "currency": "EUR",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -28.145006
+    },
+    {
+      "currency": "GBP",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -14.279994
+    },
+    {
+      "currency": "JPY",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": 12.460004
+    },
+    {
+      "currency": "AUD",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -34.010006
+    },
+    {
+      "currency": "CAD",
+      "n_obs": 306,
+      "start": "2000-02-29",
+      "end": "2025-07-31",
+      "last": -5.7601018
+    },
+    {
+      "currency": "CHF",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": -21.175005
+    },
+    {
+      "currency": "NZD",
+      "n_obs": 307,
+      "start": "2000-01-31",
+      "end": "2025-07-31",
+      "last": 0.050010614
+    }
+  ],
+  "soft_best": {
+    "factor": "ust_premium_haven_usd",
+    "n_months": 180,
+    "mean_mo": 0.0007599767835390132,
+    "tstat_ols": 1.8609472674910565,
+    "tstat_nw": 1.9438751426030878,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.21666666666666667,
+    "top3": 0.2443000409080439,
+    "ann_sharpe_daily": 0.4953842701888145
+  },
+  "primary_sweep": {
+    "strategy": "low_cip_xs",
+    "scale": 0.7119360222847602,
+    "binding": "static",
+    "is_total_return": 0.011038695912327645,
+    "is_static_loss": 0.0999999998963566,
+    "is_max_daily_dd": 0.023632197451349493,
+    "is_gates_pass": true,
+    "oos_total_return": 0.025060325236569314,
+    "oos_static_loss": 0.0,
+    "oos_max_daily_dd": 0.0032707897067854354,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.0002125688115189687,
+    "mean_mo_oos": 0.0017439584015948677,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.00033874544017390616,
+    "scaled_full_pct_pos": 0.5277777777777778,
+    "scaled_ho_mean_mo": 0.0017439584015948677,
+    "scaled_ho_pct_pos": 0.75,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

@@ -88,3 +88,7 @@ data/downloaded/
 data/macro/*.xls
 data/macro/*.xlsx
 data/macro/*.dta
+
+# Large raw Du–Schreger CIP dump (download via cip_basis.ensure_cip_dataset); slim G10 panel is tracked
+data/macro/cip_dataset_v4.csv
+data/macro/Data_Appendix_V4.pdf

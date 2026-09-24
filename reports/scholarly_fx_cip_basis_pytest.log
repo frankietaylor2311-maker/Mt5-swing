@@ -1,0 +1,10 @@
+........                                                                 [100%]
+=============================== warnings summary ===============================
+tests/test_cip_basis_fx.py::test_pub_lag_shifts_known_date
+tests/test_cip_basis_fx.py::test_pub_lag_shifts_known_date
+tests/test_cip_basis_fx.py::test_loader_smoke_and_coverage
+  /workspace/Mt5-swing/src/mt5_swing/data/cip_basis.py:92: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+    pd.to_datetime(s, errors="coerce")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+8 passed, 3 warnings in 9.20s

@@ -1,0 +1,18 @@
+{
+  "tenor": "5y",
+  "value_col": "cip_govt",
+  "unit": "bps",
+  "pub_lag_in_file": 0,
+  "source": "du_keerati_schreger_cip_v4",
+  "currencies": [
+    "EUR",
+    "GBP",
+    "JPY",
+    "AUD",
+    "CAD",
+    "CHF",
+    "NZD"
+  ],
+  "start": "2000-01-03",
+  "end": "2025-06-30"
+}
