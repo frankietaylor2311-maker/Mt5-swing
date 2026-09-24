@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED real GFCF / investment wave (§64) ===
+FRED NAEXKP04 real GFCF YoY (from Q657S QoQ; pub_lag=3) — high_gfcf XS; investment boom / economic-momentum prior; full G10; EUR=DE proxy (EZQ657S stale ~2023-01); distinct from GDP §58, construction §59, IP §42, BCI §39, permits §43, HPI §35, CLI §37, retail §46, cars §60, export/import §61/§62, hh-credit §63, credit/GDP §32. Locked sleeve untouched.
+gfcf panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'NZD'] [1956-04-01..2026-07-01] pub_lag_m=3
+currency         fred_id freq  n_obs      start        end      last                                                                                     note
+     USD NAEXKP04USQ657S    Q    844 1956-04-01 2026-07-01  3.299008                                             OECD MEI real GFCF NAEXKP04USQ657S QoQ→YoY %
+     EUR NAEXKP04DEQ657S    Q    664 1971-04-01 2026-07-01 -0.145632 Germany proxy NAEXKP04DEQ657S (Q→YoY %); EA NAEXKP04EZQ657S stale ~2023-01 — not primary
+     GBP NAEXKP04GBQ657S    Q    844 1956-04-01 2026-07-01  2.744588                                             OECD MEI real GFCF NAEXKP04GBQ657S QoQ→YoY %
+     JPY NAEXKP04JPQ657S    Q    376 1995-04-01 2026-07-01 -1.178950                                             OECD MEI real GFCF NAEXKP04JPQ657S QoQ→YoY %
+     CAD NAEXKP04CAQ657S    Q    772 1962-04-01 2026-07-01  0.829725                                             OECD MEI real GFCF NAEXKP04CAQ657S QoQ→YoY %
+     AUD NAEXKP04AUQ657S    Q    784 1961-04-01 2026-07-01  7.042486                                             OECD MEI real GFCF NAEXKP04AUQ657S QoQ→YoY %
+     CHF NAEXKP04CHQ657S    Q    544 1981-04-01 2026-07-01  1.595929                                             OECD MEI real GFCF NAEXKP04CHQ657S QoQ→YoY %
+     NZD NAEXKP04NZQ657S    Q    445 1989-04-01 2026-04-01  1.013650                                             OECD MEI real GFCF NAEXKP04NZQ657S QoQ→YoY %
+Series source note: FRED OECD MEI NAEXKP04*Q657S real GFCF / gross fixed capital formation growth rate previous period (QoQ %) → compounded to YoY % (USD/GBP/JPY/CAD/AUD/CHF/NZD *Q657S; EUR=NAEXKP04DEQ657S Germany proxy — EZQ657S stale ~2023-01; full G10 mapped; Q659S try/document; national GFCF alts not mixed; PNFS CRDQ*APABIS skipped (§32 companion); NFC ANFBIS 404)
+Score basis: gfcf_yoy_pct unit=yoy_pct_compounded
+Failed/alt documented: {'eur_ez_stale_germany_proxy': ['NAEXKP04EZQ657S', 'NAEXKP04DEQ657S'], 'q659s_same_period_yoy_try_document': ['NAEXKP04USQ659S', 'NAEXKP04GBQ659S', 'NAEXKP04DEQ659S'], 'fallthrough_pnfs_abs_crdq_apabis_skip_credit32_companion': ['CRDQUSAPABIS', 'CRDQGBAPABIS', 'CRDQDEAPABIS', 'CRDQJPAPABIS'], 'fallthrough_nfc_anfbis_404': ['CRDQUSANFBIS', 'CRDQGBANFBIS', 'CRDQDEANFBIS'], 'national_gfcf_alts_not_mixed': [], 'distinct_channels_not_this_wave': ['NAEXKP01USQ657S', 'DEUPRCNTO01GYSAM', 'USAPRINTO01GYSAM', 'BSCICP02USM460S', 'CANODCNPI03GYSAM', 'QUSR628BIS', 'USALOLITOAASTSAM', 'CRDQUSAHABIS', 'QUSPAM770A', 'SLRTTO01USQ657S', 'SLRTCR03USM657S', 'XTEXVA01USM657S', 'XTIMVA01USM657S']}
+Stale: True note=EUR EA NAEXKP04EZQ657S stale ~2023-01 — Germany DEQ657S proxy used
+Unmapped: []
+US NAEXKP04USQ657S GFCF YoY [1956-04-01..2026-07-01] n=844 series=NAEXKP04USQ657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_gfcf_xs: scale=1.779 bind=static IS mean_mo=0.016% OOS gates=True
+  sweep low_gfcf_xs: scale=2.060 bind=static IS mean_mo=-0.033% OOS gates=True
+  sweep high_gfcf_z_xs: scale=3.343 bind=daily IS mean_mo=0.152% OOS gates=True
+  sweep gfcf_chg_xs: scale=2.106 bind=static IS mean_mo=0.077% OOS gates=True
+  sweep us_gfcf_stress_fx: scale=4.022 bind=static IS mean_mo=0.062% OOS gates=True
+  sweep us_gfcf_haven_usd: scale=2.915 bind=static IS mean_mo=-0.046% OOS gates=True
+  sweep gfcf_ew: scale=3.727 bind=static IS mean_mo=0.075% OOS gates=True
+=== factor summary ===
+  high_gfcf_xs: mean_mo=+0.018% NW_t=+0.35 %pos=53%
+  low_gfcf_xs: mean_mo=-0.025% NW_t=-0.48 %pos=46%
+  high_gfcf_z_xs: mean_mo=+0.040% NW_t=+0.87 %pos=54%
+  gfcf_chg_xs: mean_mo=+0.047% NW_t=+0.85 %pos=53%
+  us_gfcf_stress_fx: mean_mo=+0.014% NW_t=+0.58 %pos=7%
+  us_gfcf_haven_usd: mean_mo=-0.015% NW_t=-0.60 %pos=9%
+  gfcf_ew: mean_mo=+0.027% NW_t=+1.02 %pos=47%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
