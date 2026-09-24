@@ -1,0 +1,5 @@
+window,mean_mo,pct_pos,top3,gates
+2024,0.0042,0.55,0.74,PASS
+2025,0.0163,0.73,0.69,PASS
+2026,0.0230,0.88,0.87,PASS
+holdout_365d,0.0152,0.75,0.81,PASS

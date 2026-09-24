@@ -1,0 +1,45 @@
+Locked sleeve re-verify (§62 import_value): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §61 export_value / §60 passenger_cars — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_import_value.md
+
+=== scholarly FX OECD/FRED merchandise import-value wave (§62) ===
+FRED XTIMVA01 merchandise import-value YoY (M657S; pub_lag=2) — high_ival XS; growth-channel / domestic-absorption/import-demand prior; EUR=DEM Germany proxy; full G10; distinct from export §61, TB §30, CA §21, retail §46, IP §42, cars §60, construction §59, GDP §58. Locked sleeve untouched. Fall-through: CIP/basis Missing; hours/vacancies thin; PRSVTT*/ODMN* 404. Unit=VALUE not volume.
+import_value panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'NZD'] [1955-04-01..2026-08-01] pub_lag_m=2
+currency         fred_id freq  n_obs      start        end      last                                                                               note
+     USD XTIMVA01USM657S    M    857 1955-04-01 2026-08-01 -2.446368  OECD MEI merchandise import-value YoY XTIMVA01USM657S (monthly; value not volume)
+     EUR XTIMVA01DEM657S    M    832 1957-04-01 2026-07-01 -2.593276 Germany proxy XTIMVA01DEM657S (M YoY % value); EZM657S 404; EZM667S stale ~2023-04
+     GBP XTIMVA01GBM657S    M    833 1957-04-01 2026-08-01 -6.115477  OECD MEI merchandise import-value YoY XTIMVA01GBM657S (monthly; value not volume)
+     JPY XTIMVA01JPM657S    M    833 1957-04-01 2026-08-01  4.906612  OECD MEI merchandise import-value YoY XTIMVA01JPM657S (monthly; value not volume)
+     CAD XTIMVA01CAM657S    M    833 1957-04-01 2026-08-01 -2.922776  OECD MEI merchandise import-value YoY XTIMVA01CAM657S (monthly; value not volume)
+     AUD XTIMVA01AUM657S    M    821 1958-04-01 2026-08-01 -6.300274  OECD MEI merchandise import-value YoY XTIMVA01AUM657S (monthly; value not volume)
+     CHF XTIMVA01CHM657S    M    833 1957-04-01 2026-08-01  1.449966  OECD MEI merchandise import-value YoY XTIMVA01CHM657S (monthly; value not volume)
+     NZD XTIMVA01NZM657S    M    833 1957-04-01 2026-08-01 -3.664602  OECD MEI merchandise import-value YoY XTIMVA01NZM657S (monthly; value not volume)
+Series source note: FRED OECD MEI XTIMVA01{ISO2}M657S merchandise import-value YoY (full G10; EUR=XTIMVA01DEM657S Germany proxy — EZM657S 404, EZM667S stale ~2023-04; unit=VALUE not volume; *M667S levels not mixed; CIP/basis Missing fallthrough; hours/vacancies thin fallthrough; PRSVTT*/ODMN* 404 fallthrough)
+Score basis: import_value_yoy_pct unit=yoy_pct
+Failed/alt documented: {'cip_cross_currency_basis_missing_free_g10_fallthrough': ['Du–Tepper–Verdelhan CIP/basis — no free multi-year G10 panel', 'rates+spot CIP-implied FD already §19 — do not fake basis'], 'hours_hohwmn_us_only_or_404_fallthrough': ['HOHWMN02USM065S', 'HOHWMN02USQ065S', 'AWHMAN', 'AWHAE'], 'vacancies_lmjvttuv_partial_stale_fallthrough': ['LMJVTTUVUSM647S', 'LMJVTTUVGBM647S', 'LMJVTTUVDEM647S', 'LMJVTTUVCHM647S', 'LMJVTTUVAUM647S', 'JTSJOL', 'JTSJOR'], 'services_production_prsvtt_404_fallthrough': ['USAPRSVTT01GYSAM', 'CANPRSVTT01GYSAM', 'DEUPRSVTT01GYSAM', 'GBRPRSVTT01GYSAM'], 'mfg_turnover_odmn_404_fallthrough': ['USAODMNTO01GYSAM', 'CANODMNTO01GYSAM', 'DEUODMNTO01GYSAM', 'GBRODMNTO01GYSAM'], 'eur_ez_m657s_404_germany_proxy': ['XTIMVA01EZM657S', 'XTIMVA01DEM657S'], 'eur_ez_m667s_stale_2023_04': ['XTIMVA01EZM667S'], 'levels_m667s_value_not_volume_not_mixed': ['XTIMVA01USM667S', 'XTIMVA01DEM667S', 'XTIMVA01GBM667S', 'XTIMVA01JPM667S', 'XTIMVA01CAM667S', 'XTIMVA01AUM667S', 'XTIMVA01CHM667S', 'XTIMVA01NZM667S'], 'distinct_channels_not_this_wave': ['XTEXVA01USM657S', 'BOPGTB', 'AUSB6BLTT02STSAQ', 'USAPRINTO01GYSAM', 'USASLRTCR03GYSAM', 'USAPRCNTO01GYSAM', 'NAEXKP01USQ657S', 'SLRTTO01USA657S']}
+Stale: False note=XTIMVA01EZM657S 404; XTIMVA01EZM667S stale ~2023-04; EUR=XTIMVA01DEM657S Germany proxy a priori; series unit = import VALUE YoY (not volume); *M667S levels not mixed; CIP/cross-currency basis free G10 Missing → fall through; hours HOHWMN* US-only/404 + vacancies LMJVTTUV* thin/stale → fall through; services PRSVTT* / mfg turnover ODMN* 404 → fall through
+Unmapped: []
+US XTIMVA01USM657S YoY [1955-04-01..2026-08-01] n=857 series=XTIMVA01USM657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_ival_xs: scale=0.371 bind=static IS mean_mo=-0.051% OOS gates=True
+  sweep low_ival_xs: scale=2.412 bind=static IS mean_mo=0.207% OOS gates=True
+  sweep high_ival_z_xs: scale=0.465 bind=static IS mean_mo=-0.045% OOS gates=True
+  sweep ival_chg_xs: scale=0.483 bind=static IS mean_mo=-0.050% OOS gates=True
+  sweep us_ival_stress_fx: scale=2.928 bind=static IS mean_mo=0.058% OOS gates=True
+  sweep us_ival_haven_usd: scale=2.407 bind=static IS mean_mo=-0.055% OOS gates=True
+  sweep ival_ew: scale=0.616 bind=static IS mean_mo=-0.045% OOS gates=True
+=== factor summary ===
+  high_ival_xs: mean_mo=-0.125% NW_t=-1.77 %pos=44%
+  low_ival_xs: mean_mo=+0.073% NW_t=+1.06 %pos=53%
+  high_ival_z_xs: mean_mo=-0.084% NW_t=-1.43 %pos=43%
+  ival_chg_xs: mean_mo=-0.095% NW_t=-1.51 %pos=43%
+  us_ival_stress_fx: mean_mo=+0.015% NW_t=+0.57 %pos=9%
+  us_ival_haven_usd: mean_mo=-0.018% NW_t=-0.68 %pos=11%
+  ival_ew: mean_mo=-0.068% NW_t=-1.62 %pos=41%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
