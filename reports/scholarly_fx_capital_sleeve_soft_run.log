@@ -1,0 +1,75 @@
+=== scholarly FX capital-sleeve soft-stack wave (§70) ===
+Pre-registered: core=fx4plus_gbpcad_d1_voltarget_0025 RF=0.08 VT=0.0025; sat_A=soft_ew_macro5; sat_B=soft_ew7_cip; n_mixes=6. Separate sleeves — not overlays. Distinct from §53 BCI/PPI capital mix / soft_ew §66 / soft CIP §69 / CIP XS §67 / CIP×carry §68 / combo §8.
+Building locked core daily returns (RF + VT)…
+  core n=772 [2024-01-30..2026-09-16] tag=approximate_non_ftmo
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+Rebuilding soft CIP stack legs (source-wave PIT)…
+  soft_ew_macro5 n=3905 [2011-09-15..2026-09-15]
+  soft_ew7_cip n=3905 [2011-09-15..2026-09-15]
+  mix core_100: w={'core': 1.0}
+  mix core85_soft15: w={'core': 0.85, 'soft_ew_macro5': 0.15}
+  mix core70_soft30: w={'core': 0.7, 'soft_ew_macro5': 0.3}
+  mix core60_soft40: w={'core': 0.6, 'soft_ew_macro5': 0.4}
+  mix core80_soft10_cip10: w={'core': 0.8, 'soft_ew_macro5': 0.1, 'soft_ew7_cip': 0.1}
+  mix core70_soft20_cip10: w={'core': 0.7, 'soft_ew_macro5': 0.2, 'soft_ew7_cip': 0.1}
+IS-only primary mix = core_100 (IS mean_mo=+1.515%)
+  IS means: core_100=+1.52%, core85_soft15=+1.29%, core70_soft30=+1.07%, core60_soft40=+0.92%, core80_soft10_cip10=+1.22%, core70_soft20_cip10=+1.07%
+  sweep core_100: scale=1.341 bind=daily IS mean_mo=2.027% OOS gates=True
+  sweep core85_soft15: scale=1.577 bind=daily IS mean_mo=2.030% OOS gates=True
+  sweep core70_soft30: scale=1.913 bind=daily IS mean_mo=2.034% OOS gates=True
+  sweep core60_soft40: scale=2.231 bind=daily IS mean_mo=2.038% OOS gates=True
+  sweep core80_soft10_cip10: scale=1.675 bind=daily IS mean_mo=2.031% OOS gates=True
+  sweep core70_soft20_cip10: scale=1.914 bind=daily IS mean_mo=2.034% OOS gates=True
+=== mix summary ===
+  core_100: mean_mo=+1.717% NW_t=+2.16 %pos=72%
+  core85_soft15: mean_mo=+1.462% NW_t=+2.17 %pos=72%
+  core70_soft30: mean_mo=+1.207% NW_t=+2.18 %pos=72%
+  core60_soft40: mean_mo=+1.036% NW_t=+2.19 %pos=72%
+  core80_soft10_cip10: mean_mo=+1.377% NW_t=+2.17 %pos=72%
+  core70_soft20_cip10: mean_mo=+1.207% NW_t=+2.18 %pos=72%
+board n=6 soft=6 hard=6 promote_unscaled=False scaled_primary=False primary=core_100 locked_untouched=True
+=== scholarly FX capital-sleeve soft-stack wave (§70) ===
+Pre-registered: core=fx4plus_gbpcad_d1_voltarget_0025 RF=0.08 VT=0.0025; sat_A=soft_ew_macro5; sat_B=soft_ew7_cip; n_mixes=6. Separate sleeves — not overlays. Distinct from §53 BCI/PPI capital mix / soft_ew §66 / soft CIP §69 / CIP XS §67 / CIP×carry §68 / combo §8.
+Locked sleeve re-verify (§70 capital_sleeve_soft): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §69 soft_signal_cip_stack — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_capital_sleeve_soft.md
+Building locked core daily returns (RF + VT)…
+  core n=772 [2024-01-30..2026-09-16] tag=approximate_non_ftmo
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+Rebuilding soft CIP stack legs (source-wave PIT)…
+  load BCI panel pub_lag=2 signal_lag=0…
+  load IP panel pub_lag=2 signal_lag=0…
+  load PPI panel pub_lag=2 signal_lag=1…
+  load GDP panel pub_lag=3 signal_lag=1…
+  load cars panel pub_lag=2 signal_lag=1…
+  load CIP panel tenor=5y pub_lag_days=1 signal_lag=1…
+  soft_ew_macro5 n=3905 [2011-09-15..2026-09-15]
+  soft_ew7_cip n=3905 [2011-09-15..2026-09-15]
+  mix core_100: w={'core': 1.0}
+  mix core85_soft15: w={'core': 0.85, 'soft_ew_macro5': 0.15}
+  mix core70_soft30: w={'core': 0.7, 'soft_ew_macro5': 0.3}
+  mix core60_soft40: w={'core': 0.6, 'soft_ew_macro5': 0.4}
+  mix core80_soft10_cip10: w={'core': 0.8, 'soft_ew_macro5': 0.1, 'soft_ew7_cip': 0.1}
+  mix core70_soft20_cip10: w={'core': 0.7, 'soft_ew_macro5': 0.2, 'soft_ew7_cip': 0.1}
+IS-only primary mix = core_100 (IS mean_mo=+1.515%)
+  IS means: core_100=+1.52%, core85_soft15=+1.29%, core70_soft30=+1.07%, core60_soft40=+0.92%, core80_soft10_cip10=+1.22%, core70_soft20_cip10=+1.07%
+  sweep core_100: scale=1.341 bind=daily IS mean_mo=2.027% OOS gates=True
+  sweep core85_soft15: scale=1.577 bind=daily IS mean_mo=2.030% OOS gates=True
+  sweep core70_soft30: scale=1.913 bind=daily IS mean_mo=2.034% OOS gates=True
+  sweep core60_soft40: scale=2.231 bind=daily IS mean_mo=2.038% OOS gates=True
+  sweep core80_soft10_cip10: scale=1.675 bind=daily IS mean_mo=2.031% OOS gates=True
+  sweep core70_soft20_cip10: scale=1.914 bind=daily IS mean_mo=2.034% OOS gates=True
+=== mix summary ===
+  core_100: mean_mo=+1.717% NW_t=+2.16 %pos=72%
+  core85_soft15: mean_mo=+1.462% NW_t=+2.17 %pos=72%
+  core70_soft30: mean_mo=+1.207% NW_t=+2.18 %pos=72%
+  core60_soft40: mean_mo=+1.036% NW_t=+2.19 %pos=72%
+  core80_soft10_cip10: mean_mo=+1.377% NW_t=+2.17 %pos=72%
+  core70_soft20_cip10: mean_mo=+1.207% NW_t=+2.18 %pos=72%
+board n=6 soft=6 hard=6 promote_unscaled=False scaled_primary=False primary=core_100 locked_untouched=True
