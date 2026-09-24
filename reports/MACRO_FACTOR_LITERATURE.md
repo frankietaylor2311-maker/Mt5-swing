@@ -42,7 +42,7 @@ New line = math/statistics + economics/news/war factors grounded in scholar outc
 | Caldara–Iacoviello GPR daily/monthly | Geopolitical risk | **Present** `gpr_daily.csv`, `gpr_monthly.csv` (+ xls) |
 | AI-GPR daily (Iacoviello–Tong) | Alt news-based GPR | **Present** `ai_gpr_daily.csv` |
 | Country-specific GPR | Liu–Zhang long/short GPR FX | **Partial** — monthly export has country columns; not yet wired to legs |
-| Multi-country CPI / PPI / IP / retail / unemployment / wages / LFP / employment-rate / real GDP | Dahlquist economic momentum | **Mostly boarded** — IP §42 / retail §46 / employment §41 (persons) / PPI §51 / CPI §52 / **UR §54** / **wage/earnings §55** / **LFP/activity §56** / **employment-rate §57** / **real GDP growth §58** (NAEXKP01 QoQ→YoY; full G10; EUR=DE proxy; promote=0). PPI STALE ~2022-12; CPI JPY STALE ~2021-06. Capital-sleeve mix §53 boarded (promote=0). |
+| Multi-country CPI / PPI / IP / retail / unemployment / wages / LFP / employment-rate / real GDP / construction | Dahlquist economic momentum | **Mostly boarded** — IP §42 / retail §46 / employment §41 (persons) / PPI §51 / CPI §52 / **UR §54** / **wage/earnings §55** / **LFP/activity §56** / **employment-rate §57** / **real GDP growth §58** / **construction-production §59** (PRCNTO01 YoY; full G10; EUR=DE proxy; JPY=GYSAQ; AUD/NZD/CHF QoQ→YoY; promote=0). PPI STALE ~2022-12; CPI JPY STALE ~2021-06. Building-permits §43 distinct (leading flow). Capital-sleeve mix §53 boarded (promote=0). |
 | News sentiment (FX-specific) | Event studies / war headlines beyond GPR | **Missing** — GDELT / RavenPack / Factiva (licensed) |
 | Cross-currency basis / CIP | Intermediary stress | **Missing** |
 | FTMO MT5 OHLC (H1/H4/D1) | Golive / true costs | **Missing** `data/ftmo/` empty |

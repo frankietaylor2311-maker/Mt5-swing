@@ -1,0 +1,227 @@
+{
+  "ok": true,
+  "section": 59,
+  "path": "oecd_mei_construction_prcnto01",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "construction_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_cons_xs",
+    "low_cons_xs",
+    "high_cons_z_xs",
+    "cons_chg_xs",
+    "us_cons_stress_fx",
+    "us_cons_haven_usd",
+    "cons_ew"
+  ],
+  "primary": "high_cons_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI PRCNTO01 construction YoY % (USD/EUR/GBP/CAD *GYSAM; JPY=GYSAQ; AUD/NZD/CHF *Q657S QoQ\u2192YoY; EUR=DEUPRCNTO01GYSAM Germany proxy); XS on construction YoY %; also 5y z / +\u039412 of YoY boarded; high_cons primary (growth-channel / coincident construction \u2192 appreciate); n_long=n_short=2 on available foreign panel (full G10)",
+  "eur_mapping": "DEUPRCNTO01GYSAM Germany proxy (live ~2026-06)",
+  "coverage_g10": "USD/EUR/GBP/JPY/AUD/CAD/CHF/NZD all mapped (full G10)",
+  "series_map": {
+    "USD": "USAPRCNTO01GYSAM",
+    "EUR": "DEUPRCNTO01GYSAM",
+    "GBP": "GBRPRCNTO01GYSAM",
+    "CAD": "CANPRCNTO01GYSAM",
+    "JPY": "JPNPRCNTO01GYSAQ",
+    "AUD": "PRCNTO01AUQ657S",
+    "NZD": "PRCNTO01NZQ657S",
+    "CHF": "PRCNTO01CHQ657S"
+  },
+  "score_basis": "construction_yoy_pct",
+  "distinct_from": [
+    "building_permits_43",
+    "industrial_production_42",
+    "real_gdp_growth_58",
+    "oecd_cli_37",
+    "oecd_bci_39",
+    "oecd_cci_38",
+    "employment_persons_41",
+    "employment_rate_57",
+    "unemployment_rate_54",
+    "lfp_activity_56",
+    "wage_earnings_55",
+    "debt_gdp_29",
+    "current_account_gdp_21",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "ulc_unit_labour_cost_48",
+    "labour_prod_49",
+    "cap_util_50",
+    "retail_sales_46"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum / growth differentials",
+    "Growth-channel / Taylor-rule FX applied to construction output (coincident)",
+    "OECD MEI PRCNTO01 construction production YoY (GYSAM / GYSAQ / Q657S)",
+    "Honesty: low construction growth / activity-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "USAPRCNTO01GYSAM",
+      "freq": "M",
+      "n_obs": 811,
+      "start": "1959-03-01",
+      "end": "2026-09-01",
+      "last": -3.79250639761366,
+      "note": "OECD MEI construction YoY USAPRCNTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "DEUPRCNTO01GYSAM",
+      "freq": "M",
+      "n_obs": 762,
+      "start": "1963-03-01",
+      "end": "2026-08-01",
+      "last": 1.77580466148697,
+      "note": "Germany proxy DEUPRCNTO01GYSAM (M YoY %); live ~2026-06"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "GBRPRCNTO01GYSAM",
+      "freq": "M",
+      "n_obs": 186,
+      "start": "2011-03-01",
+      "end": "2026-08-01",
+      "last": -2.27948463825612,
+      "note": "OECD MEI construction YoY GBRPRCNTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CANPRCNTO01GYSAM",
+      "freq": "M",
+      "n_obs": 774,
+      "start": "1962-03-01",
+      "end": "2026-08-01",
+      "last": -0.043215467584978,
+      "note": "OECD MEI construction YoY CANPRCNTO01GYSAM (monthly)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "JPNPRCNTO01GYSAQ",
+      "freq": "Q",
+      "n_obs": 373,
+      "start": "1995-03-01",
+      "end": "2026-03-01",
+      "last": -3.31716466380048,
+      "note": "OECD MEI construction YoY JPNPRCNTO01GYSAQ (quarterly; monthly JPNPRCNTO01GYSAM stale ~2020-07 \u2014 not primary)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "PRCNTO01AUQ657S",
+      "freq": "Q",
+      "n_obs": 610,
+      "start": "1975-09-01",
+      "end": "2026-06-01",
+      "last": 4.185157660049299,
+      "note": "OECD MEI construction PRCNTO01AUQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "PRCNTO01NZQ657S",
+      "freq": "Q",
+      "n_obs": 574,
+      "start": "1978-06-01",
+      "end": "2026-03-01",
+      "last": -3.794342164346476,
+      "note": "OECD MEI construction PRCNTO01NZQ657S QoQ\u2192YoY %"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "PRCNTO01CHQ657S",
+      "freq": "Q",
+      "n_obs": 316,
+      "start": "2000-03-01",
+      "end": "2026-06-01",
+      "last": 2.3013698630137913,
+      "note": "OECD MEI construction PRCNTO01CHQ657S QoQ\u2192YoY %"
+    }
+  ],
+  "unmapped": [],
+  "failed_or_alt": {
+    "che_gysam_404": [
+      "CHEPRCNTO01GYSAM"
+    ],
+    "jpn_monthly_gysam_stale_2020_07": [
+      "JPNPRCNTO01GYSAM"
+    ],
+    "jpn_quarterly_gysaq_primary": [
+      "JPNPRCNTO01GYSAQ"
+    ],
+    "usa_ixobsam_index_stale_2024_03": [
+      "USAPRCNTO01IXOBSAM"
+    ],
+    "eur_germany_proxy_primary": [
+      "DEUPRCNTO01GYSAM"
+    ],
+    "aud_nzd_chf_qoq_q657s_primary": [
+      "PRCNTO01AUQ657S",
+      "PRCNTO01NZQ657S",
+      "PRCNTO01CHQ657S"
+    ],
+    "distinct_channels_not_this_wave": [
+      "ODCNPI03USA661N",
+      "USAPRINTO01GYSAM",
+      "NAEXKP01USQ657S",
+      "USALOLITOAASTSAM",
+      "BSCICP02USM460S"
+    ]
+  },
+  "stale": true,
+  "stale_note": "JPY monthly JPNPRCNTO01GYSAM stale ~2020-07 \u2014 quarterly GYSAQ used; CHEPRCNTO01GYSAM 404 \u2014 CHF via PRCNTO01CHQ657S QoQ\u2192YoY; USAPRCNTO01IXOBSAM index stale ~2024-03 \u2014 not primary; EUR=DEUPRCNTO01GYSAM Germany proxy",
+  "soft_best": {
+    "factor": "low_cons_xs",
+    "n_months": 180,
+    "mean_mo": 0.0005657026708429793,
+    "tstat_ols": 0.9751503270156826,
+    "tstat_nw": 0.9862486580447315,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.55,
+    "top3": 0.11904081540955502,
+    "ann_sharpe_daily": 0.21703564044625365
+  },
+  "primary_sweep": {
+    "strategy": "high_cons_xs",
+    "scale": 0.7388433644313434,
+    "binding": "static",
+    "is_total_return": -0.08673529691012583,
+    "is_static_loss": 0.09999999984293652,
+    "is_max_daily_dd": 0.007353579119810893,
+    "is_gates_pass": true,
+    "oos_total_return": -7.7729660746928e-05,
+    "oos_static_loss": 0.0020214870134479136,
+    "oos_max_daily_dd": 0.0031975755637431574,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005685500860925183,
+    "mean_mo_oos": -0.0002541268067503914,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0005300358434890746,
+    "scaled_full_pct_pos": 0.43333333333333335,
+    "scaled_ho_mean_mo": -0.0002541268067503914,
+    "scaled_ho_pct_pos": 0.3333333333333333,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

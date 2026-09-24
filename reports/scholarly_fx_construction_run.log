@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED construction-production wave (§59) ===
+FRED PRCNTO01 construction YoY (GYSAM/GYSAQ/Q657S; pub_lag=2) — high_cons XS; growth-channel / coincident construction prior; full G10; EUR=DE proxy; JPY=GYSAQ; AUD/NZD/CHF QoQ→YoY; distinct from permits §43, IP §42, GDP §58. Locked sleeve untouched.
+construction panel cols=['USD', 'EUR', 'GBP', 'CAD', 'JPY', 'AUD', 'NZD', 'CHF'] [1959-03-01..2026-09-01] pub_lag_m=2
+currency          fred_id freq  n_obs      start        end      last                                                                                                          note
+     USD USAPRCNTO01GYSAM    M    811 1959-03-01 2026-09-01 -3.792506                                                          OECD MEI construction YoY USAPRCNTO01GYSAM (monthly)
+     EUR DEUPRCNTO01GYSAM    M    762 1963-03-01 2026-08-01  1.775805                                                       Germany proxy DEUPRCNTO01GYSAM (M YoY %); live ~2026-06
+     GBP GBRPRCNTO01GYSAM    M    186 2011-03-01 2026-08-01 -2.279485                                                          OECD MEI construction YoY GBRPRCNTO01GYSAM (monthly)
+     CAD CANPRCNTO01GYSAM    M    774 1962-03-01 2026-08-01 -0.043215                                                          OECD MEI construction YoY CANPRCNTO01GYSAM (monthly)
+     JPY JPNPRCNTO01GYSAQ    Q    373 1995-03-01 2026-03-01 -3.317165 OECD MEI construction YoY JPNPRCNTO01GYSAQ (quarterly; monthly JPNPRCNTO01GYSAM stale ~2020-07 — not primary)
+     AUD  PRCNTO01AUQ657S    Q    610 1975-09-01 2026-06-01  4.185158                                                               OECD MEI construction PRCNTO01AUQ657S QoQ→YoY %
+     NZD  PRCNTO01NZQ657S    Q    574 1978-06-01 2026-03-01 -3.794342                                                               OECD MEI construction PRCNTO01NZQ657S QoQ→YoY %
+     CHF  PRCNTO01CHQ657S    Q    316 2000-03-01 2026-06-01  2.301370                                                               OECD MEI construction PRCNTO01CHQ657S QoQ→YoY %
+Series source note: FRED OECD MEI PRCNTO01 construction production (USD/EUR/GBP/CAD *GYSAM monthly YoY; JPY=JPNPRCNTO01GYSAQ quarterly YoY — monthly GYSAM stale ~2020-07; AUD/NZD/CHF=PRCNTO01*Q657S QoQ→YoY; EUR=DEUPRCNTO01GYSAM Germany proxy; CHEPRCNTO01GYSAM 404; USAPRCNTO01IXOBSAM stale ~2024-03 — not primary; full G10 mapped)
+Score basis: construction_yoy_pct unit=yoy_pct
+Failed/alt documented: {'che_gysam_404': ['CHEPRCNTO01GYSAM'], 'jpn_monthly_gysam_stale_2020_07': ['JPNPRCNTO01GYSAM'], 'jpn_quarterly_gysaq_primary': ['JPNPRCNTO01GYSAQ'], 'usa_ixobsam_index_stale_2024_03': ['USAPRCNTO01IXOBSAM'], 'eur_germany_proxy_primary': ['DEUPRCNTO01GYSAM'], 'aud_nzd_chf_qoq_q657s_primary': ['PRCNTO01AUQ657S', 'PRCNTO01NZQ657S', 'PRCNTO01CHQ657S'], 'distinct_channels_not_this_wave': ['ODCNPI03USA661N', 'USAPRINTO01GYSAM', 'NAEXKP01USQ657S', 'USALOLITOAASTSAM', 'BSCICP02USM460S']}
+Stale: True note=JPY monthly JPNPRCNTO01GYSAM stale ~2020-07 — quarterly GYSAQ used; CHEPRCNTO01GYSAM 404 — CHF via PRCNTO01CHQ657S QoQ→YoY; USAPRCNTO01IXOBSAM index stale ~2024-03 — not primary; EUR=DEUPRCNTO01GYSAM Germany proxy
+Unmapped: []
+US USAPRCNTO01GYSAM YoY [1959-03-01..2026-09-01] n=811 series=USAPRCNTO01GYSAM
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_cons_xs: scale=0.739 bind=static IS mean_mo=-0.057% OOS gates=True
+  sweep low_cons_xs: scale=2.108 bind=static IS mean_mo=0.129% OOS gates=True
+  sweep high_cons_z_xs: scale=0.709 bind=static IS mean_mo=-0.059% OOS gates=True
+  sweep cons_chg_xs: scale=2.496 bind=static IS mean_mo=-0.035% OOS gates=True
+  sweep us_cons_stress_fx: scale=5.686 bind=daily IS mean_mo=0.134% OOS gates=True
+  sweep us_cons_haven_usd: scale=2.178 bind=static IS mean_mo=-0.052% OOS gates=True
+  sweep cons_ew: scale=1.917 bind=static IS mean_mo=-0.043% OOS gates=True
+=== factor summary ===
+  high_cons_xs: mean_mo=-0.072% NW_t=-1.24 %pos=43%
+  low_cons_xs: mean_mo=+0.057% NW_t=+0.99 %pos=55%
+  high_cons_z_xs: mean_mo=-0.081% NW_t=-1.37 %pos=44%
+  cons_chg_xs: mean_mo=-0.002% NW_t=-0.04 %pos=52%
+  us_cons_stress_fx: mean_mo=+0.019% NW_t=+0.72 %pos=11%
+  us_cons_haven_usd: mean_mo=-0.020% NW_t=-0.75 %pos=11%
+  cons_ew: mean_mo=-0.018% NW_t=-0.56 %pos=48%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
