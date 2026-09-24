@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED real private final consumption wave (§65) ===
+FRED NAEXKP02 real PCE YoY (from Q657S QoQ; pub_lag=3) — high_pce XS; consumption boom / economic-momentum prior; full G10; EUR=DE proxy (EZQ657S stale ~2023-01); distinct from GDP §58, construction §59, IP §42, BCI §39, permits §43, HPI §35, CLI §37, retail §46, cars §60, export/import §61/§62, hh-credit §63, credit/GDP §32. Locked sleeve untouched.
+pce panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'NZD'] [1948-04-01..2026-07-01] pub_lag_m=3
+currency         fred_id freq  n_obs      start        end     last                                                                                     note
+     USD NAEXKP02USQ657S    Q    940 1948-04-01 2026-07-01 2.334935                              OECD MEI real private consumption NAEXKP02USQ657S QoQ→YoY %
+     EUR NAEXKP02DEQ657S    Q    664 1971-04-01 2026-07-01 0.404596 Germany proxy NAEXKP02DEQ657S (Q→YoY %); EA NAEXKP02EZQ657S stale ~2023-01 — not primary
+     GBP NAEXKP02GBQ657S    Q    844 1956-04-01 2026-07-01 1.000234                              OECD MEI real private consumption NAEXKP02GBQ657S QoQ→YoY %
+     JPY NAEXKP02JPQ657S    Q    376 1995-04-01 2026-07-01 1.166569                              OECD MEI real private consumption NAEXKP02JPQ657S QoQ→YoY %
+     CAD NAEXKP02CAQ657S    Q    784 1961-04-01 2026-07-01 1.919582                              OECD MEI real private consumption NAEXKP02CAQ657S QoQ→YoY %
+     AUD NAEXKP02AUQ657S    Q    784 1961-04-01 2026-07-01 1.786408                              OECD MEI real private consumption NAEXKP02AUQ657S QoQ→YoY %
+     CHF NAEXKP02CHQ657S    Q    544 1981-04-01 2026-07-01 1.310943                              OECD MEI real private consumption NAEXKP02CHQ657S QoQ→YoY %
+     NZD NAEXKP02NZQ657S    Q    445 1989-04-01 2026-04-01 0.817199                              OECD MEI real private consumption NAEXKP02NZQ657S QoQ→YoY %
+Series source note: FRED OECD MEI NAEXKP02*Q657S real private final consumption growth rate previous period (QoQ %) → compounded to YoY % (USD/GBP/JPY/CAD/AUD/CHF/NZD *Q657S; EUR=NAEXKP02DEQ657S Germany proxy — EZQ657S stale ~2023-01; full G10 mapped; Q659S live≡compound Q657S not mixed; national BEA PCE alts not mixed; not US BEA PCE)
+Score basis: pce_yoy_pct unit=yoy_pct_compounded
+Failed/alt documented: {'eur_ez_stale_germany_proxy': ['NAEXKP02EZQ657S', 'NAEXKP02DEQ657S'], 'q659s_live_equiv_compounded_q657s_not_mixed': ['NAEXKP02USQ659S', 'NAEXKP02GBQ659S', 'NAEXKP02DEQ659S'], 'national_bea_pce_alts_not_mixed': [], 'distinct_channels_not_this_wave': ['NAEXKP01USQ657S', 'NAEXKP04USQ657S', 'SLRTTO01USQ657S', 'SLRTCR03USM657S', 'CRDQUSAHABIS', 'DEUPRCNTO01GYSAM', 'USAPRINTO01GYSAM', 'BSCICP02USM460S', 'CSCICP02USM460S', 'USALOLITOAASTSAM', 'LFEMTTTTUSM647S', 'LRHUTTTTUSM156S', 'LCEAMN01USM657S', 'LRAC64TTUSM156S', 'LREM64TTUSM156S']}
+Stale: True note=EUR EA NAEXKP02EZQ657S stale ~2023-01 — Germany DEQ657S proxy used
+Unmapped: []
+US NAEXKP02USQ657S PCE YoY [1948-04-01..2026-07-01] n=940 series=NAEXKP02USQ657S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_pce_xs: scale=0.710 bind=static IS mean_mo=-0.035% OOS gates=True
+  sweep low_pce_xs: scale=3.822 bind=daily IS mean_mo=0.167% OOS gates=False
+  sweep high_pce_z_xs: scale=1.320 bind=daily IS mean_mo=0.051% OOS gates=True
+  sweep pce_chg_xs: scale=1.316 bind=static IS mean_mo=0.003% OOS gates=True
+  sweep us_pce_stress_fx: scale=6.114 bind=static IS mean_mo=0.121% OOS gates=True
+  sweep us_pce_haven_usd: scale=2.584 bind=static IS mean_mo=-0.050% OOS gates=True
+  sweep pce_ew: scale=1.882 bind=static IS mean_mo=-0.017% OOS gates=True
+=== factor summary ===
+  high_pce_xs: mean_mo=-0.025% NW_t=-0.44 %pos=51%
+  low_pce_xs: mean_mo=+0.019% NW_t=+0.33 %pos=48%
+  high_pce_z_xs: mean_mo=+0.044% NW_t=+0.85 %pos=52%
+  pce_chg_xs: mean_mo=+0.019% NW_t=+0.30 %pos=50%
+  us_pce_stress_fx: mean_mo=+0.018% NW_t=+0.94 %pos=4%
+  us_pce_haven_usd: mean_mo=-0.018% NW_t=-0.95 %pos=6%
+  pce_ew: mean_mo=+0.004% NW_t=+0.11 %pos=51%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
