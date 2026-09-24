@@ -1,0 +1,216 @@
+{
+  "ok": true,
+  "section": 66,
+  "path": "dahlquist_soft_signal_ew_recombination",
+  "data_tag": "approximate_non_ftmo",
+  "soft_legs_preregistered": [
+    "bci_chg_xs",
+    "high_ip_xs",
+    "high_ppi_xs",
+    "low_gdp_xs",
+    "low_cars_xs"
+  ],
+  "board_specs": {
+    "soft_ew5": [
+      "bci_chg_xs",
+      "high_ip_xs",
+      "high_ppi_xs",
+      "low_gdp_xs",
+      "low_cars_xs"
+    ],
+    "soft_ew_growth": [
+      "high_ip_xs",
+      "high_ppi_xs",
+      "bci_chg_xs"
+    ],
+    "soft_ew_honesty": [
+      "low_gdp_xs",
+      "low_cars_xs"
+    ],
+    "soft_ew4_no_bci": [
+      "high_ip_xs",
+      "high_ppi_xs",
+      "low_gdp_xs",
+      "low_cars_xs"
+    ],
+    "soft_ew4_no_ip": [
+      "bci_chg_xs",
+      "high_ppi_xs",
+      "low_gdp_xs",
+      "low_cars_xs"
+    ],
+    "soft_ew4_no_ppi": [
+      "bci_chg_xs",
+      "high_ip_xs",
+      "low_gdp_xs",
+      "low_cars_xs"
+    ],
+    "soft_ew3_core": [
+      "bci_chg_xs",
+      "high_ip_xs",
+      "high_ppi_xs"
+    ]
+  },
+  "min_legs": 2,
+  "cost_bps_side": 1.5,
+  "source_pit": {
+    "bci_chg_xs": {
+      "section": 39,
+      "pub_lag_months": 2,
+      "signal_lag_months": 0,
+      "signal_lag_days": 1
+    },
+    "high_ip_xs": {
+      "section": 42,
+      "pub_lag_months": 2,
+      "signal_lag_months": 0,
+      "signal_lag_days": 1
+    },
+    "high_ppi_xs": {
+      "section": 51,
+      "pub_lag_months": 2,
+      "signal_lag_months": 1,
+      "signal_lag_days": 1
+    },
+    "low_gdp_xs": {
+      "section": 58,
+      "pub_lag_months": 3,
+      "signal_lag_months": 1,
+      "signal_lag_days": 1
+    },
+    "low_cars_xs": {
+      "section": 60,
+      "pub_lag_months": 2,
+      "signal_lag_months": 1,
+      "signal_lag_days": 1
+    }
+  },
+  "factors": [
+    "soft_ew5",
+    "soft_ew_growth",
+    "soft_ew_honesty",
+    "soft_ew4_no_bci",
+    "soft_ew4_no_ip",
+    "soft_ew4_no_ppi",
+    "soft_ew3_core"
+  ],
+  "primary": "soft_ew5",
+  "n_factors": 7,
+  "soft_nw_pos": 7,
+  "hard_nw_pos": 7,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "Equal-weight of pre-registered soft-boarded scholarly XS daily returns (row-wise nanmean; \u22652 legs/day). Membership fixed a priori from \u00a739/42/51/58/60 soft boards \u2014 no HO tuning. Costs already in source factors (1.5 bps/side).",
+  "distinct_from": [
+    "combo_8",
+    "capital_sleeve_mix_53",
+    "macro_diff_blend",
+    "oecd_bci_39",
+    "industrial_production_42",
+    "ppi_51",
+    "gdp_58",
+    "cars_60"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum (EW of macro signals)",
+    "Soft boards \u00a739 BCI / \u00a742 IP / \u00a751 PPI / \u00a758 GDP honesty / \u00a760 cars honesty"
+  ],
+  "soft_best": {
+    "factor": "soft_ew_growth",
+    "n_months": 180,
+    "mean_mo": 0.0012285160168079123,
+    "tstat_ols": 3.2760269416614625,
+    "tstat_nw": 2.9325517412889233,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.6055555555555555,
+    "top3": 0.09910599660599247,
+    "ann_sharpe_daily": 0.7471116788080602
+  },
+  "primary_sweep": {
+    "strategy": "soft_ew5",
+    "scale": 5.39622807131947,
+    "binding": "daily",
+    "is_total_return": 1.8758759197575552,
+    "is_static_loss": 0.013820630906667793,
+    "is_max_daily_dd": 0.04999999990487995,
+    "is_gates_pass": true,
+    "oos_total_return": 0.040292430687657754,
+    "oos_static_loss": 0.023123862616529805,
+    "oos_max_daily_dd": 0.008906812840109779,
+    "oos_gates_pass": true,
+    "mean_mo_is": 0.006605313140980743,
+    "mean_mo_oos": 0.0033275792496749537,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": 0.006387136364846772,
+    "scaled_full_pct_pos": 0.6055555555555555,
+    "scaled_ho_mean_mo": 0.0033275792496749537,
+    "scaled_ho_pct_pos": 0.6666666666666666,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "leg_summaries": [
+    {
+      "factor": "bci_chg_xs",
+      "n_months": 180,
+      "mean_mo": 0.0014836648993984693,
+      "tstat_ols": 2.017145654240102,
+      "tstat_nw": 2.3355028492864407,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5944444444444444,
+      "top3": 0.11726450127133872,
+      "ann_sharpe_daily": 0.48258922816956545
+    },
+    {
+      "factor": "high_ip_xs",
+      "n_months": 180,
+      "mean_mo": 0.00100736560395639,
+      "tstat_ols": 1.8133639303123974,
+      "tstat_nw": 1.8835030708518525,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5388888888888889,
+      "top3": 0.08983693644119055,
+      "ann_sharpe_daily": 0.3651202113820443
+    },
+    {
+      "factor": "high_ppi_xs",
+      "n_months": 180,
+      "mean_mo": 0.0011634411998947048,
+      "tstat_ols": 1.8496200866716042,
+      "tstat_nw": 2.0047454143706687,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5944444444444444,
+      "top3": 0.08433574195225421,
+      "ann_sharpe_daily": 0.36122560550802224
+    },
+    {
+      "factor": "low_gdp_xs",
+      "n_months": 180,
+      "mean_mo": 0.0010235651143882362,
+      "tstat_ols": 1.4040909982737995,
+      "tstat_nw": 1.5519412970897435,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5444444444444444,
+      "top3": 0.12222279479896475,
+      "ann_sharpe_daily": 0.3573343907178246
+    },
+    {
+      "factor": "low_cars_xs",
+      "n_months": 180,
+      "mean_mo": 0.0012018904389552462,
+      "tstat_ols": 1.8685754071033884,
+      "tstat_nw": 1.9274515051129375,
+      "nw_lags": 4,
+      "pct_pos_mo": 0.5388888888888889,
+      "top3": 0.10857246373943802,
+      "ann_sharpe_daily": 0.46709650875208064
+    }
+  ],
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

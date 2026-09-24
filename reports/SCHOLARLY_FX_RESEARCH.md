@@ -3063,3 +3063,51 @@ Locked `fx4plus_gbpcad_d1_voltarget_0025` **untouched PASS** (Yahoo D1 + PORT_VO
 **Next structure (if promote=0):** FX IV/RR + news-sentiment still **blocked**. Free scholarly queue **thinning** (UR + LCEAMN wage + LFP/activity + employment-rate + real-GDP + construction + passenger-cars + export-value + import-value + household-credit + GFCF + **private consumption** gaps closed; CIP/basis still Missing). Next: **recombination soft-signal stack** (Dahlquist-style EW of soft signals) still candidate if single-series free queue exhausted, or **FTMO MT5 CSV re-score** when exports arrive (`data/ftmo/` empty except README), or free CIP/cross-currency basis if a multi-year public panel appears. No go-live claim under `approximate_non_ftmo`.
 
 Artifacts: `reports/scholarly_fx_pce_wave.md`, `scholarly_fx_pce_*.csv`, `scholarly_fx_pce_meta.json`, `quest_locked_verify_pce.md`.
+
+## 66. Dahlquist-style soft-signal EW recombination FX wave results (2026-09-24 ~08:35 BST)
+
+**Design (fixed priors, no HO tuning):** Equal-weight recombination of **pre-registered** soft-boarded scholarly XS daily returns after single-series free queue exhausted (§65 PCE promote=0). Literature: Dahlquist & Hasseltoft (2020) *Economic momentum* — EW of macro-momentum signals.
+
+**SOFT_LEGS (a priori, BEFORE any HO read — documented soft boards with |NW t|≥1.5 and positive full-sample mean):**
+1. `bci_chg_xs` (§39 OECD BCI) — ~+14.8 bp/mo NW t≈+2.34 (one BCI seed only; NOT `high_bci_z_xs`)
+2. `high_ip_xs` (§42 IP) — ~+10.1 bp/mo NW t≈+1.88
+3. `high_ppi_xs` (§51 PPI) — ~+11.6 bp/mo NW t≈+2.00
+4. `low_gdp_xs` (§58 GDP honesty reverse) — ~+10.2 bp/mo NW t≈+1.55
+5. `low_cars_xs` (§60 cars honesty reverse) — ~+12.0 bp/mo NW t≈+1.93
+
+Rebuild via source `*_factor_returns` with same PIT lags as source waves (BCI/IP pub_lag=2 signal_lag=0; PPI/cars pub_lag=2 signal_lag=1; GDP pub_lag=3 signal_lag=1; +1d weight lag). Row-wise nanmean; require ≥2 legs/day. Costs 1.5 bps/side (inside source factors). Primary `soft_ew5`. Companions: `soft_ew_growth`, `soft_ew_honesty`, leave-one-out `soft_ew4_no_{bci,ip,ppi}`, `soft_ew3_core`. Explicit: do **not** overlay on locked fx4plus. Prop sizing: utilise nearly full FTMO DD via risk sweep when IS mean>0.
+
+**What is new vs combo §8 / capital-sleeve mix §53 / macro_diff blend:** combo is carry+mom+dollar × VIX/GPR; capital-sleeve is locked fx4plus core + BCI/PPI *capital shares*; macro_diff is CPI+IP+UR EW inside one loader. This wave = EW of previously soft-boarded scholarly XS *daily returns*, not capital mix with locked sleeve.
+
+**Data tag:** `approximate_non_ftmo` (no FTMO CSVs under `data/ftmo/`). Rebuilt legs matched documented soft-board means (bci_chg +14.8 bp/NW +2.34; high_ip +10.1/+1.88; high_ppi +11.6/+2.00; low_gdp +10.2/+1.55; low_cars +12.0/+1.93).
+
+### Full-sample factor summary
+
+| Factor | mean_mo | t OLS | t NW | %pos | top3 | Sharpe |
+|--------|--------:|------:|-----:|-----:|-----:|-------:|
+| soft_ew5 | +0.118% | +4.26 | +3.63 | 61% | 11% | +1.02 |
+| soft_ew_growth | +0.123% | +3.28 | +2.93 | 61% | 10% | +0.75 |
+| soft_ew_honesty | +0.111% | +2.60 | +2.64 | 57% | 14% | +0.64 |
+| soft_ew4_no_bci | +0.111% | +3.90 | +3.44 | 62% | 12% | +0.91 |
+| soft_ew4_no_ip | +0.122% | +3.68 | +3.41 | 61% | 10% | +0.88 |
+| soft_ew4_no_ppi | +0.118% | +3.84 | +3.57 | 59% | 11% | +0.90 |
+| soft_ew3_core | +0.123% | +3.28 | +2.93 | 61% | 10% | +0.75 |
+
+### Consistency windows (primary `soft_ew5`)
+
+| Window | mean_mo | %pos | gates | 1% bar |
+|--------|--------:|-----:|:-----:|:------:|
+| 2024 | +0.08% | 55% | PASS | no |
+| 2025 | +0.04% | 64% | PASS | no |
+| 2026 | +0.14% | 88% | PASS | no |
+| holdout_365d | +0.06% | 67% | PASS | no |
+
+**Board:** n=7 soft_nw_pos=**7** hard_nw_pos=**7** promote=**0**.
+
+Sweep **run** (any IS mean>0 on board). Primary `soft_ew5` scale≈**5.396** bind=**daily**; scaled HO mean≈+0.33%/mo %pos 67% — clears: **NO** (scaled IS mean≈0.66%/mo also under 1% bar). Soft-best = `soft_ew_growth` / `soft_ew3_core` (~+12.3 bp/mo, NW t≈**+2.93**). All 7 board factors clear hard |t|≥2.0 with positive full-sample mean — recombination improves t-stats vs single series, but absolute monthly means remain far below the 1%/mo consistency bar.
+
+Locked `fx4plus_gbpcad_d1_voltarget_0025` **untouched PASS** (Yahoo D1 + PORT_VOL_TARGET=0.0025: 2024 0.42%/55%/74%; 2025 1.63%/73%/69%; 2026 2.30%/88%/87%; HO 1.52%/75%/81% — see `quest_locked_verify_soft_signal_stack.md`). Config sha unchanged (`bafed8eff5aa7541…`).
+
+**Next structure (if promote=0):** Soft-stack recombination boarded. FX IV/RR + news-sentiment still **blocked**. Free single-series scholarly queue **exhausted**. CIP/basis still Missing. Next: **FTMO MT5 CSV re-score** when exports arrive (`data/ftmo/` empty except README), or free CIP/cross-currency basis if a multi-year public panel appears, or other multi-factor scholarly structures not yet boarded. No go-live claim under `approximate_non_ftmo`.
+
+Artifacts: `reports/scholarly_fx_soft_signal_stack_wave.md`, `scholarly_fx_soft_signal_stack_*.csv`, `scholarly_fx_soft_signal_stack_meta.json`, `quest_locked_verify_soft_signal_stack.md`.

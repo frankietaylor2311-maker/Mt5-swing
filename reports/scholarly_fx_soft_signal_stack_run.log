@@ -1,0 +1,35 @@
+=== scholarly FX soft-signal recombination stack wave (§66) ===
+PRE-REGISTERED SOFT_LEGS (before HO): ['bci_chg_xs', 'high_ip_xs', 'high_ppi_xs', 'low_gdp_xs', 'low_cars_xs']. Primary=soft_ew5. Dahlquist–Hasseltoft EW of soft XS daily returns. Distinct from combo §8 / capital-sleeve §53 / macro_diff. Locked sleeve untouched.
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  load BCI panel pub_lag=2 signal_lag=0…
+  load IP panel pub_lag=2 signal_lag=0…
+  load PPI panel pub_lag=2 signal_lag=1…
+  load GDP panel pub_lag=3 signal_lag=1…
+  load cars panel pub_lag=2 signal_lag=1…
+  leg bci_chg_xs: n=3905 [2011-09-15..2026-09-15]
+  leg high_ip_xs: n=3905 [2011-09-15..2026-09-15]
+  leg high_ppi_xs: n=3905 [2011-09-15..2026-09-15]
+  leg low_gdp_xs: n=3905 [2011-09-15..2026-09-15]
+  leg low_cars_xs: n=3905 [2011-09-15..2026-09-15]
+=== rebuilt leg full-sample (sanity; membership fixed a priori) ===
+  bci_chg_xs: mean_mo=+0.148% NW_t=+2.34 %pos=59%
+  high_ip_xs: mean_mo=+0.101% NW_t=+1.88 %pos=54%
+  high_ppi_xs: mean_mo=+0.116% NW_t=+2.00 %pos=59%
+  low_gdp_xs: mean_mo=+0.102% NW_t=+1.55 %pos=54%
+  low_cars_xs: mean_mo=+0.120% NW_t=+1.93 %pos=54%
+  sweep soft_ew5: scale=5.396 bind=daily IS mean_mo=0.661% OOS gates=True
+  sweep soft_ew_growth: scale=4.582 bind=daily IS mean_mo=0.536% OOS gates=True
+  sweep soft_ew_honesty: scale=3.068 bind=daily IS mean_mo=0.397% OOS gates=True
+  sweep soft_ew4_no_bci: scale=4.355 bind=daily IS mean_mo=0.513% OOS gates=True
+  sweep soft_ew4_no_ip: scale=3.897 bind=daily IS mean_mo=0.505% OOS gates=True
+  sweep soft_ew4_no_ppi: scale=3.873 bind=daily IS mean_mo=0.476% OOS gates=True
+  sweep soft_ew3_core: scale=4.582 bind=daily IS mean_mo=0.536% OOS gates=True
+=== factor summary ===
+  soft_ew5: mean_mo=+0.118% NW_t=+3.63 %pos=61%
+  soft_ew_growth: mean_mo=+0.123% NW_t=+2.93 %pos=61%
+  soft_ew_honesty: mean_mo=+0.111% NW_t=+2.64 %pos=57%
+  soft_ew4_no_bci: mean_mo=+0.111% NW_t=+3.44 %pos=62%
+  soft_ew4_no_ip: mean_mo=+0.122% NW_t=+3.41 %pos=61%
+  soft_ew4_no_ppi: mean_mo=+0.118% NW_t=+3.57 %pos=59%
+  soft_ew3_core: mean_mo=+0.123% NW_t=+2.93 %pos=61%
+board n=7 soft=7 hard=7 promote_unscaled=False scaled_primary=False
