@@ -1,0 +1,35 @@
+=== scholarly FX OECD/FRED employment-rate wave (§57) ===
+FRED LREM64TT employment-rate levels (pub_lag=2) — high_er XS; labour-strength/engagement-stock prior; full G10; EUR=DE proxy (EZQ stale); distinct from employment persons §41, UR §54, LFP §56, wages §55. Locked sleeve untouched.
+employment_rate panel cols=['USD', 'JPY', 'CAD', 'AUD', 'GBP', 'EUR', 'CHF', 'NZD'] [1970-03-01..2026-10-01] pub_lag_m=2
+currency         fred_id freq  n_obs      start        end     last                                                                                        note
+     USD LREM64TTUSM156S    M    595 1977-03-01 2026-09-01 71.62794                                   OECD MEI employment rate LREM64TTUSM156S monthly levels %
+     JPY LREM64TTJPM156S    M    679 1970-03-01 2026-09-01 80.50604                                   OECD MEI employment rate LREM64TTJPM156S monthly levels %
+     CAD LREM64TTCAM156S    M    608 1976-03-01 2026-10-01 74.80000                                   OECD MEI employment rate LREM64TTCAM156S monthly levels %
+     AUD LREM64TTAUM156S    M    582 1978-04-01 2026-09-01 77.09666                                   OECD MEI employment rate LREM64TTAUM156S monthly levels %
+     GBP LREM64TTGBQ156S    Q    664 1971-03-01 2026-06-01 75.10000                                 OECD MEI employment rate LREM64TTGBQ156S quarterly levels %
+     EUR LREM64TTDEQ156S    Q    256 2005-03-01 2026-06-01 77.32463 Germany proxy LREM64TTDEQ156S (Q levels %); EA LREM64TTEZQ156S stale ~2022-10 — not primary
+     CHF LREM64TTCHQ156S    Q    337 1998-06-01 2026-06-01 79.53832                                 OECD MEI employment rate LREM64TTCHQ156S quarterly levels %
+     NZD LREM64TTNZQ156S    Q    484 1986-03-01 2026-06-01 77.07593                                 OECD MEI employment rate LREM64TTNZQ156S quarterly levels %
+Series source note: FRED OECD MEI LREM64TT employment rate ages 15–64 (%) (USD/JPY/CAD/AUD *M156S; GBP/CHF/NZD *Q156S; EUR=LREM64TTDEQ156S Germany proxy — EZQ156S stale ~2022-10; full G10 mapped; EMRATIO/CE16OV US-only + vacancies/hours alts documented not boarded)
+Score basis: er_level_pct unit=employment_rate_pct_level
+Failed/alt documented: {'eur_ez_stale_germany_proxy': ['LREM64TTEZQ156S', 'LREM64TTDEQ156S'], 'monthly_gb_de_ch_nz_mostly_404': ['LREM64TTGBM156S', 'LREM64TTDEM156S', 'LREM64TTCHM156S', 'LREM64TTNZM156S'], 'vacancies_lmjvttuv_stale_not_this_wave': ['LMJVTTUVUSM647S', 'LMJVTTUVEZM647S'], 'hours_hohwmn02_g10_404': ['HOHWMN02USM065S', 'HOHWMN02GBM065S'], 'employment_persons_lfemtttt_distinct_41': ['LFEMTTTTUSM647S', 'LFEMTTTTDEQ647S'], 'unemployment_rate_lrhutttt_distinct_54': ['LRHUTTTTUSM156S', 'LRHUTTTTEZM156S'], 'wage_lceamn_distinct_55': ['LCEAMN01USM657S', 'LCEAMN01EZQ657S'], 'lfp_activity_lrac64tt_distinct_56': ['LRAC64TTUSM156S', 'LRAC64TTDEQ156S'], 'emratio_ce16ov_us_only_not_this_wave': ['EMRATIO', 'CE16OV']}
+Stale: True note=EUR EA LREM64TTEZQ156S stale ~2022-10 — Germany DEQ156S proxy used
+Unmapped: []
+US LREM64TTUSM156S [1977-03-01..2026-09-01] n=595 series=LREM64TTUSM156S
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_er_xs: scale=1.353 bind=static IS mean_mo=-0.006% OOS gates=True
+  sweep low_er_xs: scale=1.143 bind=daily IS mean_mo=-0.003% OOS gates=True
+  sweep high_er_z_xs: scale=0.757 bind=static IS mean_mo=-0.060% OOS gates=True
+  sweep er_chg_xs: scale=0.547 bind=static IS mean_mo=-0.048% OOS gates=True
+  sweep us_er_stress_fx: scale=3.865 bind=static IS mean_mo=0.047% OOS gates=True
+  sweep us_er_haven_usd: scale=5.706 bind=daily IS mean_mo=-0.065% OOS gates=True
+  sweep er_ew: scale=1.239 bind=static IS mean_mo=-0.033% OOS gates=True
+=== factor summary ===
+  high_er_xs: mean_mo=-0.013% NW_t=-0.23 %pos=47%
+  low_er_xs: mean_mo=+0.007% NW_t=+0.13 %pos=52%
+  high_er_z_xs: mean_mo=-0.076% NW_t=-1.13 %pos=41%
+  er_chg_xs: mean_mo=-0.089% NW_t=-1.40 %pos=43%
+  us_er_stress_fx: mean_mo=+0.011% NW_t=+0.78 %pos=3%
+  us_er_haven_usd: mean_mo=-0.011% NW_t=-0.79 %pos=3%
+  er_ew: mean_mo=-0.030% NW_t=-0.91 %pos=46%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
