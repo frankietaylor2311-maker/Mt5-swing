@@ -1,0 +1,8 @@
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/test_unemployment_fx.py: 22 warnings
+  /workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+    s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+9 passed, 22 warnings in 1.05s

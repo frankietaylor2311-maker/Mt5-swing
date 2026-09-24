@@ -1,0 +1,216 @@
+{
+  "ok": true,
+  "section": 54,
+  "path": "oecd_mei_unemployment_rate",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 1,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "ur_level_pct",
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "low_ur_xs",
+    "high_ur_xs",
+    "low_ur_z_xs",
+    "ur_chg_xs",
+    "us_ur_stress_fx",
+    "us_ur_haven_usd",
+    "ur_ew"
+  ],
+  "primary": "low_ur_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI / national unemployment rate levels (LRHUTTTT*M156S; CHF=LMUNRRTTCHM156S registered; NZD unmapped); XS on UR level %; also 5y z / \u2212\u039412 of level boarded; low_ur primary (Dahlquist labour strength \u2192 appreciate); n_long=n_short=2 on available foreign panel",
+  "eur_mapping": "LRHUTTTTEZM156S EA UR (sparse tail ~2023-01 on FRED)",
+  "coverage_g10": "USD/EUR/GBP/JPY/AUD/CAD/CHF mapped; NZD unmapped on FRED",
+  "series_map": {
+    "USD": "LRHUTTTTUSM156S",
+    "EUR": "LRHUTTTTEZM156S",
+    "GBP": "LRHUTTTTGBM156S",
+    "JPY": "LRHUTTTTJPM156S",
+    "AUD": "LRHUTTTTAUM156S",
+    "CAD": "LRHUTTTTCAM156S",
+    "CHF": "LMUNRRTTCHM156S"
+  },
+  "score_basis": "ur_level_pct",
+  "distinct_from": [
+    "employment_persons_41",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "cpi_52",
+    "ppi_51",
+    "industrial_production_42",
+    "ulc_48",
+    "labour_prod_49",
+    "cap_util_50",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "epu_tpu",
+    "retail_sales_46"
+  ],
+  "citations": [
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum labour via UR",
+    "OECD MEI / national unemployment rates (LRHUTTTT*)",
+    "Honesty: high UR / labour-stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "LRHUTTTTUSM156S",
+      "freq": "M",
+      "n_obs": 849,
+      "start": "1955-02-01",
+      "end": "2025-10-01",
+      "last": 4.4,
+      "note": ""
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "LRHUTTTTEZM156S",
+      "freq": "M",
+      "n_obs": 391,
+      "start": "1990-08-01",
+      "end": "2023-02-01",
+      "last": 6.7,
+      "note": "EA UR ends ~2023-01 on FRED \u2014 sparse tail"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "LRHUTTTTGBM156S",
+      "freq": "M",
+      "n_obs": 521,
+      "start": "1983-02-01",
+      "end": "2026-06-01",
+      "last": 4.9,
+      "note": ""
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "LRHUTTTTJPM156S",
+      "freq": "M",
+      "n_obs": 859,
+      "start": "1955-02-01",
+      "end": "2026-08-01",
+      "last": 2.4,
+      "note": ""
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "LRHUTTTTAUM156S",
+      "freq": "M",
+      "n_obs": 582,
+      "start": "1978-03-01",
+      "end": "2026-08-01",
+      "last": 4.461825,
+      "note": ""
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "LRHUTTTTCAM156S",
+      "freq": "M",
+      "n_obs": 860,
+      "start": "1955-02-01",
+      "end": "2026-09-01",
+      "last": 6.4,
+      "note": ""
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "LMUNRRTTCHM156S",
+      "freq": "M",
+      "n_obs": 648,
+      "start": "1970-02-01",
+      "end": "2024-01-01",
+      "last": 2.172642,
+      "note": "LMUNRRTTCHM156S registered UR (not LRHUTTTT*)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_or_unavailable_on_fred"
+    }
+  ],
+  "unmapped": [
+    "NZD"
+  ],
+  "failed_or_alt": {
+    "nzd_unmapped_on_fred": [],
+    "chf_registered_ur_not_lrhutttt": [
+      "LMUNRRTTCHM156S"
+    ],
+    "eur_ea_sparse_tail_~2023_01": [
+      "LRHUTTTTEZM156S"
+    ],
+    "macro_diff_ur_series_reused": [
+      "LRHUTTTTUSM156S",
+      "LRHUTTTTEZM156S",
+      "LRHUTTTTGBM156S",
+      "LRHUTTTTJPM156S",
+      "LRHUTTTTAUM156S",
+      "LRHUTTTTCAM156S",
+      "LMUNRRTTCHM156S"
+    ],
+    "employment_persons_lfemtttt_distinct_41": [
+      "LFEMTTTTUSM647S",
+      "LFEMTTTTDEQ647S"
+    ]
+  },
+  "stale": true,
+  "stale_note": "EUR EA UR on free FRED ends ~2023-01 (sparse tail; post-end ffilled); NZD unmapped; CHF registered UR; USD/GBP/JPY/AUD/CAD live",
+  "soft_best": {
+    "factor": "low_ur_z_xs",
+    "n_months": 180,
+    "mean_mo": 0.0003842723199899355,
+    "tstat_ols": 0.6497585850850571,
+    "tstat_nw": 0.6863919276748515,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5722222222222222,
+    "top3": 0.1183235503770145,
+    "ann_sharpe_daily": 0.12892754259622774
+  },
+  "primary_sweep": {
+    "strategy": "low_ur_xs",
+    "scale": 2.013726788588545,
+    "binding": "static",
+    "is_total_return": -0.07332899201925136,
+    "is_static_loss": 0.09999999991265766,
+    "is_max_daily_dd": 0.022077314968566936,
+    "is_gates_pass": true,
+    "oos_total_return": 0.018037881087770602,
+    "oos_static_loss": 0.031217798868815153,
+    "oos_max_daily_dd": 0.008205806339377014,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00030405230541411833,
+    "mean_mo_oos": 0.00116229555645538,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0001892378543660774,
+    "scaled_full_pct_pos": 0.46111111111111114,
+    "scaled_ho_mean_mo": 0.00116229555645538,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}
