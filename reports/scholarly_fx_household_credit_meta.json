@@ -1,0 +1,250 @@
+{
+  "ok": true,
+  "section": 63,
+  "path": "oecd_mei_merchandise_household_credit_xtimva01",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 5,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "household_credit_yoy_pct",
+  "z_low": -1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "high_hhcred_xs",
+    "low_hhcred_xs",
+    "high_hhcred_z_xs",
+    "hhcred_chg_xs",
+    "us_hhcred_stress_fx",
+    "us_hhcred_haven_usd",
+    "hhcred_ew"
+  ],
+  "primary": "high_hhcred_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED BIS CRDQ*AHABIS household credit absolute \u2192 YoY % (EUR=CRDQXMAHABIS euro-area \u2014 CRDQEAAHABIS 404; NZD CRDQNZAHABIS 404 unmapped; unit=abs\u2192YoY not %GDP; distinct from Q*PAM770A \u00a732); XS on household-credit YoY %; also 5y z / +\u039412 of YoY boarded; high_hhcred primary (consumer-demand / credit-financed absorption \u2192 appreciate); n_long=n_short=2 on available foreign panel (NZD unmapped)",
+  "eur_mapping": "CRDQXMAHABIS euro-area (CRDQEAAHABIS 404)",
+  "coverage_g10": "G10 mapped excl NZD (USD/EUR/GBP/JPY/CAD/AUD/CHF; NZD 404)",
+  "series_unit_caveat": "abs_bn_to_yoy_not_pct_gdp",
+  "series_map": {
+    "USD": "CRDQUSAHABIS",
+    "EUR": "CRDQXMAHABIS",
+    "GBP": "CRDQGBAHABIS",
+    "JPY": "CRDQJPAHABIS",
+    "CAD": "CRDQCAAHABIS",
+    "AUD": "CRDQAUAHABIS",
+    "CHF": "CRDQCHAHABIS"
+  },
+  "score_basis": "household_credit_yoy_pct",
+  "distinct_from": [
+    "bis_private_credit_gdp_32",
+    "money_growth_33",
+    "bis_dsr_47",
+    "debt_gdp_29",
+    "house_price_35",
+    "retail_sales_46",
+    "passenger_car_regs_60",
+    "import_value_62",
+    "export_value_61",
+    "trade_balance_30",
+    "current_account_gdp_21",
+    "oecd_cli_37",
+    "oecd_bci_39",
+    "oecd_cci_38"
+  ],
+  "citations": [
+    "Mian & Sufi \u2014 household leverage / consumer credit",
+    "Borio & Drehmann / BIS \u2014 financial cycle (household sector application)",
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum spirit on credit-financed absorption",
+    "BIS CRDQ*AHABIS household credit abs \u2192 YoY % (not Q*PAM770A %GDP)",
+    "Honesty: low HH-credit growth / household-leverage stress premium",
+    "Fall-through: trade VOLUME 404; saving-rate 404 US-only; inventories 404; order books <4 G10"
+  ],
+  "fallthrough_from": [
+    "merchandise_trade_volume_404",
+    "household_saving_rate_404_us_only"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "CRDQUSAHABIS",
+      "freq": "Q",
+      "n_obs": 949,
+      "start": "1947-03-01",
+      "end": "2026-03-01",
+      "last": 3.172325348308358,
+      "note": "BIS household credit abs CRDQUSAHABIS \u2192 YoY % (quarterly)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "CRDQXMAHABIS",
+      "freq": "Q",
+      "n_obs": 310,
+      "start": "2000-06-01",
+      "end": "2026-03-01",
+      "last": 2.7391434256289537,
+      "note": "Euro-area household credit YoY via CRDQXMAHABIS (CRDQEAAHABIS 404); abs\u2192YoY%"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "CRDQGBAHABIS",
+      "freq": "Q",
+      "n_obs": 697,
+      "start": "1968-03-01",
+      "end": "2026-03-01",
+      "last": 3.230653539892425,
+      "note": "BIS household credit abs CRDQGBAHABIS \u2192 YoY % (quarterly)"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "CRDQJPAHABIS",
+      "freq": "Q",
+      "n_obs": 721,
+      "start": "1966-03-01",
+      "end": "2026-03-01",
+      "last": 2.958491738164004,
+      "note": "BIS household credit abs CRDQJPAHABIS \u2192 YoY % (quarterly)"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "CRDQCAAHABIS",
+      "freq": "Q",
+      "n_obs": 670,
+      "start": "1970-06-01",
+      "end": "2026-03-01",
+      "last": 4.43705023243095,
+      "note": "BIS household credit abs CRDQCAAHABIS \u2192 YoY % (quarterly)"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "CRDQAUAHABIS",
+      "freq": "Q",
+      "n_obs": 565,
+      "start": "1979-03-01",
+      "end": "2026-03-01",
+      "last": 6.565123693465957,
+      "note": "BIS household credit abs CRDQAUAHABIS \u2192 YoY % (quarterly)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "CRDQCHAHABIS",
+      "freq": "Q",
+      "n_obs": 301,
+      "start": "2001-03-01",
+      "end": "2026-03-01",
+      "last": 3.1825649862731176,
+      "note": "BIS household credit abs CRDQCHAHABIS \u2192 YoY % (quarterly)"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_crdq_ahabis (CRDQNZAHABIS 404)"
+    }
+  ],
+  "unmapped": [
+    "NZD"
+  ],
+  "failed_or_alt": {
+    "trade_volume_xtintva_xtexvo_xtimvo_404_fallthrough": [
+      "XTINTVA01USM657S",
+      "XTEXVO01USM657S",
+      "XTIMVO01USM657S",
+      "XTEXVA01USM657S_is_value_not_volume_already_61",
+      "XTIMVA01USM657S_is_value_not_volume_already_62"
+    ],
+    "household_saving_nasavp_hhsbrg_404_psavert_us_only_fallthrough": [
+      "NASAVPUSA156N",
+      "HHSBRG01USQ156N",
+      "PSAVERT"
+    ],
+    "inventories_stmnnto_404_businv_us_only": [
+      "STMNTO01USM657S",
+      "USASTMNTO01GYSAM",
+      "BUSINV"
+    ],
+    "order_books_bsoite02_thin_lt4_g10": [
+      "BSOITE02USM460S",
+      "BSOITE02DEM460S",
+      "BSOITE02CHM460S",
+      "BSCICP03USM665S_stale_bci39"
+    ],
+    "nzd_household_credit_404": [
+      "CRDQNZAHABIS",
+      "CRDQNZLAHABIS"
+    ],
+    "eur_ea_404_use_xm": [
+      "CRDQEAAHABIS",
+      "CRDQEUAHABIS"
+    ],
+    "pnfs_absolute_not_this_wave_see_32": [
+      "CRDQUSAPABIS",
+      "CRDQGBAPABIS",
+      "QUSPAM770A"
+    ],
+    "distinct_channels_not_this_wave": [
+      "QUSPAM770A",
+      "MABMM301USM657S",
+      "QUSPNFDSR",
+      "GGGDTA188N",
+      "QUSR628BIS",
+      "SLRTTO01USA657S",
+      "USASLRTCR03GYSAM",
+      "XTIMVA01USM657S"
+    ]
+  },
+  "stale": false,
+  "stale_note": "CRDQNZAHABIS 404 \u2192 NZD unmapped; CRDQEAAHABIS 404 \u2192 EUR=CRDQXMAHABIS euro-area a priori; score unit = household-credit YoY % from absolute levels (not %GDP); trade VOLUME XTINTVA/XTEXVO/XTIMVO 404 \u2192 fall through; household saving NASAVP/HHSBRG 404; PSAVERT US-only \u2192 fall through; inventories STMNTO* 404; order books BSOITE02 <4 G10 \u2192 not primary; distinct from Q*PAM770A private credit/GDP \u00a732",
+  "soft_best": {
+    "factor": "high_hhcred_z_xs",
+    "n_months": 180,
+    "mean_mo": 0.0006731798542651922,
+    "tstat_ols": 0.9844065888561401,
+    "tstat_nw": 0.9981358574215984,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5222222222222223,
+    "top3": 0.17202164987012808,
+    "ann_sharpe_daily": 0.26768487225093834
+  },
+  "primary_sweep": {
+    "strategy": "high_hhcred_xs",
+    "scale": 0.5857677615563895,
+    "binding": "static",
+    "is_total_return": -0.09359156451622119,
+    "is_static_loss": 0.0999999999034137,
+    "is_max_daily_dd": 0.009115192374215549,
+    "is_gates_pass": true,
+    "oos_total_return": 0.022652672196637802,
+    "oos_static_loss": 0.006417742221488297,
+    "oos_max_daily_dd": 0.002417204303062026,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.00048098814935416826,
+    "mean_mo_oos": 0.0020642483688420774,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.00032208061541322334,
+    "scaled_full_pct_pos": 0.48333333333333334,
+    "scaled_ho_mean_mo": 0.0020642483688420774,
+    "scaled_ho_pct_pos": 0.8333333333333334,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}

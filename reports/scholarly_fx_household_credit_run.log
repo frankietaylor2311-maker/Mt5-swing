@@ -1,0 +1,35 @@
+=== scholarly FX BIS/FRED household-credit wave (§63) ===
+FRED CRDQ*AHABIS household-credit YoY (pub_lag=5) — high_hhcred XS; consumer-demand / credit-financed-absorption prior; EUR=XM euro-area; NZD unmapped; distinct from credit/GDP §32, money §33, DSR §47, debt §29, HPI §35, retail §46, cars §60, import §62. Locked sleeve untouched. Fall-through: trade VOLUME 404; saving-rate 404; inventories 404; order books <4 G10. Unit=abs→YoY not %GDP.
+household_credit panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF'] [1947-03-01..2026-03-01] pub_lag_m=5
+currency      fred_id freq  n_obs      start        end     last                                                                         note
+     USD CRDQUSAHABIS    Q    949 1947-03-01 2026-03-01 3.172325                    BIS household credit abs CRDQUSAHABIS → YoY % (quarterly)
+     EUR CRDQXMAHABIS    Q    310 2000-06-01 2026-03-01 2.739143 Euro-area household credit YoY via CRDQXMAHABIS (CRDQEAAHABIS 404); abs→YoY%
+     GBP CRDQGBAHABIS    Q    697 1968-03-01 2026-03-01 3.230654                    BIS household credit abs CRDQGBAHABIS → YoY % (quarterly)
+     JPY CRDQJPAHABIS    Q    721 1966-03-01 2026-03-01 2.958492                    BIS household credit abs CRDQJPAHABIS → YoY % (quarterly)
+     CAD CRDQCAAHABIS    Q    670 1970-06-01 2026-03-01 4.437050                    BIS household credit abs CRDQCAAHABIS → YoY % (quarterly)
+     AUD CRDQAUAHABIS    Q    565 1979-03-01 2026-03-01 6.565124                    BIS household credit abs CRDQAUAHABIS → YoY % (quarterly)
+     CHF CRDQCHAHABIS    Q    301 2001-03-01 2026-03-01 3.182565                    BIS household credit abs CRDQCHAHABIS → YoY % (quarterly)
+     NZD                        0        NaN        NaN      NaN                              unmapped_on_fred_crdq_ahabis (CRDQNZAHABIS 404)
+Series source note: FRED BIS CRDQ{ISO2}AHABIS household credit absolute → YoY % (EUR=CRDQXMAHABIS euro-area — CRDQEAAHABIS 404; NZD CRDQNZAHABIS 404 unmapped; distinct from Q*PAM770A private credit/GDP §32; trade-volume/saving-rate/inventories/order-books fallthrough)
+Score basis: household_credit_yoy_pct unit=yoy_pct
+Failed/alt documented: {'trade_volume_xtintva_xtexvo_xtimvo_404_fallthrough': ['XTINTVA01USM657S', 'XTEXVO01USM657S', 'XTIMVO01USM657S', 'XTEXVA01USM657S_is_value_not_volume_already_61', 'XTIMVA01USM657S_is_value_not_volume_already_62'], 'household_saving_nasavp_hhsbrg_404_psavert_us_only_fallthrough': ['NASAVPUSA156N', 'HHSBRG01USQ156N', 'PSAVERT'], 'inventories_stmnnto_404_businv_us_only': ['STMNTO01USM657S', 'USASTMNTO01GYSAM', 'BUSINV'], 'order_books_bsoite02_thin_lt4_g10': ['BSOITE02USM460S', 'BSOITE02DEM460S', 'BSOITE02CHM460S', 'BSCICP03USM665S_stale_bci39'], 'nzd_household_credit_404': ['CRDQNZAHABIS', 'CRDQNZLAHABIS'], 'eur_ea_404_use_xm': ['CRDQEAAHABIS', 'CRDQEUAHABIS'], 'pnfs_absolute_not_this_wave_see_32': ['CRDQUSAPABIS', 'CRDQGBAPABIS', 'QUSPAM770A'], 'distinct_channels_not_this_wave': ['QUSPAM770A', 'MABMM301USM657S', 'QUSPNFDSR', 'GGGDTA188N', 'QUSR628BIS', 'SLRTTO01USA657S', 'USASLRTCR03GYSAM', 'XTIMVA01USM657S']}
+Stale: False note=CRDQNZAHABIS 404 → NZD unmapped; CRDQEAAHABIS 404 → EUR=CRDQXMAHABIS euro-area a priori; score unit = household-credit YoY % from absolute levels (not %GDP); trade VOLUME XTINTVA/XTEXVO/XTIMVO 404 → fall through; household saving NASAVP/HHSBRG 404; PSAVERT US-only → fall through; inventories STMNTO* 404; order books BSOITE02 <4 G10 → not primary; distinct from Q*PAM770A private credit/GDP §32
+Unmapped: ['NZD']
+US CRDQUSAHABIS YoY [1947-03-01..2026-03-01] n=949 series=CRDQUSAHABIS
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  sweep high_hhcred_xs: scale=0.586 bind=static IS mean_mo=-0.048% OOS gates=True
+  sweep low_hhcred_xs: scale=0.982 bind=daily IS mean_mo=0.077% OOS gates=True
+  sweep high_hhcred_z_xs: scale=2.937 bind=daily IS mean_mo=0.157% OOS gates=True
+  sweep hhcred_chg_xs: scale=2.787 bind=static IS mean_mo=0.063% OOS gates=True
+  sweep us_hhcred_stress_fx: scale=9.821 bind=daily IS mean_mo=0.054% OOS gates=False
+  sweep us_hhcred_haven_usd: scale=6.475 bind=static IS mean_mo=-0.036% OOS gates=True
+  sweep hhcred_ew: scale=2.297 bind=static IS mean_mo=-0.041% OOS gates=True
+=== factor summary ===
+  high_hhcred_xs: mean_mo=-0.055% NW_t=-0.83 %pos=48%
+  low_hhcred_xs: mean_mo=+0.051% NW_t=+0.77 %pos=52%
+  high_hhcred_z_xs: mean_mo=+0.067% NW_t=+1.00 %pos=52%
+  hhcred_chg_xs: mean_mo=+0.015% NW_t=+0.26 %pos=49%
+  us_hhcred_stress_fx: mean_mo=+0.002% NW_t=+0.21 %pos=4%
+  us_hhcred_haven_usd: mean_mo=-0.002% NW_t=-0.21 %pos=5%
+  hhcred_ew: mean_mo=-0.013% NW_t=-0.41 %pos=48%
+board n=7 soft=0 hard=0 promote_unscaled=False scaled_primary=False
