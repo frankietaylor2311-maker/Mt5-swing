@@ -1,0 +1,42 @@
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+=== scholarly FX VIX/GPR-conditioned Rogoff PPP / real-FX value wave (§75) ===
+VIX + aggregate GPR stress gate/cool on Rogoff PPP real-FX value — primary value_low_vix; Rogoff PPP / real FX + Menkhoff et al. (2012 JF) + Caldara–Iacoviello / Liu–Zhang; distinct from raw ppp_wave / bis_reer, soft EW §66, VIX/GPR soft §72, VIX/GPR carry §73, VIX/GPR mom §74, CIP waves, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+VIX [1990-01-03..2026-09-16] n=9245
+GPR [1985-01-02..2026-09-14] n=15231
+CPI levels cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'CHF', 'AUD', 'NZD'] pub_lag=1 [1914-02-01..2026-09-01]
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  skip risk sweep: no positive IS mean on any factor
+Locked sleeve re-verify (§75 vix_gpr_conditioned_value): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §73 / §72 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_vix_gpr_conditioned_value.md
+=== factor summary ===
+  value_raw: mean_mo=-0.014% NW_t=-0.22 %pos=42%
+  value_vix_cool: mean_mo=-0.021% NW_t=-0.46 %pos=39%
+  value_gpr_cool: mean_mo=-0.027% NW_t=-0.57 %pos=38%
+  value_low_vix: mean_mo=-0.024% NW_t=-0.60 %pos=31%
+  value_low_gpr: mean_mo=-0.074% NW_t=-1.69 %pos=34%
+  value_high_vix: mean_mo=-0.046% NW_t=-1.21 %pos=12%
+  value_vix_gpr_stack: mean_mo=-0.028% NW_t=-0.70 %pos=37%
+  value_vix_gpr_ew: mean_mo=-0.036% NW_t=-0.91 %pos=39%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
