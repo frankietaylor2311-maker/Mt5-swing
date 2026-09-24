@@ -1,0 +1,10 @@
+=== scholarly FX soft-signal CIP stack wave (§69) ===
+data_tag=approximate_non_ftmo primary=soft_ew7_cip
+board n=7 soft=7 hard=7 promote_unscaled=False scaled_primary=False
+  soft_ew7_cip: mean_mo=+0.104% NW_t=+3.94 %pos=64%
+  soft_ew_macro5: mean_mo=+0.118% NW_t=+3.63 %pos=61%
+  soft_ew_cip2: mean_mo=+0.069% NW_t=+2.17 %pos=60%
+  soft_ew6_no_haven: mean_mo=+0.109% NW_t=+3.78 %pos=63%
+  soft_ew6_no_cip_ew: mean_mo=+0.111% NW_t=+3.87 %pos=63%
+  soft_ew_growth_cip: mean_mo=+0.101% NW_t=+3.34 %pos=64%
+  soft_ew_honesty_cip: mean_mo=+0.090% NW_t=+3.36 %pos=62%
