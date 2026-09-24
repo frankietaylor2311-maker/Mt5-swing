@@ -1,0 +1,227 @@
+{
+  "ok": true,
+  "section": 55,
+  "path": "oecd_mei_manufacturing_earnings_lceamn",
+  "data_tag": "approximate_non_ftmo",
+  "pub_lag_months": 2,
+  "signal_lag_months": 1,
+  "signal_lag_days": 1,
+  "z_window": 60,
+  "chg_periods": 12,
+  "score_unit": "yoy_growth_pct",
+  "z_high": 1.0,
+  "usd_tilt": 0.5,
+  "cost_bps_side": 1.5,
+  "n_long": 2,
+  "n_short": 2,
+  "factors": [
+    "low_wage_growth_xs",
+    "high_wage_growth_xs",
+    "low_wage_z_xs",
+    "wage_chg_xs",
+    "us_wage_stress_fx",
+    "us_wage_haven_usd",
+    "wage_ew"
+  ],
+  "primary": "low_wage_growth_xs",
+  "n_factors": 7,
+  "soft_nw_pos": 0,
+  "hard_nw_pos": 0,
+  "promote_unscaled": false,
+  "promote_scaled_primary": false,
+  "promote": false,
+  "holdout": {
+    "start": "2025-09-15",
+    "end": "2026-09-15"
+  },
+  "locked_sleeve": "fx4plus_gbpcad_d1_voltarget_0025",
+  "locked_sleeve_untouched": true,
+  "normalisation": "FRED OECD MEI LCEAMN01 manufacturing earnings YoY (USD/CAD *M657S; EUR=*EZQ657S; NZD=*NZQ657S; GBP/JPY *M661S\u2192YoY; AUD *AUQ661S\u2192YoY; CHF unmapped 404); XS on wage YoY %; also 5y z / \u2212\u039412 of YoY boarded; low_wage_growth primary (competitiveness \u2192 appreciate); n_long=n_short=2 on available foreign panel",
+  "eur_mapping": "LCEAMN01EZQ657S EA manufacturing earnings YoY (ends ~2025-07; DE/FR alts)",
+  "coverage_g10": "USD/EUR/GBP/JPY/AUD/CAD/NZD mapped; CHF unmapped on FRED (404)",
+  "series_map": {
+    "USD": "LCEAMN01USM657S",
+    "EUR": "LCEAMN01EZQ657S",
+    "GBP": "LCEAMN01GBM661S",
+    "JPY": "LCEAMN01JPM661S",
+    "AUD": "LCEAMN01AUQ661S",
+    "CAD": "LCEAMN01CAM657S",
+    "NZD": "LCEAMN01NZQ657S"
+  },
+  "score_basis": "yoy_growth_pct",
+  "distinct_from": [
+    "ulc_unit_labour_cost_48",
+    "employment_persons_41",
+    "unemployment_rate_54",
+    "labour_prod_49",
+    "cap_util_50",
+    "cpi_52",
+    "ppi_51",
+    "industrial_production_42",
+    "macro_diff_EW_CPI_IP_UR_blend",
+    "oecd_cli_37",
+    "oecd_cci_38",
+    "oecd_bci_39",
+    "wui_40",
+    "retail_sales_46"
+  ],
+  "citations": [
+    "Balassa\u2013Samuelson wage / relative labour-cost competitiveness channel",
+    "Dahlquist & Hasseltoft (2020), JFE \u2014 economic momentum labour companion",
+    "OECD MEI LCEAMN01 manufacturing earnings (ULC \u00a748 documented fallback \u2014 now dedicated)",
+    "Honesty: high wage growth / labour-cost stress debtor premium"
+  ],
+  "coverage": [
+    {
+      "currency": "USD",
+      "fred_id": "LCEAMN01USM657S",
+      "freq": "M",
+      "n_obs": 858,
+      "start": "1955-04-01",
+      "end": "2026-09-01",
+      "last": 0.098944591028705,
+      "note": "OECD MEI manufacturing earnings YoY LCEAMN01USM657S (as reported)"
+    },
+    {
+      "currency": "GBP",
+      "fred_id": "LCEAMN01GBM661S",
+      "freq": "M",
+      "n_obs": 747,
+      "start": "1964-03-01",
+      "end": "2026-05-01",
+      "last": 3.1121650139553925,
+      "note": "OECD MEI LCEAMN01GBM661S monthly index \u2192 YoY %"
+    },
+    {
+      "currency": "JPY",
+      "fred_id": "LCEAMN01JPM661S",
+      "freq": "M",
+      "n_obs": 846,
+      "start": "1956-03-01",
+      "end": "2026-08-01",
+      "last": 5.764382468984586,
+      "note": "OECD MEI LCEAMN01JPM661S monthly index \u2192 YoY %"
+    },
+    {
+      "currency": "CAD",
+      "fred_id": "LCEAMN01CAM657S",
+      "freq": "M",
+      "n_obs": 855,
+      "start": "1955-04-01",
+      "end": "2026-06-01",
+      "last": 0.72509457755332,
+      "note": "OECD MEI manufacturing earnings YoY LCEAMN01CAM657S (as reported)"
+    },
+    {
+      "currency": "EUR",
+      "fred_id": "LCEAMN01EZQ657S",
+      "freq": "Q",
+      "n_obs": 352,
+      "start": "1996-06-01",
+      "end": "2025-09-01",
+      "last": 0.6843455945252225,
+      "note": "EA YoY via LCEAMN01EZQ657S (Q growth as reported); DE LCEAMN01DEQ657S / FR LCEAMN01FRQ661S\u2192YoY alts"
+    },
+    {
+      "currency": "AUD",
+      "fred_id": "LCEAMN01AUQ661S",
+      "freq": "Q",
+      "n_obs": 496,
+      "start": "1984-12-01",
+      "end": "2026-03-01",
+      "last": 2.6852505952314143,
+      "note": "OECD MEI LCEAMN01AUQ661S quarterly index \u2192 YoY %"
+    },
+    {
+      "currency": "NZD",
+      "fred_id": "LCEAMN01NZQ657S",
+      "freq": "Q",
+      "n_obs": 442,
+      "start": "1989-06-01",
+      "end": "2026-03-01",
+      "last": 0.629563981082737,
+      "note": "OECD MEI manufacturing earnings YoY LCEAMN01NZQ657S (as reported)"
+    },
+    {
+      "currency": "CHF",
+      "fred_id": "",
+      "freq": "",
+      "n_obs": 0,
+      "start": NaN,
+      "end": NaN,
+      "last": NaN,
+      "note": "unmapped_on_fred_lceamn_404"
+    }
+  ],
+  "unmapped": [
+    "CHF"
+  ],
+  "failed_or_alt": {
+    "chf_lceamn_404_unmapped": [
+      "LCEAMN01CHQ657S",
+      "LCEAMN01CHQ661S",
+      "LCEAMN01CHM657S",
+      "LCEAMN01CHM661S"
+    ],
+    "eur_ez_primary_de_fr_alts": [
+      "LCEAMN01EZQ657S",
+      "LCEAMN01DEQ657S",
+      "LCEAMN01FRQ661S",
+      "LCEAMN01DEM661N",
+      "LCEAMN01EZQ661S"
+    ],
+    "gbp_jpy_aud_index_to_yoy": [
+      "LCEAMN01GBM661S",
+      "LCEAMN01JPM661S",
+      "LCEAMN01AUQ661S",
+      "LCEAMN01GBQ661S",
+      "LCEAMN01JPQ661S"
+    ],
+    "us_national_alts_not_mixed": [
+      "LCEAMN01USM661N",
+      "LCEAMN01USQ657S",
+      "CES0500000003"
+    ],
+    "ulc_48_lceamn_was_fallback_not_primary": [
+      "LCEAMN01USM657S",
+      "LCEAMN01CAM657S",
+      "LCEAMN01NZQ657S"
+    ]
+  },
+  "stale": true,
+  "stale_note": "EUR EA LCEAMN01EZQ657S ends ~2025-07 (post-end ffilled; DE/FR alts); CHF LCEAMN unmapped (404)",
+  "soft_best": {
+    "factor": "high_wage_growth_xs",
+    "n_months": 180,
+    "mean_mo": 0.0004628499878730405,
+    "tstat_ols": 0.8036555239586225,
+    "tstat_nw": 0.7938379543996147,
+    "nw_lags": 4,
+    "pct_pos_mo": 0.5333333333333333,
+    "top3": 0.09342055505155804,
+    "ann_sharpe_daily": 0.13754862061877596
+  },
+  "primary_sweep": {
+    "strategy": "low_wage_growth_xs",
+    "scale": 0.8006142200180653,
+    "binding": "static",
+    "is_total_return": -0.07402526862119929,
+    "is_static_loss": 0.0999999999651841,
+    "is_max_daily_dd": 0.007395047963464603,
+    "is_gates_pass": true,
+    "oos_total_return": -0.00713408834774254,
+    "oos_static_loss": 0.007753696928003483,
+    "oos_max_daily_dd": 0.0030235797264047144,
+    "oos_gates_pass": true,
+    "mean_mo_is": -0.0005583599466833471,
+    "mean_mo_oos": -0.00026076252746431067,
+    "n_scales_tried": 117,
+    "scaled_full_mean_mo": -0.0005596214739076072,
+    "scaled_full_pct_pos": 0.45555555555555555,
+    "scaled_ho_mean_mo": -0.00026076252746431067,
+    "scaled_ho_pct_pos": 0.5,
+    "scaled_clears_1pct_is": false,
+    "scaled_clears_1pct_oos": false
+  },
+  "sizing_note": "Prop mode: utilise nearly full FTMO DD (10% static / 5% daily) via risk sweep when IS mean>0; stay under caps."
+}
