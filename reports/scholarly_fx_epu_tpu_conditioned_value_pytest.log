@@ -1,0 +1,21 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: platformdirs-4.12.2
+collecting ... collected 11 items
+
+tests/test_epu_tpu_conditioned_value_fx.py::test_primary_name_constant PASSED [  9%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_gate_direction_low_on_high_off PASSED [ 18%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_cool_scale_bounds PASSED [ 27%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_stack_scales_compound PASSED [ 36%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_no_lookahead_mutate_future_epu PASSED [ 45%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_no_lookahead_mutate_future_cpi PASSED [ 54%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_tpu_missing_fallthrough PASSED [ 63%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_factor_shapes_match_index PASSED [ 72%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_gate_on_off_explicit_z PASSED [ 81%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_monthly_z_window_prior PASSED [ 90%]
+tests/test_epu_tpu_conditioned_value_fx.py::test_load_real_epu_value PASSED [100%]
+
+============================== 11 passed in 1.03s ==============================

@@ -3525,4 +3525,22 @@ Artifacts: `reports/scholarly_fx_vix_gpr_conditioned_mom_wave.md`, `scholarly_fx
 
 **Takeaway:** Gating Menkhoff FX momentum on low EPU/TPU did not clear the 1%/mo bar (primary mean slightly **negative**). Soft/hard NW boards empty; all eight legs negative full-sample. Completes EPU/TPU stress conditioning beside soft §76 / REER §77 / carry §78 / VIX/GPR×mom §74; classic momentum under EPU/TPU remains promote=0. Recent elevated EPU keeps the binary low-EPU gate flat through 2026/HO (capital retention by design).
 
-**Next:** EPU/TPU-conditioned Rogoff PPP / real-FX value (parallel to §75 with monthly EPU/TPU), or FTMO MT5 CSV re-score when exports arrive — without cooler-overlay on locked fx4plus. FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
+**Next:** Done as §80 (EPU/TPU-conditioned Rogoff PPP / real-FX value). FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
+
+## §80 — EPU/TPU-conditioned Rogoff PPP / real-FX value (2026-09-29)
+
+**Path:** Baker–Bloom–Davis **EPU** (US USEPUINDXM) + **TPU** (categorical Trade policy) stress × Rogoff PPP / real-FX cross-sectional value gate/cool — parallel to VIX/GPR-conditioned PPP value §75 and EPU/TPU soft §76 / REER §77 / carry §78 / mom §79. Distinct from raw PPP, BIS REER §31, §75 VIX/GPR×PPP, EPU soft §76, EPU×REER §77, EPU×carry §78, EPU×mom §79, capital-sleeve §53/§70, combo §8, standalone EPU/TPU §18.
+
+**Board:** n=8 soft=0 hard=0 **promote=0**
+**Primary `value_low_epu`:** full-sample **−0.071%/mo**, NW t **−1.62**, %pos **24%**
+- 2024 −0.10%/64%; 2025 −0.02%/18%; 2026 +0.00%/0%; HO +0.00%/0% — 1% bar **no**
+**Honesty inverse `value_high_epu`:** +0.030%/mo NW t +0.92 (not soft — |t|<1.5)
+**Risk sweep:** primary scale≈0.790 bind=static; scaled HO flat (EPU gate off — elevated EPU recent) — **not** clear
+**Locked** `fx4plus_gbpcad_d1_voltarget_0025` untouched **PASS**
+**Data:** `approximate_non_ftmo`; EPU→2026-09-01, TPU→2026-09-01, CPI→2026-09-01 (pub_lag=1); monthly z_window=60m (CIP §71 / EPU soft §76 / REER §77 / carry §78 / mom §79 mirror)
+**Artifacts:** `reports/scholarly_fx_epu_tpu_conditioned_value_wave.md`, strategy + runner + tests
+
+**Takeaway:** Gating Rogoff PPP / real-FX value on low EPU/TPU did not clear the 1%/mo bar (primary mean **negative**, NW t −1.62). Soft/hard NW boards empty; seven of eight legs negative full-sample. Completes EPU/TPU stress conditioning beside soft §76 / REER §77 / carry §78 / mom §79 / VIX/GPR×PPP §75; classic PPP value under EPU/TPU remains promote=0. Recent elevated EPU keeps the binary low-EPU gate flat through 2026/HO (capital retention by design).
+
+**Next:** FTMO MT5 CSV re-score when exports arrive — without cooler-overlay on locked fx4plus. Classic carry/mom/value triad under both VIX/GPR (§73–§75) and EPU/TPU (§78–§80) closed with no promotes; soft EPU §76 remains the only hard-|t| structure under stress gates. FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
+
