@@ -1,0 +1,4 @@
+§79 EPU/TPU-conditioned Menkhoff FX momentum wave
+board n=8 soft=0 hard=0 promote=False
+data_tag=approximate_non_ftmo epu_end=2026-09-01 tpu_end=2026-09-01 mom_end=2026-09-15
+locked=fx4plus_gbpcad_d1_voltarget_0025 untouched=True verify=PASS

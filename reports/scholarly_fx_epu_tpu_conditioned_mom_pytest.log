@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: platformdirs-4.12.2
+collecting ... collected 10 items
+
+tests/test_epu_tpu_conditioned_mom_fx.py::test_primary_name_constant PASSED [ 10%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_gate_direction_low_on_high_off PASSED [ 20%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_cool_scale_bounds PASSED  [ 30%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_stack_scales_compound PASSED [ 40%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_no_lookahead_mutate_future_epu PASSED [ 50%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_tpu_missing_fallthrough PASSED [ 60%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_factor_shapes_match_index PASSED [ 70%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_gate_on_off_explicit_z PASSED [ 80%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_monthly_z_window_prior PASSED [ 90%]
+tests/test_epu_tpu_conditioned_mom_fx.py::test_load_real_epu_mom PASSED  [100%]
+
+============================== 10 passed in 0.85s ==============================
