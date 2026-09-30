@@ -3559,4 +3559,21 @@ Artifacts: `reports/scholarly_fx_vix_gpr_conditioned_mom_wave.md`, `scholarly_fx
 
 **Takeaway:** Gating BIS REER HML-FX value on low VIX/GPR did not clear the 1%/mo bar (primary mean near zero, NW t +0.39). Soft/hard NW boards empty. Closes the missing VIX/GPR × REER parallel beside soft/carry/mom/PPP §72–§75 and EPU×REER §77; classic REER value under VIX/GPR remains promote=0.
 
-**Next:** FTMO MT5 CSV re-score when exports arrive — without cooler-overlay on locked fx4plus. Classic carry/mom/value triad under both VIX/GPR (§73–§75) and EPU/TPU (§78–§80) plus REER under both EPU (§77) and VIX/GPR (§81) closed with no promotes; soft EPU §76 remains the only hard-|t| structure under stress gates. FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
+**Next:** Done as §82 (CIP-conditioned Menkhoff FX momentum). FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
+
+## §82 — CIP-conditioned Menkhoff FX momentum (2026-09-30)
+
+**Path:** Du–Schreger **government-bond CIP** / UST-premium stress (−mean G10 `cip_govt` bps, tenor=**5y**) × Menkhoff (2012 JFE) FX momentum gate/cool — closes the missing CIP×mom parallel after CIP×carry §68, VIX/GPR×mom §74, and EPU/TPU×mom §79. Distinct from combo §8, raw fx_momentum, CIP×carry §68, CIP soft §71, VIX/GPR mom §74, EPU/TPU mom §79, soft/carry/value/REER stress waves §72–§81, capital-sleeve §53/§70.
+
+**Board:** n=8 soft=1 hard=0 **promote=0**
+**Primary `mom_low_cip`:** full-sample **−0.005%/mo**, NW t **−0.10**, %pos **19%**
+- 2024 −0.26%/27%; 2025 +0.43%/91%; 2026 +0.33%/62%; HO +0.37%/75% — 1% bar **no**
+**Soft (NW |t|≥1.5, mean>0):** `cip_stress_haven_usd` +0.073%/mo NW t **+1.91** (not hard — |t|<2.0)
+**Risk sweep:** primary scale≈0.998 bind=static; scaled HO +0.37%/75% — **not** clear
+**Locked** `fx4plus_gbpcad_d1_voltarget_0025` untouched **PASS**
+**Data:** `approximate_non_ftmo`; CIP panel→2025-07-31 (cip_dataset_v4; 2026 FX stale/ffill), mom Yahoo D1→2026-09-15; monthly z_window=60m (§68/§71 mirror)
+**Artifacts:** `reports/scholarly_fx_cip_conditioned_mom_wave.md`, strategy + runner + tests
+
+**Takeaway:** Gating Menkhoff FX momentum on low CIP/basis stress did not clear the 1%/mo bar (primary full-sample near zero / slightly negative, NW t −0.10). Soft board has only the CIP-stress USD haven companion (NW t +1.91); hard empty. Closes the missing CIP×mom parallel beside CIP×carry §68 / CIP soft §71 and VIX/EPU×mom §74/§79; classic momentum under CIP remains promote=0. Soft EPU §76 remains the only hard-|t| stress structure so far.
+
+**Next:** FTMO MT5 CSV re-score when exports arrive — without cooler-overlay on locked fx4plus. Classic carry/mom under CIP (§68/§82), VIX/GPR (§73–§74), and EPU/TPU (§78–§79) plus value/REER under both stress families (§75/§77/§80/§81) closed with no promotes; soft EPU §76 remains the only hard-|t| structure under stress gates. FX IV/RR + news-sentiment still blocked. No go-live under `approximate_non_ftmo`.
