@@ -1,0 +1,9 @@
+=== scholarly FX STLFSI4-conditioned soft-signal EW wave (§100) ===
+US STLFSI4 stress gate/cool on soft_ew_macro5 — primary soft_low_stlfsi; Dahlquist–Hasseltoft + Brunnermeier–Nagel–Pedersen + St. Louis Fed STLFSI4; distinct from funding_liq §20, soft_ew §66, NFCI soft §90, ANFCI soft §95. Locked sleeve untouched.
+US STLFSI4 (STLFSI4) [1994-01-07..2026-09-25] n=1708 pub_lag_days=7 series=fred_STLFSI4
+FX panel tag=approximate_non_ftmo
+soft_ew_macro5 n=3905 [2011-09-15..2026-09-15]
+  sweep soft_low_stlfsi: scale=6.324 bind=daily IS mean_mo=0.539% OOS gates=True
+Locked sleeve re-verify PASS (fx4plus untouched)
+board n=8 soft=7 hard=5 promote_unscaled=False scaled_primary=False
+pytest: 11 passed

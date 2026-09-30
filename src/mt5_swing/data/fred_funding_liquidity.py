@@ -16,11 +16,14 @@ Free FRED series (no paid terminals)
 - ``TEDRATE`` — TED spread (daily; ends ~2022-01 after LIBOR sunset).
 - ``CPFF`` — 3M AA financial CP − 3M T-bill (daily post-LIBOR funding proxy).
 - ``BAA10Y`` — Moody's Baa − 10Y Treasury (credit / risk-premium proxy).
+- ``STLFSI4`` — St. Louis Fed Financial Stress Index (redesigned; weekly; 0 ≈
+  average; >0 elevated stress). Kliesen et al. / St. Louis Fed docs. Distinct
+  from Chicago Fed NFCI/ANFCI (different construction / panel).
 
 PIT lags (conservative, frozen — not holdout-tuned)
 ---------------------------------------------------
-- Weekly NFCI family: Chicago Fed typically releases mid-week for a Friday-ending
-  observation week → ``pub_lag_days=7`` (one calendar week).
+- Weekly NFCI family / STLFSI4: mid-week / Friday-ending observation week →
+  ``pub_lag_days=7`` (one calendar week; same conservative weekly PIT).
 - Daily TED / CPFF / BAA: ``pub_lag_days=1``.
 
 Do **not** overlay these coolers onto the locked FTMO sleeve; they are evaluated
@@ -49,6 +52,11 @@ FRED_FUNDING_DAILY: dict[str, str] = {
     "TEDRATE": "TEDRATE",  # ends 2022-01
     "CPFF": "CPFF",  # CP − Tbill; continues post-LIBOR
     "BAA10Y": "BAA10Y",  # Moody's Baa − 10Y
+}
+
+# Weekly St. Louis Fed Financial Stress Index (redesigned STLFSI4 on FRED)
+FRED_STLFSI_WEEKLY: dict[str, str] = {
+    "STLFSI4": "STLFSI4",
 }
 
 DEFAULT_WEEKLY_PUB_LAG_DAYS = 7
@@ -82,6 +90,44 @@ def load_nfci_series(
     s.attrs["source"] = f"fred_{sid}"
     s.attrs["frequency"] = "weekly"
     return s
+
+
+def load_stlfsi_series(
+    series_id: str = "STLFSI4",
+    *,
+    download: bool = True,
+    pub_lag_days: int = DEFAULT_WEEKLY_PUB_LAG_DAYS,
+    force: bool = False,
+) -> pd.Series:
+    """Load St. Louis Fed Financial Stress Index (STLFSI4) with publication lag.
+
+    ``STLFSI4`` is the redesigned weekly index on FRED (replaces legacy STLFSI).
+    Uses the same conservative ``pub_lag_days=7`` weekly PIT as the NFCI family.
+    Distinct from Chicago Fed NFCI/ANFCI.
+    """
+    sid = series_id.upper()
+    if sid not in FRED_STLFSI_WEEKLY and sid not in set(FRED_STLFSI_WEEKLY.values()):
+        # Allow documented STLFSI-family FRED ids (e.g. legacy STLFSI) via passthrough
+        pass
+    s = load_fred_series(sid, download=download, force=force)
+    s = _apply_pub_lag(s, pub_lag_days)
+    s.name = sid
+    s.attrs["source"] = f"fred_{sid}"
+    s.attrs["frequency"] = "weekly"
+    return s
+
+
+def load_us_stlfsi_series(
+    *,
+    series_id: str = "STLFSI4",
+    download: bool = True,
+    pub_lag_days: int = DEFAULT_WEEKLY_PUB_LAG_DAYS,
+    force: bool = False,
+) -> pd.Series:
+    """Thin alias — US St. Louis Fed Financial Stress Index (weekly)."""
+    return load_stlfsi_series(
+        series_id, download=download, pub_lag_days=pub_lag_days, force=force
+    )
 
 
 def load_funding_spread(
@@ -176,7 +222,11 @@ def load_funding_liquidity_bundle(
 def ensure_funding_liquidity_cached(*, force: bool = False) -> dict[str, str]:
     """Ensure FRED CSVs exist under ``data/macro/``; return series_id → path."""
     paths: dict[str, str] = {}
-    for sid in set(FRED_NFCI_WEEKLY.values()) | set(FRED_FUNDING_DAILY.values()):
+    for sid in (
+        set(FRED_NFCI_WEEKLY.values())
+        | set(FRED_FUNDING_DAILY.values())
+        | set(FRED_STLFSI_WEEKLY.values())
+    ):
         p = download_fred_series(sid, force=force)
         paths[sid] = str(p)
     return paths
