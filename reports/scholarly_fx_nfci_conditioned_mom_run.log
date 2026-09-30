@@ -1,0 +1,24 @@
+=== scholarly FX NFCI-conditioned Menkhoff FX momentum wave (§92) ===
+US NFCI stress gate/cool on Menkhoff FX mom — primary mom_low_nfci; Menkhoff et al. (2012 JFE) + Brunnermeier–Nagel–Pedersen + Chicago Fed NFCI; distinct from funding_liq §20, NFCI soft §90, NFCI carry §91, WUI mom §87, CIP×mom §82, VIX/GPR mom §74, EPU/TPU mom §79, soft–carry–value–REER stacks, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+US NFCI (NFCI) [1971-01-15..2026-09-18] n=2906 pub_lag_days=7 series=fred_NFCI
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  skip risk sweep: no positive IS mean on any factor
+Locked sleeve re-verify (§92 nfci_conditioned_mom): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §91 / §90 / §87 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_nfci_conditioned_mom.md
+=== factor summary ===
+  mom_low_nfci: mean_mo=-0.042% NW_t=-0.79 %pos=33%
+  mom_nfci_cool: mean_mo=-0.058% NW_t=-0.99 %pos=44%
+  mom_raw: mean_mo=-0.076% NW_t=-1.10 %pos=45%
+  mom_high_nfci: mean_mo=-0.016% NW_t=-0.60 %pos=7%
+  us_nfci_haven_usd: mean_mo=-0.008% NW_t=-0.25 %pos=6%
+  mom_nfci_stack: mean_mo=-0.042% NW_t=-0.79 %pos=33%
+  mom_nfci_ew: mean_mo=-0.036% NW_t=-0.94 %pos=43%
+  mom_nfci_regime: mean_mo=-0.050% NW_t=-0.80 %pos=38%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False

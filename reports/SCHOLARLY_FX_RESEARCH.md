@@ -3742,4 +3742,24 @@ Artifacts: `reports/scholarly_fx_vix_gpr_conditioned_mom_wave.md`, `scholarly_fx
 
 **Takeaway:** Gating Lustig–Verdelhan IR3M carry on low US NFCI boards **empty** soft/hard (primary −0.031%/mo NW t −0.49) — mirrors limp WUI×carry §86 / CIP×carry companions that failed the 1%/mo bar, and stands far below the thick NFCI×soft §90 board. Raw carry itself is flat on this Yahoo D1 sample; the NFCI gate cannot manufacture a 1%/mo sleeve. Risk sweep skipped (no positive IS mean). Continues fifth stress family; promote=0.
 
-**Next:** §92 NFCI×Menkhoff mom (or NFCI×PPP / REER triad); FTMO MT5 CSV re-score when exports arrive; FX IV/RR + news-sentiment still blocked. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
+**Next:** Done as §92 (NFCI-conditioned Menkhoff FX momentum). Remaining: NFCI×PPP / REER triad; FTMO MT5 CSV re-score when exports arrive; FX IV/RR + news-sentiment still blocked. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
+
+## §92 — NFCI-conditioned Menkhoff FX momentum (2026-09-30)
+
+**Path:** Chicago Fed **US NFCI** (FRED NFCI; weekly financial conditions; pub_lag_days=7 → month-end) stress × Menkhoff (2012 JFE) cross-sectional FX momentum gate/cool — **continues the fifth free stress family** after NFCI×soft §90 / NFCI×carry §91. Literature: Menkhoff–Sarno–Schmeling–Schrimpf (2012 JFE) + Brunnermeier–Nagel–Pedersen (2008) funding-liquidity / crash states + Chicago Fed NFCI docs. **Distinct** from funding_liquidity_fx §20 (NFCI USD tilts + carry×NFCI cool as *standalone* factors — **not** Menkhoff mom gate), NFCI soft §90, NFCI carry §91, WUI mom §87, CIP×mom §82, VIX/GPR×mom §74, EPU/TPU×mom §79, soft–carry–value–REER stacks, capital-sleeve §53/§70, combo §8. Explicit: do **not** overlay coolers on locked `fx4plus_gbpcad_d1_voltarget_0025`.
+
+**Primary `mom_low_nfci`:** full-sample **−0.042%/mo**, NW t **−0.79**, %pos **33%**
+
+**Board:** n=8 soft=0 hard=0 promote=0
+
+**Soft / hard (NW |t|≥1.5 / ≥2.0, mean>0):** none
+
+**Data:** `approximate_non_ftmo`; NFCI PIT→2026-09-18 (pub_lag=7d weekly→month-end), FX Yahoo D1→2026-09-15; mom formation=63d skip=21d; monthly z_window=60m (CIP §71 / EPU §76 / WUI §85 / NFCI soft §90 / NFCI carry §91 mirror)
+
+**Year / HO (primary):** 2024 −0.22%/36%; 2025 +0.33%/82%; 2026 +0.33%/62%; HO +0.37%/75% — 1% bar no
+
+**Risk sweep:** skipped (no positive IS mean on any board factor)
+
+**Takeaway:** Gating Menkhoff FX momentum on low US NFCI boards **empty** soft/hard (primary −0.042%/mo NW t −0.79) — mirrors limp WUI×mom §87 / CIP×mom §82 companions that failed the 1%/mo bar, and stands far below the thick NFCI×soft §90 board. Raw mom itself is negative full-sample (−0.076%/mo) on this Yahoo D1 sample; the NFCI gate cannot manufacture a 1%/mo sleeve. Risk sweep skipped. Continues fifth stress family; promote=0.
+
+**Next:** §93 NFCI×Rogoff PPP / real-FX value (or NFCI×BIS REER triad); FTMO MT5 CSV re-score when exports arrive; FX IV/RR + news-sentiment still blocked. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
