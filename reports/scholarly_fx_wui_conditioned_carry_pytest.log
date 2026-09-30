@@ -1,0 +1,21 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/Mt5-swing/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/Mt5-swing
+configfile: pyproject.toml
+plugins: platformdirs-4.12.2
+collecting ... collected 11 items
+
+tests/test_wui_conditioned_carry_fx.py::test_primary_name_constant PASSED [  9%]
+tests/test_wui_conditioned_carry_fx.py::test_gate_direction_low_on_high_off PASSED [ 18%]
+tests/test_wui_conditioned_carry_fx.py::test_cool_scale_bounds PASSED    [ 27%]
+tests/test_wui_conditioned_carry_fx.py::test_stack_is_gate_then_cool PASSED [ 36%]
+tests/test_wui_conditioned_carry_fx.py::test_no_lookahead_mutate_future_wui PASSED [ 45%]
+tests/test_wui_conditioned_carry_fx.py::test_monthly_z_window_not_daily_252 PASSED [ 54%]
+tests/test_wui_conditioned_carry_fx.py::test_align_monthly_stress_z_lagged PASSED [ 63%]
+tests/test_wui_conditioned_carry_fx.py::test_without_haven_still_builds_core PASSED [ 72%]
+tests/test_wui_conditioned_carry_fx.py::test_factor_shapes_match_index PASSED [ 81%]
+tests/test_wui_conditioned_carry_fx.py::test_empty_rates_returns_empty PASSED [ 90%]
+tests/test_wui_conditioned_carry_fx.py::test_load_real_us_wui PASSED     [100%]
+
+============================== 11 passed in 0.72s ==============================
