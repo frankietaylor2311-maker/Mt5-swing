@@ -1,0 +1,32 @@
+=== scholarly FX STLFSI4-conditioned Lustig–Verdelhan carry wave (§101) ===
+US STLFSI4 stress gate/cool on IR3M carry — primary carry_low_stlfsi; Lustig–Roussanov–Verdelhan + Brunnermeier–Nagel–Pedersen + St. Louis Fed STLFSI4; distinct from funding_liq §20, NFCI×carry §91, STLFSI soft §100, NFCI soft §90, WUI carry §86, soft_ew §66, CIP×carry §68, VIX/GPR×carry §73, EPU/TPU×carry §78, CIP/VIX/EPU/WUI soft/mom/value/REER §71–§77/§79–§89, NFCI mom/value/REER §92–§94, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+US STLFSI4 (STLFSI4) [1994-01-07..2026-09-25] n=1708 pub_lag_days=7 series=fred_STLFSI4
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+rates cols=['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD'] [1954-08-01..2026-09-01]
+  sweep carry_raw: scale=0.963 bind=static IS mean_mo=-0.021% OOS gates=True
+  sweep carry_stlfsi_cool: scale=0.668 bind=static IS mean_mo=-0.040% OOS gates=True
+  sweep carry_low_stlfsi: scale=0.545 bind=static IS mean_mo=-0.043% OOS gates=True
+  sweep carry_high_stlfsi: scale=4.987 bind=daily IS mean_mo=0.127% OOS gates=True
+  sweep us_stlfsi_haven_usd: scale=3.182 bind=static IS mean_mo=-0.053% OOS gates=True
+  sweep carry_stlfsi_stack: scale=0.545 bind=static IS mean_mo=-0.043% OOS gates=True
+  sweep carry_stlfsi_ew: scale=0.837 bind=static IS mean_mo=-0.043% OOS gates=True
+  sweep carry_stlfsi_regime: scale=0.477 bind=static IS mean_mo=-0.046% OOS gates=True
+Locked sleeve re-verify (§101 stlfsi_conditioned_carry): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §100 / §96 / §91 / §68 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_stlfsi_conditioned_carry.md
+=== factor summary ===
+  carry_low_stlfsi: mean_mo=-0.072% NW_t=-1.33 %pos=39%
+  carry_stlfsi_cool: mean_mo=-0.043% NW_t=-0.68 %pos=51%
+  carry_raw: mean_mo=-0.002% NW_t=-0.03 %pos=51%
+  carry_high_stlfsi: mean_mo=+0.030% NW_t=+2.01 %pos=7%
+  us_stlfsi_haven_usd: mean_mo=-0.021% NW_t=-1.09 %pos=4%
+  carry_stlfsi_stack: mean_mo=-0.072% NW_t=-1.33 %pos=39%
+  carry_stlfsi_ew: mean_mo=-0.045% NW_t=-1.18 %pos=48%
+  carry_stlfsi_regime: mean_mo=-0.093% NW_t=-1.62 %pos=42%
+board n=8 soft=1 hard=1 promote_unscaled=False scaled_primary=False
