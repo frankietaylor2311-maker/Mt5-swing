@@ -1,0 +1,24 @@
+=== scholarly FX KCFSI-conditioned Menkhoff FX momentum wave (§107) ===
+US KCFSI stress gate/cool on Menkhoff FX mom — primary mom_low_kcfsi; Menkhoff et al. (2012 JFE) + Brunnermeier–Nagel–Pedersen + Kansas City Fed KCFSI; distinct from funding_liq §20, NFCI mom §92, ANFCI mom §97, STLFSI mom §102, KCFSI soft §105, KCFSI carry §106, WUI mom §87, CIP×mom §82, VIX/GPR mom §74, EPU/TPU mom §79, soft–carry–value–REER stacks, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+US KCFSI (KCFSI) [1990-03-01..2026-09-01] n=439 pub_lag_months=1 series=fred_KCFSI
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+  skip risk sweep: no positive IS mean on any factor
+Locked sleeve re-verify (§107 kcfsi_conditioned_mom): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §106 / §105 / §102 / §97 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_kcfsi_conditioned_mom.md
+=== factor summary ===
+  mom_low_kcfsi: mean_mo=-0.059% NW_t=-1.08 %pos=34%
+  mom_kcfsi_cool: mean_mo=-0.093% NW_t=-1.43 %pos=45%
+  mom_raw: mean_mo=-0.076% NW_t=-1.10 %pos=45%
+  mom_high_kcfsi: mean_mo=-0.005% NW_t=-0.29 %pos=4%
+  us_kcfsi_haven_usd: mean_mo=-0.012% NW_t=-0.80 %pos=3%
+  mom_kcfsi_stack: mean_mo=-0.059% NW_t=-1.08 %pos=34%
+  mom_kcfsi_ew: mean_mo=-0.055% NW_t=-1.37 %pos=43%
+  mom_kcfsi_regime: mean_mo=-0.071% NW_t=-1.25 %pos=37%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
