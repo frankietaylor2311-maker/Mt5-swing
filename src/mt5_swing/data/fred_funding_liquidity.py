@@ -19,11 +19,16 @@ Free FRED series (no paid terminals)
 - ``STLFSI4`` — St. Louis Fed Financial Stress Index (redesigned; weekly; 0 ≈
   average; >0 elevated stress). Kliesen et al. / St. Louis Fed docs. Distinct
   from Chicago Fed NFCI/ANFCI (different construction / panel).
+- ``KCFSI`` — Kansas City Fed Financial Stress Index (monthly; 0 ≈ average;
+  >0 elevated stress). Hakkio & Keeton (2009) / KC Fed docs. Distinct from
+  Chicago NFCI/ANFCI and St. Louis STLFSI4 (different construction / panel).
 
 PIT lags (conservative, frozen — not holdout-tuned)
 ---------------------------------------------------
 - Weekly NFCI family / STLFSI4: mid-week / Friday-ending observation week →
   ``pub_lag_days=7`` (one calendar week; same conservative weekly PIT).
+- Monthly KCFSI: ``pub_lag_months=1`` (like EPU USEPUINDXM — KC Fed updates
+  around the 5th; conservative one-month lag).
 - Daily TED / CPFF / BAA: ``pub_lag_days=1``.
 
 Do **not** overlay these coolers onto the locked FTMO sleeve; they are evaluated
@@ -36,7 +41,12 @@ from typing import Iterable
 
 import pandas as pd
 
-from mt5_swing.data.fred_rates import download_fred_series, load_fred_series, macro_dir
+from mt5_swing.data.fred_rates import (
+    apply_publication_lag,
+    download_fred_series,
+    load_fred_series,
+    macro_dir,
+)
 
 # Weekly financial-conditions / funding state
 FRED_NFCI_WEEKLY: dict[str, str] = {
@@ -59,8 +69,14 @@ FRED_STLFSI_WEEKLY: dict[str, str] = {
     "STLFSI4": "STLFSI4",
 }
 
+# Monthly Kansas City Fed Financial Stress Index
+FRED_KCFSI_MONTHLY: dict[str, str] = {
+    "KCFSI": "KCFSI",
+}
+
 DEFAULT_WEEKLY_PUB_LAG_DAYS = 7
 DEFAULT_DAILY_PUB_LAG_DAYS = 1
+DEFAULT_MONTHLY_PUB_LAG_MONTHS = 1
 
 
 def _apply_pub_lag(s: pd.Series, pub_lag_days: int) -> pd.Series:
@@ -127,6 +143,46 @@ def load_us_stlfsi_series(
     """Thin alias — US St. Louis Fed Financial Stress Index (weekly)."""
     return load_stlfsi_series(
         series_id, download=download, pub_lag_days=pub_lag_days, force=force
+    )
+
+
+def load_kcfsi_series(
+    series_id: str = "KCFSI",
+    *,
+    download: bool = True,
+    pub_lag_months: int = DEFAULT_MONTHLY_PUB_LAG_MONTHS,
+    force: bool = False,
+) -> pd.Series:
+    """Load Kansas City Fed Financial Stress Index (KCFSI) with publication lag.
+
+    ``KCFSI`` is monthly on FRED (Hakkio & Keeton 2009 / KC Fed). Uses
+    conservative ``pub_lag_months=1`` (like EPU USEPUINDXM) — KC Fed typically
+    updates around the 5th of the following month. Distinct from Chicago Fed
+    NFCI/ANFCI and St. Louis Fed STLFSI4.
+    """
+    sid = series_id.upper()
+    if sid not in FRED_KCFSI_MONTHLY and sid not in set(FRED_KCFSI_MONTHLY.values()):
+        # Allow documented KCFSI-family FRED ids via passthrough
+        pass
+    s = load_fred_series(sid, download=download, force=force)
+    s = apply_publication_lag(s, lag_months=int(pub_lag_months))
+    s.name = sid
+    s.attrs["source"] = f"fred_{sid}"
+    s.attrs["frequency"] = "monthly"
+    s.attrs["pub_lag_months"] = int(pub_lag_months)
+    return s
+
+
+def load_us_kcfsi_series(
+    *,
+    series_id: str = "KCFSI",
+    download: bool = True,
+    pub_lag_months: int = DEFAULT_MONTHLY_PUB_LAG_MONTHS,
+    force: bool = False,
+) -> pd.Series:
+    """Thin alias — US Kansas City Fed Financial Stress Index (monthly)."""
+    return load_kcfsi_series(
+        series_id, download=download, pub_lag_months=pub_lag_months, force=force
     )
 
 
@@ -226,6 +282,7 @@ def ensure_funding_liquidity_cached(*, force: bool = False) -> dict[str, str]:
         set(FRED_NFCI_WEEKLY.values())
         | set(FRED_FUNDING_DAILY.values())
         | set(FRED_STLFSI_WEEKLY.values())
+        | set(FRED_KCFSI_MONTHLY.values())
     ):
         p = download_fred_series(sid, force=force)
         paths[sid] = str(p)
