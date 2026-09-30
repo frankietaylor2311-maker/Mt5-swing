@@ -1,0 +1,33 @@
+=== scholarly FX KCFSI-conditioned BIS REER HML-FX value wave (§109) ===
+US KCFSI stress gate/cool on reer_cheap_xs — primary reer_low_kcfsi; Rogoff/Taylor REER misalignment / Asness–Moskowitz–Pedersen value + Brunnermeier–Nagel–Pedersen + Kansas City Fed KCFSI; distinct from funding_liq §20, raw bis_reer §31, NFCI §90–§94, ANFCI §95–§99, STLFSI §100–§104, KCFSI soft–carry–mom–PPP §105–§108, CIP×REER §84, VIX/GPR×REER §81, EPU×REER §77, WUI×REER §89, soft–carry–mom–value stacks, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+US KCFSI (KCFSI) [1990-03-01..2026-09-01] n=439 pub_lag_months=1 series=fred_KCFSI
+REER panel cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'] pub_lag=2 [1994-03-01..2026-09-01]
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+FX coverage [2011-09-18..2026-09-15]
+  sweep reer_raw: scale=2.924 bind=daily IS mean_mo=0.089% OOS gates=True
+  sweep reer_kcfsi_cool: scale=3.228 bind=daily IS mean_mo=0.086% OOS gates=True
+  sweep reer_low_kcfsi: scale=3.062 bind=static IS mean_mo=-0.061% OOS gates=True
+  sweep reer_high_kcfsi: scale=2.602 bind=static IS mean_mo=-0.052% OOS gates=True
+  sweep us_kcfsi_haven_usd: scale=4.734 bind=static IS mean_mo=-0.039% OOS gates=True
+  sweep reer_kcfsi_stack: scale=3.062 bind=static IS mean_mo=-0.061% OOS gates=True
+  sweep reer_kcfsi_ew: scale=5.231 bind=daily IS mean_mo=-0.003% OOS gates=True
+  sweep reer_kcfsi_regime: scale=2.315 bind=static IS mean_mo=-0.065% OOS gates=True
+Locked sleeve re-verify (§109 kcfsi_conditioned_reer): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §108 / §107 / §106 / §105 / §104 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_kcfsi_conditioned_reer.md
+=== factor summary ===
+  reer_low_kcfsi: mean_mo=-0.013% NW_t=-0.28 %pos=37%
+  reer_kcfsi_cool: mean_mo=+0.030% NW_t=+0.57 %pos=53%
+  reer_raw: mean_mo=+0.034% NW_t=+0.60 %pos=52%
+  reer_high_kcfsi: mean_mo=-0.018% NW_t=-1.54 %pos=2%
+  us_kcfsi_haven_usd: mean_mo=-0.008% NW_t=-0.51 %pos=4%
+  reer_kcfsi_stack: mean_mo=-0.013% NW_t=-0.28 %pos=37%
+  reer_kcfsi_ew: mean_mo=+0.003% NW_t=+0.10 %pos=51%
+  reer_kcfsi_regime: mean_mo=-0.021% NW_t=-0.42 %pos=41%
+board n=8 soft=0 hard=0 promote_unscaled=False scaled_primary=False
