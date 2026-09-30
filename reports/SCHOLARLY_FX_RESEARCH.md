@@ -555,7 +555,7 @@ If GPR HTTP is blocked: use `GprIndex.stub()` / drop XLS into `data/macro/` (ins
 19i. **Done (2026-09-23):** OECD CLI leading-indicator FX wave — promote=NO (see §37).
 19j. **Done (2026-09-23):** OECD CCI / consumer-confidence FX wave — promote=NO (see §38).
 19k. **Done (2026-09-23):** OECD MEI employment-growth LFEMTTTT FX wave — promote=NO (see §41).
-20. Next scholarly candidates (not sleeve coolers): **WUI×mom or WUI×value/REER triad continuation** after WUI×soft §85 / WUI×carry §86 (fourth free uncertainty family after CIP/VIX/EPU; carry limp under all four stress families); **FTMO MT5 CSV re-score** when exports arrive (all boards still `approximate_non_ftmo`; `data/ftmo/` empty except README); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel. Soft EPU §76 remains the thickest hard-|t| stress board (soft=8 hard=8); WUI×soft §85 hard=5 but WUI×carry §86 soft=0 hard=0 (raw carry near-zero). No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
+20. Next scholarly candidates (not sleeve coolers): **WUI×BIS REER (§89)** after WUI×soft §85 / WUI×carry §86 / WUI×mom §87 / WUI×PPP §88 (fourth free uncertainty family after CIP/VIX/EPU; carry/mom/PPP limp under WUI); **FTMO MT5 CSV re-score** when exports arrive (all boards still `approximate_non_ftmo`; `data/ftmo/` empty except README); FX IV/RR **blocked**; news-based currency sentiment still blocked without free multi-year panel. Soft EPU §76 remains the thickest hard-|t| stress board (soft=8 hard=8); WUI×soft §85 hard=5 but WUI×carry/mom/PPP §86–§88 soft=0 hard=0. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
 
 ---
 
@@ -3667,4 +3667,22 @@ Artifacts: `reports/scholarly_fx_vix_gpr_conditioned_mom_wave.md`, `scholarly_fx
 
 **Takeaway:** Gating Menkhoff FX momentum on low US WUI boards empty soft/hard (primary essentially flat NW t −0.00). Raw mom itself is negative full-sample (−0.076%/mo) on this Yahoo D1 sample, so the WUI gate cannot manufacture a 1%/mo sleeve — continues limpness seen under CIP×mom §82 (soft=1) and stands below VIX/GPR×mom §74 / EPU×mom §79. Elevated recent WUI flattens 2026/HO under the binary low-WUI gate (capital retention by design). promote=0.
 
-**Next:** WUI×value/REER (Rogoff PPP then BIS REER HML-FX) triad continuation; FTMO MT5 CSV re-score when exports arrive; FX IV/RR + news-sentiment still blocked. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
+**Next:** Done as §88 (WUI-conditioned Rogoff PPP / real-FX value). Remaining: WUI×BIS REER HML-FX (§89); FTMO MT5 CSV re-score when exports arrive; FX IV/RR + news-sentiment still blocked. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
+
+## §88 — WUI-conditioned Rogoff PPP / real-FX value (2026-09-30)
+
+**Path:** Ahir–Bloom–Furceri **US World Uncertainty Index** (FRED WUIUSA; quarterly EIU text → monthly after `pub_lag_months=4`) stress × Rogoff (1996) PPP / real-FX cross-sectional value gate/cool — fourth wave of the **fourth** free uncertainty family after WUI×soft §85 / WUI×carry §86 / WUI×mom §87. Parallel to CIP×PPP §83 / VIX/GPR×PPP §75 / EPU/TPU×PPP §80. Distinct from raw WUI XS §40, WUI soft §85, WUI carry §86, WUI mom §87, CIP×PPP §83, VIX/GPR×PPP §75, EPU×PPP §80, raw PPP, BIS REER §31, soft–carry–mom–value–REER §68–§84, capital-sleeve §53/§70, combo §8. Explicit: do **not** overlay coolers on locked `fx4plus_gbpcad_d1_voltarget_0025`.
+
+**Board:** n=8 soft=0 hard=0 **promote=0**
+**Primary `value_low_wui`:** full-sample **−0.044%/mo**, NW t **−0.98**, %pos **21%**
+- 2024 −0.06%/36%; 2025 −0.12%/9%; 2026 +0.00%/0%; HO +0.00%/0% — 1% bar **no**
+**Hard (NW |t|≥2.0, mean>0):** none
+**Honesty:** `value_raw` −0.014%/mo NW t −0.22; `value_high_wui` +0.019%/mo NW t +0.67; cool −0.034%/mo; haven −0.026%/mo; stack −0.044%/mo; ew −0.035%/mo; regime −0.070%/mo
+**Risk sweep:** ran (honesty `value_high_wui` IS mean>0); primary scale=1.028 bind=static IS mean_mo=−0.048% scaled HO +0.00% — **not** clear
+**Locked** `fx4plus_gbpcad_d1_voltarget_0025` untouched **PASS**
+**Data:** `approximate_non_ftmo`; US WUI PIT→2026-08-01 (pub_lag=4), CPI→2026-09-01 (pub_lag=1), FX Yahoo D1→2026-09-15; PPP lookback=60m; monthly z_window=60m (CIP §71 / EPU §76 / WUI soft §85 / WUI carry §86 / WUI mom §87 mirror)
+**Artifacts:** `reports/scholarly_fx_wui_conditioned_value_wave.md`, strategy + runner + tests
+
+**Takeaway:** Gating Rogoff PPP value on low US WUI boards empty soft/hard (primary −0.044%/mo NW t −0.98). Raw PPP is near-flat/negative on this Yahoo D1 sample (−0.014%/mo), so the WUI gate cannot manufacture a 1%/mo sleeve — continues limpness under CIP×PPP §83 (soft=3 but primary weak) and stands below VIX/GPR×PPP §75 / EPU×PPP §80. Elevated recent WUI flattens 2026/HO under the binary low-WUI gate (capital retention by design). Honesty inverse `value_high_wui` is the only positive full-sample mean (+0.019%/mo) but soft-|t| fails. promote=0.
+
+**Next:** WUI×BIS REER HML-FX value (§89) triad close-out; FTMO MT5 CSV re-score when exports arrive; FX IV/RR + news-sentiment still blocked. No cooler-overlay on locked fx4plus. No go-live under `approximate_non_ftmo`.
