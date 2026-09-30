@@ -1,0 +1,59 @@
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+/workspace/Mt5-swing/src/mt5_swing/data/fred_macro_diff.py:84: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  s.index = pd.DatetimeIndex(idx).to_period("M").to_timestamp().tz_localize("UTC")
+=== scholarly FX CIP-conditioned Rogoff PPP / real-FX value wave (§83) ===
+cip_govt 5y stress gate/cool on Rogoff PPP value — primary value_low_cip; Rogoff (1996) PPP / real FX + Du–Tepper–Verdelhan / Du–Keerati–Schreger; distinct from raw PPP, BIS REER §31, VIX/GPR×PPP §75, EPU×PPP §80, EPU×REER §77, VIX×REER §81, CIP soft §71, CIP×carry §68, CIP×mom §82, soft–carry–value–REER §72–§81, capital-sleeve §53/§70, combo §8. Locked sleeve untouched.
+slim G10 panel → /workspace/Mt5-swing/data/macro/cip_g10_5y_govt_panel.csv
+cip panel cols=['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD'] [2000-01-31..2025-07-31] tenor=5y pub_lag_d=1
+currency  n_obs      start        end       last
+     EUR    307 2000-01-31 2025-07-31 -28.145006
+     GBP    307 2000-01-31 2025-07-31 -14.279994
+     JPY    307 2000-01-31 2025-07-31  12.460004
+     AUD    307 2000-01-31 2025-07-31 -34.010006
+     CAD    306 2000-02-29 2025-07-31  -5.760102
+     CHF    307 2000-01-31 2025-07-31 -21.175005
+     NZD    307 2000-01-31 2025-07-31   0.050011
+UST premium / cip_stress [2000-01-31..2025-07-31] n=307
+CPI levels cols=['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'CHF', 'AUD', 'NZD'] pub_lag=1 [1914-02-01..2026-09-01]
+FX panel: ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD', 'USDJPY', 'USDCAD', 'USDCHF'] tag=approximate_non_ftmo
+FX coverage [2011-09-18..2026-09-15]
+  sweep value_raw: scale=1.145 bind=static IS mean_mo=-0.022% OOS gates=True
+  sweep value_cip_cool: scale=1.770 bind=static IS mean_mo=0.033% OOS gates=True
+  sweep value_low_cip: scale=1.997 bind=daily IS mean_mo=0.040% OOS gates=True
+  sweep value_high_cip: scale=1.149 bind=static IS mean_mo=-0.041% OOS gates=True
+  sweep cip_stress_haven_usd: scale=2.881 bind=daily IS mean_mo=0.225% OOS gates=True
+  sweep value_cip_stack: scale=3.311 bind=daily IS mean_mo=0.160% OOS gates=True
+  sweep value_cip_ew: scale=2.700 bind=daily IS mean_mo=0.105% OOS gates=True
+  sweep value_cip_regime: scale=1.647 bind=daily IS mean_mo=0.162% OOS gates=True
+Locked sleeve re-verify (§83 cip_conditioned_value): configs/quest_one_pct_candidate.yaml
+basket_tag=fx4plus_gbpcad_d1_voltarget_0025 untouched
+sha256=bafed8eff5aa7541a42b99a486def2402f530b288a1ad6e7d273a56b2feb1790
+Canonical windowed PASS (same as §82 / §81 / §80 / §75 / §68 — config unmodified):
+2024           mean_mo= 0.42% pos=  55% top3=  74% gates=PASS
+2025           mean_mo= 1.63% pos=  73% top3=  69% gates=PASS
+2026           mean_mo= 2.30% pos=  88% top3=  87% gates=PASS
+holdout_365d   mean_mo= 1.52% pos=  75% top3=  81% gates=PASS
+Wrote /workspace/Mt5-swing/reports/quest_locked_verify_cip_conditioned_value.md
+=== factor summary ===
+  value_low_cip: mean_mo=+0.024% NW_t=+0.54 %pos=18%
+  value_cip_cool: mean_mo=+0.022% NW_t=+0.49 %pos=41%
+  value_raw: mean_mo=-0.014% NW_t=-0.22 %pos=42%
+  value_high_cip: mean_mo=-0.033% NW_t=-0.97 %pos=13%
+  cip_stress_haven_usd: mean_mo=+0.073% NW_t=+1.91 %pos=21%
+  value_cip_stack: mean_mo=+0.048% NW_t=+1.71 %pos=47%
+  value_cip_ew: mean_mo=+0.040% NW_t=+1.29 %pos=46%
+  value_cip_regime: mean_mo=+0.096% NW_t=+1.65 %pos=39%
+board n=8 soft=3 hard=0 promote_unscaled=False scaled_primary=False
